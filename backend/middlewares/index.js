@@ -3,8 +3,6 @@ const Helmet = require("helmet");
 const Cors = require("cors");
 const Morgan = require("morgan");
 
-const { verifyJWT } = require("./jwt");
-
 module.exports = (App) => {
 	// Helmet
 	App.use(Helmet());
@@ -41,7 +39,4 @@ module.exports = (App) => {
 			})
 		);
 	}
-
-	// Jwt
-	App.use(verifyJWT);
 };
