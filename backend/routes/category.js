@@ -1,0 +1,15 @@
+const Router = require("express").Router();
+const Controller = require("../controllers/category");
+const Permission = require("../middlewares/permission");
+
+module.exports = () => {
+	Router.all(["/", "/:id"], Permission.admin);
+
+	Router.get("/", Controller.index);
+	Router.get("/:id", Controller.findOne);
+	Router.post("/", Controller.insert);
+	Router.put("/:id", Controller.update);
+	Router.delete("/:id", Controller.deletar);
+
+	return Router;
+};

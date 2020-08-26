@@ -1,0 +1,48 @@
+{
+	"name": "SegChamados",
+	"version": "1.0.0",
+	"main": "index.js",
+	"author": "rafaelnr <rafaelnetto_@hotmail.com>",
+	"license": "MIT",
+	"scripts": {
+		"test": "jest",
+		"testw": "jest --watch",
+		"dev": "nodemon -L --verbose --signal SIGTEMP; -r ./backend/index.js",
+		"debug": "set DEBUG=* & node ./backend/index.js",
+		"prod": "node ./backend/index.js",
+		"lint": "eslint .",
+		"lint fix": "eslint . --fix"
+	},
+	"dependencies": {
+		"@hapi/joi": "^17.1.1",
+		"@hapi/joi-date": "^2.0.1",
+		"axios": "^0.19.2",
+		"bcryptjs": "^2.4.3",
+		"body-parser": "^1.19.0",
+		"cors": "^2.8.5",
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"express-session": "^1.17.1",
+		"helmet": "^3.23.3",
+		"jsonwebtoken": "^8.5.1",
+		"knex": "^0.21.2",
+		"morgan": "^1.10.0",
+		"mysql2": "^2.1.0",
+		"nodemailer": "^6.4.10"
+	},
+	"devDependencies": {
+		"@types/jest": "^26.0.9",
+		"eslint": "^7.6.0",
+		"jest": "^26.2.2",
+		"jest-extended": "^0.11.5",
+		"kill-port": "^1.6.1",
+		"nodemon": "^2.0.4",
+		"sqlite3": "^5.0.0",
+		"supertest": "^4.0.2"
+	},
+	"jest": {
+		"setupFilesAfterEnv": [
+			"jest-extended"
+		]
+	}
+}
