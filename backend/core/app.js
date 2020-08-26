@@ -1,8 +1,6 @@
 "use strict";
 
-const Express = require("express");
-const App = Express();
-const Router = Express.Router();
+const App = require("express")();
 
 const Rotas = require("../routes/index");
 const Middlewares = require("../middlewares/index");
@@ -10,7 +8,7 @@ const Middlewares = require("../middlewares/index");
 const config = require("dotenv").config().parsed;
 
 Middlewares(App);
-App.use(Rotas(Router));
+App.use(Rotas);
 
 // Ignore favicon
 App.use((req, res, next) => {
