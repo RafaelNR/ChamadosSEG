@@ -22,11 +22,11 @@ const findOne = async (req, res) => {
 		if (!req.params || !req.params.id)
 			throw "Parametros não encontrados ou incorretos.";
 
-		const ID = Validate.ID(req.params);
+		const ID = Validate.ID(req.params.id);
 
-		await tools.checkIfExist(ID.id);
+		await tools.checkIfExist(ID);
 
-		response = { success: true, data: await Model.findOne(ID.id) };
+		response = { success: true, data: await Model.findOne(ID) };
 	} catch (error) {
 		status = 401;
 		response = { success: false, error };
@@ -75,7 +75,7 @@ const deletar = (req, res) => {
 	try {
 		if (!req.params || !req.params.id) throw "Dados invalidos";
 
-		const { id } = Validate.ID(req.params);
+		const id = Validate.ID(req.params.id);
 
 		tools.checkBeforeDeletar(id);
 		Model.deletar(id);

@@ -1,9 +1,9 @@
 ## TODO DB
 
-- [ ] na tabela log, Error deve ser null;
 - [ ] Criar tabela de anexos, e vincular ela a atividades e chamados.
-- [ ] Tabela de chamados nome deve ser unico.
-- [ ] Mudar na tabela sub_categorias a coluna, categorias_id para categoria_id
+- [x] na tabela log, Error deve ser null;
+- [x] Tabela de chamados nome deve ser unico.
+- [x] Mudar na tabela sub_categorias a coluna, categorias_id para categoria_id
 
 ## TODO SISTEMA
 

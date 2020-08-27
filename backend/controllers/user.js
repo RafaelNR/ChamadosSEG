@@ -69,7 +69,7 @@ module.exports = {
 		try {
 			if (!req.params || !req.params.id) throw "Paramentos não encontrados!";
 
-			const { id } = Validate.ID({ id: req.params.id });
+			const id = Validate.ID(parseInt(req.params.id));
 
 			await tools.checkIfExist(id);
 
@@ -126,7 +126,7 @@ module.exports = {
 		try {
 			if (!req.params || !req.params.id) throw "Paramentos não encontrados!";
 
-			const { id } = Validate.ID({ id: req.params.id });
+			const id = Validate.ID(parseInt(req.params.id));
 
 			await tools.checkIfExist(id);
 

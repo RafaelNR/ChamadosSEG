@@ -3,7 +3,7 @@
 const { Joi, validate, type } = require("./index");
 
 module.exports = {
-	ID: (id) => validate(id, Joi.object({ id: type.number.id })),
+	ID: (id) => validate(id, type.number.id),
 	login: (Dados) =>
 		validate(
 			Dados,
@@ -16,6 +16,11 @@ module.exports = {
 
 	clientsUser: (Dados) => validate(Dados, type.array.clients),
 
+	/**
+	 * Valida Dados para Insert de um user;
+	 * @param {Object} Dados
+	 * @return {Object}
+	 */
 	insertUser: (Dados) => {
 		return validate(
 			Dados,
@@ -33,6 +38,11 @@ module.exports = {
 		);
 	},
 
+	/**
+	 * Valida Dados para Update de um user;
+	 * @param {Object} Dados
+	 * @return {Object}
+	 */
 	updateUser: (Dados) => {
 		return validate(
 			Dados,
@@ -49,6 +59,11 @@ module.exports = {
 		);
 	},
 
+	/**
+	 * Valida Dados para Insert de um cliente;
+	 * @param {Object} Dados
+	 * @return {Object}
+	 */
 	insertClient: (Dados) => {
 		return validate(
 			Dados,
@@ -64,6 +79,11 @@ module.exports = {
 		);
 	},
 
+	/**
+	 * Valida Dados para Update de um cliente;
+	 * @param {Object} Dados
+	 * @return {Object}
+	 */
 	updateClient: (Dados) => {
 		return validate(
 			Dados,
@@ -79,6 +99,11 @@ module.exports = {
 		);
 	},
 
+	/**
+	 * Valida Dados para Insert de uma atividade;
+	 * @param {Object} Dados
+	 * @return {Object}
+	 */
 	insertAtividades: (Dados) => {
 		return validate(
 			Dados,
@@ -91,7 +116,11 @@ module.exports = {
 			})
 		);
 	},
-
+	/**
+	 * Valida Dados para Update de um atividade;
+	 * @param {Object} Dados
+	 * @return {Object}
+	 */
 	updateAtividades: (Dados) => {
 		return validate(
 			Dados,
@@ -105,6 +134,11 @@ module.exports = {
 		);
 	},
 
+	/**
+	 * Valida Dados para Insert do log;
+	 * @param {Object} Dados
+	 * @return {Object}
+	 */
 	insertLog: (Dados) => {
 		return validate(
 			Dados,
@@ -119,6 +153,11 @@ module.exports = {
 		);
 	},
 
+	/**
+	 * Valida Dados para Isert de um categoria;
+	 * @param {Object} Dados
+	 * @return {Object}
+	 */
 	insertCategoria: (Dados) => {
 		return validate(
 			Dados,
@@ -130,6 +169,12 @@ module.exports = {
 			})
 		);
 	},
+
+	/**
+	 * Valida Dados para Update de um categoria;
+	 * @param {Object} Dados
+	 * @return {Object}
+	 */
 	updateCategoria: (Dados) => {
 		return validate(
 			Dados,
@@ -141,5 +186,14 @@ module.exports = {
 				updated_at: type.date.updated_at,
 			})
 		);
+	},
+
+	/**
+	 * Valida Dados para Update de um categoria;
+	 * @param {Object} Dados
+	 * @return {Object}
+	 */
+	InsertTask: (Dados) => {
+		return Dados;
 	},
 };

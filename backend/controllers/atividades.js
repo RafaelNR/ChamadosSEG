@@ -135,7 +135,7 @@ const tools = {
 		const { id, userID, clientID, data } = Params;
 
 		if (id) {
-			return Validate.ID({ id });
+			return { id: Validate.ID(id) };
 		} else if (userID && data) {
 			// 	Usuário
 			const newUserID = Validate.UserID(userID);

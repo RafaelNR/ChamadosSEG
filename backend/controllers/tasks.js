@@ -21,4 +21,10 @@ module.exports = {
 	insert: (req, res) => {},
 
 	update: (req, res) => {},
+
+	changeStatus: (req, res) => {},
+
+	changeOwner: (req, res) => {},
 };
+
+const tools = {};

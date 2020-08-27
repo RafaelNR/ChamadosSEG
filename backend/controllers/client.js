@@ -30,7 +30,7 @@ module.exports = {
 		try {
 			if (!req.params || !req.params.id) throw "Paramento não encontrado!";
 
-			const { id } = Validate.ID({ id: parseInt(req.params.id) });
+			const id = Validate.ID(parseInt(req.params.id));
 
 			await tools.checkIfExist(id);
 
@@ -82,9 +82,9 @@ module.exports = {
 		try {
 			if (!req.params || !req.params.id) throw "Paramento não encontrado!";
 
-			const client = Validate.ID({ id: req.params.id });
+			const id = Validate.ID(parseInt(req.params.id));
 
-			await Model.delete(await tools.vefiryToDelete(client.id));
+			await Model.delete(await tools.vefiryToDelete(id));
 
 			response = { success: true };
 		} catch (error) {
