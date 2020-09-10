@@ -12,89 +12,86 @@ const Log = require("./log"); /* LOG */
  */
 let response;
 let status = 200;
+const index = async (req, res) => {
+	try {
+		response = { success: true, data: await Model.index() };
+	} catch (error) {
+		status = 401;
+		response = { success: false, message: "Error!", error };
+	}
 
-module.exports = {
-	index: async (req, res) => {
-		try {
-			response = { success: true, data: await Model.index() };
-		} catch (error) {
-			status = 401;
-			response = { success: false, message: "Error!", error };
-		}
+	Log.Save(req.userId, "client", "index", response);
+	return res.status(status).json(response);
+};
 
-		Log.Save(req.userId, "client", "index", response);
-		return res.status(status).json(response);
-	},
+const findOne = async (req, res) => {
+	try {
+		if (!req.params || !req.params.id) throw "Paramento não encontrado!";
 
-	findOne: async (req, res) => {
-		try {
-			if (!req.params || !req.params.id) throw "Paramento não encontrado!";
+		const id = Validate.ID(parseInt(req.params.id));
 
-			const id = Validate.ID(parseInt(req.params.id));
+		await tools.checkIfExist(id);
 
-			await tools.checkIfExist(id);
+		response = { success: true, data: await Model.findOne(id) };
+	} catch (error) {
+		status = 401;
+		response = { success: false, error };
+	}
 
-			response = { success: true, data: await Model.findOne(id) };
-		} catch (error) {
-			status = 401;
-			response = { success: false, error };
-		}
+	Log.Save(req.userId, "client", "findOne", response);
+	return res.status(status).json(response);
+};
 
-		Log.Save(req.userId, "client", "findOne", response);
-		return res.status(status).json(response);
-	},
+const insert = async (req, res) => {
+	try {
+		if (!req.body) throw "Informações não encontradas!";
 
-	insert: async (req, res) => {
-		try {
-			if (!req.body) throw "Informações não encontradas!";
+		const Dados = tools.handilingInsert(req.body);
+		const clientID = await Model.insert(Dados);
 
-			const Dados = tools.handilingInsert(req.body);
-			await Model.insert(Dados);
+		response = { success: true, data: clientID };
+	} catch (error) {
+		status = 401;
+		response = { success: false, error };
+	}
 
-			response = { success: true, data: Dados };
-		} catch (error) {
-			status = 401;
-			response = { success: false, error };
-		}
+	Log.Save(req.userId, "client", "insert", response);
+	return res.status(status).json(response);
+};
 
-		Log.Save(req.userId, "client", "insert", response);
-		return res.status(status).json(response);
-	},
+const update = async (req, res) => {
+	try {
+		if (!req.body || !req.params.id) throw "Informações não encontradas!";
+		if (req.body.id !== parseInt(req.params.id)) throw "Valor são inválidos.";
 
-	update: async (req, res) => {
-		try {
-			if (!req.body || !req.params.id) throw "Informações não encontradas!";
-			if (req.body.id !== parseInt(req.params.id)) throw "Valor são inválidos.";
+		const Dados = await Model.update(await tools.handilingUpdate(req.body));
 
-			const Dados = await Model.update(await tools.handilingUpdate(req.body));
+		response = { success: true, data: Dados };
+	} catch (error) {
+		status = 401;
+		response = { success: false, error };
+	}
 
-			response = { success: true, data: Dados };
-		} catch (error) {
-			status = 401;
-			response = { success: false, error };
-		}
+	Log.Save(req.userId, "client", "update", response);
+	return res.status(status).json(response);
+};
 
-		Log.Save(req.userId, "client", "update", response);
-		return res.status(status).json(response);
-	},
+const deletar = async (req, res) => {
+	try {
+		if (!req.params || !req.params.id) throw "Paramento não encontrado!";
 
-	delete: async (req, res) => {
-		try {
-			if (!req.params || !req.params.id) throw "Paramento não encontrado!";
+		const id = Validate.ID(parseInt(req.params.id));
 
-			const id = Validate.ID(parseInt(req.params.id));
+		await Model.delete(await tools.vefiryToDelete(id));
 
-			await Model.delete(await tools.vefiryToDelete(id));
+		response = { success: true };
+	} catch (error) {
+		status = 401;
+		response = { success: false, error };
+	}
 
-			response = { success: true };
-		} catch (error) {
-			status = 401;
-			response = { success: false, error };
-		}
-
-		Log.Save(req.userId, "client", "delete", response);
-		return res.status(status).json(response);
-	},
+	Log.Save(req.userId, "client", "delete", response);
+	return res.status(status).json(response);
 };
 
 const tools = {
@@ -127,4 +124,12 @@ const tools = {
 
 		return clientID;
 	},
+};
+
+module.exports = {
+	index,
+	findOne,
+	insert,
+	update,
+	deletar,
 };

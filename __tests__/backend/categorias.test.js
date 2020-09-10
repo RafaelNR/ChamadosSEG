@@ -4,7 +4,7 @@ const request = require("supertest")(App);
 const { Token } = require("./auth.test");
 
 describe("Testes Categorias", () => {
-	test("Deve receber todas as atividades", async () => {
+	it("Deve receber todas as atividades", async () => {
 		return await request
 			.get("/categorias")
 			.set("access_token", Token())
@@ -17,9 +17,9 @@ describe("Testes Categorias", () => {
 			});
 	});
 
-	test("Deve receber um categoria e se tiver as suas subcategorias.", async () => {
+	it("Deve receber um categoria e se tiver, as suas subcategorias.", async () => {
 		return await request
-			.get("/categorias/2")
+			.get("/categorias/1")
 			.set("access_token", Token())
 			.then((res) => {
 				expect(res.status).toBe(200); // Deve ser;
@@ -35,14 +35,46 @@ describe("Testes Categorias", () => {
 				}
 			});
 	});
-});
-it("Deve receber um erro, pois ID não existe", async () => {
-	return await request
-		.get("/categorias/99999")
-		.set("access_token", Token())
-		.then((res) => {
-			expect(res.status).toBe(401); // Deve ser;
-			expect(res.body).toHaveProperty("success", false);
-			expect(res.body).toHaveProperty("error");
-		});
+
+	it("Deve registrar uma categoria", async () => {
+		return await request
+			.post("/categorias")
+			.set("access_token", Token())
+			.send({
+				nome: Math.floor(Math.random() * 99) + "Teste",
+			})
+			.then((res) => {
+				expect(res.status).toBe(200); // Deve ser;
+				expect(res.body).toHaveProperty("success", true);
+				expect(res.body).toHaveProperty("data");
+				expect(res.body.data).toHaveProperty("id");
+			});
+	});
+
+	it("Deve alterar uma categoria", async () => {
+		return await request
+			.put("/categorias/1")
+			.set("access_token", Token())
+			.send({
+				id: 1,
+				nome: Math.floor(Math.random() * 99) + "Teste alterado",
+			})
+			.then((res) => {
+				expect(res.status).toBe(200); // Deve ser;
+				expect(res.body).toHaveProperty("success", true);
+				expect(res.body).toHaveProperty("data");
+				expect(res.body.data).toHaveProperty("id");
+			});
+	});
+
+	it("Deve receber um erro, pois ID não existe", async () => {
+		return await request
+			.get("/categorias/99999")
+			.set("access_token", Token())
+			.then((res) => {
+				expect(res.status).toBe(401); // Deve ser;
+				expect(res.body).toHaveProperty("success", false);
+				expect(res.body).toHaveProperty("error");
+			});
+	});
 });

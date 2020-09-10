@@ -26,6 +26,11 @@ module.exports = {
 			.where("cliente_has_user.cliente_id", "=", clientID);
 	},
 
+	/**
+	 * count se o cliente esta vinculado ao usuário.
+	 * @param {number} clientID
+	 * @return {Object}
+	 */
 	countClientByUser: async (userID, clientID) => {
 		return await knex
 			.count("id as id")

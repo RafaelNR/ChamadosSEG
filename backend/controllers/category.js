@@ -43,7 +43,7 @@ const insert = async (req, res) => {
 
 		const id = await Model.insert(Dados);
 
-		response = { success: true, data: { id: id, ...Dados } };
+		response = { success: true, data: { id: id } };
 	} catch (error) {
 		status = 401;
 		response = { success: false, error };

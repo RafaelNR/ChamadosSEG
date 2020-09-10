@@ -8,7 +8,7 @@ const ClientsHasUser = require("./clients_has_users");
  * @return {Object}
  */
 const findOne = async (ID) => {
-	return await knex
+	const user = await knex
 		.select(
 			"id",
 			"nome",
@@ -24,11 +24,9 @@ const findOne = async (ID) => {
 		.from("users")
 		.where("id", "=", ID)
 		.limit(1)
-		.then(async (user) => {
-			return user[0]
-				? { ...user[0], clients: await ClientsHasUser.findClients(ID) }
-				: null;
-		});
+		.then((user) => user[0]);
+
+	return { ...user, clients: await ClientsHasUser.findClients(ID) };
 };
 
 module.exports = {
@@ -85,17 +83,17 @@ module.exports = {
 	 * @return {Object}
 	 */
 	update: async ({ userDados, clientsUser }) => {
-		const Dados = await knex("users")
+		return await knex("users")
 			.where({ id: userDados.id })
 			.update(userDados)
-			.then(async () => {
-				if (!clientsUser) return;
+			.then(async (Dados) => {
+				if (!clientsUser) return Dados;
 
 				// Remove clients antigos;
-				return await ClientsHasUser.delete(userDados.id)
-					.then(() => {
+				await ClientsHasUser.delete(userDados.id)
+					.then(async () => {
 						// Insere novos;
-						return clientsUser.map(async (client) => {
+						await clientsUser.map(async (client) => {
 							await ClientsHasUser.insert({
 								cliente_id: client,
 								user_id: userDados.id,
@@ -106,18 +104,11 @@ module.exports = {
 						console.log(error);
 						throw { error: "Erro em inserir clients novos." };
 					});
+				return Dados;
 			})
 			.catch((error) => {
 				console.log(error);
 				throw { error: "Erro em deletar clients antigos." };
-			});
-
-		/* Resolve todoas funções */
-		return Promise.all(Dados)
-			.then(async () => await findOne(userDados))
-			.catch((error) => {
-				console.log(error);
-				throw { error: "Erro em retornar os dados atualizados." };
 			});
 	},
 

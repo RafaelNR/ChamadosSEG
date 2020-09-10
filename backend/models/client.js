@@ -14,6 +14,7 @@ const findOne = async (ID) => {
 			"nome_fantasia",
 			"cnpj_cpf",
 			"email",
+			"telefone",
 			"created_at",
 			"updated_at"
 		)

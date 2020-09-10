@@ -35,6 +35,61 @@ describe("Testes de Usuários, com rotas definidas", () => {
 			});
 	});
 
+	it("Deve inserir usuário", async () => {
+		const rand = Math.floor(Math.random() * 99);
+		const Dados = {
+			nome: "Nome Teste " + rand,
+			user: "user" + rand,
+			passwd: "batata15",
+			email: rand + "teste@seg.eti.br",
+			telefone: "9" + Math.floor(Math.random() * 9999999999),
+			role_id: 1,
+			actived: 1,
+			clients: [1],
+		};
+		return await request
+			.post("/usuarios/")
+			.set("access_token", Token())
+			.send(Dados)
+			.then((res) => {
+				expect(res.status).toBe(200); // Deve ser;
+				expect(res.body).toHaveProperty("success", true);
+			});
+	});
+
+	it("Deve fazer update dos dados do usuário", async () => {
+		const rand = Math.floor(Math.random() * 99);
+		const Dados = {
+			id: 2,
+			nome: "Rafael Alterado" + rand,
+			passwd: "batata15",
+			email: rand + "alterado@seg.eti.br",
+			telefone: "9" + Math.floor(Math.random() * 9999999999),
+			role_id: 1,
+			actived: 1,
+			clients: [1],
+		};
+		return await request
+			.put("/usuarios/" + Dados.id)
+			.set("access_token", Token())
+			.send(Dados)
+			.then((res) => {
+				expect(res.status).toBe(200); // Deve ser;
+				expect(res.body).toHaveProperty("data"); // deve possuir a propriedade data;
+				expect(res.body.data).toHaveProperty("nome"); // deve possuir nome;
+				expect(res.body.data).toHaveProperty("user"); // deve possuir user;
+				expect(res.body.data).toHaveProperty("email"); // deve possuir email;
+				expect(res.body.data).toHaveProperty("telefone"); // deve possuir telefone;
+				expect(res.body.data).toHaveProperty("actived"); // deve possuir actived;
+				expect(res.body.data).toHaveProperty("role_id"); // deve possuir role_id;
+				expect(res.body.data).not.toHaveProperty("passwd"); // não deve possuir passwd;
+				if (Dados.clients && Dados.clients.length > 0) {
+					expect(res.body.data).toHaveProperty("clients");
+					expect(res.body.data.clients).toBeArray();
+				}
+			});
+	});
+
 	describe("Testes de Usuários, validando erros ", () => {
 		test("Devo receber um erro quando pesquisar ID usuário como string", async () => {
 			return await request

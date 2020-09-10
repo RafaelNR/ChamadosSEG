@@ -2,11 +2,28 @@
 const config = require("dotenv").config({ path: ".env" }).parsed;
 
 module.exports = {
-	development: {
-		client: config.DB_DIALECT,
+	dev: {
+		client: config.DB_DIALECT ? config.DB_DIALECT : "mysql2",
 		connection: {
 			host: config.DB_HOST,
 			database: config.DB_NAME,
+			user: config.DB_USER,
+			password: config.DB_PASSWD,
+		},
+		migrations: {
+			tableName: "migrations",
+			directory: `${__dirname}/backend/database/migrations`,
+		},
+		seeds: {
+			directory: `${__dirname}/backend/database/seeds`,
+		},
+	},
+
+	migration: {
+		client: config.DB_DIALECT ? config.DB_DIALECT : "mysql2",
+		connection: {
+			host: config.DB_HOST,
+			database: "chamadostest",
 			user: config.DB_USER,
 			password: config.DB_PASSWD,
 		},

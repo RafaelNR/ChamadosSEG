@@ -13,6 +13,7 @@ module.exports = {
 	ClientID: (Client) => validate(Client, type.number.id),
 	Data: (Data) => validate(Data, type.string.date),
 	DiaMesAno: (Data) => type.date.DiaMesAno(Data),
+	status: (Status) => validate(Status, type.string.status),
 
 	clientsUser: (Dados) => validate(Dados, type.array.clients),
 
@@ -73,6 +74,7 @@ module.exports = {
 				cnpj_cpf: type.string.cpnj_cpf,
 				email: type.string.email,
 				user_id: type.number.id,
+				telefone: type.string.telefone,
 				created_at: type.date.created_at,
 				updated_at: type.date.updated_at,
 			})
@@ -94,6 +96,7 @@ module.exports = {
 				cnpj_cpf: type.string.cpnj_cpf,
 				email: type.string.email,
 				user_id: type.number.id,
+				telefone: type.string.telefone,
 				updated_at: type.date.updated_at,
 			})
 		);
@@ -182,6 +185,24 @@ module.exports = {
 				id: type.number.id,
 				nome: type.string.nome,
 				user_id: type.number.id,
+				updated_at: type.date.updated_at,
+			})
+		);
+	},
+
+	/**
+	 * Valida Dados para Insert de um tasks
+	 * @param {Object} Dados
+	 * @return {Object}
+	 */
+	InsertTask: (Dados) => {
+		return validate(
+			Dados,
+			Joi.object({
+				cliente_id: type.number.id,
+				owner_user_id: type.number.id,
+				open_by_user_id: type.number.id,
+				status: type.string.status,
 				created_at: type.date.created_at,
 				updated_at: type.date.updated_at,
 			})
@@ -189,11 +210,59 @@ module.exports = {
 	},
 
 	/**
-	 * Valida Dados para Update de um categoria;
+	 * Valida Dados para Update de um tasks
 	 * @param {Object} Dados
 	 * @return {Object}
 	 */
-	InsertTask: (Dados) => {
-		return Dados;
+	UpdateTask: (Dados) => {
+		return validate(
+			Dados,
+			Joi.object({
+				id: type.number.id,
+				cliente_id: type.number.id,
+				owner_user_id: type.number.id,
+				open_by_user_id: type.number.id,
+				status: type.string.status,
+				updated_at: type.date.updated_at,
+			})
+		);
+	},
+
+	/**
+	 * Valida Dados para Insert de um acompanhamento da tasks
+	 * @param {Object} Dados
+	 * @return {Object}
+	 */
+	InsertAcmTask: (Dados) => {
+		return validate(
+			Dados,
+			Joi.object({
+				task_id: type.number.id,
+				user_id: type.number.id,
+				type: type.string.status,
+				descricao: type.string.default,
+				created_at: type.date.created_at,
+				updated_at: type.date.updated_at,
+			})
+		);
+	},
+
+	/**
+	 * Valida Dados para Update de um acompanhamento da tasks
+	 * @param {Object} Dados
+	 * @return {Object}
+	 */
+	UpdateAcmTask: (Dados) => {
+		return validate(
+			Dados,
+			Joi.object({
+				id: type.number.id,
+				task_id: type.number.id,
+				user_id: type.number.id,
+				type: type.string.status,
+				descricao: type.string.default,
+				updated_at: type.date.updated_at,
+			})
+		);
 	},
 };

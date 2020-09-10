@@ -9,86 +9,110 @@ const Client = require("../models/client");
 let response;
 let status = 200;
 
-module.exports = {
-	index: async (req, res) => {
-		try {
-			response = { success: true, data: await Model.index() };
-		} catch (error) {
-			status = 401;
-			response = { success: false, error };
+/**
+ * Todas as atividades.
+ */
+const index = async (req, res) => {
+	try {
+		response = { success: true, data: await Model.index() };
+	} catch (error) {
+		status = 401;
+		response = { success: false, error };
+	}
+
+	Log.Save(req.userId, "atividade", "index", response);
+	return res.status(status).json(response);
+};
+
+/**
+ * Procura minhas atividade ou atividades dos clientes
+ */
+const indexMy = async (req, res) => {
+	try {
+		let Dados;
+		const user_id = Validate.UserID(req.userId);
+
+		/** Pesquisa pelo client_id */
+		if (req.params.client) {
+			const client_id = Validate.ClientID(req.params.clientID);
+			Dados = await Model.indexMyCliente(
+				tools.verifyClient(user_id, client_id)
+			);
+		} else {
+			Dados = await Model.indexMy(user_id);
 		}
 
-		Log.Save(req.userId, "atividade", "index", response);
-		return res.status(status).json(response);
-	},
+		response = { success: true, data: Dados };
+	} catch (error) {
+		status = 401;
+		response = { success: false, error };
+	}
 
-	indexMy: async (req, res) => {
-		try {
-			let Dados;
-			const userID = req.userId;
-			Dados = req.params.client
-				? await Model.indexMy(tools.verifyClient(userID, req.params.client))
-				: await Model.indexMy({ userID });
+	Log.Save(req.userId, "atividade", "indexMy", response);
+	return res.status(status).json(response);
+};
 
-			response = { success: true, data: Dados };
-		} catch (error) {
-			status = 401;
-			response = { success: false, error };
-		}
-		Log.Save(req.userId, "atividade", "indexMy", response);
-		return res.status(status).json(response);
-	},
+/*
+ *	Procurar uma unica atividade.
+ */
+const findOne = async (req, res) => {
+	try {
+		if (!req.params) throw "Parâmetros inválidos";
 
-	findOne: async (req, res) => {
-		try {
-			const params = await tools.handlingParams(req.params);
-			const Dados = await Model.findOne(params);
+		const params = await tools.handlingParams(req.params);
 
-			if (!Dados) throw "Atividade não existe!";
+		const Dados = await Model.findOne(params);
 
-			response = { success: true, data: Dados };
-		} catch (error) {
-			status = 401;
-			response = { success: false, error };
-		}
+		if (!Dados) throw "Atividade não existe";
 
-		Log.Save(req.userId, "atividade", "findOne", response);
-		return res.status(status).json(response);
-	},
+		response = { success: true, data: Dados };
+	} catch (error) {
+		status = 401;
+		response = { success: false, error };
+	}
 
-	insert: async (req, res) => {
-		try {
-			if (!req.body) throw "Informações não encontradas!";
+	Log.Save(req.userId, "atividade", "findOne", response);
+	return res.status(status).json(response);
+};
 
-			const Dados = await tools.handlingInsert(req.body);
-			await Model.insert(Dados);
+/**
+ * Insert de atividade
+ */
+const insert = async (req, res) => {
+	try {
+		if (!req.body) throw "Informações não encontradas!";
 
-			response = { success: true, data: Dados };
-		} catch (error) {
-			status = 401;
-			response = { success: false, message: "Error!", error };
-		}
+		const Dados = await tools.handlingInsert(req.body);
+		await Model.insert(Dados);
 
-		Log.Save(req.userId, "atividades", "insert", response);
-		return res.status(status).json(response);
-	},
+		response = { success: true, data: Dados };
+	} catch (error) {
+		status = 401;
+		response = { success: false, message: "Error!", error };
+	}
 
-	update: async (req, res) => {
-		try {
-			if (!req.body || !req.params.id) throw "Informações não encontradas!";
-			if (req.body.id !== parseInt(req.params.id)) throw "Valor são inválidos.";
+	Log.Save(req.userId, "atividades", "insert", response);
+	return res.status(status).json(response);
+};
 
-			const Dados = await Model.update(tools.handlingUpdate(req.body));
+/**
+ * Update
+ */
+const update = async (req, res) => {
+	try {
+		if (!req.body || !req.params.id) throw "Informações não encontradas!";
+		if (req.body.id !== parseInt(req.params.id)) throw "Valor são inválidos.";
 
-			response = { success: true, data: Dados };
-		} catch (error) {
-			status = 401;
-			response = { success: false, message: "Error!", error };
-		}
+		const Dados = await Model.update(tools.handlingUpdate(req.body));
 
-		Log.Save(req.userId, "update", "update", response);
-		return res.status(status).json(response);
-	},
+		response = { success: true, data: Dados };
+	} catch (error) {
+		status = 401;
+		response = { success: false, message: "Error!", error };
+	}
+
+	Log.Save(req.userId, "update", "update", response);
+	return res.status(status).json(response);
 };
 
 const tools = {
@@ -130,22 +154,22 @@ const tools = {
 	 * @param {Object} Dados
 	 */
 	handlingParams: async (Params) => {
-		if (!Params) throw "Parametros não encontrados ou incorretos.";
+		if (!Params) throw "Parâmetros não encontrados ou incorretos.";
 
 		const { id, userID, clientID, data } = Params;
 
 		if (id) {
-			return { id: Validate.ID(id) };
+			return { id: await Validate.ID(id) };
 		} else if (userID && data) {
 			// 	Usuário
-			const newUserID = Validate.UserID(userID);
+			const newUserID = await Validate.UserID(userID);
 			const countUser = await User.countID(newUserID);
 			if (!countUser && countUser <= 0) throw "Usuario não existe";
 			// Return
 			return { userID, data: Validate.DiaMesAno(data) };
 		} else if (clientID && data) {
 			//Client
-			const newClientID = Validate.ClientID(clientID);
+			const newClientID = await Validate.ClientID(clientID);
 			const countClient = await Client.countID(newClientID);
 			if (!countClient || countClient <= 0) throw "Cliente não existe";
 			// Return
@@ -169,14 +193,20 @@ const tools = {
 	/**
 	 * Verifica se o client selecionado está vinculado ao usuário da requisição.
 	 */
-	verifyClient: (userID, clientID) => {
-		if (countClientByUser(userID, clientID) <= 0) {
+	verifyClient: (user_id, client_id) => {
+		if (countClientByUser(user_id, client_id) <= 0) {
 			throw "Você não está vinculado a esse cliente";
 		}
 
-		return {
-			userID,
-			clientID,
-		};
+		return client_id;
 	},
+};
+
+module.exports = {
+	index,
+	indexMy,
+	findOne,
+	update,
+	insert,
+	tools,
 };

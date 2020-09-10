@@ -21,6 +21,7 @@ const type = {
 		email: Joi.string().email().required(),
 		categoria: Joi.string().min(3).max(100).required(),
 		date: Joi.string().min(10).max(10).required(),
+		status: Joi.string().lowercase().min(3).max(50).required(),
 		methodHTTP: Joi.string().min(3).max(10).required(),
 		error: [Joi.string().optional(), Joi.allow(null)],
 		default: Joi.string().required(),
@@ -53,8 +54,8 @@ const type = {
 	},
 };
 
-const validate = (Dados, Schema) => {
-	const { error, value } = Schema.validate(Dados, {
+const validate = (Valores, Schema) => {
+	const { error, value } = Schema.validate(Valores, {
 		abortEarly: false,
 		stripUnknown: false,
 	});
@@ -70,9 +71,9 @@ const validate = (Dados, Schema) => {
 const checkDateIsExist = (Date) => {
 	validate(Date, type.date.default);
 	const newDate = Date.split("-");
-	validate(newDate[0], type.number.ano);
-	validate(newDate[1], type.number.mes);
-	validate(newDate[2], type.number.dia);
+	validate(parseInt(newDate[0]), type.number.ano);
+	validate(parseInt(newDate[1]), type.number.mes);
+	validate(parseInt(newDate[2]), type.number.dia);
 	return Date;
 };
 

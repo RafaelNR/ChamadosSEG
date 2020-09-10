@@ -17,7 +17,7 @@ Router.use("/usuarios", verifyJWT, require("./user"));
 Router.use("/clientes", verifyJWT, require("./client"));
 Router.use("/atividades", verifyJWT, require("./atividades"));
 Router.use("/categorias", verifyJWT, require("./category"));
-Router.use("/tarefas", verifyJWT, require("./tasks"));
+Router.use(["/tasks", "/tarefas"], verifyJWT, require("./tasks"));
 
 Router.get("/logout", verifyJWT, (req, res) => {
 	return res.status(200).json({

@@ -26,7 +26,6 @@ describe("Tools da categoria.", () => {
 		expect(res.id).toBe(1);
 		expect(res).toHaveProperty("nome", Body.nome);
 		expect(res).toHaveProperty("user_id", user_id);
-		expect(res).toHaveProperty("created_at");
 		expect(res).toHaveProperty("updated_at");
 	});
 });

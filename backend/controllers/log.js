@@ -12,7 +12,13 @@ module.exports = {
 			});
 
 			resolve(validadoDados);
-			reject;
+			reject(
+				new Error({
+					...err,
+					type,
+					category,
+				})
+			);
 		});
 
 		return await Dados.then(async (Dados) => {

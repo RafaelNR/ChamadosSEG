@@ -17,7 +17,7 @@ module.exports = {
 		// tem token no header do login
 		if (token) {
 			jwt.verify(token, config.SECRET, function (err, decoded) {
-				req.userId = decoded.id;
+				req.userId = Validation.ID(decoded.id);
 
 				if (err) {
 					status = 401;

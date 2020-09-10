@@ -1,6 +1,7 @@
 ## TODO DB
 
 - [ ] Criar tabela de anexos, e vincular ela a atividades e chamados.
+- [ ] ALTER TABLE `segchamados`.`acm_tasks` ADD COLUMN `info` MEDIUMTEXT NOT NULL AFTER `type`;
 - [x] na tabela log, Error deve ser null;
 - [x] Tabela de chamados nome deve ser unico.
 - [x] Mudar na tabela sub_categorias a coluna, categorias_id para categoria_id
@@ -11,6 +12,12 @@
 
 - [ ] Fazendo parte da subcategoria
 - [ ] Nome da sub-categoria deve ser unico por categoria.
+
+TODO
+
+- [ ] Corrigir Clientes; Imagem
+- [ ] Corrigir Users; Imagem
+- [ ] Corrigir Atividades; com seperação das atividades.
 
 # v0.0.1
 

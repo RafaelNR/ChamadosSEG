@@ -5,13 +5,16 @@
 	"author": "rafaelnr <rafaelnetto_@hotmail.com>",
 	"license": "MIT",
 	"scripts": {
-		"test": "jest",
-		"testw": "jest --watch",
+		"test": "jest main",
+		"testw": "jest main --watch",
 		"dev": "nodemon -L --verbose --signal SIGTEMP; -r ./backend/index.js",
 		"debug": "set DEBUG=* & node ./backend/index.js",
 		"prod": "node ./backend/index.js",
 		"lint": "eslint .",
-		"lint fix": "eslint . --fix"
+		"lint fix": "eslint . --fix",
+		"rollback": "knex migrate:rollback --all --env dev",
+		"migration": "knex migrate:latest --env dev",
+		"seed": "knex seed:run --env dev"
 	},
 	"dependencies": {
 		"@hapi/joi": "^17.1.1",
@@ -28,7 +31,8 @@
 		"knex": "^0.21.2",
 		"morgan": "^1.10.0",
 		"mysql2": "^2.1.0",
-		"nodemailer": "^6.4.10"
+		"nodemailer": "^6.4.10",
+		"select2": "^4.0.13"
 	},
 	"devDependencies": {
 		"@types/jest": "^26.0.9",

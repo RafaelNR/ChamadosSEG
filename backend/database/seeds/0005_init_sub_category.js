@@ -6,7 +6,7 @@ exports.seed = (knex) => {
 				{
 					id: 0,
 					nome: "Usuario",
-					categorias_id: 1,
+					categoria_id: 1,
 					user_id: 1,
 					created_at: knex.fn.now(),
 					updated_at: knex.fn.now(),

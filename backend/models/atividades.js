@@ -1,60 +1,93 @@
 const knex = require("../database/index");
 
 const findOne = async (Params) => {
+	let Dados = "";
+	let query = knex
+		.select(
+			"atividades.id",
+			"clientes.nome_fantasia as cliente",
+			"users.nome as técnico",
+			"atividades.created_at",
+			"atividades.updated_at"
+		)
+		.from("atividades")
+		.join("clientes", "clientes.id", "=", "atividades.cliente_id")
+		.join("users", "users.id", "=", "atividades.user_id");
+
 	if (Params.id) {
-		return await knex
-			.select(
-				"atividades.id",
-				"clientes.nome_fantasia",
-				"users.nome as técnico",
-				"atividades.created_at",
-				"atividades.updated_at",
-				"atividades"
-			)
-			.from("atividades")
-			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
-			.join("users", "users.id", "=", "atividades.user_id")
-			.where("atividades.id", "=", Params.id)
-			.then((e) => e[0]);
+		Dados = await knex.raw(query + " where ?? = ?", [
+			"atividades.id",
+			Params.id,
+		]);
 	} else if (Params.userID && Params.data) {
-		return await knex
-			.select(
-				"atividades.id",
-				"clientes.nome_fantasia",
-				"users.nome as técnico",
-				"atividades.created_at",
-				"atividades.updated_at",
-				"atividades"
-			)
-			.from("atividades")
-			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
-			.join("users", "users.id", "=", "atividades.user_id")
-			.where("users.id", "=", Params.userID)
-			.andWhereRaw(`SUBSTRING(atividades.created_at, 1, 10) = '${Params.data}'`)
-			.then((e) => e[0]);
+		Dados = await knex.raw(
+			query +
+				" where users.id = :id AND SUBSTRING(atividades.created_at, 1, 10) = :created_at",
+			{
+				id: Params.userID,
+				created_at: Params.data,
+			}
+		);
 	} else if (Params.clientID && Params.data) {
-		return await knex
-			.select(
-				"atividades.id",
-				"clientes.nome_fantasia",
-				"users.nome as técnico",
-				"atividades.created_at",
-				"atividades.updated_at",
-				"atividades"
-			)
-			.from("atividades")
-			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
-			.join("users", "users.id", "=", "atividades.user_id")
-			.where("clientes.id", "=", Params.clientID)
-			.andWhereRaw(`SUBSTRING(atividades.created_at, 1, 10) = '${Params.data}'`)
-			.then((e) => e[0]);
+		Dados = await knex.raw(
+			query +
+				" where clientes.id = :id AND SUBSTRING(atividades.created_at, 1, 10) = :created_at",
+			{
+				id: Params.clientID,
+				created_at: Params.data,
+			}
+		);
 	}
+
+	// Pegas as informações das atividades
+	const Atividade = Dados[0][0];
+
+	// Não existe atividades;
+	if (!Atividade) return false;
+
+	return await knex
+		.select(
+			"info.id",
+			"descricao",
+			"categorias.nome as categoria",
+			"info.created_at",
+			"info.updated_at"
+		)
+		.from("info_atividades as info")
+		.join("categorias", "categorias.id", "=", "info.categoria_id")
+		.where("info.atividade_id", "=", Atividade.id)
+		.then((info) => {
+			return {
+				...Atividade,
+				info,
+			};
+		});
 };
 
 module.exports = {
 	findOne,
 
 	index: async () => {
+		return await knex
+			.select(
+				"atividades.id",
+				"clientes.nome_fantasia as cliente",
+				"users.nome as técnico",
+				"atividades.created_at",
+				"atividades.updated_at"
+			)
+			.from("atividades")
+			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
+			.join("users", "users.id", "=", "atividades.user_id")
+			.limit(100);
+	},
+
+	/**
+	 * Pega atividade do meu usuario
+	 * @param {number} client_id
+	 * @return {object}
+	 */
+	indexMy: async (user_id) => {
 		return await knex
 			.select(
 				"atividades.id",
@@ -66,39 +99,29 @@ module.exports = {
 			.from("atividades")
 			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
 			.join("users", "users.id", "=", "atividades.user_id")
+			.where("users.id", "=", user_id)
 			.limit(100);
 	},
 
-	indexMy: async (Dados) => {
-		if (Dados.client) {
-			return await knex
-				.select(
-					"atividades.id",
-					"clientes.nome_fantasia",
-					"users.nome as técnico",
-					"atividades.created_at",
-					"atividades.updated_at"
-				)
-				.from("atividades")
-				.join("clientes", "clientes.id", "=", "atividades.cliente_id")
-				.join("users", "users.id", "=", "atividades.user_id")
-				.where("clientes.id", "=", Dados.client)
-				.limit(100);
-		} else if (Dados.userID) {
-			return await knex
-				.select(
-					"atividades.id",
-					"clientes.nome_fantasia",
-					"users.nome as técnico",
-					"atividades.created_at",
-					"atividades.updated_at"
-				)
-				.from("atividades")
-				.join("clientes", "clientes.id", "=", "atividades.cliente_id")
-				.join("users", "users.id", "=", "atividades.user_id")
-				.where("users.id", "=", Dados.userID)
-				.limit(100);
-		}
+	/**
+	 * Pega atividade de um cliente
+	 * @param {number} client_id
+	 * @return {object}
+	 */
+	indexMyCliente: async (client_id) => {
+		return await knex
+			.select(
+				"atividades.id",
+				"clientes.nome_fantasia",
+				"users.nome as técnico",
+				"atividades.created_at",
+				"atividades.updated_at"
+			)
+			.from("atividades")
+			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
+			.join("users", "users.id", "=", "atividades.user_id")
+			.where("clientes.id", "=", client_id)
+			.limit(100);
 	},
 
 	/**

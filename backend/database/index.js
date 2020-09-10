@@ -2,7 +2,7 @@ const knexfile = require("../../knexfile.js");
 // const knex = require("knex")(
 // 	process.env.NODE_ENV === "test" ? knexfile.test : knexfile.development
 // );
-const knex = require("knex")(knexfile.development);
+const knex = require("knex")(knexfile.dev);
 
 if (process.env.NODE_ENV === "dev") {
 	knex

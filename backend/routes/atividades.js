@@ -10,7 +10,7 @@ Router.get("/", Permission.admin, Controller.index);
 /**
  * Todas as minhas Atividades, pelo meu id ou por um dos meus clients;
  */
-Router.get(["/user", "/client/:client"], Controller.indexMy);
+Router.get(["/user", "/client/:clientID"], Controller.indexMy);
 
 /**
  * Uma única atividade.
