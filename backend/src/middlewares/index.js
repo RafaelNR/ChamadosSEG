@@ -8,7 +8,7 @@ module.exports = (App) => {
 	App.use(Helmet());
 
 	// Cors
-	App.use(Cors({ origin: "http://localhost:3000" }));
+	App.use(Cors());
 
 	// BodyParser
 	App.use(BodyParser.urlencoded({ extended: true }));

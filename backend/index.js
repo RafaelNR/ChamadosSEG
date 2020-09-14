@@ -1,7 +1,7 @@
 "use strict";
 
 const config = require("dotenv").config().parsed;
-const App = require("./core/app");
+const App = require("./src/core/app");
 
 App.listen(config.BACK_PORT, (err) => {
 	if (err) console.log("> [Server] - Down -> , erro: " + err);

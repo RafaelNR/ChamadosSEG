@@ -1,4 +1,4 @@
-const knex = require("../database/");
+const knex = require("../database");
 
 const checkRole = async (userID) => {
 	return await knex
