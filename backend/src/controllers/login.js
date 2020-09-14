@@ -52,7 +52,7 @@ module.exports = async (req, res) => {
 
 		const token = jwt.sign({ id: dbUser.id /* Playload */ }, config.SECRET, {
 			//expiresIn: process.env.NODE_ENV === 'dev' ? null : 300,
-			expiresIn: 60,
+			// expiresIn: 60,
 		});
 
 		status = 200;

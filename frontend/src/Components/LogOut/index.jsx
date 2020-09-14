@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
-import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 // Context
 import { AuthContext } from "../../Context/Auth";
@@ -8,14 +9,8 @@ export default () => {
 	const { handleLogout } = useContext(AuthContext);
 
 	return (
-		<Button
-			type="submit"
-			fullWidth
-			variant="contained"
-			color="primary"
-			onClick={handleLogout}
-		>
-			Sair
-		</Button>
+		<IconButton color="inherit" title="Sair" onClick={handleLogout}>
+			<ExitToAppIcon />
+		</IconButton>
 	);
 };

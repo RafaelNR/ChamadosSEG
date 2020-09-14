@@ -10,3 +10,7 @@ export function Login(user, passwd) {
 export function Auth() {
 	return api.get("/auth");
 }
+
+export function setToken(Token) {
+	api.defaults.headers.access_token = Token;
+}

@@ -1,14 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 //UI
 import Grid from "@material-ui/core/Grid";
-import ButtonLogout from "../Components/LogOut";
+import Menu from "../Template/Menu";
 
 export default () => {
 	return (
 		<Grid container component="main">
-			<h1>home</h1>;
-			<ButtonLogout />
+			<Menu></Menu>
 		</Grid>
 	);
 };
