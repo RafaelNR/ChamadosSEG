@@ -50,7 +50,8 @@ module.exports = {
 			Joi.object({
 				id: type.number.id,
 				nome: type.string.nome,
-				passwd: type.string.passwd,
+				passwd:
+					Dados.passwd === "******" ? type.string.default : type.string.passwd,
 				email: type.string.email,
 				telefone: type.string.telefone,
 				role_id: type.number.role_id,

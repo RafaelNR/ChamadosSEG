@@ -4,18 +4,16 @@ const Log = require("./log"); /* Log */
 const { Crypt } = require("../tools/bcryp");
 
 let response;
-let status = 200;
 
 async function index(req, res) {
 	try {
 		response = { success: true, data: await Model.index() };
 	} catch (error) {
-		status = 401;
 		response = { success: false, error };
 	}
 
 	Log.Save(req.userId, "user", "index", response);
-	return res.status(status).json(response);
+	return res.status(200).json(response);
 }
 
 async function findOne(req, res) {
@@ -31,12 +29,11 @@ async function findOne(req, res) {
 			data: await Model.findOne(id),
 		};
 	} catch (error) {
-		status = 401;
 		response = { success: false, error };
 	}
 
 	Log.Save(req.userId, "user", "findOne", response);
-	return res.status(status).json(response);
+	return res.status(200).json(response);
 }
 
 async function insert(req, res) {
@@ -51,12 +48,11 @@ async function insert(req, res) {
 
 		response = { success: true, data: userID };
 	} catch (error) {
-		status = 401;
 		response = { success: false, error };
 	}
 
 	Log.Save(req.userId, "user", "insert", response);
-	return res.status(status).json(response);
+	return res.status(200).json(response);
 }
 
 async function update(req, res) {
@@ -73,18 +69,16 @@ async function update(req, res) {
 
 		response = { success: true, data: newUser };
 	} catch (error) {
-		status = 401;
 		response = { success: false, error };
 	}
 
 	Log.Save(req.userId, "user", "update", response);
-	return res.status(status).json(response);
+	return res.status(200).json(response);
 }
 
 async function deletar(req, res) {
 	try {
 		if (!req.params || !req.params.id) throw "Paramentos não encontrados!";
-
 		const id = Validate.ID(parseInt(req.params.id));
 
 		await tools.checkIfExist(id);
@@ -93,12 +87,29 @@ async function deletar(req, res) {
 
 		response = { success: true };
 	} catch (error) {
-		status = 401;
 		response = { success: false, error };
 	}
 
-	Log.Save(req.userId, "user", "desabilite", response);
-	return res.status(status).json(response);
+	Log.Save(req.userId, "user", "disabled", response);
+	return res.status(200).json(response);
+}
+
+async function actived(req, res) {
+	try {
+		if (!req.params || !req.params.id) throw "Paramentos não encontrados!";
+		const id = Validate.ID(parseInt(req.params.id));
+
+		await tools.checkIfExist(id);
+
+		await Model.actived(id);
+
+		response = { success: true };
+	} catch (error) {
+		response = { success: false, error };
+	}
+
+	Log.Save(req.userId, "user", "actived", response);
+	return res.status(200).json(response);
 }
 
 /**
@@ -128,8 +139,10 @@ const tools = {
 	handilingUpdate(Dados) {
 		// Sem Clients vinculado
 		if (!Dados.clients) {
-			let userDados = Validate.insertUser(Dados);
-			userDados.passwd = Crypt(userDados.passwd);
+			let userDados = Validate.updateUser(Dados);
+			userDados.passwd === "******"
+				? delete userDados.passwd
+				: Crypt(userDados.passwd);
 			return { userDados };
 		}
 
@@ -141,7 +154,9 @@ const tools = {
 			clientsUser: Validate.clientsUser(Clients),
 		};
 
-		newDados.userDados.passwd = Crypt(newDados.userDados.passwd);
+		newDados.userDados.passwd === "******"
+			? delete newDados.userDados.passwd
+			: Crypt(newDados.userDados.passwd);
 		return newDados;
 	},
 	async checkIfExist(userID) {
@@ -156,6 +171,7 @@ module.exports = {
 	insert,
 	update,
 	deletar,
+	actived,
 	/** Usado somente para teste. */
 	tools,
 };

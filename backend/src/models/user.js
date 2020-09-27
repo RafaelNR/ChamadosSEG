@@ -117,17 +117,17 @@ module.exports = {
 	 * @param {Object} Dados
 	 * @return {Boolean}
 	 */
-	desabilita: async (Dados) => {
-		return await knex("users")
-			.where({ id: Dados.id })
-			.update({ actived: 0 })
-			.then(async () => {
-				await ClientsHasUser.delete(Dados.id);
-			})
-			.catch((error) => {
-				console.log(error);
-				throw { error: "Erro em remover clients." };
-			});
+	desabilita: async (id) => {
+		return await knex("users").where({ id }).update({ actived: 0 });
+	},
+
+	/**
+	 * Ativa novamente um usuário, removendo seus clients.
+	 * @param {Object} Dados
+	 * @return {Boolean}
+	 */
+	actived: async (id) => {
+		return await knex("users").where({ id }).update({ actived: 1 });
 	},
 
 	/**
