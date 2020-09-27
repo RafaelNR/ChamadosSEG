@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 import clsx from "clsx";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
+import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import Badge from "@material-ui/core/Badge";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import ButtonLogout from "../Components/LogOut";
+
+import { MenuContext } from "../Context/MenuContext";
 
 const drawerWidth = 240;
 
@@ -40,12 +38,6 @@ const useStyles = makeStyles((theme) => ({
 			duration: theme.transitions.duration.enteringScreen,
 		}),
 	},
-	title: {
-		display: "none",
-		[theme.breakpoints.up("sm")]: {
-			display: "block",
-		},
-	},
 	sectionDesktop: {
 		display: "none",
 		[theme.breakpoints.up("md")]: {
@@ -57,27 +49,15 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		alignItems: "center",
 		justifyContent: "flex-end",
-		padding: theme.spacing(0, 1),
+		padding: theme.spacing(0, 100),
 		// necessary for content to be below app bar
 		...theme.mixins.toolbar,
 	},
 }));
 
-export default function AppBar2(props) {
+export default () => {
 	const classes = useStyles();
-	const [open, setOpen] = useState(props.open);
-
-	useEffect(() => {
-		if (props.open === false) {
-			console.log(props);
-			setOpen(false);
-		}
-	});
-
-	const handleDrawerOpen = () => {
-		setOpen(true);
-		props.handleDrawerOpen();
-	};
+	const { open, handleDrawerOpen } = useContext(MenuContext);
 
 	return (
 		<div className={classes.root}>
@@ -92,7 +72,7 @@ export default function AppBar2(props) {
 					<IconButton
 						color="inherit"
 						aria-label="open drawer"
-						onClick={handleDrawerOpen}
+						onClick={() => handleDrawerOpen()}
 						edge="start"
 						className={clsx(classes.menuButton, {
 							[classes.hide]: open,
@@ -100,14 +80,11 @@ export default function AppBar2(props) {
 					>
 						<MenuIcon />
 					</IconButton>
-					<Typography className={classes.title} variant="h6" noWrap>
-						SysSeg
-					</Typography>
 
 					<div className={classes.grow} />
 					<div className={classes.sectionDesktop}>
 						<IconButton aria-label="show 17 new notifications" color="inherit">
-							<Badge badgeContent={17} color="secondary">
+							<Badge badgeContent={1} color="secondary">
 								<NotificationsIcon />
 							</Badge>
 						</IconButton>
@@ -126,4 +103,4 @@ export default function AppBar2(props) {
 			</AppBar>
 		</div>
 	);
-}
+};

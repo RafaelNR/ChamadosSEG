@@ -1,11 +1,11 @@
 import React, { createContext, useState, useEffect } from "react";
-import * as Service from "../Services/Auth";
+import * as Api from "../Api/Auth";
 
 const AuthContext = createContext({});
 
 const AuthProvider = ({ children }) => {
-	const [token, setToken] = useState(null);
-	const [user, setUser] = useState(null);
+	const [token, setToken] = useState(localStorage.getItem("token"));
+	const [user, setUser] = useState(localStorage.getItem("user"));
 
 	/**
 	 * Carrrega sempre que o provider é chamado
@@ -15,19 +15,15 @@ const AuthProvider = ({ children }) => {
 			localStorage.getItem("token") &&
 			localStorage.getItem("token") !== "undefined"
 		) {
-			const storeUser = JSON.parse(localStorage.getItem("user"));
 			const storeToken = JSON.parse(localStorage.getItem("token"));
 
-			Service.setToken(storeToken);
+			Api.setToken(storeToken);
 
 			// Verifica se token ainda é valido
 			isAuth(storeToken).then((res) => {
 				console.log(res.data);
 				if (!res.data.auth) handleLogout();
 			});
-
-			setUser(storeUser);
-			setToken(storeToken);
 		}
 	}, []);
 
@@ -39,7 +35,7 @@ const AuthProvider = ({ children }) => {
 	async function handleLogin(userLogin, passwd) {
 		console.log(userLogin, passwd);
 		try {
-			const response = await Service.Login(userLogin, passwd);
+			const response = await Api.Login(userLogin, passwd);
 			console.log(response);
 			if (response.data.success) {
 				localStorage.setItem("token", JSON.stringify(response.data.token));
@@ -47,7 +43,7 @@ const AuthProvider = ({ children }) => {
 				setUser(response.data.user);
 				setToken(response.data.token);
 
-				Service.setToken(token);
+				Api.setToken(token);
 			}
 		} catch (error) {
 			console.log(error);
@@ -62,14 +58,14 @@ const AuthProvider = ({ children }) => {
 		setToken(null);
 		localStorage.removeItem("token");
 		localStorage.removeItem("user");
-		Service.setToken(null);
+		Api.setToken(null);
 	}
 
 	/**
 	 * Verifica se o token ainda é valido;
 	 */
 	async function isAuth(token) {
-		if (token) return await Service.Auth();
+		if (token) return await Api.Auth();
 
 		return false;
 	}
