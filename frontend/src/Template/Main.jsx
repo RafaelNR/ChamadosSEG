@@ -1,5 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import PropTypes from "prop-types";
 import MyMenu from "./Menu";
 import HeaderPage from "../Components/HeaderPage/HeaderPage";
 import { SnackBarProvider } from "../Context/SnackBarContext";
@@ -14,6 +15,10 @@ const useStyles = makeStyles((theme) => ({
 		marginLeft: "72px",
 	},
 }));
+
+Main.propTypes = {
+	children: PropTypes.node.isRequired,
+};
 
 export default function Main({ children }) {
 	const classes = useStyles();

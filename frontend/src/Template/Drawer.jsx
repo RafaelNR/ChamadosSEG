@@ -11,7 +11,7 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRightSharp";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeftSharp";
 //
 import ListItensMenu from "../Components/ListItens/ListItensMenu";
-import { MenuContext } from "../Context/MenuContext";
+import useMenu from "../Context/MenuContext";
 
 const drawerWidth = 240;
 
@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MiniDrawer() {
 	const classes = useStyles();
 	const theme = useTheme();
-	const { open, handleDrawerClose } = useContext(MenuContext);
+	const { open, handleDrawerClose } = useMenu();
 
 	return (
 		<Drawer

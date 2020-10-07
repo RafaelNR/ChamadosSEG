@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { Save, Close } from "@material-ui/icons/";
@@ -29,13 +30,17 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const SaveButton = ({ clickSubmit }) => {
+const SaveButton = ({ clickAction }) => {
 	const classes = useStyles();
 	return (
-		<Button className={classes.save} autoFocus onClick={clickSubmit}>
+		<Button className={classes.save} autoFocus onClick={clickAction}>
 			<Save className={classes.icon} />
 		</Button>
 	);
+};
+
+SaveButton.propTypes = {
+	clickAction: PropTypes.func.isRequired,
 };
 
 const CancelButton = ({ clickClose }) => {
@@ -45,6 +50,10 @@ const CancelButton = ({ clickClose }) => {
 			<Close className={classes.icon} />
 		</Button>
 	);
+};
+
+CancelButton.propTypes = {
+	clickClose: PropTypes.func.isRequired,
 };
 
 export { SaveButton, CancelButton };

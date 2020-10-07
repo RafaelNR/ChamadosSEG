@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -7,7 +7,7 @@ import {
 	TableRow,
 	TableSortLabel,
 } from "@material-ui/core/";
-import { OrderTableContext } from "../../Context/OrderTableContext";
+import useOrderTable from "../../Context/OrderTableContext";
 
 const useStyles = makeStyles((theme) => ({
 	visuallyHidden: {
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 function EnhancedTableHead({ headCells }) {
 	const classes = useStyles();
-	const { order, orderBy, handleRequestSort } = useContext(OrderTableContext);
+	const { order, orderBy, handleRequestSort } = useOrderTable();
 
 	return (
 		<TableHead>

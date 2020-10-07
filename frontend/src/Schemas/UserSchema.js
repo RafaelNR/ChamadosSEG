@@ -1,3 +1,4 @@
+import { isValidElement } from "react";
 import * as yup from "yup";
 import Validate from "../Utils/Validate";
 
@@ -35,7 +36,8 @@ const InsertSchema = (data) => {
 			.required("Perfil é obrigatório."),
 	});
 
-	return Validate(schema, data);
+	const Val = new Validate(schema, data);
+	return Val.exec();
 };
 
 const UpdateSchema = (data) => {
@@ -71,13 +73,15 @@ const UpdateSchema = (data) => {
 			.required("Perfil é obrigatório."),
 	});
 
-	return Validate(schema, data);
+	const Val = new Validate(schema, data);
+	return Val.exec();
 };
 
 const DisabledSchema = (data) => {
 	const schema = yup.number().required();
 
-	return Validate(schema, data);
+	const Val = new Validate(schema, data);
+	return Val.exec();
 };
 
 export { InsertSchema, UpdateSchema, DisabledSchema };

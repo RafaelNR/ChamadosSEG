@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
-import clsx from "clsx";
+import React from "react";
+import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { Toolbar, Typography } from "@material-ui/core";
 import { AddIconButton } from "../Buttons/Icons";
 import Search from "../Search";
-import { SearchContext } from "../../Context/SearchContext";
+import useSearch from "../../Context/SearchContext";
 
 // Titulo da tabela
 const useToolbarStyles = makeStyles((theme) => ({
@@ -17,24 +17,36 @@ const useToolbarStyles = makeStyles((theme) => ({
 	},
 }));
 
-const EnhancedTableToolbar = ({ title }) => {
+/**
+ * Renderiza toolbar da tabela.
+ * @param {string} title
+ * @param {Boolean} data
+ */
+const EnhancedTableToolbar = ({ title, data }) => {
 	const classes = useToolbarStyles();
-	const { handleChangeSearch } = useContext(SearchContext);
+	const { handleChangeSearch } = useSearch();
 
 	return (
-		<Toolbar className={clsx(classes.root)}>
+		<Toolbar className={classes.root}>
+			<React.Fragment>
+
 			<Typography
 				className={classes.title}
 				variant="h6"
 				id="tableTitle"
-				component="div"
-			>
+				component="span"
+				>
 				{title}
-			</Typography>
+				</Typography>
+			</React.Fragment>
 			<Search handleChangeSearch={handleChangeSearch} />
-			<AddIconButton />
+			{data ? (<AddIconButton />) : null }
 		</Toolbar>
 	);
+};
+
+EnhancedTableToolbar.propTypes = {
+	title: PropTypes.string.isRequired,
 };
 
 export default EnhancedTableToolbar;

@@ -1,4 +1,4 @@
-const fieldsInsert = [
+const Insert = [
 	{
 		id: "nome",
 		label: "Nome Completo",
@@ -47,7 +47,7 @@ const fieldsInsert = [
 	},
 ];
 
-const fieldsUpdate = [
+const Update = [
 	{
 		id: "nome",
 		label: "Nome Completo",
@@ -97,4 +97,4 @@ const fieldsUpdate = [
 	},
 ];
 
-export { fieldsInsert, fieldsUpdate };
+export default { Insert, Update };

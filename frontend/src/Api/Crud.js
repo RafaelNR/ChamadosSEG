@@ -1,8 +1,8 @@
-import api from "./Api";
+import api, { source } from "./Api";
 
 export function get(url) {
 	setToken();
-	return api.get("/" + url);
+	return api.get("/" + url, { cancelToken: source().token });
 }
 
 export async function getOne(url, data) {
@@ -27,9 +27,12 @@ export function disabled(url, id) {
 
 export function actived(url, id) {
 	setToken();
+	console.log('usuarios')
 	return api.put(`/${url}/actived/${id}`);
 }
 
 export function setToken() {
 	api.defaults.headers.access_token = JSON.parse(localStorage.getItem("token"));
 }
+
+export { source };

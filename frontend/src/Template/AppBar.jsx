@@ -11,7 +11,7 @@ import Badge from "@material-ui/core/Badge";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import ButtonLogout from "../Components/LogOut";
 
-import { MenuContext } from "../Context/MenuContext";
+import useMenu from "../Context/MenuContext";
 
 const drawerWidth = 240;
 
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
 	const classes = useStyles();
-	const { open, handleDrawerOpen } = useContext(MenuContext);
+	const { open, handleDrawerOpen } = useMenu();
 
 	return (
 		<div className={classes.root}>

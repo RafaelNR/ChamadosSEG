@@ -1,9 +1,7 @@
 import React, { Fragment } from "react";
-
+import PropTypes from "prop-types";
 import { List, Divider } from "@material-ui/core/";
-
 import { MyListItem as ListItem, ListItemTooltip } from "./ListItemMenu";
-
 import { adminMenu, defaultMenu } from "../../Store/Pages";
 
 const listItemMenu = ({ open }) => {
@@ -38,6 +36,10 @@ const listItemMenu = ({ open }) => {
 			</List>
 		</>
 	);
+};
+
+listItemMenu.propTypes = {
+	open: PropTypes.bool.isRequired,
 };
 
 export default listItemMenu;

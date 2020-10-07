@@ -1,20 +1,23 @@
-import React, { createContext, useState, useCallback } from "react";
+import React, { createContext, useState, useCallback, useContext } from "react";
 import PropTypes from "prop-types";
 
 const OrderTableContext = createContext({});
 
 const OrderTableProvider = ({ children }) => {
 	const [order, setOrder] = useState("asc");
-	const [orderBy, setOrderBy] = useState("nome");
+	const [orderBy, setOrderBy] = useState("");
 
 	/**
 	 * Manipula a ordenação
 	 */
-	const handleRequestSort = (property) => {
-		const isAsc = orderBy === property && order === "asc";
-		setOrder(isAsc ? "desc" : "asc");
-		setOrderBy(property);
-	};
+	const handleRequestSort = useCallback(
+		(property) => {
+			const isAsc = orderBy === property && order === "asc";
+			setOrder(isAsc ? "desc" : "asc");
+			setOrderBy(property);
+		},
+		[order, orderBy]
+	);
 
 	return (
 		<OrderTableContext.Provider
@@ -34,5 +37,9 @@ const OrderTableProvider = ({ children }) => {
 OrderTableProvider.propTypes = {
 	children: PropTypes.node.isRequired,
 };
+
+export default function useOrderTable() {
+	return useContext(OrderTableContext);
+}
 
 export { OrderTableContext, OrderTableProvider };

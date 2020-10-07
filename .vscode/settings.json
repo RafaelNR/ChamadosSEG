@@ -1,12 +1,15 @@
 {
-  "files.autoSave": "onFocusChange",
-  "files.autoSaveDelay": 50,
-  "editor.formatOnPaste": true,
-  "editor.formatOnType": true,
-  "editor.formatOnSave": true,
-  "editor.tabSize": 2,
-  "jest.enableInlineErrorMessages": true,
-  "cSpell.words": [
-    "middlewares"
-  ]
+	"files.autoSave": "onFocusChange",
+	"files.autoSaveDelay": 50,
+	"editor.formatOnPaste": true,
+	"editor.formatOnType": true,
+	"editor.formatOnSave": true,
+	"editor.tabSize": 2,
+	"jest.enableInlineErrorMessages": true,
+	"cSpell.words": ["middlewares"],
+	"cSpell.ignoreWords": ["clsx", "selecteds", "usuarios"],
+	"editor.fontFamily": "Fira Code",
+	"editor.fontSize": 14,
+	"editor.fontLigatures": true,
+	"editor.formatOnSaveMode": "modifications"
 }

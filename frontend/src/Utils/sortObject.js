@@ -1,8 +1,11 @@
 export default (rows, order, orderBy, page, rowsPerPage) => {
-	return stableSort(rows, getComparator(order, orderBy)).slice(
+	if (rows.length > 0) {
+		return stableSort(rows, getComparator(order, orderBy)).slice(
 		page * rowsPerPage,
 		page * rowsPerPage + rowsPerPage
-	);
+		);
+	}
+	return [];
 };
 
 /**

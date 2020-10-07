@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import { makeStyles, Snackbar } from "@material-ui/core/";
 import MuiAlert from "@material-ui/lab/Alert";
 
-import { SnackBarContext } from "../../Context/SnackBarContext";
+import useSnackBar from "../../Context/SnackBarContext";
 
 function Alert(props) {
 	return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -19,22 +19,20 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
 	const classes = useStyles();
-	const { openSnackBar, clickSnackBar, severity, message } = useContext(
-		SnackBarContext
-	);
+	const SnackBar = useSnackBar();
 
 	return (
 		<div className={classes.root}>
 			<Snackbar
-				open={openSnackBar}
-				autoHideDuration={severity === "error" ? 30000 : 6000}
-				onClose={clickSnackBar}
+				open={SnackBar.openSnackBar}
+				autoHideDuration={SnackBar.severity === "error" ? 30000 : 6000}
+				onClose={SnackBar.clickSnackBar}
 			>
 				<Alert
-					onClose={clickSnackBar}
-					severity={severity ? severity : "success"}
+					onClose={SnackBar.clickSnackBar}
+					severity={SnackBar.severity ? SnackBar.severity : "success"}
 				>
-					{message}
+					{SnackBar.message}
 				</Alert>
 			</Snackbar>
 		</div>

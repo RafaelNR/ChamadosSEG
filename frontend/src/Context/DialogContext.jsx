@@ -1,19 +1,29 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useContext } from "react";
+import PropTypes from "prop-types";
+import { TrainOutlined } from "@material-ui/icons";
 
 const DialogContext = createContext({});
 
 const DialogProvider = ({ children }) => {
-	const [openDialog, setOpenDialog] = useState(false);
-	const [dialogLoading, setDialogLoading] = useState(false);
-	const [dialogType, setDialogType] = useState("");
+	const [open, setOpen] = useState(false);
+	const [loading, setLoading] = useState(TrainOutlined);
+	const [type, setType] = useState("");
 
 	/**
-	 * Fecha ou Abre o dialog;
+	 * Abre o dialog;
 	 */
-	const ToggleDialogClick = (type = null) => {
-		setOpenDialog(!openDialog);
-		setDialogLoading(false);
-		if (typeof type === "string") setDialogType(type);
+	const openDialog = (currtype = null) => {
+		setOpen(true);
+		setLoading(true);
+		if (typeof type === "string") setType(currtype);
+	};
+
+	/**
+	 * Fecha dialog;
+	 */
+	const closeDialog = () => {
+		setOpen(false);
+		setLoading(false);
 	};
 
 	/**
@@ -22,13 +32,14 @@ const DialogProvider = ({ children }) => {
 	return (
 		<DialogContext.Provider
 			value={{
+				open,
+				setOpen,
+				loading,
+				setLoading,
+				type,
+				setType,
 				openDialog,
-				setOpenDialog,
-				dialogLoading,
-				setDialogLoading,
-				dialogType,
-				setDialogType,
-				ToggleDialogClick,
+				closeDialog,
 			}}
 		>
 			{children}
@@ -36,4 +47,12 @@ const DialogProvider = ({ children }) => {
 	);
 };
 
+export default function useDialog() {
+	return useContext(DialogContext);
+}
+
 export { DialogContext, DialogProvider };
+
+DialogProvider.propTypes = {
+	children: PropTypes.node.isRequired,
+};

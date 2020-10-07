@@ -13,7 +13,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 // Context
-import { AuthContext } from "../Context/Auth";
+import useAuth from "../Context/AuthContext";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -51,9 +51,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignInSide() {
 	const classes = useStyles();
-
-	// Pega a função logar dentro do Context;
-	const { handleLogin } = useContext(AuthContext);
+	const { handleLogin } = useAuth();
 
 	const [user, setUser] = useState(null);
 	const [passwd, setPasswd] = useState(null);

@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import {
 	Table,
@@ -6,16 +7,15 @@ import {
 	TableCell,
 	TableContainer,
 	TableRow,
-	Avatar
+	Chip,
 } from "@material-ui/core/";
 import EnhancedTableHead from "./TableHead";
-import EnhancedTableToolbar from "./ToolBar";
+import Toolbar from "./ToolBar";
 import TablePagination from "./TablePagination";
 import Actions from "./Actions";
 import sortObject from "../../Utils/sortObject";
-import { initialsName } from '../../Utils/functions'
 
-import useUsuarios from "../../Context/UsuariosContext";
+import useCategorias from "../../Context/CategoriasContext";
 import useOrderTable from "../../Context/OrderTableContext";
 import usePageTable from "../../Context/PageTableContext";
 import useSearch from "../../Context/SearchContext";
@@ -23,32 +23,25 @@ import useSearch from "../../Context/SearchContext";
 // Header Table
 const headCells = [
 	{
-		id: "avatar",
-		numeric: false,
-		disablePadding: false,
-		label: "",
-		sort: false,
-	},
-	{
 		id: "nome",
 		numeric: false,
 		disablePadding: false,
-		label: "Nome Completo",
+		label: "Categoria",
 		sort: true,
 	},
 	{
 		id: "user",
 		numeric: false,
 		disablePadding: false,
-		label: "Login",
+		label: "Alterado",
 		sort: true,
 	},
 	{
-		id: "email",
+		id: "subCategorias",
 		numeric: false,
 		disablePadding: false,
-		label: "Email",
-		sort: true,
+		label: "Sub-Categorias",
+		sort: false,
 	},
 	{
 		id: "actions",
@@ -60,7 +53,7 @@ const headCells = [
 ];
 
 // Tabela
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
 	table: {
 		minWidth: 750,
 	},
@@ -82,11 +75,17 @@ const useStyles = makeStyles((theme) => ({
 	tablerow: {
 		padding: "10px 15px",
 	},
+	rowchip: {
+		width: "25%",
+	},
+	chip: {
+		margin: 2,
+	},
 }));
 
 export default function () {
 	const classes = useStyles();
-	const { usuarios, getUsuario } = useUsuarios();
+	const { categorias, getCategoria } = useCategorias();
 	const { search, searchResults, setSearchResults } = useSearch();
 	const { order, orderBy, setOrderBy } = useOrderTable();
 	const { page, rows, setRows, rowsPerPage, emptyRows } = usePageTable();
@@ -96,41 +95,37 @@ export default function () {
 	 */
 	useEffect(() => {
 		setOrderBy("nome");
-		setRows(search && search.length > 3 ? searchResults : usuarios);
-	}, [usuarios, searchResults]);
+		setRows(search && search.length > 3 ? searchResults : categorias);
+	}, [categorias, searchResults]);
 
 	/**
 	 * Seta os usuários encontrados na pesquisa.
 	 */
 	useEffect(() => {
-		const results = usuarios.filter((usuario) => {
-			const nome = usuario.nome.toLowerCase();
-			const user = usuario.user.toLowerCase();
-
-			if (
-				nome.includes(search.toLowerCase()) ||
-				user.includes(search.toLowerCase())
-			) {
-				return usuario;
+		const results = categorias.filter((categoria) => {
+			const nome = categoria.nome.toLowerCase();
+			if (nome.includes(search.toLowerCase())) {
+				return categoria;
 			}
 		});
-		setSearchResults(results);
-		// eslint-disable-next-line
+		return setSearchResults(results);
+
+		//eslint - disable - next - line;
 	}, [search, setSearchResults]);
 
 	/**
 	 * Click nas actions da tabela.
 	 */
 	const clickAction = (id) => {
-		getUsuario(id);
+		getCategoria(id);
 	};
 
 	return (
 		<React.Fragment>
-			<EnhancedTableToolbar
-				title="Lista de usuários"
-				data={usuarios && usuarios.length > 0 ? true : false}
-			 />
+			<Toolbar
+				title="Lista de Categorias"
+				data={categorias && categorias.length > 0 ? true : false}
+			/>
 			<TableContainer>
 				<Table
 					className={classes.table}
@@ -150,23 +145,26 @@ export default function () {
 											scope="row"
 											padding="default"
 										>
-											<Avatar alt={row.nome} className={classes.orange}>
-												{initialsName(row.nome)}
-											</Avatar>
-										</TableCell>
-										<TableCell
-											component="th"
-											className={classes.tablerow}
-											scope="row"
-											padding="default"
-										>
 											{row.nome}
 										</TableCell>
 										<TableCell align="left" className={classes.tablerow}>
 											{row.user}
 										</TableCell>
-										<TableCell align="left" className={classes.tablerow}>
-											{row.email}
+										<TableCell
+											align="left"
+											className={clsx(classes.tablerow, classes.rowchip)}
+										>
+											{row.subCategorias.map((sub, index) => {
+												return (
+													<Chip
+														key={index}
+														label={sub.nome}
+														variant="outlined"
+														size="small"
+														className={classes.chip}
+													/>
+												);
+											})}
 										</TableCell>
 										<TableCell align="center" className={classes.tablerow}>
 											<Actions

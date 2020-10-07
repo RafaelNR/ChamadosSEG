@@ -1,13 +1,11 @@
 import React, { useContext } from "react";
 import { Paper, CircularProgress } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
-
-import UsersTable from "../Tables/UsersTable";
-import DialogType from "../Dialog/UserDialog";
-import { UsuariosContext } from "../../Context/UsuariosContext";
+import useLoading from "../../Context/LoadingContext";
 import { DialogProvider } from "../../Context/DialogContext";
 import { SearchProvider } from "../../Context/SearchContext";
 import { OrderTableProvider } from "../../Context/OrderTableContext";
+import { PageTableProvider } from "../../Context/PageTableContext";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -34,9 +32,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default () => {
+export default ({ Render, RenderDialog }) => {
 	const classes = useStyles();
-	const { loading } = useContext(UsuariosContext);
+	const { loading } = useLoading();
 
 	return (
 		<div className={classes.root}>
@@ -50,10 +48,12 @@ export default () => {
 						<DialogProvider>
 							<SearchProvider>
 								<OrderTableProvider>
-									<UsersTable />
+									<PageTableProvider>
+										<Render />
+									</PageTableProvider>
 								</OrderTableProvider>
 							</SearchProvider>
-							<DialogType />
+								{RenderDialog ? <RenderDialog /> : '' }
 						</DialogProvider>
 					</React.Fragment>
 				)}

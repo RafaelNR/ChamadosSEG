@@ -1,7 +1,8 @@
 import React, { memo, useContext } from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-import { MenuContext } from "../../Context/MenuContext";
+import useMenu from "../../Context/MenuContext";
 
 import {
 	ListItem,
@@ -11,7 +12,7 @@ import {
 } from "@material-ui/core/";
 
 const MyListItem = memo(({ menu }) => {
-	const { open, handleDrawerClose } = useContext(MenuContext);
+	const { open, handleDrawerClose } = useMenu();
 	return (
 		<ListItem
 			button
@@ -35,5 +36,13 @@ const ListItemTooltip = memo(({ menu }) => {
 		</Tooltip>
 	);
 });
+
+MyListItem.propTypes = {
+	menu: PropTypes.object.isRequired,
+};
+
+ListItemTooltip.propTypes = {
+	menu: PropTypes.object.isRequired,
+};
 
 export { MyListItem, ListItemTooltip };

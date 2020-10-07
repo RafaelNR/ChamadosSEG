@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useContext } from "react";
 const MenuContext = createContext({});
 
 const MenuProvider = ({ children }) => {
@@ -18,5 +18,9 @@ const MenuProvider = ({ children }) => {
 		</MenuContext.Provider>
 	);
 };
+
+export default function useMenu() {
+	return useContext(MenuContext);
+}
 
 export { MenuContext, MenuProvider };

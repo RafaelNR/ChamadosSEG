@@ -1,12 +1,14 @@
-import React, { useContext, memo } from "react";
+import React, { memo } from "react";
+import PropTypes from "prop-types";
 import { IconButton, Tooltip, makeStyles } from "@material-ui/core";
 import {
 	AddBox,
 	EditSharp,
 	VisibilityOffSharp,
 	VisibilitySharp,
+	DeleteForeverSharp,
 } from "@material-ui/icons";
-import { DialogContext } from "../../Context/DialogContext";
+import useDialog from "../../Context/DialogContext";
 
 // Tabela
 const useStyles = makeStyles((theme) => ({
@@ -17,6 +19,10 @@ const useStyles = makeStyles((theme) => ({
 	edit: {
 		fontSize: "18px",
 		color: "green",
+	},
+	delete: {
+		fontSize: "18px",
+		color: "red",
 	},
 	disabled: {
 		fontSize: "18px",
@@ -30,9 +36,9 @@ const useStyles = makeStyles((theme) => ({
 
 function AddIconButton() {
 	const classes = useStyles();
-	const { ToggleDialogClick } = useContext(DialogContext);
+	const { openDialog } = useDialog();
 	return (
-		<IconButton onClick={() => ToggleDialogClick("insert")}>
+		<IconButton onClick={() => openDialog("insert")}>
 			<Tooltip title="Add">
 				<AddBox className={classes.add} />
 			</Tooltip>
@@ -42,12 +48,12 @@ function AddIconButton() {
 
 const EditIconButton = memo(({ id, clickAction }) => {
 	const classes = useStyles();
-	const { ToggleDialogClick } = useContext(DialogContext);
+	const { openDialog } = useDialog();
 	return (
 		<IconButton
 			onClick={() => {
 				clickAction(id);
-				ToggleDialogClick("update");
+				openDialog("update");
 			}}
 		>
 			<Tooltip title="Editar">
@@ -57,14 +63,41 @@ const EditIconButton = memo(({ id, clickAction }) => {
 	);
 });
 
-const DisabledIconButton = memo(({ id, clickAction }) => {
+EditIconButton.propTypes = {
+	id: PropTypes.number.isRequired,
+	clickAction: PropTypes.func.isRequired,
+};
+
+const DeleteIconButton = memo(({ id, clickAction }) => {
 	const classes = useStyles();
-	const { ToggleDialogClick } = useContext(DialogContext);
+	const { openDialog } = useDialog();
 	return (
 		<IconButton
 			onClick={() => {
 				clickAction(id);
-				ToggleDialogClick("disabled");
+				openDialog("delete");
+			}}
+		>
+			<Tooltip title="Deletar">
+				<DeleteForeverSharp className={classes.delete} />
+			</Tooltip>
+		</IconButton>
+	);
+});
+
+DeleteIconButton.propTypes = {
+	id: PropTypes.number.isRequired,
+	clickAction: PropTypes.func.isRequired,
+};
+
+const DisabledIconButton = memo(({ id, clickAction }) => {
+	const classes = useStyles();
+	const { openDialog } = useDialog();
+	return (
+		<IconButton
+			onClick={() => {
+				clickAction(id);
+				openDialog("disabled");
 			}}
 		>
 			<Tooltip title="Desabilitar">
@@ -74,14 +107,19 @@ const DisabledIconButton = memo(({ id, clickAction }) => {
 	);
 });
 
+DisabledIconButton.propTypes = {
+	id: PropTypes.number.isRequired,
+	clickAction: PropTypes.func.isRequired,
+};
+
 const ActivedIconButton = memo(({ id, clickAction }) => {
 	const classes = useStyles();
-	const { ToggleDialogClick } = useContext(DialogContext);
+	const { openDialog } = useDialog();
 	return (
 		<IconButton
 			onClick={() => {
 				clickAction(id);
-				ToggleDialogClick("actived");
+				openDialog("actived");
 			}}
 		>
 			<Tooltip title="Habilitar">
@@ -91,4 +129,15 @@ const ActivedIconButton = memo(({ id, clickAction }) => {
 	);
 });
 
-export { AddIconButton, EditIconButton, DisabledIconButton, ActivedIconButton };
+ActivedIconButton.propTypes = {
+	id: PropTypes.number.isRequired,
+	clickAction: PropTypes.func.isRequired,
+};
+
+export {
+	AddIconButton,
+	EditIconButton,
+	DeleteIconButton,
+	DisabledIconButton,
+	ActivedIconButton,
+};

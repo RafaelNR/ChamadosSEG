@@ -1,9 +1,13 @@
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
-import MuiDialogTitle from "@material-ui/core/DialogTitle";
-import IconButton from "@material-ui/core/IconButton";
+import {
+	IconButton,
+	Typography,
+	DialogTitle as MuiDialogTitle,
+	Tooltip,
+	withStyles
+} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import Typography from "@material-ui/core/Typography";
+import useDialog from "../../Context/DialogContext";
 
 const styles = (theme) => ({
 	root: {
@@ -35,24 +39,29 @@ const styles = (theme) => ({
 });
 
 export default withStyles(styles)((props) => {
-	const { children, classes, onClose, ...other } = props;
+	const { children, classes,} = props;
+	const { closeDialog } = useDialog();
 	return (
 		<MuiDialogTitle
 			disableTypography
 			className={(classes.root, classes.headerdialog)}
-			{...other}
+			title=""
 		>
 			<Typography className={classes.titledialog} variant="h6">
-				{children}
+				{children ? children : props.title}
 			</Typography>
-			{onClose ? (
+			{closeDialog ? (
+				<Tooltip title="Fechar">
+
 				<IconButton
 					aria-label="close"
 					className={classes.closeButton}
-					onClick={onClose}
-				>
+					onClick={closeDialog}
+					>
 					<CloseIcon />
 				</IconButton>
+					
+				</Tooltip>
 			) : null}
 		</MuiDialogTitle>
 	);

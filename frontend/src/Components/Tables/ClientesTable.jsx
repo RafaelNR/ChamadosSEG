@@ -6,16 +6,14 @@ import {
 	TableCell,
 	TableContainer,
 	TableRow,
-	Avatar
 } from "@material-ui/core/";
 import EnhancedTableHead from "./TableHead";
 import EnhancedTableToolbar from "./ToolBar";
-import TablePagination from "./TablePagination";
+import TablePagination from './TablePagination';
 import Actions from "./Actions";
 import sortObject from "../../Utils/sortObject";
-import { initialsName } from '../../Utils/functions'
 
-import useUsuarios from "../../Context/UsuariosContext";
+import useClientes from "../../Context/ClientesContext";
 import useOrderTable from "../../Context/OrderTableContext";
 import usePageTable from "../../Context/PageTableContext";
 import useSearch from "../../Context/SearchContext";
@@ -23,24 +21,17 @@ import useSearch from "../../Context/SearchContext";
 // Header Table
 const headCells = [
 	{
-		id: "avatar",
+		id: "nome_fantasia",
 		numeric: false,
 		disablePadding: false,
-		label: "",
-		sort: false,
-	},
-	{
-		id: "nome",
-		numeric: false,
-		disablePadding: false,
-		label: "Nome Completo",
+		label: "Nome Fantasia",
 		sort: true,
 	},
 	{
-		id: "user",
+		id: "cnpj_cpf",
 		numeric: false,
 		disablePadding: false,
-		label: "Login",
+		label: "CNPJ/CPF",
 		sort: true,
 	},
 	{
@@ -86,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function () {
 	const classes = useStyles();
-	const { usuarios, getUsuario } = useUsuarios();
+	const { clientes, getCliente } = useClientes();
 	const { search, searchResults, setSearchResults } = useSearch();
 	const { order, orderBy, setOrderBy } = useOrderTable();
 	const { page, rows, setRows, rowsPerPage, emptyRows } = usePageTable();
@@ -95,23 +86,18 @@ export default function () {
 	 * Ordem os dados e seta as linha a serem exibidas
 	 */
 	useEffect(() => {
-		setOrderBy("nome");
-		setRows(search && search.length > 3 ? searchResults : usuarios);
-	}, [usuarios, searchResults]);
+		setOrderBy("nome_fantasia");
+		setRows(search && search.length > 3 ? searchResults : clientes);
+	}, [clientes, searchResults]);
 
 	/**
 	 * Seta os usuários encontrados na pesquisa.
 	 */
 	useEffect(() => {
-		const results = usuarios.filter((usuario) => {
-			const nome = usuario.nome.toLowerCase();
-			const user = usuario.user.toLowerCase();
-
-			if (
-				nome.includes(search.toLowerCase()) ||
-				user.includes(search.toLowerCase())
-			) {
-				return usuario;
+		const results = clientes.filter((cliente) => {
+			const nome = cliente.nome_fantasia.toLowerCase();
+			if (nome.includes(search.toLowerCase())) {
+				return cliente;
 			}
 		});
 		setSearchResults(results);
@@ -122,15 +108,12 @@ export default function () {
 	 * Click nas actions da tabela.
 	 */
 	const clickAction = (id) => {
-		getUsuario(id);
+		getCliente(id);
 	};
 
 	return (
 		<React.Fragment>
-			<EnhancedTableToolbar
-				title="Lista de usuários"
-				data={usuarios && usuarios.length > 0 ? true : false}
-			 />
+			<EnhancedTableToolbar title="Lista de Clientes" data={clientes && clientes.length > 0 ? true : false } />
 			<TableContainer>
 				<Table
 					className={classes.table}
@@ -143,27 +126,17 @@ export default function () {
 						{sortObject(rows, order, orderBy, page, rowsPerPage).map(
 							(row, index) => {
 								return (
-									<TableRow hover tabIndex={-1} key={row.nome}>
+									<TableRow hover tabIndex={-1} key={row.id}>
 										<TableCell
 											component="th"
 											className={classes.tablerow}
 											scope="row"
 											padding="default"
 										>
-											<Avatar alt={row.nome} className={classes.orange}>
-												{initialsName(row.nome)}
-											</Avatar>
-										</TableCell>
-										<TableCell
-											component="th"
-											className={classes.tablerow}
-											scope="row"
-											padding="default"
-										>
-											{row.nome}
+											{row.nome_fantasia}
 										</TableCell>
 										<TableCell align="left" className={classes.tablerow}>
-											{row.user}
+											{row.cnpj_cpf}
 										</TableCell>
 										<TableCell align="left" className={classes.tablerow}>
 											{row.email}
@@ -173,7 +146,7 @@ export default function () {
 												id={row.id}
 												clickAction={clickAction}
 												disabled={row.actived}
-												buttons={["edit", "disable"]}
+												buttons={["edit", "disabled"]}
 											/>
 										</TableCell>
 									</TableRow>

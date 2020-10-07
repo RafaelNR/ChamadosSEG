@@ -11,6 +11,13 @@ import Categorias from "../Pages/Categorias";
 import Tarefas from "../Pages/Tarefas";
 import Usuarios from "../Pages/Usuarios";
 
+// let Home = React.lazy(() => import( "../Pages/Home"));
+// let Atividades = React.lazy(() => import( "../Pages/Atividades"));
+// let Clientes = React.lazy(() => import( "../Pages/Clientes"));
+// let Categorias = React.lazy(() => import( "../Pages/Categorias"));
+// let Tarefas = React.lazy(() => import( "../Pages/Tarefas"));
+// let Usuarios = React.lazy(() => import( "../Pages/Usuarios"));
+
 const useStyles = makeStyles(() => ({
 	container: {
 		backgroundColor: "#f0f0f0f0",

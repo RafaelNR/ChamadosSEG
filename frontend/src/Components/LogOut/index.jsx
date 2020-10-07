@@ -3,10 +3,10 @@ import IconButton from "@material-ui/core/IconButton";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 // Context
-import { AuthContext } from "../../Context/Auth";
+import useAuth from "../../Context/AuthContext";
 
 export default () => {
-	const { handleLogout } = useContext(AuthContext);
+	const { handleLogout } = useAuth();
 
 	return (
 		<IconButton color="inherit" title="Sair" onClick={handleLogout}>

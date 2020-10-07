@@ -1,10 +1,16 @@
 import React from "react";
-import Typography from "@material-ui/core/Typography";
+import Paper from "../Components/Paper/Paper";
+import { ClientesProvider } from "../Context/ClientesContext";
+import { LoadingProvider } from "../Context/LoadingContext";
+import ClientesTable from "../Components/Tables/ClientesTable";
+import ClientesDialog from "../Components/Dialog/ClientesDialog";
 
 export default () => {
 	return (
-		<>
-			<Typography>Clientes</Typography>
-		</>
+		<LoadingProvider>
+			<ClientesProvider>
+				<Paper Render={ClientesTable} RenderDialog={ClientesDialog} />
+			</ClientesProvider>
+		</LoadingProvider>
 	);
 };
