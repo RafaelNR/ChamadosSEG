@@ -50,7 +50,7 @@ module.exports = {
 				"created_at",
 				"updated_at"
 			)
-			.from("users");
+			.from("users").orderBy('nome')
 	},
 
 	/**

@@ -12,11 +12,13 @@ const Log = require("./log"); /* LOG */
  */
 let response;
 let status = 200;
+
 const index = async (req, res) => {
 	try {
+
+		
 		response = { success: true, data: await Model.index() };
 	} catch (error) {
-		status = 401;
 		response = { success: false, message: "Error!", error };
 	}
 
@@ -34,7 +36,6 @@ const findOne = async (req, res) => {
 
 		response = { success: true, data: await Model.findOne(id) };
 	} catch (error) {
-		status = 401;
 		response = { success: false, error };
 	}
 
@@ -46,12 +47,11 @@ const insert = async (req, res) => {
 	try {
 		if (!req.body) throw "Informações não encontradas!";
 
-		const Dados = tools.handilingInsert(req.body);
+		const Dados = tools.handilingInsert({ ...req.body, user_id: req.userId });
 		const clientID = await Model.insert(Dados);
 
 		response = { success: true, data: clientID };
 	} catch (error) {
-		status = 401;
 		response = { success: false, error };
 	}
 
@@ -64,11 +64,11 @@ const update = async (req, res) => {
 		if (!req.body || !req.params.id) throw "Informações não encontradas!";
 		if (req.body.id !== parseInt(req.params.id)) throw "Valor são inválidos.";
 
-		const Dados = await Model.update(await tools.handilingUpdate(req.body));
+		const Dados = await Model.update(
+			await tools.handilingUpdate({ ...req.body, user_id: req.userId }));
 
 		response = { success: true, data: Dados };
 	} catch (error) {
-		status = 401;
 		response = { success: false, error };
 	}
 
@@ -86,7 +86,6 @@ const deletar = async (req, res) => {
 
 		response = { success: true };
 	} catch (error) {
-		status = 401;
 		response = { success: false, error };
 	}
 

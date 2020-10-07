@@ -1,7 +1,7 @@
 const App = require("../src/core/app");
 const request = require("supertest")(App);
-const knexfile = require("../knexfile");
-const knex = require("knex")(knexfile.dev);
+// const knexfile = require("../knexfile");
+// const knex = require("knex")(knexfile.dev);
 
 const MAIN_ROUTE = "/login";
 let Token;
@@ -26,7 +26,5 @@ it("Deve receber o token so usuário", async () => {
 });
 
 module.exports = {
-	Token: () => {
-		return Token;
-	},
+	Token: () => Token
 };

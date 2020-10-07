@@ -6,15 +6,22 @@ const { Token } = require("./auth.test");
 describe("Testes Categorias", () => {
 	it("Deve receber todas as atividades", async () => {
 		return await request
-			.get("/categorias")
-			.set("access_token", Token())
-			.then((res) => {
-				expect(res.status).toBe(200); // Deve ser;
-				expect(res.body).toHaveProperty("success", true);
-				expect(res.body).toHaveProperty("data");
-				expect(res.body.data[0]).toHaveProperty("id");
-				expect(res.body.data[0]).toHaveProperty("nome");
-			});
+		.get("/categorias")
+		.set("access_token", Token())
+		.then((res) => {
+			expect(res.status).toBe(200); // Deve ser;
+			expect(res.body).toHaveProperty("success", true);
+			expect(res.body).toHaveProperty("data");
+			expect(res.body.data[0]).toHaveProperty("id");
+			expect(res.body.data[0]).toHaveProperty("nome");
+			expect(res.body.data[0]).toHaveProperty("user");
+			expect(res.body.data[0]).toHaveProperty("subCategorias");
+			expect(res.body.data[0].subCategorias).toBeArray();
+			if (res.body.data[0].subCategorias.length > 0) {
+				expect(res.body.data[0].subCategorias[0]).toHaveProperty("id");
+				expect(res.body.data[0].subCategorias[0]).toHaveProperty("nome");
+			}
+		});
 	});
 
 	it("Deve receber um categoria e se tiver, as suas subcategorias.", async () => {

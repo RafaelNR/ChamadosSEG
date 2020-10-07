@@ -1,7 +1,31 @@
 const knex = require("../database/index");
+const SubCategoriasModel = require('./sub_category');
 
 const index = async () => {
-	return await knex.select("id", "nome").from("categorias").limit(100);
+	return await knex
+		.select(
+			"categorias.id as id",
+			"categorias.nome as nome",
+			"users.nome as user",
+			"categorias.created_at as created_at",
+			"categorias.updated_at as updated_at"
+		)
+		.from("categorias")
+		.leftJoin("users", "users.id", "=", "categorias.user_id")
+		.limit(100)
+		.then((Categorias) => {
+			const Full = Categorias.map( async(categoria) => {
+
+				return {
+					...categoria,
+					subCategorias: await SubCategoriasModel.findCategoria(categoria.id)
+				};
+
+			});
+
+			return Promise.all(Full).then((Dados) => Dados)
+			
+		});
 };
 
 const findOne = async (ID) => {

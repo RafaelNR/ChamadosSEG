@@ -46,7 +46,7 @@ module.exports = {
 				"created_at",
 				"updated_at"
 			)
-			.from("clientes"),
+			.from("clientes").orderBy('nome_fantasia'),
 
 	/**
 	 * Insere um novo client;
