@@ -96,7 +96,7 @@ describe("Testes de Usuários, com rotas definidas", () => {
 				.get("/usuarios/nome")
 				.set("access_token", Token())
 				.then((res) => {
-					expect(res.status).toBe(401);
+					expect(res.status).toBe(200);
 					expect(res.body).toHaveProperty("success", false);
 				});
 		});
@@ -106,7 +106,7 @@ describe("Testes de Usuários, com rotas definidas", () => {
 				.get("/usuarios/-1")
 				.set("access_token", Token())
 				.then((res) => {
-					expect(res.status).toBe(401);
+					expect(res.status).toBe(200);
 					expect(res.body).toHaveProperty("success", false);
 				});
 		});
@@ -116,7 +116,7 @@ describe("Testes de Usuários, com rotas definidas", () => {
 				.get("/usuarios/{{7+7}}")
 				.set("access_token", Token())
 				.then((res) => {
-					expect(res.status).toBe(401);
+					expect(res.status).toBe(200);
 					expect(res.body).toHaveProperty("success", false);
 				});
 		});
@@ -126,7 +126,7 @@ describe("Testes de Usuários, com rotas definidas", () => {
 				.set("access_token", Token())
 				.then((res) => {
 					console.log(res.body);
-					expect(res.status).toBe(401);
+					expect(res.status).toBe(200);
 					expect(res.body).toHaveProperty("success", false);
 					expect(res.body).toHaveProperty("error");
 				});

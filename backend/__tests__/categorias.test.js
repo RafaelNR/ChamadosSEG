@@ -4,7 +4,7 @@ const request = require("supertest")(App);
 const { Token } = require("./auth.test");
 
 describe("Testes Categorias", () => {
-	it("Deve receber todas as atividades", async () => {
+	it("Deve receber todas as categorias", async () => {
 		return await request
 		.get("/categorias")
 		.set("access_token", Token())
@@ -74,14 +74,17 @@ describe("Testes Categorias", () => {
 			});
 	});
 
-	it("Deve receber um erro, pois ID não existe", async () => {
-		return await request
-			.get("/categorias/99999")
-			.set("access_token", Token())
-			.then((res) => {
-				expect(res.status).toBe(401); // Deve ser;
-				expect(res.body).toHaveProperty("success", false);
-				expect(res.body).toHaveProperty("error");
-			});
-	});
+	describe("Errors Sub-Categorias", () => {
+		it("Deve receber um erro, pois ID não existe", async () => {
+			return await request
+				.get("/categorias/99999")
+				.set("access_token", Token())
+				.then((res) => {
+					expect(res.status).toBe(200); // Deve ser;
+					expect(res.body).toHaveProperty("success", false);
+					expect(res.body).toHaveProperty("error");
+				});
+		});
+	})
+
 });

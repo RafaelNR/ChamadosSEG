@@ -23,7 +23,7 @@ test("Não deve autenticar com senha invalida", async () => {
 			passwd: "teste",
 		})
 		.then((res) => {
-			expect(res.status).toBe(401);
+			expect(res.status).toBe(200);
 			expect(res.body).toHaveProperty("success", false);
 			expect(res.body).toHaveProperty("auth", false);
 		});
@@ -37,7 +37,7 @@ test("Não deve autenticar com user invalido", async () => {
 			passwd: "batata15",
 		})
 		.then((res) => {
-			expect(res.status).toBe(401);
+			expect(res.status).toBe(200);
 			expect(res.body).toHaveProperty("success", false);
 			expect(res.body).toHaveProperty("auth", false);
 		});
@@ -50,7 +50,7 @@ test("Não deve autenticar sem senha", async () => {
 			user: "rafaelnetto",
 		})
 		.then((res) => {
-			expect(res.status).toBe(401);
+			expect(res.status).toBe(200);
 			expect(res.body).toHaveProperty("success", false);
 			expect(res.body).toHaveProperty("auth", false);
 		});
@@ -63,7 +63,7 @@ test("Não deve autenticar sem user", async () => {
 			passwd: "teste",
 		})
 		.then((res) => {
-			expect(res.status).toBe(401);
+			expect(res.status).toBe(200);
 			expect(res.body).toHaveProperty("success", false);
 			expect(res.body).toHaveProperty("auth", false);
 		});
@@ -74,7 +74,7 @@ test("Não devo autenticar sem senha", async () => {
 		.post(MAIN_ROUTE)
 		.set("access_token", "")
 		.then((res) => {
-			expect(res.status).toBe(401);
+			expect(res.status).toBe(200);
 			expect(res.body).toHaveProperty("success", false);
 			expect(res.body).toHaveProperty("auth", false);
 		});

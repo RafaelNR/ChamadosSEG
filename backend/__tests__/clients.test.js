@@ -80,13 +80,13 @@ describe("Teste de Clients", () => {
 			});
 	});
 
-	describe("Testes de Usuários, validando erros ", () => {
+	describe("Testes de Clientes, validando erros ", () => {
 		it("Devo receber um erro quando pesquisar ID client como string", async () => {
 			return await request
 				.get("/clientes/id")
 				.set("access_token", Token())
 				.then((res) => {
-					expect(res.status).toBe(401);
+					expect(res.status).toBe(200);
 					expect(res.body).toHaveProperty("success", false);
 					expect(res.body.error).toHaveProperty("validationError", true);
 				});
@@ -96,7 +96,7 @@ describe("Teste de Clients", () => {
 				.get("/clientes/-1")
 				.set("access_token", Token())
 				.then((res) => {
-					expect(res.status).toBe(401);
+					expect(res.status).toBe(200);
 					expect(res.body).toHaveProperty("success", false);
 					expect(res.body.error).toHaveProperty("validationError", true);
 				});
@@ -106,7 +106,7 @@ describe("Teste de Clients", () => {
 				.get("/clientes/-1")
 				.set("access_token", Token())
 				.then((res) => {
-					expect(res.status).toBe(401);
+					expect(res.status).toBe(200);
 					expect(res.body).toHaveProperty("success", false);
 					expect(res.body.error).toHaveProperty("validationError", true);
 				});
@@ -116,8 +116,7 @@ describe("Teste de Clients", () => {
 				.get("/clientes/9999")
 				.set("access_token", Token())
 				.then((res) => {
-					console.log(res.body);
-					expect(res.status).toBe(401);
+					expect(res.status).toBe(200);
 					expect(res.body).toHaveProperty("success", false);
 					expect(res.body).toHaveProperty("error");
 				});

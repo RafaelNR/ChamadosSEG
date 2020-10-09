@@ -1,13 +1,14 @@
 const Router = require("express").Router();
-const Controller = require("../controllers/category");
+const Controller = require("../controllers/subcategory");
 const Permission = require("../middlewares/permission");
 
 Router.all(["/", "/:id"], Permission.admin);
 
-//* CATEGORIAS
+//* SUBCATEGORIAS
 Router.get("/", Controller.index);
-Router.get("/:id", Controller.findOne);
-Router.post("/", Controller.insert);
+Router.get('/:id', Controller.findOne)
+Router.get("/categoria/:id", Controller.findByCategory);
+Router.post('/', Controller.insert)
 Router.put("/:id", Controller.update);
 Router.delete("/:id", Controller.deletar);
 

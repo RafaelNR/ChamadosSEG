@@ -18,7 +18,7 @@ module.exports = {
 	clientsUser: (Dados) => validate(Dados, type.array.clients),
 
 	/**
-	 * Valida Dados para Insert de um user;
+	 *& Valida Dados para Insert de um user;
 	 * @param {Object} Dados
 	 * @return {Object}
 	 */
@@ -40,7 +40,7 @@ module.exports = {
 	},
 
 	/**
-	 * Valida Dados para Update de um user;
+	 *& Valida Dados para Update de um user;
 	 * @param {Object} Dados
 	 * @return {Object}
 	 */
@@ -62,7 +62,7 @@ module.exports = {
 	},
 
 	/**
-	 * Valida Dados para Insert de um cliente;
+	 *& Valida Dados para Insert de um cliente;
 	 * @param {Object} Dados
 	 * @return {Object}
 	 */
@@ -83,7 +83,7 @@ module.exports = {
 	},
 
 	/**
-	 * Valida Dados para Update de um cliente;
+	 *& Valida Dados para Update de um cliente;
 	 * @param {Object} Dados
 	 * @return {Object}
 	 */
@@ -104,7 +104,7 @@ module.exports = {
 	},
 
 	/**
-	 * Valida Dados para Insert de uma atividade;
+	 *& Valida Dados para Insert de uma atividade;
 	 * @param {Object} Dados
 	 * @return {Object}
 	 */
@@ -120,8 +120,9 @@ module.exports = {
 			})
 		);
 	},
+
 	/**
-	 * Valida Dados para Update de um atividade;
+	 *& Valida Dados para Update de um atividade;
 	 * @param {Object} Dados
 	 * @return {Object}
 	 */
@@ -139,7 +140,7 @@ module.exports = {
 	},
 
 	/**
-	 * Valida Dados para Insert do log;
+	 *& Valida Dados para Insert do log;
 	 * @param {Object} Dados
 	 * @return {Object}
 	 */
@@ -158,7 +159,7 @@ module.exports = {
 	},
 
 	/**
-	 * Valida Dados para Isert de um categoria;
+	 *& Valida Dados para Insert de um categoria;
 	 * @param {Object} Dados
 	 * @return {Object}
 	 */
@@ -175,7 +176,7 @@ module.exports = {
 	},
 
 	/**
-	 * Valida Dados para Update de um categoria;
+	 *& Valida Dados para Update de um categoria;
 	 * @param {Object} Dados
 	 * @return {Object}
 	 */
@@ -192,7 +193,43 @@ module.exports = {
 	},
 
 	/**
-	 * Valida Dados para Insert de um tasks
+	 *& Valida Dados para insert de um Sub-Categoria
+	 % @param {Object} Dados
+	 % @return {Object}
+	 */
+	insertSubCategoria: (Dados) => {
+		return validate(
+			Dados,
+			Joi.object({
+				nome: type.string.nome,
+				categoria_id: type.number.id,
+				user_id: type.number.id,
+				created_at: type.date.created_at,
+				updated_at: type.date.updated_at,
+			})
+		);
+	},
+
+	/**
+	 *& Valida Dados para Update de um Sub-Categoria;
+	 * @param {Object} Dados
+	 * @return {Object}
+	 */
+	updateSubCategoria: (Dados) => {
+		return validate(
+			Dados,
+			Joi.object({
+				id: type.number.id,
+				categoria_id: type.number.id,
+				nome: type.string.nome,
+				user_id: type.number.id,
+				updated_at: type.date.updated_at,
+			})
+		);
+	},
+
+	/**
+	 *& Valida Dados para Insert de um tasks
 	 * @param {Object} Dados
 	 * @return {Object}
 	 */
@@ -211,7 +248,7 @@ module.exports = {
 	},
 
 	/**
-	 * Valida Dados para Update de um tasks
+	 *& Valida Dados para Update de um tasks
 	 * @param {Object} Dados
 	 * @return {Object}
 	 */
@@ -230,7 +267,7 @@ module.exports = {
 	},
 
 	/**
-	 * Valida Dados para Insert de um acompanhamento da tasks
+	 *& Valida Dados para Insert de um acompanhamento da tasks
 	 * @param {Object} Dados
 	 * @return {Object}
 	 */
@@ -249,7 +286,7 @@ module.exports = {
 	},
 
 	/**
-	 * Valida Dados para Update de um acompanhamento da tasks
+	 *& Valida Dados para Update de um acompanhamento da tasks
 	 * @param {Object} Dados
 	 * @return {Object}
 	 */

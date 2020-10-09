@@ -11,6 +11,22 @@ exports.seed = (knex) => {
 					created_at: knex.fn.now(),
 					updated_at: knex.fn.now(),
 				},
+				{
+					id: 0,
+					nome: "Teste",
+					categoria_id: 1,
+					user_id: 1,
+					created_at: knex.fn.now(),
+					updated_at: knex.fn.now(),
+				},
+				{
+					id: 0,
+					nome: "Teste",
+					categoria_id: 2,
+					user_id: 1,
+					created_at: knex.fn.now(),
+					updated_at: knex.fn.now(),
+				},
 			]);
 		});
 };

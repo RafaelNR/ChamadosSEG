@@ -4,8 +4,15 @@ exports.seed = (knex) => {
 		.then(() => {
 			return knex("categorias").insert([
 				{
-					id: 0,
+					id: 1,
 					nome: "Suporte",
+					user_id: 1,
+					created_at: knex.fn.now(),
+					updated_at: knex.fn.now(),
+				},
+				{
+					id: 2,
+					nome: "Ironvox",
 					user_id: 1,
 					created_at: knex.fn.now(),
 					updated_at: knex.fn.now(),

@@ -1,13 +1,13 @@
 exports.up = function (knex) {
 	return knex.schema.createTable("sub_categorias", (table) => {
 		table.increments("id").unsigned().notNullable();
-		table.string("nome").unique().notNullable();
+		table.string("nome").notNullable();
 		table
 			.integer("categoria_id")
 			.unsigned()
 			.notNullable()
 			.references("id")
-			.inTable("categorias");
+			.inTable("categorias")
 		table
 			.integer("user_id")
 			.unsigned()

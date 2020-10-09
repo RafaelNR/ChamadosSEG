@@ -9,7 +9,6 @@ const index = async (req, res) => {
 	try {
 		response = { success: true, data: await Model.index() };
 	} catch (error) {
-		status = 401;
 		response = { success: false, error };
 	}
 
@@ -28,7 +27,6 @@ const findOne = async (req, res) => {
 
 		response = { success: true, data: await Model.findOne(ID) };
 	} catch (error) {
-		status = 401;
 		response = { success: false, error };
 	}
 
@@ -45,7 +43,6 @@ const insert = async (req, res) => {
 
 		response = { success: true, data: { id: id } };
 	} catch (error) {
-		status = 401;
 		response = { success: false, error };
 	}
 
@@ -63,7 +60,6 @@ const update = async (req, res) => {
 
 		response = { success: true, data: Dados };
 	} catch (error) {
-		status = 401;
 		response = { success: false, error };
 	}
 
@@ -82,7 +78,6 @@ const deletar = (req, res) => {
 
 		response = { success: true };
 	} catch (error) {
-		status = 401;
 		response = { success: false, error };
 	}
 
