@@ -2,6 +2,7 @@ const Validate = require("../tools/validation/schemas"); /* Validation */
 const Model = require("../models/user"); /* Model */
 const Log = require("./log"); /* Log */
 const { Crypt } = require("../tools/bcryp");
+const ApiErrors = require('../tools/errors/api-errors');
 
 let response;
 
@@ -48,9 +49,8 @@ async function insert(req, res) {
 
 		response = { success: true, data: userID };
 	} catch (error) {
-		response = { success: false, error };
+		response = ApiErrors(res,error).sendCreateUpdateError();
 	}
-
 	Log.Save(req.userId, "user", "insert", response);
 	return res.status(200).json(response);
 }
@@ -60,16 +60,13 @@ async function update(req, res) {
 		if (!req.body || !req.params.id) throw "Informações não encontradas!";
 		if (req.body.id !== parseInt(req.params.id)) throw "Valor são inválidos.";
 
+		await tools.checkIfExist(req.body.id);
 		const Dados = tools.handilingUpdate(req.body);
+		Promise.resolve( await Model.update(Dados));
 
-		await tools.checkIfExist(Dados.userDados.id);
-
-		Promise.resolve(Model.update(Dados));
-		const newUser = await Model.findOne(Dados.userDados.id);
-
-		response = { success: true, data: newUser };
+		response = { success: true, data: await Model.findOne(Dados.userDados.id) };
 	} catch (error) {
-		response = { success: false, error };
+		response = ApiErrors(res,error).sendCreateUpdateError();
 	}
 
 	Log.Save(req.userId, "user", "update", response);
@@ -140,9 +137,12 @@ const tools = {
 		// Sem Clients vinculado
 		if (!Dados.clients) {
 			let userDados = Validate.updateUser(Dados);
-			userDados.passwd === "******"
-				? delete userDados.passwd
-				: Crypt(userDados.passwd);
+			// se a senha dor alterada.
+			if(userDados.passwd !== "******")
+				userDados.passwd = Crypt(userDados.passwd);
+			else
+				delete userDados.passwd
+
 			return { userDados };
 		}
 
@@ -154,9 +154,12 @@ const tools = {
 			clientsUser: Validate.clientsUser(Clients),
 		};
 
-		newDados.userDados.passwd === "******"
-			? delete newDados.userDados.passwd
-			: Crypt(newDados.userDados.passwd);
+		// Se a senha for alterada
+		if(newDados.userDados.passwd !== "******")
+			newDados.userDados.passwd = Crypt(newDados.userDados.passwd);
+		else
+			delete newDados.userDados.passwd
+
 		return newDados;
 	},
 	async checkIfExist(userID) {

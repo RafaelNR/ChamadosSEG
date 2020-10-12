@@ -79,7 +79,7 @@ module.exports = {
 	 * retornando os dados atualizado desse usuário,
 	 * juntamente com os clients que ele representa.
 	 * @param {Object} userDados
-	 * @param {!Object} clientsUser
+	 * @param {Object} clientsUser
 	 * @return {Object}
 	 */
 	update: async ({ userDados, clientsUser }) => {
@@ -100,15 +100,13 @@ module.exports = {
 							});
 						});
 					})
-					.catch((error) => {
-						console.log(error);
-						throw { error: "Erro em inserir clients novos." };
+					.catch(() => {
+						throw { error: "Erro em inserir ou deletar clients" };
 					});
 				return Dados;
 			})
 			.catch((error) => {
-				console.log(error);
-				throw { error: "Erro em deletar clients antigos." };
+				throw error;
 			});
 	},
 

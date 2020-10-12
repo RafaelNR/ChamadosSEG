@@ -22,7 +22,7 @@ describe("Teste de Clients", () => {
 			.then((res) => {
 				expect(res.status).toBe(200); // Deve ser;
 				expect(res.body).toHaveProperty("data"); // deve possuir a propriedade data;
-				expect(res.body.data).toHaveProperty("id"); // deve possuir id;
+				expect(res.body.data).toHaveProperty("id",1); // deve possuir id;
 				expect(res.body.data).toHaveProperty("razao_social");
 				expect(res.body.data).toHaveProperty("cnpj_cpf");
 				expect(res.body.data).toHaveProperty("email");
@@ -49,6 +49,7 @@ describe("Teste de Clients", () => {
 			.then((res) => {
 				expect(res.status).toBe(200); // Deve ser;
 				expect(res.body).toHaveProperty("success", true);
+				expect(res.body).toHaveProperty("data");
 			});
 	});
 
@@ -70,11 +71,11 @@ describe("Teste de Clients", () => {
 			.then((res) => {
 				expect(res.status).toBe(200); // Deve ser;
 				expect(res.body).toHaveProperty("success", true);
-				expect(res.body.data).toHaveProperty("id"); // deve possuir id;
-				expect(res.body.data).toHaveProperty("razao_social");
-				expect(res.body.data).toHaveProperty("cnpj_cpf");
-				expect(res.body.data).toHaveProperty("email");
-				expect(res.body.data).toHaveProperty("telefone");
+				expect(res.body.data).toHaveProperty("id", Dados.id); // deve possuir id;
+				expect(res.body.data).toHaveProperty("razao_social", Dados.razao_social);
+				expect(res.body.data).toHaveProperty("cnpj_cpf", Dados.cnpj_cpf);
+				expect(res.body.data).toHaveProperty("email"), Dados.email;
+				expect(res.body.data).toHaveProperty("telefone", Dados.telefone);
 				expect(res.body.data).toHaveProperty("usuarios");
 				expect(res.body.data.usuarios).toBeArray();
 			});

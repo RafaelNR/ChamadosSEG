@@ -30,16 +30,10 @@ Router.get("/logout", verifyToken, (req, res) => {
 	});
 });
 
-Router.get("/home", verifyToken, (req, res) => {
-	return res.json({
-		Page: "home",
-	});
-});
-
 // Página não existe
 Router.use((req, res, next) => {
-	const error = new Error(`Página não existe  ${req.originalUrl} `);
-	res.status(400);
+	const error = new Error(`Página não existe ${req.originalUrl}`);
+	res.status(404);
 	next(error);
 });
 

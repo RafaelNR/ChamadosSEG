@@ -6,7 +6,7 @@ const request = require("supertest")(App);
 const MAIN_ROUTE = "/login";
 let Token;
 
-it("Deve receber o token so usuário", async () => {
+it("Deve receber o token do usuário", async () => {
 	await request
 		.post(MAIN_ROUTE)
 		.send({

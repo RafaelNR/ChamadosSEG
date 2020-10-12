@@ -9,7 +9,7 @@
 		"migration": "knex migrate:latest --env dev",
 		"seed": "knex seed:run --env dev",
 		"pretest": "knex migrate:rollback --all --env dev && knex migrate:latest --env dev && knex seed:run --env dev",
-		"test": "jest admin",
+		"test": "jest main",
 		"testw": "jest main --watch",
 		"testc": "jest --coverage --runInBand",
 		"dev": "nodemon -L --verbose --signal SIGTEMP; -r ./index.js",
