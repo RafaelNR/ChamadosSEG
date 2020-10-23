@@ -14,7 +14,7 @@ describe("sequentially run tests", () => {
 	Login();
 	Clients();
 	Categorias();
-	Tasks();
-	Atividades();
-	Acm_Atividades();
+	//Tasks();
+	//Atividades();
+	//Acm_Atividades();
 });

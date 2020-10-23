@@ -5,14 +5,14 @@ exports.seed = (knex) => {
 			return knex("categorias").insert([
 				{
 					id: 1,
-					nome: "Suporte",
+					nome: "Ironvox",
 					user_id: 1,
 					created_at: knex.fn.now(),
 					updated_at: knex.fn.now(),
 				},
 				{
 					id: 2,
-					nome: "Ironvox",
+					nome: "Firewall",
 					user_id: 1,
 					created_at: knex.fn.now(),
 					updated_at: knex.fn.now(),

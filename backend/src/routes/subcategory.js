@@ -7,7 +7,6 @@ Router.all(["/", "/:id"], Permission.admin);
 //* SUBCATEGORIAS
 Router.get("/", Controller.index);
 Router.get('/:id', Controller.findOne)
-Router.get("/categoria/:id", Controller.findByCategory);
 Router.post('/', Controller.insert)
 Router.put("/:id", Controller.update);
 Router.delete("/:id", Controller.deletar);

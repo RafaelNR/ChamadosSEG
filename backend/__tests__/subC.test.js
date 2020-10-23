@@ -9,6 +9,7 @@ describe("Testes Sub-Categorias", () => {
 			.get("/subcategorias")
 			.set("access_token", Token())
 			.then((res) => {
+				console.log(res.body.data[0])
 				expect(res.status).toBe(200); // Deve ser;
 				expect(res.body).toHaveProperty("success", true);
 				expect(res.body).toHaveProperty("data");
@@ -17,6 +18,9 @@ describe("Testes Sub-Categorias", () => {
 				expect(res.body.data[0]).toHaveProperty("user");
 				expect(res.body.data[0]).toHaveProperty("created_at");
 				expect(res.body.data[0]).toHaveProperty("updated_at");
+				expect(res.body.data[0].categorias).toBeArray();
+				expect(res.body.data[0].categorias[0]).toHaveProperty("id");
+				expect(res.body.data[0].categorias[0]).toHaveProperty("nome");
 			});
 	});
 
@@ -28,27 +32,14 @@ describe("Testes Sub-Categorias", () => {
 				expect(res.status).toBe(200); // Deve ser;
 				expect(res.body).toHaveProperty("success", true);
 				expect(res.body).toHaveProperty("data");
-				expect(res.body.data[0]).toHaveProperty("id");
-				expect(res.body.data[0]).toHaveProperty("nome");
-				expect(res.body.data[0]).toHaveProperty("user");
-				expect(res.body.data[0]).toHaveProperty("created_at");
-				expect(res.body.data[0]).toHaveProperty("updated_at");
-			});
-	});
-
-	it("Deve receber todas sub-categoria, vinculado a um categoria.", async () => {
-		return await request
-			.get("/subcategorias/categoria/1")
-			.set("access_token", Token())
-			.then((res) => {
-				expect(res.status).toBe(200); // Deve ser;
-				expect(res.body).toHaveProperty("success", true);
-				expect(res.body).toHaveProperty("data");
-				expect(res.body.data[0]).toHaveProperty("id");
-				expect(res.body.data[0]).toHaveProperty("nome");
-				expect(res.body.data[0]).toHaveProperty("user");
-				expect(res.body.data[0]).toHaveProperty("created_at");
-				expect(res.body.data[0]).toHaveProperty("updated_at");
+				expect(res.body.data).toHaveProperty("id");
+				expect(res.body.data).toHaveProperty("nome");
+				expect(res.body.data).toHaveProperty("user");
+				expect(res.body.data).toHaveProperty("created_at");
+				expect(res.body.data).toHaveProperty("updated_at");
+				expect(res.body.data.categorias).toBeArray();
+				expect(res.body.data.categorias[0]).toHaveProperty("id");
+				expect(res.body.data.categorias[0]).toHaveProperty("nome");
 			});
 	});
 
@@ -58,13 +49,13 @@ describe("Testes Sub-Categorias", () => {
 			.set("access_token", Token())
 			.send({
 				nome: Math.floor(Math.random() * 9999) + "Teste",
-				categoria_id: 1
 			})
 			.then((res) => {
-				expect(res.status).toBe(200); // Deve ser;
+				expect(res.status).toBe(201); // Deve ser;
 				expect(res.body).toHaveProperty("success", true);
 				expect(res.body).toHaveProperty("data");
 				expect(res.body.data).toHaveProperty("id");
+				expect(res.body.data).toHaveProperty("nome");
 			});
 	});
 
@@ -73,15 +64,15 @@ describe("Testes Sub-Categorias", () => {
 			.put("/subcategorias/1")
 			.set("access_token", Token())
 			.send({
-				id: 2,
+				id: 4,
 				nome: Math.floor(Math.random() * 99) + "Teste alterado",
-				categoria_id: 1,
 			})
 			.then((res) => {
 				expect(res.status).toBe(200); // Deve ser;
 				expect(res.body).toHaveProperty("success", true);
 				expect(res.body).toHaveProperty("data");
 				expect(res.body.data).toHaveProperty("id");
+				expect(res.body.data).toHaveProperty("nome");
 			});
 	});
 
@@ -92,10 +83,9 @@ describe("Testes Sub-Categorias", () => {
 				.get("/subcategorias/9999")
 				.set("access_token", Token())
 				.then((res) => {
-					expect(res.status).toBe(200); // Deve ser;
+					expect(res.status).toBe(400);
 					expect(res.body).toHaveProperty("success", false);
-					expect(res.body).toHaveProperty("error");
-					expect(res.body.error).toBe("SubCategoria não existe.");
+					expect(res.body).toHaveProperty("message", "SubCategoria não existe.");
 				});
 		});
 		
@@ -106,30 +96,26 @@ describe("Testes Sub-Categorias", () => {
 				.send({
 					id: 9999,
 					nome: Math.floor(Math.random() * 99) + "Teste alterado",
-					categoria_id: 1,
 				})
 				.then((res) => {
-					expect(res.status).toBe(200); // Deve ser;
+					expect(res.status).toBe(400); // Deve ser;
 					expect(res.body).toHaveProperty("success", false);
-					expect(res.body).toHaveProperty("error");
-					expect(res.body.error).toBe("SubCategoria não existe.");
+					expect(res.body).toHaveProperty("message", "SubCategoria não existe.");
 				});
 		});
-		it("Deve retornar um error, pois subcategoria já está vinculado a categoria", async () => {
+
+		it("Deve retornar um error, pois subcategoria não tem nome", async () => {
 			return await request
 				.post("/subcategorias")
 				.set("access_token", Token())
 				.send({
-					nome: "Teste",
-					categoria_id: 1,
+					nome: '',
 				})
 				.then((res) => {
-					expect(res.status).toBe(200); // Deve ser;
+					console.log(res.body)
+					expect(res.status).toBe(400); // Deve ser;
 					expect(res.body).toHaveProperty("success", false);
-					expect(res.body).toHaveProperty("error");
-					expect(res.body.error).toBe(
-						"Já existe essa sub-categoria, vinculado a categoria."
-					);
+					expect(res.body).toHaveProperty("message","\"nome\" não pode estar em branco")
 				});
 		});
 	})

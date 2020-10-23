@@ -4,35 +4,28 @@ const config = require("dotenv").config().parsed;
 const Model = require("../models/login"); /* Model */
 const Validation = require("../tools/validation/schemas"); /* Validation */
 const { Compare } = require("../tools/bcryp");
+const Result =  require('../tools/result');
 
-let response;
-let status = 200;
 
 module.exports = async (req, res) => {
-	// Acessando a página e tem token verifica sé é valido
-	const token = req.headers.access_token;
-
-	// tem token no header do login
-	if (token && token !== "undefined" && token !== "null") {
-		jwt.verify(token, config.SECRET, function (err, decoded) {
-			if (err) {
-				status = 200;
-				response = {
-					success: false,
-					auth: false,
-					token: null,
-					message: "Autenticação expirou.",
-				};
-			} else {
-				req.userId = Validation.ID(decoded.id);
-				status = 200;
-				response = { auth: true };
-			}
-		});
-		return res.status(status).json(response);
-	}
 
 	try {
+
+		// Acessando a página e tem token verifica sé é valido
+		const token = req.headers.access_token;
+
+		// tem token no header do login
+		if (token && token !== "undefined" && token !== "null") {
+			jwt.verify(token, config.SECRET, function (err, decoded) {
+				if (err) {
+					return res.status(401).json(Result.auth(false,"Autenticação expirou ou não é mais valida."));
+				} else {
+					req.userId = Validation.ID(decoded.id);
+					return res.status(200).json({ auth: true, id: req.userId });
+				}
+			});
+		}
+
 		// Acesso sem token usuário e senha
 		const { user, passwd } = req.body;
 
@@ -42,38 +35,36 @@ module.exports = async (req, res) => {
 		// Dados do Banco
 		const dbUser = await Model.getUserlogin(bodyUser.user);
 
-		if (!dbUser) throw "Dados Inválidos";
-
-		if (
+		if (!dbUser || 
 			!bodyUser.user !== dbUser.user &&
-			!Compare(bodyUser.passwd, dbUser.passwd)
-		)
-			throw "Dados inválidos.";
+			!Compare(bodyUser.passwd, dbUser.passwd)) 
+			throw "Dados Inválidos";
 
-		const token = jwt.sign({ id: dbUser.id /* Playload */ }, config.SECRET, {
+		const newToken = jwt.sign({ id: dbUser.id /* Playload */ }, config.SECRET, {
 			//expiresIn: process.env.NODE_ENV === 'dev' ? null : 300,
 			// expiresIn: 60,
 		});
 
-		status = 200;
-		response = {
+		Result.ok(200,{
 			success: true,
 			auth: true,
-			token,
+			token: newToken,
 			user: {
 				id: req.userId ? req.userId : dbUser.id,
 				user: dbUser.user,
 				nome: dbUser.nome,
 			},
-		};
+		});
 	} catch (error) {
-		status = 200;
-		response = {
+
+		Result.fail(400,{
 			success: false,
 			auth: false,
+			token: null,
 			error,
-		};
+		});
+
 	}
 
-	return res.status(status).json(response);
+	return res.status(Result.status).json(Result.res);
 };

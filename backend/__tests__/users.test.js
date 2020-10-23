@@ -20,6 +20,7 @@ describe("Testes de Usuários, com rotas definidas", () => {
 			.get("/usuarios/1")
 			.set("access_token", Token())
 			.then((res) => {
+				console.log(res.body)
 				expect(res.status).toBe(200); // Deve ser;
 				expect(res.body).toHaveProperty("data"); // deve possuir a propriedade data;
 				expect(res.body.data).toHaveProperty("id", 1); // deve possuir id;
@@ -36,7 +37,7 @@ describe("Testes de Usuários, com rotas definidas", () => {
 	});
 
 	it("Deve inserir usuário, sem clientes", async () => {
-		const rand = Math.floor(Math.random() * 99);
+		const rand = Math.floor(Math.random() * 9999);
 		const Dados = {
 			nome: "Nome Teste " + rand,
 			user: "user" + rand,
@@ -52,14 +53,14 @@ describe("Testes de Usuários, com rotas definidas", () => {
 			.send(Dados)
 			.then((res) => {
 				console.log(res.body)
-				expect(res.status).toBe(200); // Deve ser;
+				expect(res.status).toBe(201); // Deve ser;
 				expect(res.body).toHaveProperty("success", true);
 				expect(res.body).toHaveProperty("data");
 			});
 	});
 
 	it("Deve inserir usuário, com clientes", async () => {
-		const rand = Math.floor(Math.random() * 99);
+		const rand = Math.floor(Math.random() * 9999);
 		const Dados = {
 			nome: "Nome Teste " + rand,
 			user: "user" + rand,
@@ -75,10 +76,10 @@ describe("Testes de Usuários, com rotas definidas", () => {
 			.set("access_token", Token())
 			.send(Dados)
 			.then((res) => {
-				console.log(res.body)
-				expect(res.status).toBe(200); // Deve ser;
+				expect(res.status).toBe(201); // Deve ser;
 				expect(res.body).toHaveProperty("success", true);
 				expect(res.body).toHaveProperty("data");
+				expect(res.body.data).toHaveProperty("id");
 			});
 	});
 
@@ -156,7 +157,7 @@ describe("Testes de Usuários, com rotas definidas", () => {
 				.get("/usuarios/nome")
 				.set("access_token", Token())
 				.then((res) => {
-					expect(res.status).toBe(200);
+					expect(res.status).toBe(400);
 					expect(res.body).toHaveProperty("success", false);
 				});
 		});
@@ -166,7 +167,7 @@ describe("Testes de Usuários, com rotas definidas", () => {
 				.get("/usuarios/-1")
 				.set("access_token", Token())
 				.then((res) => {
-					expect(res.status).toBe(200);
+					expect(res.status).toBe(400);
 					expect(res.body).toHaveProperty("success", false);
 				});
 		});
@@ -176,7 +177,7 @@ describe("Testes de Usuários, com rotas definidas", () => {
 				.get("/usuarios/{{7+7}}")
 				.set("access_token", Token())
 				.then((res) => {
-					expect(res.status).toBe(200);
+					expect(res.status).toBe(400);
 					expect(res.body).toHaveProperty("success", false);
 				});
 		});
@@ -186,9 +187,9 @@ describe("Testes de Usuários, com rotas definidas", () => {
 				.set("access_token", Token())
 				.then((res) => {
 					console.log(res.body);
-					expect(res.status).toBe(200);
+					expect(res.status).toBe(400);
 					expect(res.body).toHaveProperty("success", false);
-					expect(res.body).toHaveProperty("error");
+					expect(res.body).toHaveProperty("message", "Usuário não existe.");
 				});
 		});
 		it("Deve receber um erro pois estou inserindo usuário/nome/telefone que já existe.", async () => {
@@ -208,7 +209,7 @@ describe("Testes de Usuários, com rotas definidas", () => {
 				.set("access_token", Token())
 				.send(Dados)
 				.then((res) => {
-					expect(res.status).toBe(200); // Deve ser;
+					expect(res.status).toBe(400); // Deve ser;
 					expect(res.body).toHaveProperty("success", false);
 					expect(res.body).toHaveProperty("message", 'O valor Rafael Rodrigues já possui registro no banco e não pode ser duplicado.');
 				});
@@ -231,7 +232,7 @@ describe("Testes de Usuários, com rotas definidas", () => {
 				.set("access_token", Token())
 				.send(Dados)
 				.then((res) => {
-					expect(res.status).toBe(200); // Deve ser;
+					expect(res.status).toBe(400); // Deve ser;
 					expect(res.body).toHaveProperty("success", false);
 					expect(res.body).toHaveProperty("message", 'O valor Rafael Rodrigues já possui registro no banco e não pode ser duplicado.');
 				});

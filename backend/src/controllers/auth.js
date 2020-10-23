@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const config = require("dotenv").config().parsed;
-const ApiErrors = require('../tools/errors/api-errors');
+const Result =  require('../tools/result');
 
 module.exports = (req, res) => {
 	/**
@@ -8,16 +8,13 @@ module.exports = (req, res) => {
 	 */
 	const token = req.headers.access_token;
 
-	console.log('token',token)
-
 	if (!token || token.length <= 10) {
-		return ApiErrors(res,{ message: "Precisa efetuar o login para acessar a página." }).AuthErrors();
+		return res.status(401).json(Result.auth(false,"Precisa efetuar o login para acessar a página."));
 	}
 
 	jwt.verify(token, config.SECRET, function (err) {
 		if (err) {
-			console.log(err)
-			return ApiErrors(res,{ message: "Autenticação expirou ou não é mais valida." }).AuthErrors();
+			return res.status(401).json(Result.auth(false,"Autenticação expirou ou não é mais valida."));
 		} else {
 			return res.status(200).json({
 				success: true,

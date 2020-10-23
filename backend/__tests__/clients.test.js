@@ -47,7 +47,7 @@ describe("Teste de Clients", () => {
 			.set("access_token", Token())
 			.send(Dados)
 			.then((res) => {
-				expect(res.status).toBe(200); // Deve ser;
+				expect(res.status).toBe(201); // Deve ser;
 				expect(res.body).toHaveProperty("success", true);
 				expect(res.body).toHaveProperty("data");
 			});
@@ -87,9 +87,9 @@ describe("Teste de Clients", () => {
 				.get("/clientes/id")
 				.set("access_token", Token())
 				.then((res) => {
-					expect(res.status).toBe(200);
+					expect(res.status).toBe(400);
 					expect(res.body).toHaveProperty("success", false);
-					expect(res.body.error).toHaveProperty("validationError", true);
+					expect(res.body).toHaveProperty("message", '"value" deve ser um número');
 				});
 		});
 		it("Devo receber um erro quando pesquisar ID client como numero negativo", async () => {
@@ -97,19 +97,9 @@ describe("Teste de Clients", () => {
 				.get("/clientes/-1")
 				.set("access_token", Token())
 				.then((res) => {
-					expect(res.status).toBe(200);
+					expect(res.status).toBe(400);
 					expect(res.body).toHaveProperty("success", false);
-					expect(res.body.error).toHaveProperty("validationError", true);
-				});
-		});
-		it("Devo receber um erro quando pesquisar ID client como caracteres", async () => {
-			return await request
-				.get("/clientes/-1")
-				.set("access_token", Token())
-				.then((res) => {
-					expect(res.status).toBe(200);
-					expect(res.body).toHaveProperty("success", false);
-					expect(res.body.error).toHaveProperty("validationError", true);
+					expect(res.body).toHaveProperty("message", '"value" deve ser um número positivo');
 				});
 		});
 		it("Devo receber um erro quando pesquisar cliente que não existe", async () => {
@@ -117,9 +107,9 @@ describe("Teste de Clients", () => {
 				.get("/clientes/9999")
 				.set("access_token", Token())
 				.then((res) => {
-					expect(res.status).toBe(200);
+					console.log(res.body)
 					expect(res.body).toHaveProperty("success", false);
-					expect(res.body).toHaveProperty("error");
+					expect(res.body).toHaveProperty("message", 'Cliente não existe.');
 				});
 		});
 	});

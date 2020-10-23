@@ -16,6 +16,7 @@ module.exports = {
 	status: (Status) => validate(Status, type.string.status),
 
 	clientsUser: (Dados) => validate(Dados, type.array.clients),
+	subCategorias_array: (Dados) => validate(Dados, type.array.subCategorias),
 
 	/**
 	 *& Valida Dados para Insert de um user;
@@ -167,7 +168,7 @@ module.exports = {
 		return validate(
 			Dados,
 			Joi.object({
-				nome: type.string.nome,
+				nome: type.string.categoria,
 				user_id: type.number.id,
 				created_at: type.date.created_at,
 				updated_at: type.date.updated_at,
@@ -185,7 +186,7 @@ module.exports = {
 			Dados,
 			Joi.object({
 				id: type.number.id,
-				nome: type.string.nome,
+				nome: type.string.categoria,
 				user_id: type.number.id,
 				updated_at: type.date.updated_at,
 			})
@@ -202,7 +203,6 @@ module.exports = {
 			Dados,
 			Joi.object({
 				nome: type.string.nome,
-				categoria_id: type.number.id,
 				user_id: type.number.id,
 				created_at: type.date.created_at,
 				updated_at: type.date.updated_at,
@@ -220,7 +220,6 @@ module.exports = {
 			Dados,
 			Joi.object({
 				id: type.number.id,
-				categoria_id: type.number.id,
 				nome: type.string.nome,
 				user_id: type.number.id,
 				updated_at: type.date.updated_at,

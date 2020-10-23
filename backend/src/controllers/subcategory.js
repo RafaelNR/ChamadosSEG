@@ -1,28 +1,19 @@
-const Model = require("../models/sub_category");
-const Validate = require("../tools/validation/schemas"); /* Validation */
-const Log = require("./log"); /* LOG */
+const Model = require("../models/subcategory");
+const Validate = require("../tools/validation/schemas");
+const Result =  require('../tools/result');
 
-let response;
-let status = 200;
 
-/**
- *+ Pesquisa todas as sub-categorias 
- */
 const index = async (req, res) => {
 	try {
-		response = { success: true, data: await Model.index() };
+		Result.ok(200,await Model.index());
 	} catch (error) {
-		response = { success: false, error };
+		Result.fail(400,error);
 	}
 
-	Log.Save(req.userId, "sub-category", "index", response);
-	return res.status(status).json(response);
+	Result.registerLog(req.userId, "sub-categorias", "index");
+	return res.status(Result.status).json(Result.res);
 };
 
-
-/**
- ** Pesquisa uma sub-categoria
- */
 const findOne = async (req, res) => {
 	try {
 		if (!req.params || !req.params.id)
@@ -30,57 +21,36 @@ const findOne = async (req, res) => {
 
 		const ID = Validate.ID(req.params.id);
 
-		await tools.checkIfExist(ID);
+		await tools.isExist(ID);
 
-		response = { success: true, data: await Model.findOne(ID) };
+		Result.ok(200,await Model.findOne(ID));
 	} catch (error) {
-		response = { success: false, error };
+		Result.fail(400,error);
 	}
 
-	Log.Save(req.userId, "category", "findOne", response);
-	return res.status(status).json(response);
+
+	Result.registerLog(req.userId, "sub-categorias", "findOne");
+	return res.status(Result.status).json(Result.res);
 };
 
-/**
- ** Pesquisa todas as sub-categorias de um categoria.
- */
-const findByCategory = async (req, res) => {
-	
-	try {
-		if (!req.params || !req.params.id)
-			throw "Parametros não encontrados ou incorretos.";
-		
-		const ID = Validate.ID(req.params.id);
 
-		response = { success: true, data: await Model.findCategoria(ID) };
-	} catch (error) {
-		response = { success: false, error };
-	}
-
-	Log.Save(req.userId, "sub-category", "findByCategory", response);
-	return res.status(status).json(response);
-};
-
-/**
- ** Insere um categoria
- */
 const insert = async (req, res) => {
 	try {
 		if (!req.body) throw "Dados inválidos!";
 		const Dados = await tools.handlerInsert({ ...req.body, user_id: req.userId });
 
-		response = { success: true, data: { id: await Model.insert(Dados) } };
+		const ID = await Model.insert(Dados);
+
+		Result.ok(201, await Model.findOne(ID));
 	} catch (error) {
-		response = { success: false, error };
+		Result.fail(400,error);
 	}
 
-	Log.Save(req.userId, "sub-category", "insert", response);
-	return res.status(status).json(response);
+
+	Result.registerLog(req.userId, "sub-categorias", "insert");
+	return res.status(Result.status).json(Result.res);
 };
 
-/**
- ** Update da Categoria
- */
 const update = async (req, res) => {
 	try {
 		if (!req.body) throw "Dados inválidos!";
@@ -89,60 +59,45 @@ const update = async (req, res) => {
 
 		await Model.update(Dados);
 
-		response = { success: true, data: Dados };
+		Result.ok(200, await Model.findOne(Dados.id));
 	} catch (error) {
-		response = { success: false, error };
+		Result.fail(400,error);
 	}
 
-	Log.Save(req.userId, "sub-category", "update", response);
-	return res.status(status).json(response);
+	Result.registerLog(req.userId, "sub-categorias", "update");
+	return res.status(Result.status).json(Result.res);
 };
 
 const deletar = async (req, res) => {
 	try {
-		if (!req.params || !req.params.id) throw "Dados invalidos";
+		if (!req.params || !req.params.id) throw "Dados inválidos";
 
 		const id = Validate.ID(req.params.id);
 
-		await tools.checkIfExist(ID);
+		await tools.isExist(ID);
 		await Model.deletar(id);
 
-		response = { success: true };
+		Result.ok(200);
 	} catch (error) {
-		response = { success: false, error };
+		Result.fail(400, error);
 	}
 
-	Log.Save(req.userId, "sub-category", "delete", response);
-	return res.status(status).json(response);
+
+	Result.registerLog(req.userId, "sub-categorias", "delete");
+	return res.status(Result.status).json(Result.res);
 };
 
 const tools = {
-	/**
-	 * & 
-	 * @param {Object} Dados
-	 */
+
 	async handlerInsert(Dados) {
 		const newDados = Validate.insertSubCategoria(Dados);
-
-		if (!(await this.checkBeforeAction(newDados))) {
-			throw "Já existe essa sub-categoria, vinculado a categoria.";
-		}
-
 		return newDados;
 	},
 
-	/**
-	 * &
-	 * @param {Object} Dados
-	 */
+
 	async handlerUpdate(Dados) {
 		const newDados = Validate.updateSubCategoria(Dados);
-
-		await this.checkIfExist(newDados.id);
-
-		if (!(await this.checkBeforeAction(newDados))) {
-			throw "Já existe essa sub-categoria, vinculado a categoria.";
-		}
+		await this.isExist(newDados.id);
 		return newDados;
 	},
 
@@ -160,7 +115,7 @@ const tools = {
 	 * & Verifica se a categoria existe.
 	 * @param {number} ID
 	 */
-	checkIfExist: async (ID) => {
+	isExist: async (ID) => {
 		const dbDados = await Model.countByID(ID);
 		if (!dbDados || dbDados.id <= 0) {
 			throw "SubCategoria não existe.";
@@ -173,7 +128,6 @@ const tools = {
 module.exports = {
 	index,
 	findOne,
-	findByCategory,
 	insert,
 	update,
 	deletar,

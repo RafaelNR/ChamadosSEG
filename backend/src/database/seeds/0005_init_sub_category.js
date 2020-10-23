@@ -4,25 +4,19 @@ exports.seed = (knex) => {
 		.then(() => {
 			return knex("sub_categorias").insert([
 				{
-					id: 0,
-					nome: "Usuario",
-					categoria_id: 1,
+					nome: "Suporte",
 					user_id: 1,
 					created_at: knex.fn.now(),
 					updated_at: knex.fn.now(),
 				},
 				{
-					id: 0,
-					nome: "Teste",
-					categoria_id: 1,
+					nome: "Liberação total",
 					user_id: 1,
 					created_at: knex.fn.now(),
 					updated_at: knex.fn.now(),
 				},
 				{
-					id: 0,
-					nome: "Teste",
-					categoria_id: 2,
+					nome: "Liberação de site outro aplicativo",
 					user_id: 1,
 					created_at: knex.fn.now(),
 					updated_at: knex.fn.now(),

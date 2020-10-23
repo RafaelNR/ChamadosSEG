@@ -1,20 +1,17 @@
-const Validate = require("../tools/validation/schemas"); /* Validation */
-const Model = require("../models/user"); /* Model */
-const Log = require("./log"); /* Log */
+const Validate = require("../tools/validation/schemas");
+const Model = require("../models/user");
 const { Crypt } = require("../tools/bcryp");
-const ApiErrors = require('../tools/errors/api-errors');
-
-let response;
+const Result =  require('../tools/result');
 
 async function index(req, res) {
 	try {
-		response = { success: true, data: await Model.index() };
+		Result.ok(200,await Model.index());
 	} catch (error) {
-		response = { success: false, error };
+		Result.fail(400,error);
 	}
 
-	Log.Save(req.userId, "user", "index", response);
-	return res.status(200).json(response);
+	Result.registerLog(req.userId, "user", "index");
+	return res.status(Result.status).json(Result.res);
 }
 
 async function findOne(req, res) {
@@ -22,19 +19,15 @@ async function findOne(req, res) {
 		if (!req.params || !req.params.id) throw "Paramentos não encontrados!";
 
 		const id = Validate.ID(parseInt(req.params.id));
-
 		await tools.checkIfExist(id);
 
-		response = {
-			success: true,
-			data: await Model.findOne(id),
-		};
+		Result.ok(200,await Model.findOne(id));
 	} catch (error) {
-		response = { success: false, error };
+		Result.fail(400, error);
 	}
 
-	Log.Save(req.userId, "user", "findOne", response);
-	return res.status(200).json(response);
+	Result.registerLog(req.userId, "user", "findOne");
+	return res.status(Result.status).json(Result.res);
 }
 
 async function insert(req, res) {
@@ -47,12 +40,12 @@ async function insert(req, res) {
 		// Remove o passwd
 		delete Dados.userDados.passwd;
 
-		response = { success: true, data: userID };
+		Result.ok(201,{ id: userID[0] });
 	} catch (error) {
-		response = ApiErrors(res,error).sendCreateUpdateError();
+		Result.fail(400, error);
 	}
-	Log.Save(req.userId, "user", "insert", response);
-	return res.status(200).json(response);
+	Result.registerLog(req.userId, "user", "insert");
+	return res.status(Result.status).json(Result.res);
 }
 
 async function update(req, res) {
@@ -62,15 +55,14 @@ async function update(req, res) {
 
 		await tools.checkIfExist(req.body.id);
 		const Dados = tools.handilingUpdate(req.body);
-		Promise.resolve( await Model.update(Dados));
-
-		response = { success: true, data: await Model.findOne(Dados.userDados.id) };
+		await Model.update(Dados);
+		
+		Result.ok(200, await Model.findOne(Dados.userDados.id));
 	} catch (error) {
-		response = ApiErrors(res,error).sendCreateUpdateError();
+		Result.fail(400, error);
 	}
-
-	Log.Save(req.userId, "user", "update", response);
-	return res.status(200).json(response);
+	Result.registerLog(req.userId, "user", "update");
+	return res.status(Result.status).json(Result.res);
 }
 
 async function deletar(req, res) {
@@ -78,17 +70,17 @@ async function deletar(req, res) {
 		if (!req.params || !req.params.id) throw "Paramentos não encontrados!";
 		const id = Validate.ID(parseInt(req.params.id));
 
-		await tools.checkIfExist(id);
+		await tools.checkIfExist(id).then(() => {
+			Model.desabilita(id);
+		})
 
-		await Model.desabilita(id);
-
-		response = { success: true };
+		Result.ok(200);
 	} catch (error) {
-		response = { success: false, error };
+		Result.fail(400, error);
 	}
 
-	Log.Save(req.userId, "user", "disabled", response);
-	return res.status(200).json(response);
+	Result.registerLog(req.userId, "user", "disabled");
+	return res.status(Result.status).json(Result.res);
 }
 
 async function actived(req, res) {
@@ -96,17 +88,16 @@ async function actived(req, res) {
 		if (!req.params || !req.params.id) throw "Paramentos não encontrados!";
 		const id = Validate.ID(parseInt(req.params.id));
 
-		await tools.checkIfExist(id);
-
-		await Model.actived(id);
-
-		response = { success: true };
+		await tools.checkIfExist(id).then(() => {
+			Model.actived(id);
+		})
+		Result.ok(200);
 	} catch (error) {
-		response = { success: false, error };
+		Result.fail(400, error);
 	}
 
-	Log.Save(req.userId, "user", "actived", response);
-	return res.status(200).json(response);
+	Result.registerLog(req.userId, "user", "actived");
+	return res.status(Result.status).json(Result.res);
 }
 
 /**

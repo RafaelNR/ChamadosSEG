@@ -10,7 +10,7 @@ const type = {
 		actived: Joi.number().integer().default(1),
 	},
 	string: {
-		nome: Joi.string().required(),
+		nome: Joi.string().min(3).max(254).required(),
 		razao_social: Joi.string().min(10).max(254).required(),
 		nome_fantasia: Joi.string().min(3).max(150).required(),
 		cpnj_cpf: Joi.string().min(14).max(18).required(),
@@ -35,6 +35,11 @@ const type = {
 	},
 	array: {
 		clients: Joi.array()
+			.min(1)
+			.max(99)
+			.items(Joi.number().integer().min(0).max(999).required())
+			.required(),
+		subCategorias: Joi.array()
 			.min(1)
 			.max(99)
 			.items(Joi.number().integer().min(0).max(999).required())

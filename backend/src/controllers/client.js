@@ -1,29 +1,26 @@
-/* Models */
+/**
+ ** MODELS  
+ */
 const Model = require("../models/client");
 const { countActivityforClient } = require("../models/atividades");
 const { countLinkedToClient } = require("../models/clients_has_users");
 
-const Validate = require("../tools/validation/schemas"); /* Validation */
-const Log = require("./log"); /* LOG */
-
 /**
- * Respostadas das requisições, tratadas pelo controller.
- * @typedef {Object}
+ ** TOOLS
  */
-let response;
-let status = 200;
+const Validate = require("../tools/validation/schemas"); /* Validation */
+const Result =  require('../tools/result');
+
 
 const index = async (req, res) => {
 	try {
-
-		
-		response = { success: true, data: await Model.index() };
+		Result.ok(200,await Model.index());
 	} catch (error) {
-		response = { success: false, message: "Error!", error };
+		Result.fail(400,error);
 	}
 
-	Log.Save(req.userId, "client", "index", response);
-	return res.status(status).json(response);
+	Result.registerLog(req.userId, "clients", "index");
+	return res.status(Result.status).json(Result.res);
 };
 
 const findOne = async (req, res) => {
@@ -31,16 +28,15 @@ const findOne = async (req, res) => {
 		if (!req.params || !req.params.id) throw "Paramento não encontrado!";
 
 		const id = Validate.ID(parseInt(req.params.id));
-
 		await tools.checkIfExist(id);
 
-		response = { success: true, data: await Model.findOne(id) };
+		Result.ok(200,await Model.findOne(id));
 	} catch (error) {
-		response = { success: false, error };
+		Result.fail(400, error);
 	}
 
-	Log.Save(req.userId, "client", "findOne", response);
-	return res.status(status).json(response);
+	Result.registerLog(req.userId, "clients", "findOne");
+	return res.status(Result.status).json(Result.res);
 };
 
 const insert = async (req, res) => {
@@ -50,13 +46,13 @@ const insert = async (req, res) => {
 		const Dados = tools.handilingInsert({ ...req.body, user_id: req.userId });
 		const clientID = await Model.insert(Dados);
 
-		response = { success: true, data: clientID };
+		Result.ok(201, {id: clientID});
 	} catch (error) {
-		response = { success: false, error };
+		Result.fail(400, error);
 	}
 
-	Log.Save(req.userId, "client", "insert", response);
-	return res.status(status).json(response);
+	Result.registerLog(req.userId, "clients", "insert");
+	return res.status(Result.status).json(Result.res);
 };
 
 const update = async (req, res) => {
@@ -67,13 +63,13 @@ const update = async (req, res) => {
 		const Dados = await Model.update(
 			await tools.handilingUpdate({ ...req.body, user_id: req.userId }));
 
-		response = { success: true, data: Dados };
-	} catch (error) {
-		response = { success: false, error };
-	}
+			Result.ok(200,Dados);
+		} catch (error) {
+			Result.fail(400, error);
+		}
 
-	Log.Save(req.userId, "client", "update", response);
-	return res.status(status).json(response);
+	Result.registerLog(req.userId, "clients", "update");
+	return res.status(Result.status).json(Result.res);
 };
 
 const deletar = async (req, res) => {
@@ -84,13 +80,13 @@ const deletar = async (req, res) => {
 
 		await Model.delete(await tools.vefiryToDelete(id));
 
-		response = { success: true };
+		Result.ok(200);
 	} catch (error) {
-		response = { success: false, error };
+		Result.fail(400, error);
 	}
 
-	Log.Save(req.userId, "client", "delete", response);
-	return res.status(status).json(response);
+	Result.registerLog(req.userId, "clients", "delete");
+	return res.status(Result.status).json(Result.res);
 };
 
 const tools = {

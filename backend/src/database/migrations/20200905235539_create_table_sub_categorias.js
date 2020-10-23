@@ -3,12 +3,6 @@ exports.up = function (knex) {
 		table.increments("id").unsigned().notNullable();
 		table.string("nome").notNullable();
 		table
-			.integer("categoria_id")
-			.unsigned()
-			.notNullable()
-			.references("id")
-			.inTable("categorias")
-		table
 			.integer("user_id")
 			.unsigned()
 			.notNullable()

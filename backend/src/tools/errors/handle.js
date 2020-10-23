@@ -1,27 +1,18 @@
 
 
-module.exports = (res,error) => {
-  
-  function AuthErrors(){
-    return res.status(401).json({			
-      success: false,
-			auth: false,
-			token: null,
-      message: error.message,
-    })
-  }
+module.exports = (error) => {
 
   function sendCreateUpdateError(){
     if(error.code === 'ER_DUP_ENTRY'){
       const message = handle_DUP_ENTRY(error);
-      return { success: false, message };
+      return { message };
     }
 
     if(error.validationError){
-      return { success: false, message: error.error.details[0].message };
+      return { message: error.error.details[0].message };
     }
 
-    return { success: false, message: error };
+    return { message: error };
   }
 
   /**
@@ -34,7 +25,6 @@ module.exports = (res,error) => {
   }
 
   return {
-    AuthErrors,
     sendCreateUpdateError,
   }
 

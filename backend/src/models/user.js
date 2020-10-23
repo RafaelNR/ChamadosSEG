@@ -64,13 +64,15 @@ module.exports = {
 		return await knex
 			.insert(userDados)
 			.into("users")
-			.then(async (ID) => {
+			.then((ID) => {
+				console.log(ID)
 				// Sem Clients vinculados
 				if (!clientsUser) return ID;
 				// Com clients vinculados
-				return await clientsUser.map(async (client) => {
-					await ClientsHasUser.insert({ cliente_id: client, user_id: ID[0] });
+				clientsUser.map((client) => {
+					ClientsHasUser.insert({ cliente_id: client, user_id: ID[0] });
 				});
+				return ID;
 			});
 	},
 

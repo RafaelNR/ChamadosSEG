@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const config = require("dotenv").config().parsed;
-const ApiErrors = require('../tools/errors/api-errors');
+const ApiErrors = require('../tools/errors/handle');
 
 module.exports = (req, res, next) => {
 	/**
