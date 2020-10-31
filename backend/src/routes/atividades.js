@@ -1,37 +1,25 @@
 const Router = require("express").Router();
 const Controller = require("../controllers/atividades");
+const InfosController =  require("../controllers/info_atividades")
 const Permission = require("../middlewares/permission");
 
-/**
- * Todas as Atividades, somente admin.
- */
+
 Router.get("/", Permission.admin, Controller.index);
+Router.get("/user", Controller.findAllByMy);
+Router.get("/user/:user_id", Controller.findAllByUser);
+Router.get("/cliente/:cliente_id", Controller.findAllByCliente);
+Router.get("/:id", Controller.findOne);
 
-/**
- * Todas as minhas Atividades, pelo meu id ou por um dos meus clients;
- */
-Router.get(["/user", "/client/:clientID"], Controller.indexMy);
+// Router.get(
+// 	["/user/:userID/:data", "/client/:clientID/:data"],
+// 	Controller.findOne
+// );
 
-/**
- * Uma única atividade.
- */
-Router.get(
-	["/:id", "/user/:userID/:data", "/client/:clientID/:data"],
-	Controller.findOne
-);
-
-/**
- * CRUD
- */
 Router.post("/", Controller.insert);
-/**
- * TODO
- * Somente admin ou quem abriu.
- */
 Router.put("/:id", Controller.update);
-/**
- * TODO
- * Delete, somente admin ou quem abriu.
- */
+
+Router.post("/infos", InfosController.insert);
+Router.put("/infos/:id", InfosController.update);
+Router.delete("/infos/:id", InfosController.deletar);
 
 module.exports = Router;

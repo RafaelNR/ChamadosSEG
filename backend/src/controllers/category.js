@@ -36,9 +36,6 @@ const insert = async (req, res) => {
 		const Dados = tools.handlerInsert(req.body, req.userId);
 
 		const ID = await Model.insert(Dados);
-
-		console.log(ID)
-
 		Result.ok(201,await Model.findOne(ID));
 	} catch (error) {
 		Result.fail(400, error);
@@ -56,7 +53,10 @@ const update = async (req, res) => {
 
 		const Dados = await tools.handlerUpdate(req.body, req.userId);
 
-		Result.ok(200,await Model.findOne(Dados.categoria.id));
+		const newData = await Promise.all(await Model.update(Dados))
+													.then(() => Model.findOne(Dados.categoria.id))
+
+		Result.ok(200,newData);
 	} catch (error) {
 		Result.fail(400, error);
 	}

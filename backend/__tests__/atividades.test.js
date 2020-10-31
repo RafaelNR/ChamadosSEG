@@ -10,6 +10,7 @@ describe("ites de Ativides", () => {
 				.get("/atividades")
 				.set("access_token", Token())
 				.then((res) => {
+					console.log(res.body)
 					expect(res.status).toBe(200); // Deve ser;
 					expect(res.body).toHaveProperty("success", true);
 					expect(res.body).toHaveProperty("data");
@@ -20,7 +21,7 @@ describe("ites de Ativides", () => {
 					expect(res.body.data[0]).toHaveProperty("updated_at");
 				});
 		});
-		it("Deve receber todas atividades do meu userID", async () => {
+		it("Deve receber todas as minhas atividades", async () => {
 			return await request
 				.get("/atividades/user")
 				.set("access_token", Token())
@@ -33,9 +34,22 @@ describe("ites de Ativides", () => {
 					expect(res.body.data[0]).toHaveProperty("técnico");
 				});
 		});
-		it("Deve receber todas atividades do meu cliente", async () => {
+		it("Deve receber todas as atividades de um usuário", async () => {
 			return await request
-				.get("/atividades/client/1")
+				.get("/atividades/user/2")
+				.set("access_token", Token())
+				.then((res) => {
+					expect(res.status).toBe(200); // Deve ser;
+					expect(res.body).toHaveProperty("success", true);
+					expect(res.body).toHaveProperty("data");
+					expect(res.body.data[0]).toHaveProperty("id");
+					expect(res.body.data[0]).toHaveProperty("nome_fantasia");
+					expect(res.body.data[0]).toHaveProperty("técnico");
+				});
+		});
+		it("Deve receber todas atividades de um cliente", async () => {
+			return await request
+				.get("/atividades/cliente/1")
 				.set("access_token", Token())
 				.then((res) => {
 					expect(res.status).toBe(200); // Deve ser;
@@ -51,68 +65,60 @@ describe("ites de Ativides", () => {
 				.get("/atividades/1")
 				.set("access_token", Token())
 				.then((res) => {
+					console.log(res.body)
 					expect(res.status).toBe(200); // Deve ser;
 					expect(res.body).toHaveProperty("success", true);
 					expect(res.body).toHaveProperty("data");
 					expect(res.body.data).toHaveProperty("id");
 					expect(res.body.data).toHaveProperty("cliente");
 					expect(res.body.data).toHaveProperty("técnico");
-					expect(res.body.data).toHaveProperty("info");
-					expect(res.body.data.info).toBeArray();
-					if (res.body.data.info.length > 0) {
-						expect(res.body.data.info[0]).toHaveProperty("id");
-						expect(res.body.data.info[0]).toHaveProperty("descricao");
-						expect(res.body.data.info[0]).toHaveProperty("categoria");
+					expect(res.body.data).toHaveProperty("infos");
+					expect(res.body.data.infos).toBeArray();
+					if (res.body.data.infos.length > 0) {
+						expect(res.body.data.infos[0]).toHaveProperty("id");
+						expect(res.body.data.infos[0]).toHaveProperty("descricao");
+						expect(res.body.data.infos[0]).toHaveProperty("categoria");
 					}
 				});
 		});
-		it("Deve receber atividade que existe, user and data", async () => {
+		it("Deve inserir uma nova atividade", async () => {
 			return await request
-				.get("/atividades/user/1/2020-09-10")
+				.post("/atividades")
+				.send({
+					cliente_id: 1,
+					date: '2020-10-29'
+				})
 				.set("access_token", Token())
 				.then((res) => {
-					expect(res.status).toBe(200); // Deve ser;
+					expect(res.status).toBe(201);
+					expect(res.body).toHaveProperty("success", true);
 					expect(res.body).toHaveProperty("success", true);
 					expect(res.body).toHaveProperty("data");
-
-					if (res.body.data && res.body.data.id) {
-						expect(res.body.data).toHaveProperty("id");
-						expect(res.body.data).toHaveProperty("cliente");
-						expect(res.body.data).toHaveProperty("técnico");
-						expect(res.body.data).toHaveProperty("info");
-						expect(res.body.data.info).toBeArray();
+					expect(res.body.data).toHaveProperty("id");
+					expect(res.body.data).toHaveProperty("cliente");
+					expect(res.body.data).toHaveProperty("técnico");
+					expect(res.body.data).toHaveProperty("infos");
+					expect(res.body.data.infos).toBeArray();
+					if (res.body.data.infos.length > 0) {
+						expect(res.body.data.infos[0]).toHaveProperty("id");
+						expect(res.body.data.infos[0]).toHaveProperty("descricao");
+						expect(res.body.data.infos[0]).toHaveProperty("categoria");
 					}
-
-					if (res.body.data.info && res.body.data.info.length > 0) {
-						expect(res.body.data.info[0]).toHaveProperty("id");
-						expect(res.body.data.info[0]).toHaveProperty("descricao");
-						expect(res.body.data.info[0]).toHaveProperty("categoria");
-					}
-				});
-		});
-		it("Deve receber atividade que existe, client and data", async () => {
+				})
+		})
+		it("Deve atualizar o cliente da atividade", async () => {
 			return await request
-				.get("/atividades/client/1/2020-09-10")
+				.put("/atividades/1")
+				.send({
+					id: 2,
+					cliente_id: 2,
+				})
 				.set("access_token", Token())
 				.then((res) => {
-					expect(res.status).toBe(200); // Deve ser;
-					expect(res.body).toHaveProperty("success", true);
-					expect(res.body).toHaveProperty("data");
-					if (res.body.data && res.body.data.id) {
-						expect(res.body.data).toHaveProperty("id");
-						expect(res.body.data).toHaveProperty("cliente");
-						expect(res.body.data).toHaveProperty("técnico");
-						expect(res.body.data).toHaveProperty("info");
-						expect(res.body.data.info).toBeArray();
-					}
+					expect(res.status).toBe(204);
+				})
+		})
 
-					if (res.body.data.info && res.body.data.info.length > 0) {
-						expect(res.body.data.info[0]).toHaveProperty("id");
-						expect(res.body.data.info[0]).toHaveProperty("descricao");
-						expect(res.body.data.info[0]).toHaveProperty("categoria");
-					}
-				});
-		});
 	});
 	describe("Pesquisa uma atividade, passando parametros inválidos", () => {
 		it("Deve receber um erro, pois ID atividade não existe", async () => {
@@ -120,70 +126,58 @@ describe("ites de Ativides", () => {
 				.get("/atividades/99999")
 				.set("access_token", Token())
 				.then((res) => {
-					expect(res.status).toBe(401); // Deve ser;
+					expect(res.status).toBe(400); // Deve ser;
 					expect(res.body).toHaveProperty("success", false);
-					expect(res.body).toHaveProperty("error");
+					expect(res.body).toHaveProperty("message", "Atividade não existe!");
 				});
 		});
-		it("Deve receber um erro pois userID atividade não existe", async () => {
+		it("Deve receber um erro, pois o usuário não existe", async () => {
 			return await request
-				.get("/atividades/user/999999/2020-08-07")
+				.get("/atividades/user/999999")
 				.set("access_token", Token())
 				.then((res) => {
-					expect(res.status).toBe(401); // Deve ser;
+					expect(res.status).toBe(400); // Deve ser;
 					expect(res.body).toHaveProperty("success", false);
-					expect(res.body).toHaveProperty("error");
+					expect(res.body).toHaveProperty("message", "Usuário não existe!");
 				});
 		});
-		it("Deve receber um erro pois data da atividade é invalida", async () => {
+		it("Deve receber um erro, pois o cliente não existe", async () => {
 			return await request
-				.get("/atividades/user/1/9999-99-99")
+				.get("/atividades/cliente/99999")
 				.set("access_token", Token())
 				.then((res) => {
-					expect(res.status).toBe(401); // Deve ser;
+					expect(res.status).toBe(400); // Deve ser;
 					expect(res.body).toHaveProperty("success", false);
-					expect(res.body).toHaveProperty("error");
+					expect(res.body).toHaveProperty("message", "Cliente não existe!");
 				});
 		});
-		it("Deve receber um erro pois o usuário e a da são invalidos atividade não existe", async () => {
+		it("Deve deve receber um erros, pois está inserindo atividade fora do período de 15 dias.", async () => {
 			return await request
-				.get("/atividades/user/999999/9999-99-99")
+				.post("/atividades")
+				.send({
+					cliente_id: 1,
+					date: '2020-10-14'
+				})
 				.set("access_token", Token())
 				.then((res) => {
-					expect(res.status).toBe(401); // Deve ser;
+					expect(res.status).toBe(400);
 					expect(res.body).toHaveProperty("success", false);
-					expect(res.body).toHaveProperty("error");
-				});
-		});
-		it("Deve receber um erro pois cliente atividade não existe", async () => {
+					expect(res.body).toHaveProperty("message", 'Não criar atividade com mais de 15 dias.')
+				})
+		})
+		it("Deve deve receber um erros, pois está inserindo atividade fora do período de 15 dias.", async () => {
 			return await request
-				.get("/atividades/client/999999/2020-08-07")
+				.post("/atividades")
+				.send({
+					cliente_id: 1,
+					date: '2020-10-14'
+				})
 				.set("access_token", Token())
 				.then((res) => {
-					expect(res.status).toBe(401); // Deve ser;
+					expect(res.status).toBe(400);
 					expect(res.body).toHaveProperty("success", false);
-					expect(res.body).toHaveProperty("error");
-				});
-		});
-		it("Deve receber um erro pois a data é invalida atividade não existe", async () => {
-			return await request
-				.get("/atividades/client/1/9999-99-99")
-				.set("access_token", Token())
-				.then((res) => {
-					expect(res.status).toBe(401); // Deve ser;
-					expect(res.body).toHaveProperty("success", false);
-					expect(res.body).toHaveProperty("error");
-				});
-		});
-		it("Deve receber um erro pois o usuário e data da atividade são invalidos", async () => {
-			return await request
-				.get("/atividades/client/999999/9999-99-99")
-				.set("access_token", Token())
-				.then((res) => {
-					expect(res.status).toBe(401); // Deve ser;
-					expect(res.body).toHaveProperty("success", false);
-					expect(res.body).toHaveProperty("error");
-				});
-		});
+					expect(res.body).toHaveProperty("message", 'Não criar atividade com mais de 15 dias.')
+				})
+		})
 	});
 });

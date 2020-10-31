@@ -35,10 +35,11 @@ module.exports = async (req, res) => {
 		// Dados do Banco
 		const dbUser = await Model.getUserlogin(bodyUser.user);
 
+		// Se Senha inválida.
 		if (!dbUser || 
 			!bodyUser.user !== dbUser.user &&
 			!Compare(bodyUser.passwd, dbUser.passwd)) 
-			throw "Dados Inválidos";
+			throw "Usuário ou Senha são inválidos.";
 
 		const newToken = jwt.sign({ id: dbUser.id /* Playload */ }, config.SECRET, {
 			//expiresIn: process.env.NODE_ENV === 'dev' ? null : 300,
@@ -46,7 +47,6 @@ module.exports = async (req, res) => {
 		});
 
 		Result.ok(200,{
-			success: true,
 			auth: true,
 			token: newToken,
 			user: {
@@ -57,12 +57,7 @@ module.exports = async (req, res) => {
 		});
 	} catch (error) {
 
-		Result.fail(400,{
-			success: false,
-			auth: false,
-			token: null,
-			error,
-		});
+		Result.fail(400, error);
 
 	}
 

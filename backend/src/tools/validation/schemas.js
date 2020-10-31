@@ -103,38 +103,52 @@ module.exports = {
 			})
 		);
 	},
-
-	/**
-	 *& Valida Dados para Insert de uma atividade;
-	 * @param {Object} Dados
-	 * @return {Object}
-	 */
 	insertAtividades: (Dados) => {
 		return validate(
 			Dados,
 			Joi.object({
 				user_id: type.number.id,
 				cliente_id: type.number.id,
-				atividades: type.array.atividades,
+				date: type.date.default,
 				created_at: type.date.created_at,
 				updated_at: type.date.updated_at,
 			})
 		);
 	},
 
-	/**
-	 *& Valida Dados para Update de um atividade;
-	 * @param {Object} Dados
-	 * @return {Object}
-	 */
 	updateAtividades: (Dados) => {
 		return validate(
 			Dados,
 			Joi.object({
 				id: type.number.id,
-				user_id: type.number.id,
 				cliente_id: type.number.id,
-				atividades: type.array.atividades,
+				updated_at: type.date.updated_at,
+			})
+		);
+	},
+
+	insertInfoAtividades: (Dados) => {
+		return validate(
+			Dados,
+			Joi.object({
+				descricao: type.string.default,
+				categoria_id: type.number.id,
+				atividade_id: type.number.id,
+				user_id: type.number.id,
+				created_at: type.date.created_at,
+				updated_at: type.date.updated_at,
+			})
+		);
+	},
+
+	updateInfoAtividades: (Dados) => {
+		return validate(
+			Dados,
+			Joi.object({
+				id: type.number.id,
+				descricao: type.string.default,
+				categoria_id: type.number.id,
+				user_id: type.number.id,
 				updated_at: type.date.updated_at,
 			})
 		);

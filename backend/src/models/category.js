@@ -74,16 +74,16 @@ const insert = (Dados) => {
 		})
 };
 
-const update = (Dados) => {
-	return knex("categorias")
+const update = async (Dados) => {
+	return await knex("categorias")
 		.update(Dados.categoria)
 		.where("id", "=", Dados.categoria.id).then(async () => {
 
 			try {
-				await CategoriasHasSubCategorias.deleteByCategoria_id(Dados.categoria.id)
-				.then(async () => {
-					await Dados.subCategorias.map(async (subCategoria_id) => {
-						await CategoriasHasSubCategorias.insert({
+				return await CategoriasHasSubCategorias.deleteByCategoria_id(Dados.categoria.id)
+				.then(() => {
+					return Dados.subCategorias.map((subCategoria_id) => {
+						return CategoriasHasSubCategorias.insert({
 							categoria_id: Dados.categoria.id,
 							subcategoria_id: subCategoria_id
 						})
@@ -91,6 +91,7 @@ const update = (Dados) => {
 				})
 								
 			} catch (error) {
+				console.log(error)
 				throw 'Erro editar subcategorias'
 			}
 

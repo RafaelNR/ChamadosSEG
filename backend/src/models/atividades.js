@@ -1,6 +1,6 @@
 const knex = require("../database/index");
 
-const findOne = async (Params) => {
+const findOneByData = async (Params) => {
 	let Dados = "";
 	let query = knex
 		.select(
@@ -53,7 +53,7 @@ const findOne = async (Params) => {
 			"info.created_at",
 			"info.updated_at"
 		)
-		.from("info_atividades as info")
+		.from("infos_atividades as info")
 		.join("categorias", "categorias.id", "=", "info.categoria_id")
 		.where("info.atividade_id", "=", Atividade.id)
 		.then((info) => {
@@ -65,7 +65,7 @@ const findOne = async (Params) => {
 };
 
 module.exports = {
-	findOne,
+	findOneByData,
 
 	index: async () => {
 		return await knex
@@ -82,12 +82,7 @@ module.exports = {
 			.limit(100);
 	},
 
-	/**
-	 * Pega atividade do meu usuario
-	 * @param {number} client_id
-	 * @return {object}
-	 */
-	indexMy: async (user_id) => {
+	findByUser_id: async (user_id) => {
 		return await knex
 			.select(
 				"atividades.id",
@@ -103,12 +98,7 @@ module.exports = {
 			.limit(100);
 	},
 
-	/**
-	 * Pega atividade de um cliente
-	 * @param {number} client_id
-	 * @return {object}
-	 */
-	indexMyCliente: async (client_id) => {
+	findByClient_id: async (client_id) => {
 		return await knex
 			.select(
 				"atividades.id",
@@ -124,26 +114,63 @@ module.exports = {
 			.limit(100);
 	},
 
+	findOne: (ID) => {
+		return knex
+		.select(
+			"atividades.id",
+			"clientes.nome_fantasia as cliente",
+			"users.nome as técnico",
+			"atividades.created_at",
+			"atividades.updated_at"
+		)
+		.from("atividades")
+		.join("clientes", "clientes.id", "=", "atividades.cliente_id")
+		.join("users", "users.id", "=", "atividades.user_id")
+		.where("atividades.id",'=', ID)
+		.then(Atividade => {
+
+			if(Atividade.length <= 0) return false;
+
+			return knex.select(
+				"info.id",
+				"descricao",
+				"categorias.nome as categoria",
+				"info.created_at",
+				"info.updated_at",
+			)
+			.from("infos_atividades as info")
+			.join("categorias", "categorias.id", "=", "info.categoria_id")
+			.where("info.atividade_id", "=", Atividade[0].id)
+			.then(infos => {
+				return {
+					...Atividade[0],
+					infos
+				}
+			})
+
+		})
+
+	},
+
 	/**
 	 * Conta quantos chamados tem aberto para aquele usuário na data.
 	 * @param {number} user_id
 	 * @param {number} client_id
-	 * @param {string} data
+	 * @param {string} date
 	 * @return {number}
 	 */
-	countByUserClient: async ({ user_id, cliente_id, created_at }) => {
-		const newDate = new Date(created_at).toISOString().slice(0, 10);
+	countByUserClientDate: async ({ user_id, cliente_id, date }) => {
 
 		return await knex
 			.count("id as id")
 			.from("atividades")
 			.where("user_id", "=", user_id)
 			.andWhere("cliente_id", "=", cliente_id)
-			.andWhereRaw(`SUBSTRING(created_at, 1, 10) like '%${newDate}%'`);
+			.andWhere("date", "=", date)
 	},
 
 	/**
-	 * Conta quantas atividades está aberta para o client
+	 * Conta quantas atividades foram aberta para o client
 	 * @param {number} clientID
 	 * @return {number}
 	 */
@@ -155,23 +182,17 @@ module.exports = {
 			.then((e) => e[0].id);
 	},
 
-	insert: async (Dados) => {
-		return await knex.insert(Dados).into("atividades");
+	insert: (Dados) => {
+		return knex.insert(Dados).into("atividades");
 	},
 
-	/**
-	 * Atualiza dados das atividades;
-	 * @param {Object} Dados
-	 * @return {Object}
-	 */
-	update: async (Dados) => {
-		return await knex("atividades")
+	update: (Dados) => {
+		return knex("atividades")
 			.where({ id: Dados.id })
 			.update(Dados)
-			.then(async () => await findOne(Dados))
-			.catch(async (error) => {
-				console.log(error);
-				return { error: "Erro em retornar os dados atualizados." };
-			});
+	},
+
+	deletar: async (ID) => {
+		await knex("atividades").del().where("id", "=",ID).limit(1);
 	},
 };

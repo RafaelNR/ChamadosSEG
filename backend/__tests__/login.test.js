@@ -2,18 +2,7 @@ const App = require("../src/core/app");
 const request = require("supertest")(App);
 
 const MAIN_ROUTE = "/login";
-const { Token } = require("./auth.test");
-
-test("Verifica se token ainda é valido", async () => {
-	return await request
-		.post(MAIN_ROUTE)
-		.set("access_token", Token())
-		.then((res) => {
-			expect(res.status).toBe(200); // Deve ser;
-			expect(res.body).toHaveProperty("auth"); // deve possuir a propriedade data
-			expect(res.body.auth).toBe(true); // deve auth é true
-		});
-});
+//const { Token } = require("./auth.test");
 
 test("Não deve autenticar com senha invalida", async () => {
 	return await request
@@ -23,9 +12,10 @@ test("Não deve autenticar com senha invalida", async () => {
 			passwd: "teste",
 		})
 		.then((res) => {
-			expect(res.status).toBe(200);
+			console.log(res.body)
+			expect(res.status).toBe(400);
 			expect(res.body).toHaveProperty("success", false);
-			expect(res.body).toHaveProperty("auth", false);
+			expect(res.body).toHaveProperty("message", 'Usuário ou Senha são inválidos.');
 		});
 });
 
@@ -37,9 +27,9 @@ test("Não deve autenticar com user invalido", async () => {
 			passwd: "batata15",
 		})
 		.then((res) => {
-			expect(res.status).toBe(200);
+			expect(res.status).toBe(400);
 			expect(res.body).toHaveProperty("success", false);
-			expect(res.body).toHaveProperty("auth", false);
+			expect(res.body).toHaveProperty("message", 'Usuário ou Senha são inválidos.');
 		});
 });
 
@@ -50,9 +40,9 @@ test("Não deve autenticar sem senha", async () => {
 			user: "rafaelnetto",
 		})
 		.then((res) => {
-			expect(res.status).toBe(200);
+			expect(res.status).toBe(400);
 			expect(res.body).toHaveProperty("success", false);
-			expect(res.body).toHaveProperty("auth", false);
+			expect(res.body).toHaveProperty("message", "\"passwd\" é obrigatório");
 		});
 });
 
@@ -63,19 +53,8 @@ test("Não deve autenticar sem user", async () => {
 			passwd: "teste",
 		})
 		.then((res) => {
-			expect(res.status).toBe(200);
+			expect(res.status).toBe(400);
 			expect(res.body).toHaveProperty("success", false);
-			expect(res.body).toHaveProperty("auth", false);
-		});
-});
-
-test("Não devo autenticar sem senha", async () => {
-	return await request
-		.post(MAIN_ROUTE)
-		.set("access_token", "")
-		.then((res) => {
-			expect(res.status).toBe(200);
-			expect(res.body).toHaveProperty("success", false);
-			expect(res.body).toHaveProperty("auth", false);
+			expect(res.body).toHaveProperty("message", "\"user\" é obrigatório");
 		});
 });

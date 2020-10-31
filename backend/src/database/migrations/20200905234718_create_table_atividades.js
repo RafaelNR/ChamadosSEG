@@ -13,6 +13,9 @@ exports.up = function (knex) {
 			.notNullable()
 			.references("id")
 			.inTable("clientes");
+		table
+			.date("date")
+			.notNullable();
 		table.timestamp("created_at").defaultTo(knex.fn.now());
 		table.timestamp("updated_at").defaultTo(knex.fn.now());
 	});

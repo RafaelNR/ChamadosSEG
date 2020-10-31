@@ -1,8 +1,8 @@
 const Router = require("express").Router();
 const Controller = require("../controllers/subcategory");
-const Permission = require("../middlewares/permission");
+//const Permission = require("../middlewares/permission");
 
-Router.all(["/", "/:id"], Permission.admin);
+//Router.all(["/", "/:id"], Permission.admin);
 
 //* SUBCATEGORIAS
 Router.get("/", Controller.index);

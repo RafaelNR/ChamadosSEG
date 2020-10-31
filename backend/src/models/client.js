@@ -73,10 +73,6 @@ module.exports = {
 			});
 	},
 
-	/**
-	 * Deleta o cliente
-	 * @param {number} ClientID
-	 */
 	delete: async (ClientID) => {
 		await knex("clientes").del().where("id", "=", ClientID).limit(1);
 	},

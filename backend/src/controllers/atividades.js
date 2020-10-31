@@ -1,119 +1,138 @@
 const Validate = require("../tools/validation/schemas"); /* Validation */
 const Model = require("../models/atividades"); /* Model */
-const Log = require("./log"); /* LOG */
+const Result =  require('../tools/result');
 
 const { countClientByUser } = require("../models/clients_has_users");
 const User = require("../models/user");
 const Client = require("../models/client");
-
-let response;
-let status = 200;
+const Data = require("../tools/data");
 
 /**
  * Todas as atividades.
  */
 const index = async (req, res) => {
 	try {
-		response = { success: true, data: await Model.index() };
+		Result.ok(200,await Model.index());
 	} catch (error) {
-		status = 401;
-		response = { success: false, error };
+		Result.fail(400,error);
 	}
 
-	Log.Save(req.userId, "atividade", "index", response);
-	return res.status(status).json(response);
+	Result.registerLog(req.userId, "atividades", "index");
+	return res.status(Result.status).json(Result.res);
 };
 
-/**
- * Procura minhas atividade ou atividades dos clientes
- */
-const indexMy = async (req, res) => {
+const findAllByMy = async (req, res) => {
+	const user_id = Validate.UserID(req.userId);
 	try {
-		let Dados;
-		const user_id = Validate.UserID(req.userId);
-
-		/** Pesquisa pelo client_id */
-		if (req.params.client) {
-			const client_id = Validate.ClientID(req.params.clientID);
-			Dados = await Model.indexMyCliente(
-				tools.verifyClient(user_id, client_id)
-			);
-		} else {
-			Dados = await Model.indexMy(user_id);
-		}
-
-		response = { success: true, data: Dados };
+		const Dados = await Model.findByUser_id(user_id);
+		Result.ok(200,Dados);
 	} catch (error) {
-		status = 401;
-		response = { success: false, error };
+		Result.fail(400,error);
 	}
 
-	Log.Save(req.userId, "atividade", "indexMy", response);
-	return res.status(status).json(response);
+	Result.registerLog(user_id, "atividades", "findAllByMy");
+	return res.status(Result.status).json(Result.res);
 };
 
-/*
- *	Procurar uma unica atividade.
- */
+const findAllByUser = async (req, res) => {
+	try {
+		if (!req.params.user_id) throw 'Parametros inválidos.'
+		const user_id = Validate.UserID(req.params.user_id);
+		if(await User.countID(user_id) <= 0) throw 'Usuário não existe!'
+
+		const Dados = await Model.findByUser_id(user_id);
+		Result.ok(200,Dados);
+	} catch (error) {
+		Result.fail(400,error);
+	}
+
+	Result.registerLog(req.userId, "atividades", "findAllByUser");
+	return res.status(Result.status).json(Result.res);
+};
+
+const findAllByCliente = async (req,res) => {
+	try {
+		if (!req.params.cliente_id) throw 'Parametros inválidos.' 
+		const cliente_id = Validate.ClientID(req.params.cliente_id);
+		if(await Client.countID(cliente_id) <= 0) throw 'Cliente não existe!'
+	
+		Result.ok(200,await Model.findByClient_id(cliente_id));
+	} catch (error) {
+		Result.fail(400,error);
+	}
+
+	Result.registerLog(req.userId, "atividades", "findAllByCliente");
+	return res.status(Result.status).json(Result.res);
+};
+
 const findOne = async (req, res) => {
 	try {
-		if (!req.params) throw "Parâmetros inválidos";
+		if (!req.params.id) throw "Parâmetros inválidos";
+		const ID = Validate.ID(req.params.id)
+		const Dados = await Model.findOne(ID);
 
-		const params = await tools.handlingParams(req.params);
+		if (!Dados) throw "Atividade não existe!";
 
-		const Dados = await Model.findOne(params);
-
-		if (!Dados) throw "Atividade não existe";
-
-		response = { success: true, data: Dados };
+		Result.ok(200,Dados);
 	} catch (error) {
-		status = 401;
-		response = { success: false, error };
+		Result.fail(400,error);
 	}
 
-	Log.Save(req.userId, "atividade", "findOne", response);
-	return res.status(status).json(response);
+	Result.registerLog(req.userId, "atividades", "findOne");
+	return res.status(Result.status).json(Result.res);
 };
 
-/**
- * Insert de atividade
- */
 const insert = async (req, res) => {
 	try {
 		if (!req.body) throw "Informações não encontradas!";
+		const Dados = await tools.handlingInsert({ user_id: req.userId, ...req.body });
+		const ID = await Model.insert(Dados);
 
-		const Dados = await tools.handlingInsert(req.body);
-		await Model.insert(Dados);
-
-		response = { success: true, data: Dados };
+		Result.ok(201, await Model.findOne(ID));
 	} catch (error) {
-		status = 401;
-		response = { success: false, message: "Error!", error };
+		Result.fail(400,error);
 	}
 
-	Log.Save(req.userId, "atividades", "insert", response);
-	return res.status(status).json(response);
+	Result.registerLog(req.userId, "atividades", "insert");
+	return res.status(Result.status).json(Result.res);
 };
 
-/**
- * Update
- */
 const update = async (req, res) => {
 	try {
-		if (!req.body || !req.params.id) throw "Informações não encontradas!";
-		if (req.body.id !== parseInt(req.params.id)) throw "Valor são inválidos.";
+		if (!req.body || !req.params.id) throw "Parametros ou informações invalidas.";
+		const Dados = await tools.handlingUpdate(req.body);
+		await Model.update(Dados)
 
-		const Dados = await Model.update(tools.handlingUpdate(req.body));
-
-		response = { success: true, data: Dados };
+		Result.ok(204);
 	} catch (error) {
-		status = 401;
-		response = { success: false, message: "Error!", error };
+		Result.fail(400,error);
 	}
 
-	Log.Save(req.userId, "update", "update", response);
-	return res.status(status).json(response);
+	Result.registerLog(req.userId, "atividades", "update");
+	return res.status(Result.status).json(Result.res);
 };
+
+const deletar = async (req,res) => {
+
+	try {
+		if (!req.body || !req.params.id) throw "Parametros ou informações invalidas.";
+
+		const ID = Validate.ID(req.params.id);
+		const Ativdade = await findOne(ID);
+
+		if(!Ativdade) throw 'Atividade não existe';
+		if(Ativdade.infos.length > 0) throw 'Impossível deletar atividade, poís já tem informações vinculada.';
+
+		Model.deletar(ID);
+
+		Result.ok(204);
+	} catch (error) {
+		Result.fail(400,error);
+	}
+
+	Result.registerLog(req.userId, "atividades", "deletar");
+	return res.status(Result.status).json(Result.res);
+}
 
 const tools = {
 	/**
@@ -121,15 +140,13 @@ const tools = {
 	 * @param {Object} Dados
 	 */
 	handlingInsert: async (Dados) => {
+
 		const newDados = Validate.insertAtividades(Dados);
 
 		return await tools
 			.verifyAtividade(newDados)
 			.then(() => {
-				return {
-					...newDados,
-					atividades: JSON.stringify(newDados.atividades),
-				};
+				return newDados;
 			})
 			.catch((error) => {
 				throw error;
@@ -140,13 +157,19 @@ const tools = {
 	 * Trata os dados da atividade antes do Update;
 	 * @param {Object} Dados
 	 */
-	handlingUpdate: (Dados) => {
+	handlingUpdate: async (Dados) => {
 		const newDados = Validate.updateAtividades(Dados);
+		const Atividade = await Model.findOne(Dados.id)
 
-		return {
-			...newDados,
-			atividades: JSON.stringify(newDados.atividades),
-		};
+		// if(Atividade.user_id !== UserID) 
+		// 	throw "Você ";
+
+		if(!Data.compareDateMaxDays(Atividade.created_at, 7)){
+			throw "Período para editar atividade ultrapassado.";
+		}
+
+
+		return newDados;
 	},
 
 	/**
@@ -178,13 +201,17 @@ const tools = {
 	},
 
 	/**
-	 * Verifica se já existe atividade do usuário da requisição para aquele cliente na data.
+	 * Verifica se já existe atividade do usuário da requisição para aquele cliente na data informada.
 	 */
 	verifyAtividade: async (Dados) => {
-		const count = await Model.countByUserClient(Dados);
+		const count = await Model.countByUserClientDate(Dados);
 
 		if (count[0].id >= 1) {
 			throw "Já existe atividades para esse cliente no dia informado.";
+		}
+
+		if(!Data.compareDateMaxDays(Dados.date, 15)){
+			throw "Não criar atividade com mais de 15 dias.";
 		}
 
 		return count;
@@ -200,13 +227,17 @@ const tools = {
 
 		return client_id;
 	},
+
 };
 
 module.exports = {
 	index,
-	indexMy,
+	findAllByMy,
+	findAllByUser,
+	findAllByCliente,
 	findOne,
 	update,
 	insert,
+	deletar,
 	tools,
 };

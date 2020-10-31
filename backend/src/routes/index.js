@@ -22,7 +22,7 @@ Router.use("/categorias", verifyToken, require("./category"));
 Router.use("/subcategorias", verifyToken, require("./subcategory"));
 Router.use(["/tasks", "/tarefas"], verifyToken, require("./tasks"));
 
-Router.get("/logout", verifyToken, (req, res) => {
+Router.get("/logout", (req, res) => {
 	return res.status(200).json({
 		Page: "logout",
 		auth: false,
