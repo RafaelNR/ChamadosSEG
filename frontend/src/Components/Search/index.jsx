@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default ({ handleChangeSearch }) => {
+export default React.memo(({ handleChangeSearch }) => {
 	const classes = useStyles();
 
 	return (
@@ -63,4 +63,4 @@ export default ({ handleChangeSearch }) => {
 			/>
 		</div>
 	);
-};
+});

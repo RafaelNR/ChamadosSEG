@@ -1,20 +1,26 @@
 import React, { useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import {
+	makeStyles,
 	Table,
 	TableBody,
 	TableCell,
 	TableContainer,
 	TableRow,
-	Avatar
+	Avatar,
 } from "@material-ui/core/";
+
+//* COMPONENTES
 import EnhancedTableHead from "./TableHead";
 import EnhancedTableToolbar from "./ToolBar";
 import TablePagination from "./TablePagination";
 import Actions from "./Actions";
 import sortObject from "../../Utils/sortObject";
+import CircularProcess from "../Loading";
+
+//* FUNCTIONS
 import { initialsName } from '../../Utils/functions'
 
+//* CONTEXT
 import useUsuarios from "../../Context/UsuariosContext";
 import useOrderTable from "../../Context/OrderTableContext";
 import usePageTable from "../../Context/PageTableContext";
@@ -97,7 +103,7 @@ export default function () {
 	useEffect(() => {
 		setOrderBy("nome");
 		setRows(search && search.length > 3 ? searchResults : usuarios);
-	}, [usuarios, searchResults]);
+	}, [usuarios, searchResults,search, setOrderBy, setRows]);
 
 	/**
 	 * Seta os usuários encontrados na pesquisa.
@@ -113,17 +119,11 @@ export default function () {
 			) {
 				return usuario;
 			}
+			return;
 		});
 		setSearchResults(results);
-		// eslint-disable-next-line
-	}, [search, setSearchResults]);
-
-	/**
-	 * Click nas actions da tabela.
-	 */
-	const clickAction = (id) => {
-		getUsuario(id);
-	};
+		return;
+	}, [search, setSearchResults, usuarios]);
 
 	return (
 		<React.Fragment>
@@ -140,47 +140,50 @@ export default function () {
 				>
 					<EnhancedTableHead headCells={headCells} />
 					<TableBody>
-						{sortObject(rows, order, orderBy, page, rowsPerPage).map(
-							(row, index) => {
-								return (
-									<TableRow hover tabIndex={-1} key={row.nome}>
-										<TableCell
-											component="th"
-											className={classes.tablerow}
-											scope="row"
-											padding="default"
-										>
-											<Avatar alt={row.nome} className={classes.orange}>
-												{initialsName(row.nome)}
-											</Avatar>
-										</TableCell>
-										<TableCell
-											component="th"
-											className={classes.tablerow}
-											scope="row"
-											padding="default"
-										>
-											{row.nome}
-										</TableCell>
-										<TableCell align="left" className={classes.tablerow}>
-											{row.user}
-										</TableCell>
-										<TableCell align="left" className={classes.tablerow}>
-											{row.email}
-										</TableCell>
-										<TableCell align="center" className={classes.tablerow}>
-											<Actions
-												id={row.id}
-												clickAction={clickAction}
-												disabled={row.actived}
-												buttons={["edit", "disable"]}
-											/>
-										</TableCell>
-									</TableRow>
-								);
-							}
-						)}
-						{emptyRows > 0 && (
+						{!usuarios || usuarios.length === 0
+							? (<CircularProcess type="Table" />)
+							: (sortObject(rows, order, orderBy, page, rowsPerPage).map(
+								(row, index) => {
+									return (
+										<TableRow hover tabIndex={-1} key={row.id}>
+											<TableCell
+												component="th"
+												className={classes.tablerow}
+												scope="row"
+												padding="default"
+											>
+												<Avatar alt={row.nome} className={classes.orange}>
+													{initialsName(row.nome)}
+												</Avatar>
+											</TableCell>
+											<TableCell
+												component="th"
+												className={classes.tablerow}
+												scope="row"
+												padding="default"
+											>
+												{row.nome}
+											</TableCell>
+											<TableCell align="left" className={classes.tablerow}>
+												{row.user}
+											</TableCell>
+											<TableCell align="left" className={classes.tablerow}>
+												{row.email}
+											</TableCell>
+											<TableCell align="center" className={classes.tablerow}>
+												<Actions
+													id={row.id}
+													getID={getUsuario}
+													disabled={row.actived}
+													buttons={["edit", "disable"]}
+												/>
+											</TableCell>
+										</TableRow>
+									);
+								}
+							))
+						}
+						{usuarios && usuarios.length > 0  && emptyRows > 0 && (
 							<TableRow style={{ height: 53 * emptyRows }}>
 								<TableCell colSpan={6} />
 							</TableRow>

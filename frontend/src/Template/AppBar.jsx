@@ -1,19 +1,19 @@
-import React, { useContext } from "react";
+import React from "react";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import Badge from "@material-ui/core/Badge";
-import AccountCircle from "@material-ui/icons/AccountCircle";
+import MenuIcon from '@material-ui/icons/Menu';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import { 
+	makeStyles,
+	AppBar,
+	Toolbar,
+	CssBaseline,
+	IconButton,
+	Badge,
+} from '@material-ui/core';
 import ButtonLogout from "../Components/LogOut";
+import MenuAccount from '../Components/Menu/Account'
 
 import useMenu from "../Context/MenuContext";
-
-const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -31,8 +31,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 
 	appBarShift: {
-		marginLeft: drawerWidth,
-		width: `calc(100% - ${drawerWidth}px)`,
+		marginLeft: 240,
+		width: `calc(100% - ${240}px)`,
 		transition: theme.transitions.create(["width", "margin"], {
 			easing: theme.transitions.easing.sharp,
 			duration: theme.transitions.duration.enteringScreen,
@@ -44,7 +44,6 @@ const useStyles = makeStyles((theme) => ({
 			display: "flex",
 		},
 	},
-
 	toolbar: {
 		display: "flex",
 		alignItems: "center",
@@ -54,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
 		...theme.mixins.toolbar,
 	},
 }));
+
 
 export default () => {
 	const classes = useStyles();
@@ -83,19 +83,11 @@ export default () => {
 
 					<div className={classes.grow} />
 					<div className={classes.sectionDesktop}>
+						<MenuAccount />
 						<IconButton aria-label="show 17 new notifications" color="inherit">
 							<Badge badgeContent={1} color="secondary">
 								<NotificationsIcon />
 							</Badge>
-						</IconButton>
-						{/* Icon Profile */}
-						<IconButton
-							edge="end"
-							aria-label="account of current user"
-							aria-haspopup="true"
-							color="inherit"
-						>
-							<AccountCircle />
 						</IconButton>
 						<ButtonLogout />
 					</div>

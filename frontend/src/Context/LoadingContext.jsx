@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const LoadingContext = createContext({});
 
 const LoadingProvider = ({ children }) => {
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 
 	return (
 		<LoadingContext.Provider

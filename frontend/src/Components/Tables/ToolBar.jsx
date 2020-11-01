@@ -49,4 +49,4 @@ EnhancedTableToolbar.propTypes = {
 	title: PropTypes.string.isRequired,
 };
 
-export default EnhancedTableToolbar;
+export default React.memo(EnhancedTableToolbar);

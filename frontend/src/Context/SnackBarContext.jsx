@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useCallback } from "react";
 import PropTypes from "prop-types";
 
 const SnackBarContext = createContext({});
@@ -8,22 +8,15 @@ const SnackBarProvider = ({ children }) => {
 	const [severity, setSeverity] = useState("success");
 	const [message, setMessage] = useState("");
 
-	const clickSnackBar = () => {
+	const clickSnackBar = useCallback(() => {
 		setOpenSnackBar(!openSnackBar);
-	};
+	},[openSnackBar])
 
-	// const closeSnackBar = (event, reason) => {
-	// 	if (reason === "clickaway") {
-	// 		return;
-	// 	}
-	// 	setOpenSnackBar(false);
-	// };
-
-	const handleSnackBar = ({ type, message }) => {
+	const handleSnackBar = useCallback(({ type, message }) => {
 		setSeverity(type);
 		setMessage(message);
 		setOpenSnackBar(true);
-	};
+	},[])
 
 	return (
 		<SnackBarContext.Provider

@@ -1,7 +1,6 @@
 import React from "react";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
-import { Container } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, Container } from "@material-ui/core";
 import Main from "../Template/Main";
 //Pages
 import Home from "../Pages/Home";
@@ -10,19 +9,14 @@ import Clientes from "../Pages/Clientes";
 import Categorias from "../Pages/Categorias";
 import Tarefas from "../Pages/Tarefas";
 import Usuarios from "../Pages/Usuarios";
-
-// let Home = React.lazy(() => import( "../Pages/Home"));
-// let Atividades = React.lazy(() => import( "../Pages/Atividades"));
-// let Clientes = React.lazy(() => import( "../Pages/Clientes"));
-// let Categorias = React.lazy(() => import( "../Pages/Categorias"));
-// let Tarefas = React.lazy(() => import( "../Pages/Tarefas"));
-// let Usuarios = React.lazy(() => import( "../Pages/Usuarios"));
+import Modelos from "../Pages/Modelos";
+import Perfil from "../Pages/Perfil";
 
 const useStyles = makeStyles(() => ({
 	container: {
 		backgroundColor: "#f0f0f0f0",
 		paddingTop: "30px",
-		paddingBottom: "1px",
+		paddingBottom: "30px",
 	},
 }));
 
@@ -33,12 +27,14 @@ function Routes() {
 			<Container maxWidth={false} className={classes.container}>
 				<Switch>
 					<Route exact path="/" component={Home} />
-					<Route exact path="/atividades" component={Atividades} />
-					<Route exact path="/clientes" component={Clientes} />
-					<Route exact path="/categorias" component={Categorias} />
-					<Route exact path="/home" component={Home} />
-					<Route exact path="/tarefas" component={Tarefas} />
-					<Route exact path="/usuarios" component={Usuarios} />
+					<Route path="/atividades" component={Atividades} />
+					<Route path="/clientes" component={Clientes} />
+					<Route path="/categorias" component={Categorias} />
+					<Route path="/home" component={Home} />
+					<Route path="/tarefas" component={Tarefas} />
+					<Route path="/usuarios" component={Usuarios} />
+					<Route path="/modelos" component={Modelos} />
+					<Route path="/perfil" component={Perfil} />
 					<Route path="*">
 						<Redirect to="/" />
 					</Route>
@@ -48,4 +44,4 @@ function Routes() {
 	);
 }
 
-export default withRouter(Routes);
+export default React.memo(withRouter(Routes));

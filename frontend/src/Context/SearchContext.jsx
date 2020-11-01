@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useCallback } from "react";
 import PropTypes from "prop-types";
 
 const SearchContext = createContext({});
@@ -10,9 +10,9 @@ const SearchProvider = ({ children }) => {
 	/**
 	 * Manipula o search da pesquisa, ativando o useEffect
 	 */
-	const handleChangeSearch = (event) => {
+	const handleChangeSearch = useCallback((event) => {
 		if (event.target.value.length >= 3) setSearch(event.target.value);
-	};
+	},[]);
 
 	/**
 	 * Provider

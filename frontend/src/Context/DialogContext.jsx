@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useCallback } from "react";
 import PropTypes from "prop-types";
 import { TrainOutlined } from "@material-ui/icons";
 
@@ -12,19 +12,19 @@ const DialogProvider = ({ children }) => {
 	/**
 	 * Abre o dialog;
 	 */
-	const openDialog = (currtype = null) => {
+	const openDialog = useCallback((currtype = null) => {
 		setOpen(true);
 		setLoading(true);
 		if (typeof type === "string") setType(currtype);
-	};
+	}, [type]);
 
 	/**
 	 * Fecha dialog;
 	 */
-	const closeDialog = () => {
+	const closeDialog = useCallback(() => {
 		setOpen(false);
 		setLoading(false);
-	};
+	}, []);
 
 	/**
 	 * Provider

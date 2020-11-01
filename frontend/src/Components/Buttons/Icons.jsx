@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function AddIconButton() {
+const AddIconButton = memo(() => {
 	const classes = useStyles();
 	const { openDialog } = useDialog();
 	return (
@@ -44,15 +44,15 @@ function AddIconButton() {
 			</Tooltip>
 		</IconButton>
 	);
-}
+});
 
-const EditIconButton = memo(({ id, clickAction }) => {
+const EditIconButton = memo(({ id, getID }) => {
 	const classes = useStyles();
 	const { openDialog } = useDialog();
 	return (
 		<IconButton
 			onClick={() => {
-				clickAction(id);
+				getID(id);
 				openDialog("update");
 			}}
 		>
@@ -65,16 +65,16 @@ const EditIconButton = memo(({ id, clickAction }) => {
 
 EditIconButton.propTypes = {
 	id: PropTypes.number.isRequired,
-	clickAction: PropTypes.func.isRequired,
+	getID: PropTypes.func.isRequired,
 };
 
-const DeleteIconButton = memo(({ id, clickAction }) => {
+const DeleteIconButton = memo(({ id, getID }) => {
 	const classes = useStyles();
 	const { openDialog } = useDialog();
 	return (
 		<IconButton
 			onClick={() => {
-				clickAction(id);
+				getID(id);
 				openDialog("delete");
 			}}
 		>
@@ -87,16 +87,16 @@ const DeleteIconButton = memo(({ id, clickAction }) => {
 
 DeleteIconButton.propTypes = {
 	id: PropTypes.number.isRequired,
-	clickAction: PropTypes.func.isRequired,
+	getID: PropTypes.func.isRequired,
 };
 
-const DisabledIconButton = memo(({ id, clickAction }) => {
+const DisabledIconButton = memo(({ id, getID }) => {
 	const classes = useStyles();
 	const { openDialog } = useDialog();
 	return (
 		<IconButton
 			onClick={() => {
-				clickAction(id);
+				getID(id);
 				openDialog("disabled");
 			}}
 		>
@@ -109,16 +109,16 @@ const DisabledIconButton = memo(({ id, clickAction }) => {
 
 DisabledIconButton.propTypes = {
 	id: PropTypes.number.isRequired,
-	clickAction: PropTypes.func.isRequired,
+	getID: PropTypes.func.isRequired,
 };
 
-const ActivedIconButton = memo(({ id, clickAction }) => {
+const ActivedIconButton = memo(({ id, getID }) => {
 	const classes = useStyles();
 	const { openDialog } = useDialog();
 	return (
 		<IconButton
 			onClick={() => {
-				clickAction(id);
+				getID(id);
 				openDialog("actived");
 			}}
 		>
@@ -131,7 +131,7 @@ const ActivedIconButton = memo(({ id, clickAction }) => {
 
 ActivedIconButton.propTypes = {
 	id: PropTypes.number.isRequired,
-	clickAction: PropTypes.func.isRequired,
+	getID: PropTypes.func.isRequired,
 };
 
 export {

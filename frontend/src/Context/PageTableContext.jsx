@@ -11,20 +11,21 @@ const PageTableProvider = ({ children }) => {
 	/**
 	 * Muda para uma nova página
 	 */
-	const handleChangePage = (event, newPage) => {
+	const handleChangePage = useCallback((event, newPage) => {
 		setPage(newPage);
-	};
+	},[]);
 
 	/*
 	/* Altera a quantidade de itens por página
 	 */
-	const handleChangeRowsPerPage = (event) => {
+	const handleChangeRowsPerPage = useCallback((event) => {
 		setRowsPerPage(parseInt(event.target.value, 10));
 		setPage(0);
-	};
+	}, []);
 
-	const emptyRows =
-		rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+	const emptyRows = React.useMemo(() => {
+		return rows && rows.length ? (rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage)) : []
+	}, [page,rows,rowsPerPage])
 
 	return (
 		<PageTableContext.Provider

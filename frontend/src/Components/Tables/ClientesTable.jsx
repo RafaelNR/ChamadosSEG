@@ -1,22 +1,28 @@
 import React, { useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import {
+	makeStyles,
 	Table,
 	TableBody,
 	TableCell,
 	TableContainer,
 	TableRow,
 } from "@material-ui/core/";
+
+//* COMPONENTES
 import EnhancedTableHead from "./TableHead";
 import EnhancedTableToolbar from "./ToolBar";
 import TablePagination from './TablePagination';
 import Actions from "./Actions";
-import sortObject from "../../Utils/sortObject";
+import CircularProcess from "../Loading";
 
+//* CONTEXT
 import useClientes from "../../Context/ClientesContext";
 import useOrderTable from "../../Context/OrderTableContext";
 import usePageTable from "../../Context/PageTableContext";
 import useSearch from "../../Context/SearchContext";
+
+//& UTILS
+import sortObject from "../../Utils/sortObject";
 
 // Header Table
 const headCells = [
@@ -88,7 +94,7 @@ export default function () {
 	useEffect(() => {
 		setOrderBy("nome_fantasia");
 		setRows(search && search.length > 3 ? searchResults : clientes);
-	}, [clientes, searchResults]);
+	}, [clientes, searchResults,search, setOrderBy, setRows]);
 
 	/**
 	 * Seta os usuários encontrados na pesquisa.
@@ -96,20 +102,15 @@ export default function () {
 	useEffect(() => {
 		const results = clientes.filter((cliente) => {
 			const nome = cliente.nome_fantasia.toLowerCase();
+
 			if (nome.includes(search.toLowerCase())) {
 				return cliente;
 			}
+			return;
 		});
 		setSearchResults(results);
-		// eslint-disable-next-line
-	}, [search, setSearchResults]);
+	}, [search, setSearchResults, clientes]);
 
-	/**
-	 * Click nas actions da tabela.
-	 */
-	const clickAction = (id) => {
-		getCliente(id);
-	};
 
 	return (
 		<React.Fragment>
@@ -123,36 +124,39 @@ export default function () {
 				>
 					<EnhancedTableHead headCells={headCells} />
 					<TableBody>
-						{sortObject(rows, order, orderBy, page, rowsPerPage).map(
-							(row, index) => {
-								return (
-									<TableRow hover tabIndex={-1} key={row.id}>
-										<TableCell
-											component="th"
-											className={classes.tablerow}
-											scope="row"
-											padding="default"
-										>
-											{row.nome_fantasia}
-										</TableCell>
-										<TableCell align="left" className={classes.tablerow}>
-											{row.cnpj_cpf}
-										</TableCell>
-										<TableCell align="left" className={classes.tablerow}>
-											{row.email}
-										</TableCell>
-										<TableCell align="center" className={classes.tablerow}>
+						{!clientes || clientes.length === 0	
+							? (<CircularProcess type="Table" />)
+							: (sortObject(rows, order, orderBy, page, rowsPerPage).map(
+								(row, index) => {
+									return (
+										<TableRow hover tabIndex={-1} key={row.id}>
+											<TableCell
+												component="th"
+												className={classes.tablerow}
+												scope="row"
+												padding="default"
+											>
+												{row.nome_fantasia}
+											</TableCell>
+											<TableCell align="left" className={classes.tablerow}>
+												{row.cnpj_cpf}
+											</TableCell>
+											<TableCell align="left" className={classes.tablerow}>
+												{row.email}
+											</TableCell>
+											<TableCell align="center" className={classes.tablerow}>
 											<Actions
-												id={row.id}
-												clickAction={clickAction}
-												disabled={row.actived}
-												buttons={["edit", "disabled"]}
+													id={row.id}
+													getID={getCliente}
+													disabled={row.actived}
+													buttons={["edit", "disable"]}
 											/>
-										</TableCell>
-									</TableRow>
-								);
-							}
-						)}
+											</TableCell>
+										</TableRow>
+									);
+								}		
+							))
+						}
 						{emptyRows > 0 && (
 							<TableRow style={{ height: 53 * emptyRows }}>
 								<TableCell colSpan={6} />

@@ -70,4 +70,4 @@ EnhancedTableHead.propTypes = {
 	headCells: PropTypes.array.isRequired,
 };
 
-export default EnhancedTableHead;
+export default React.memo(EnhancedTableHead);

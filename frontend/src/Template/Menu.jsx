@@ -4,7 +4,7 @@ import AppBar from "./AppBar";
 import Drawer from "./Drawer";
 import { MenuProvider } from "../Context/MenuContext";
 
-export default function Menu() {
+const Menu = () => {
 	return (
 		<MenuProvider>
 			<AppBar />
@@ -12,3 +12,5 @@ export default function Menu() {
 		</MenuProvider>
 	);
 }
+
+export default React.memo(Menu)

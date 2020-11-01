@@ -1,8 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import { Save, Close } from "@material-ui/icons/";
+import { makeStyles, Button, DialogActions } from "@material-ui/core/";
+import { Save, Close, NavigateNextSharp, NavigateBeforeSharp } from "@material-ui/icons/";
 
 const useStyles = makeStyles((theme) => ({
 	cancel: {
@@ -25,35 +24,56 @@ const useStyles = makeStyles((theme) => ({
 			backgroundColor: "#124116",
 		},
 	},
+	next: {
+		backgroundColor: "blue",
+		color: "white",
+		padding: "8px",
+		marginRight: "8px",
+		"&:hover": {
+			transition: "",
+			backgroundColor: "blue",
+		},
+	},
 	icon: {
 		fontSize: "20px",
 	},
 }));
 
-const SaveButton = ({ clickAction }) => {
+const SaveButton = React.memo(({disabled}) => {
 	const classes = useStyles();
 	return (
-		<Button className={classes.save} autoFocus onClick={clickAction}>
-			<Save className={classes.icon} />
-		</Button>
+			<Button type="submit" className={classes.save} disabled={disabled}>
+				<Save className={classes.icon}/>
+			</Button>
 	);
-};
+});
 
-SaveButton.propTypes = {
-	clickAction: PropTypes.func.isRequired,
-};
-
-const CancelButton = ({ clickClose }) => {
+const NavigatorButton = React.memo(({ clickAction, name, icon }) => {
 	const classes = useStyles();
 	return (
-		<Button className={classes.cancel} onClick={clickClose}>
-			<Close className={classes.icon} />
+		<Button onClick={() => clickAction()} className={classes.next}>
+			{icon === 'next'
+				? <NavigateNextSharp className={classes.icon} />
+				: <NavigateBeforeSharp className={classes.icon} />
+			}
+			{ name ? name : ''}
 		</Button>
 	);
-};
+});
+
+const CancelButton = React.memo(({ clickClose }) => {
+	const classes = useStyles();
+	return (
+		<DialogActions>
+			<Button className={classes.cancel} onClick={clickClose}>
+				<Close className={classes.icon} />
+			</Button>
+		</DialogActions>
+	);
+});
 
 CancelButton.propTypes = {
 	clickClose: PropTypes.func.isRequired,
 };
 
-export { SaveButton, CancelButton };
+export { SaveButton, CancelButton, NavigatorButton };

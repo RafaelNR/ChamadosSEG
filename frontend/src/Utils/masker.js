@@ -23,9 +23,8 @@ function maskerTel(value) {
 
 
 function inputHandler(masks, max, value) {
-	var c = value;
-	var v = value.replace(/\D/g, "");
-	var m = value.length > max ? 1 : 0;
+	const v = value.replace(/\D/g, "");
+	const m = value.length > max ? 1 : 0;
 	const t = VMasker.toPattern(v, masks[m]);
 	return t;
 }

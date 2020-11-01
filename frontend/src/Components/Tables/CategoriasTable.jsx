@@ -9,16 +9,22 @@ import {
 	TableRow,
 	Chip,
 } from "@material-ui/core/";
+
+//* COMPONENTES
 import EnhancedTableHead from "./TableHead";
 import Toolbar from "./ToolBar";
 import TablePagination from "./TablePagination";
 import Actions from "./Actions";
-import sortObject from "../../Utils/sortObject";
+import CircularProcess from "../Loading";
 
+//* CONTEXT
 import useCategorias from "../../Context/CategoriasContext";
 import useOrderTable from "../../Context/OrderTableContext";
 import usePageTable from "../../Context/PageTableContext";
 import useSearch from "../../Context/SearchContext";
+
+//& UTILS
+import sortObject from "../../Utils/sortObject";
 
 // Header Table
 const headCells = [
@@ -30,18 +36,18 @@ const headCells = [
 		sort: true,
 	},
 	{
-		id: "user",
-		numeric: false,
-		disablePadding: false,
-		label: "Alterado",
-		sort: true,
-	},
-	{
 		id: "subCategorias",
 		numeric: false,
 		disablePadding: false,
 		label: "Sub-Categorias",
 		sort: false,
+	},
+	{
+		id: "user",
+		numeric: false,
+		disablePadding: false,
+		label: "Última Alteração",
+		sort: true,
 	},
 	{
 		id: "actions",
@@ -52,10 +58,10 @@ const headCells = [
 	},
 ];
 
-// Tabela
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
 	table: {
 		minWidth: 750,
+		overflow: 'hidden'
 	},
 	visuallyHidden: {
 		border: 0,
@@ -91,15 +97,15 @@ export default function () {
 	const { page, rows, setRows, rowsPerPage, emptyRows } = usePageTable();
 
 	/**
-	 * Ordem os dados e seta as linha a serem exibidas
+	 ** Ordem os dados e seta as linha a serem exibidas
 	 */
 	useEffect(() => {
 		setOrderBy("nome");
 		setRows(search && search.length > 3 ? searchResults : categorias);
-	}, [categorias, searchResults]);
+	}, [categorias, searchResults,search, setOrderBy, setRows]);
 
 	/**
-	 * Seta os usuários encontrados na pesquisa.
+	 ** Seta os usuários encontrados na pesquisa.
 	 */
 	useEffect(() => {
 		const results = categorias.filter((categoria) => {
@@ -107,18 +113,10 @@ export default function () {
 			if (nome.includes(search.toLowerCase())) {
 				return categoria;
 			}
+			return;
 		});
 		return setSearchResults(results);
-
-		//eslint - disable - next - line;
-	}, [search, setSearchResults]);
-
-	/**
-	 * Click nas actions da tabela.
-	 */
-	const clickAction = (id) => {
-		getCategoria(id);
-	};
+	}, [search, setSearchResults, categorias]);
 
 	return (
 		<React.Fragment>
@@ -135,49 +133,54 @@ export default function () {
 				>
 					<EnhancedTableHead headCells={headCells} />
 					<TableBody>
-						{sortObject(rows, order, orderBy, page, rowsPerPage).map(
-							(row, index) => {
-								return (
-									<TableRow hover tabIndex={-1} key={row.nome}>
-										<TableCell
-											component="th"
-											className={classes.tablerow}
-											scope="row"
-											padding="default"
-										>
-											{row.nome}
-										</TableCell>
-										<TableCell align="left" className={classes.tablerow}>
-											{row.user}
-										</TableCell>
-										<TableCell
-											align="left"
-											className={clsx(classes.tablerow, classes.rowchip)}
-										>
-											{row.subCategorias.map((sub, index) => {
-												return (
-													<Chip
-														key={index}
-														label={sub.nome}
-														variant="outlined"
-														size="small"
-														className={classes.chip}
+						{!categorias || categorias.length === 0
+							? (<CircularProcess type="Table" />)
+							: (sortObject(rows, order, orderBy, page, rowsPerPage).map(
+									(row, index) => {
+										return (
+											<TableRow hover tabIndex={-1} key={row.nome}>
+												<TableCell
+													component="th"
+													className={classes.tablerow}
+													scope="row"
+													padding="default"
+												>
+													{row.nome}
+												</TableCell>
+												<TableCell
+													align="left"
+													className={clsx(classes.tablerow, classes.rowchip)}
+												>
+													{row.subCategorias.map((sub, index) => {
+														return index > 3 ? null :
+														sub ? (
+															<Chip
+																key={index}
+																label={sub.nome}
+																variant="outlined"
+																size="small"
+																className={classes.chip}
+															/>
+														) : ' - ';  
+													})}
+												</TableCell>
+												<TableCell align="left" className={classes.tablerow}>
+													{row.user}
+												</TableCell>
+												<TableCell align="center" className={classes.tablerow}>
+													<Actions
+														id={row.id}
+														getID={getCategoria}
+														disabled={row.actived}
+														buttons={["edit", "delete"]}
 													/>
-												);
-											})}
-										</TableCell>
-										<TableCell align="center" className={classes.tablerow}>
-											<Actions
-												id={row.id}
-												clickAction={clickAction}
-												disabled={row.actived}
-												buttons={["edit", "disable"]}
-											/>
-										</TableCell>
-									</TableRow>
-								);
-							}
-						)}
+												</TableCell>
+											</TableRow>
+										);
+								}
+						))
+
+					}
 						{emptyRows > 0 && (
 							<TableRow style={{ height: 53 * emptyRows }}>
 								<TableCell colSpan={6} />

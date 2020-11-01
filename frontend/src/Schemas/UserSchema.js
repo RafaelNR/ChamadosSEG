@@ -1,4 +1,3 @@
-import { isValidElement } from "react";
 import * as yup from "yup";
 import Validate from "../Utils/Validate";
 
@@ -30,10 +29,12 @@ const InsertSchema = (data) => {
 			.required("Telefone é obrigatório"),
 		role_id: yup
 			.number()
-			.notRequired()
 			.min(0)
 			.max(99)
 			.required("Perfil é obrigatório."),
+		clients: yup
+			.array()
+			.required('Pelo menos um cliente é obrigatório.')
 	});
 
 	const Val = new Validate(schema, data);
@@ -71,6 +72,7 @@ const UpdateSchema = (data) => {
 			.min(0)
 			.max(99)
 			.required("Perfil é obrigatório."),
+		clients: yup.array().required("Pelo menos um cliente é obrigatório."),
 	});
 
 	const Val = new Validate(schema, data);

@@ -10,9 +10,7 @@ import * as Api from "../Api/Crud";
 import {
 	InsertSchema,
 	UpdateSchema,
-	DisabledSchema,
 } from "../Schemas/ClienteSchema";
-import Masker from "../Utils/masker";
 
 import useSnackBar from "./SnackBarContext";
 import useLoading from "./LoadingContext";
@@ -27,8 +25,8 @@ const ClientesProvider = ({ children }) => {
 	const [errors, setErrors] = useState({});
 	const [apiLoading, setApiLoading] = useState(false);
 
-	/**
-	 * Inicia os clientes e monta o componentes.
+		/**
+	 * Inicia os clientes e monta o componente.
 	 */
 	useEffect(
 		() => {
@@ -37,7 +35,8 @@ const ClientesProvider = ({ children }) => {
 					const { success, data } = resp.data;
 					setLoading(false);
 					if (success) return setClientes(data);
-					throw "Erro em carregar usuários.";
+					const error = new Error();
+					return error.message("Erro em carregar clientes.")
 				})
 				.catch((error) => {
 					console.log(error);
@@ -50,28 +49,30 @@ const ClientesProvider = ({ children }) => {
 
 			return function cleanup() {
 				console.log("unmounted component");
-				Api.source().cancel();
+				Api.default.source();
 			};
 		},
-		// eslint-disable-next-line
-		[setClientes]
+		
+		[setClientes,handleSnackBar,setLoading]
 	);
 
 	/**
-	 * Busca o cliente
+	 * Busca o cliente pelo ID.
 	 */
 	const getCliente = useCallback(
-		(ID) => {
-			setApiLoading(true);
+		async (ID) => {
 			try {
-				Api.getOne("clientes", parseInt(ID))
+				setApiLoading(true);
+				setErrors({})
+				return Api.getByID("clientes", parseInt(ID))
 					.then((resp) => {
+						console.log(resp)
+						const { success, data } = resp.data;
+						if (!success) throw resp.data;
 						setApiLoading(false);
-						setCliente(resp.data.data);
+						setCliente({...data, passwd: '******' });
+						return;
 					})
-					.catch((error) => {
-						throw error;
-					});
 			} catch (error) {
 				console.log(error);
 				handleSnackBar({
@@ -80,96 +81,110 @@ const ClientesProvider = ({ children }) => {
 				});
 			}
 		},
-		[cliente, handleSnackBar]
+		[handleSnackBar]
 	);
 
 	/**
-	 * Trata quando usuário digita no teclado
-	 * @param {object} event
+	 * Configura as actions de submit
 	 */
-	const handleChange = (event) => {
-		const key = event.target.name;
-		const value = event.target.value;
-		setCliente({
-			...cliente,
-			[key]: Masker(value, key),
-		});
-	};
-
-	/**
-	 * Trata as actions dos cliente
-	 * @param {function} setOpen
-	 * @param {function} setLoading
-	 * @param {string} type
-	 */
-	const handleActions = (setOpen, setLoading, type) => {
-		setLoading(true);
-		const fn = Actions[type];
-		return fn().then(() => {
-			setCliente({});
-			setLoading(false);
-			setOpen(false);
-		})
-	};
-
 	const Actions = {
-		async insert(){
+		async insert(cliente) {
 			try {
 				const data = await InsertSchema(cliente);
-				if (data.error) throw data.errors;
+				if (data.error) throw data;
 				const resp = await Api.insert("clientes", data);
 				if (!resp.data.success) throw resp.data.error;
 				setClientes((clientes) =>
-					clientes.concat({ ...cliente, id: resp.data.data })
+					clientes.concat({ ...cliente, id: resp.data.data.id })
 				);
 				handleSnackBar({
 					type: "success",
 					message: "Cliente Inserido!",
 				});
+				return true;
 			} catch (error) {
 				console.log(error);
-				setErrors(error);
+				if(error && error.errors) setErrors(error.errors);
 				handleSnackBar({
 					type: "error",
-					message: "Erro alterar o cliente.",
+					message: error && error.message 
+													? error.message 
+													: "Erro em inserir o cliente.",
 				});
-				throw error;
 			}
 		},
-		async update(){
+		async update(cliente) {
 			try {
 				const data = await UpdateSchema(cliente);
-				if (data.error) throw data.errors;
-
+				if (data.error) throw data;
 				const resp = await Api.update("clientes", data);
 				if (!resp.data.success) throw resp.data.error;
 				const newCliente = resp.data.data;
-				setClientes((clientes) =>
-					clientes.map(c => newCliente === c.id ? newCliente : c )
-				);
+				setClientes(clientes => clientes.map(u => newCliente.id === u.id ? newCliente : u));
 				handleSnackBar({
 					type: "success",
 					message: "Informações do cliente alteradas!",
 				});
+				return true;
 			} catch (error) {
-				console.log(error);
-				setErrors(error);
+				console.log(error)
+				if(error && error.errors) setErrors(error.errors);
 				handleSnackBar({
 					type: "error",
-					message: "Erro alterar o cliente.",
+					message: error && error.message 
+													? error.message 
+													: "Erro em alterar o cliente.",
 				});
-				throw error;
 			}
-		}
+		},
+		async disabled(cliente) {
+			try {
+				const resp = await Api.disabled("clientes", cliente.id)
+				if (!resp.data.success) throw resp.data.error;
+				const value = { ...cliente, actived: 0 };
+				setClientes(clientes => clientes.map(u => value.id === u.id ? value : u));
+				handleSnackBar({
+					type: "success",
+					message: `Sucesso em desabilitar o cliente`,
+				});
+			} catch (error) {
+				console.log(error);
+				handleSnackBar({
+					type: "error",
+					message: `Erro em desabilitar o cliente.`,
+				});
+			}
+		},
+		async actived(cliente) {
+			try {
+				const resp = await Api.actived("clientes", cliente.id)
+				if (!resp.data.success) throw resp.data.error;
+				const value = { ...cliente, actived: 1 };
+				setClientes(clientes => clientes.map(u => value.id === u.id ? value : u));
+				handleSnackBar({
+					type: "success",
+					message: `Sucesso em habiltar o cliente`,
+				});
+			} catch (error) {
+				console.log(error);
+				handleSnackBar({
+					type: "error",
+					message: `Erro em habilitar o cliente.`,
+				});
+			}
+		},
 	}
 
 	/**
-	 * Lista dos dados do cliente.
+	 * Trata as actions dos cliente
+	 * @param {string} type
+	 * @param {objeto} cliente
 	 */
-	const clearCliente = () => {
-		setCliente({});
-		setErrors({});
-	};
+	const handleActions = useCallback(async(type, cliente) => {
+		const fn = Actions[type];
+		setApiLoading(true);
+		return await fn(cliente);
+	}, [Actions]);
 
 	return (
 		<ClientesContext.Provider
@@ -182,8 +197,6 @@ const ClientesProvider = ({ children }) => {
 				setErrors,
 				getCliente,
 				apiLoading,
-				clearCliente,
-				handleChange,
 				handleActions,
 			}}
 		>

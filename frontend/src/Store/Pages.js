@@ -9,7 +9,7 @@ import {
 	CategorySharp,
 	GroupSharp,
 	ReportSharp,
-	SettingsSharp,
+	MessageSharp
 } from "@material-ui/icons";
 
 const defaultMenu = [
@@ -33,9 +33,18 @@ const defaultMenu = [
 		icon: <InsertChartSharp />,
 		path: "/relatorios",
 	},
+	{
+		nome: "Perfil",
+		path: "/perfil",
+	},
 ];
 
 const adminMenu = [
+	{
+		nome: "Modelos",
+		icon: <MessageSharp />,
+		path: "/modelos",
+	},
 	{
 		nome: "Clientes",
 		icon: <BusinessSharp />,
@@ -56,11 +65,11 @@ const adminMenu = [
 		icon: <ReportSharp />,
 		path: "/log",
 	},
-	{
-		nome: "Configurações",
-		icon: <SettingsSharp />,
-		path: "/configuracoes",
-	},
+	// {
+	// 	nome: "Configurações",
+	// 	icon: <SettingsSharp />,
+	// 	path: "/configuracoes",
+	// },
 ];
 
 export { adminMenu, defaultMenu };

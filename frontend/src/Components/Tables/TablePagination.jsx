@@ -4,16 +4,16 @@ import {
 } from "@material-ui/core/";
 import usePageTable from "../../Context/PageTableContext";
 
-export default function () {
-  const { rows, page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = usePageTable();
-  
+export default React.memo(() => {
+	const { rows, page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = usePageTable();
+
 	return (
 		<React.Fragment>
 			<TablePagination
 				labelRowsPerPage="Linhas por página:"
 				rowsPerPageOptions={[10, 15, 25]}
 				component="div"
-				count={rows.length}
+				count={rows && rows.length ? rows.length : 0}
 				rowsPerPage={rowsPerPage}
 				page={page}
 				onChangePage={handleChangePage}
@@ -21,4 +21,4 @@ export default function () {
 			/>
 		</React.Fragment>
 	);
-}
+});

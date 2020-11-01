@@ -1,38 +1,78 @@
-import api, { source } from "./Api";
+import Service from "./Api";
 
+/**
+ *& Busca por todos os dados;
+ * @param {string} url 
+ */
 export function get(url) {
-	setToken();
-	return api.get("/" + url, { cancelToken: source().token });
+	//return Service.promise(Service.exec('get',"/" + url), 4000);			
+	return Service.exec("get", "/" + url);
 }
 
-export async function getOne(url, data) {
-	setToken();
-	return await api.get("/" + url + "/" + data);
+/**
+ *& Busca por um ID;
+ * @param {string} url 
+ * @param {number} ID 
+ */
+export async function getByID(url, ID) {
+	const newUrl = "/" + url + "/" + ID;
+	//return Service.promise(Service.exec('get',newUrl), 4000)
+	return await Service.exec("get", newUrl);
 }
 
+/**
+ *& Insert um novo objeto;
+ * @param {string} url 
+ * @param {object} data 
+ */
 export function insert(url, data) {
-	setToken();
-	return api.post("/" + url, data);
+	const newUrl = "/" + url;
+	//return Service.promise(Service.exec("post", newUrl, data), 400);
+
+	return Service.exec("post", newUrl, data);
+
 }
 
+/**
+ *& Faz o update do objeto;
+ * @param {string} url 
+ * @param {object} data 
+ */
 export function update(url, data) {
-	setToken();
-	return api.put(`/${url}/${data.id}`, data);
+	const newUrl = `/${url}/${data.id}`;
+	//return Service.promise(Service.exec('put',newUrl,data), 400);
+	
+	return Service.exec("put", newUrl, data);
 }
 
-export function disabled(url, id) {
-	setToken();
-	return api.delete(`/${url}/${id}`);
+/**
+ *& Deletar o objeto pelo ID;
+ * @param {string} url 
+ * @param {number} ID 
+ */
+export function deletar(url, ID) {
+	const newUrl = `/${url}/${ID}`;
+	return Service.exec('delete',newUrl);
 }
 
-export function actived(url, id) {
-	setToken();
-	console.log('usuarios')
-	return api.put(`/${url}/actived/${id}`);
+/**
+ *& Desabilita o objeto pelo ID;
+ * @param {string} url 
+ * @param {number} ID 
+ */
+export function disabled(url, ID) {
+	const newUrl = `/${url}/${ID}`;
+	return Service.exec('delete',newUrl);
 }
 
-export function setToken() {
-	api.defaults.headers.access_token = JSON.parse(localStorage.getItem("token"));
+/**
+ *& Ativa o objeto pelo ID;
+ * @param {string} url 
+ * @param {number} ID 
+ */
+export function actived(url, ID) {
+	const newUrl = `/${url}/actived/${ID}`;
+	return Service.exec('put', newUrl);
 }
 
-export { source };
+export default Service;

@@ -1,16 +1,16 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useCallback } from "react";
 const MenuContext = createContext({});
 
 const MenuProvider = ({ children }) => {
 	const [open, setOpen] = useState(false);
 
-	function handleDrawerOpen() {
+	const handleDrawerOpen = useCallback(() => {
 		setOpen(true);
-	}
+	},[])
 
-	function handleDrawerClose() {
+	const handleDrawerClose = useCallback(() => {
 		setOpen(false);
-	}
+	},[]);
 
 	return (
 		<MenuContext.Provider value={{ open, handleDrawerOpen, handleDrawerClose }}>

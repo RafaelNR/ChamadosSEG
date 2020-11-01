@@ -11,11 +11,11 @@ const listItemMenu = ({ open }) => {
 				{defaultMenu.map((menu, index) =>
 					!open ? (
 						<Fragment key={index}>
-							<ListItemTooltip menu={menu} />
+							{ menu.icon && <ListItemTooltip menu={menu} /> }
 						</Fragment>
 					) : (
-						<Fragment key={index}>
-							<ListItem menu={menu} />
+						<Fragment key={index}>	
+							{ menu.icon && <ListItem menu={menu} /> }
 						</Fragment>
 					)
 				)}

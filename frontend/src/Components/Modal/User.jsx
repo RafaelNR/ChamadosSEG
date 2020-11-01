@@ -35,13 +35,13 @@ export default function TransitionsModal() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
-  const handleOpen = () => {
+  const handleOpen = React.useCallback(() => {
     setOpen(true);
-  };
+  });
 
-  const handleClose = () => {
+  const handleClose = React.useCallback(() => {
     setOpen(false);
-  };
+  });
 
   return (
     <div>

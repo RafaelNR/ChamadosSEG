@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 
@@ -25,7 +24,7 @@ function MyTabs ({ handleChange, currentTab, arrayTab }) {
     >
       {
         arrayTab.map((tab,index) => {
-          return (<Tab key={index} label={tab.title} {...a11yProps(tab.id)} />);
+          return (<Tab key={index} label={tab.options.title} {...a11yProps(tab.id)} />);
         })
       }
     </Tabs>
@@ -38,5 +37,5 @@ MyTabs.propTypes = {
   arrayTab: PropTypes.array.isRequired,
 };
 
-export default MyTabs
+export default React.memo(MyTabs);
 

@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default () => {
+export default React.memo(() => {
 	const classes = useStyles();
 	const SnackBar = useSnackBar();
 
@@ -37,4 +37,4 @@ export default () => {
 			</Snackbar>
 		</div>
 	);
-};
+});
