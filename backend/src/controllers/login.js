@@ -49,14 +49,10 @@ module.exports = async (req, res) => {
 		Result.ok(200,{
 			auth: true,
 			token: newToken,
-			user: {
-				id: req.userId ? req.userId : dbUser.id,
-				user: dbUser.user,
-				nome: dbUser.nome,
-			},
+			user_id: req.userId ? req.userId : dbUser.id,
 		});
 	} catch (error) {
-
+		console.log(error)
 		Result.fail(400, error);
 
 	}

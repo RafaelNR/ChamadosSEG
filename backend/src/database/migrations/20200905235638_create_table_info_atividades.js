@@ -1,6 +1,7 @@
 exports.up = function (knex) {
 	return knex.schema.createTable("infos_atividades", (table) => {
 		table.increments("id").unsigned().notNullable();
+		table.string("info_ticket").notNullable();
 		table.text("descricao", "mediumtext").notNullable();
 		table
 			.integer("categoria_id")

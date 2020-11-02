@@ -18,9 +18,7 @@ it("Deve receber o token do usuário", async () => {
 			expect(res.body).toHaveProperty("success", true);
 			expect(res.body.data).toHaveProperty("auth", true);
 			expect(res.body.data).toHaveProperty("token");
-			expect(res.body.data.user).toHaveProperty("id");
-			expect(res.body.data.user).toHaveProperty("user");
-			expect(res.body.data.user).toHaveProperty("nome");
+			expect(res.body.data).toHaveProperty("user_id");
 			Token = res.body.data.token; // save o token;
 		});
 });

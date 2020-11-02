@@ -3,19 +3,19 @@ const request = require("supertest")(App);
 
 const { Token } = require("./auth.test");
 
-describe("ites de Ativides", () => {
+describe("itens de Atividades", () => {
 	describe("Pesquisa uma atividade, sem erro", () => {
 		it("Deve receber todas as atividades", async () => {
 			return await request
 				.get("/atividades")
 				.set("access_token", Token())
 				.then((res) => {
-					console.log(res.body)
 					expect(res.status).toBe(200); // Deve ser;
 					expect(res.body).toHaveProperty("success", true);
 					expect(res.body).toHaveProperty("data");
 					expect(res.body.data[0]).toHaveProperty("id");
 					expect(res.body.data[0]).toHaveProperty("cliente");
+					expect(res.body.data[0]).toHaveProperty("ticket");
 					expect(res.body.data[0]).toHaveProperty("técnico");
 					expect(res.body.data[0]).toHaveProperty("created_at");
 					expect(res.body.data[0]).toHaveProperty("updated_at");
@@ -30,8 +30,11 @@ describe("ites de Ativides", () => {
 					expect(res.body).toHaveProperty("success", true);
 					expect(res.body).toHaveProperty("data");
 					expect(res.body.data[0]).toHaveProperty("id");
-					expect(res.body.data[0]).toHaveProperty("nome_fantasia");
+					expect(res.body.data[0]).toHaveProperty("ticket");
+					expect(res.body.data[0]).toHaveProperty("cliente");
 					expect(res.body.data[0]).toHaveProperty("técnico");
+					expect(res.body.data[0]).toHaveProperty("created_at");
+					expect(res.body.data[0]).toHaveProperty("updated_at");
 				});
 		});
 		it("Deve receber todas as atividades de um usuário", async () => {
@@ -43,8 +46,11 @@ describe("ites de Ativides", () => {
 					expect(res.body).toHaveProperty("success", true);
 					expect(res.body).toHaveProperty("data");
 					expect(res.body.data[0]).toHaveProperty("id");
-					expect(res.body.data[0]).toHaveProperty("nome_fantasia");
+					expect(res.body.data[0]).toHaveProperty("ticket");
+					expect(res.body.data[0]).toHaveProperty("cliente");
 					expect(res.body.data[0]).toHaveProperty("técnico");
+					expect(res.body.data[0]).toHaveProperty("created_at");
+					expect(res.body.data[0]).toHaveProperty("updated_at");
 				});
 		});
 		it("Deve receber todas atividades de um cliente", async () => {
@@ -56,8 +62,11 @@ describe("ites de Ativides", () => {
 					expect(res.body).toHaveProperty("success", true);
 					expect(res.body).toHaveProperty("data");
 					expect(res.body.data[0]).toHaveProperty("id");
-					expect(res.body.data[0]).toHaveProperty("nome_fantasia");
+					expect(res.body.data[0]).toHaveProperty("ticket");
+					expect(res.body.data[0]).toHaveProperty("cliente");
 					expect(res.body.data[0]).toHaveProperty("técnico");
+					expect(res.body.data[0]).toHaveProperty("created_at");
+					expect(res.body.data[0]).toHaveProperty("updated_at");
 				});
 		});
 		it("Deve receber atividade que existe pelo ID dela", async () => {
@@ -70,12 +79,14 @@ describe("ites de Ativides", () => {
 					expect(res.body).toHaveProperty("success", true);
 					expect(res.body).toHaveProperty("data");
 					expect(res.body.data).toHaveProperty("id");
+					expect(res.body.data).toHaveProperty("ticket");
 					expect(res.body.data).toHaveProperty("cliente");
 					expect(res.body.data).toHaveProperty("técnico");
 					expect(res.body.data).toHaveProperty("infos");
 					expect(res.body.data.infos).toBeArray();
 					if (res.body.data.infos.length > 0) {
 						expect(res.body.data.infos[0]).toHaveProperty("id");
+						expect(res.body.data.infos[0]).toHaveProperty("info_ticket");
 						expect(res.body.data.infos[0]).toHaveProperty("descricao");
 						expect(res.body.data.infos[0]).toHaveProperty("categoria");
 					}
@@ -118,7 +129,6 @@ describe("ites de Ativides", () => {
 					expect(res.status).toBe(204);
 				})
 		})
-
 	});
 	describe("Pesquisa uma atividade, passando parametros inválidos", () => {
 		it("Deve receber um erro, pois ID atividade não existe", async () => {

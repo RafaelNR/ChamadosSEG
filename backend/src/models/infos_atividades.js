@@ -1,18 +1,21 @@
 const knex = require("../database/index");
 
 const findOne = (ID) => {
-  return knex.select(
-    "info.id",
-    "descricao",
-    "categorias.nome as categoria",
-    "users.nome as user",
-    "info.created_at",
-    "info.updated_at",
-  )
-  .from("infos_atividades as info")
-  .join("categorias", "categorias.id", "=", "info.categoria_id")
-  .join("users", "users.id",'=','info.user_id')
-  .where("info.id", "=", ID).then(e => e[0])
+  return knex
+		.select(
+			"info.id",
+			"descricao",
+			"info.info_ticket",
+			"categorias.nome as categoria",
+			"users.nome as user",
+			"info.created_at",
+			"info.updated_at"
+		)
+		.from("infos_atividades as info")
+		.join("categorias", "categorias.id", "=", "info.categoria_id")
+		.join("users", "users.id", "=", "info.user_id")
+		.where("info.id", "=", ID)
+		.then((e) => e[0]);
 }
 
 const insert = (Dados) => {

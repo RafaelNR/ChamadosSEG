@@ -7,9 +7,10 @@ module.exports = (req, res) => {
 	 * Verifica nos acessos que usarem jwt.
 	 */
 	const token = req.headers.access_token;
+	console.log(token)
 
 	if (!token || token.length <= 10) {
-		return res.status(401).json(Result.auth(false,"Precisa efetuar o login para acessar a página."));
+		return res.status(401).json(Result.auth(false,"Sem token vinculado, favor fazer login."));
 	}
 
 	jwt.verify(token, config.SECRET, function (err) {

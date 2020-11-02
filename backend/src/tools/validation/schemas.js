@@ -107,6 +107,7 @@ module.exports = {
 		return validate(
 			Dados,
 			Joi.object({
+				ticket: type.string.ticket,
 				user_id: type.number.id,
 				cliente_id: type.number.id,
 				date: type.date.default,
@@ -131,6 +132,7 @@ module.exports = {
 		return validate(
 			Dados,
 			Joi.object({
+				info_ticket: type.string.info_ticket,
 				descricao: type.string.default,
 				categoria_id: type.number.id,
 				atividade_id: type.number.id,

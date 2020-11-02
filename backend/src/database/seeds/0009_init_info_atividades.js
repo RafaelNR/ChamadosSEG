@@ -8,6 +8,7 @@ exports.seed = function (knex) {
 				{
 					id: 1,
 					descricao: "Fiz tal coisa",
+					info_ticket: "95685_20200930",
 					categoria_id: 1,
 					atividade_id: 1,
 					user_id: 1,
@@ -17,6 +18,7 @@ exports.seed = function (knex) {
 				{
 					id: 2,
 					descricao: "Fiz tal coisa 2",
+					info_ticket: "95685_20200930",
 					categoria_id: 1,
 					atividade_id: 1,
 					user_id: 2,

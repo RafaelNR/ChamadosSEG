@@ -16,10 +16,8 @@ App.listen(config.BACK_PORT, (err) => {
 process.on('SIGTERM', () => {
   console.info('SIGTERM signal received.');
 	console.log('Closing http server.');
-	App.
   App.close(() => {
     console.log('Http server closed.');
-    // boolean means [force], see in mongoose doc
     knex.destroy();
     console.log('Knex connection destroy');
 		process.exit(0);

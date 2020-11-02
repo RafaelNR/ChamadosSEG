@@ -5,6 +5,7 @@ const findOneByData = async (Params) => {
 	let query = knex
 		.select(
 			"atividades.id",
+			"atividades.ticket",
 			"clientes.nome_fantasia as cliente",
 			"users.nome as técnico",
 			"atividades.created_at",
@@ -71,6 +72,7 @@ module.exports = {
 		return await knex
 			.select(
 				"atividades.id",
+				"atividades.ticket",
 				"clientes.nome_fantasia as cliente",
 				"users.nome as técnico",
 				"atividades.created_at",
@@ -86,7 +88,8 @@ module.exports = {
 		return await knex
 			.select(
 				"atividades.id",
-				"clientes.nome_fantasia",
+				"atividades.ticket",
+				"clientes.nome_fantasia as cliente",
 				"users.nome as técnico",
 				"atividades.created_at",
 				"atividades.updated_at"
@@ -102,7 +105,8 @@ module.exports = {
 		return await knex
 			.select(
 				"atividades.id",
-				"clientes.nome_fantasia",
+				"atividades.ticket",
+				"clientes.nome_fantasia as cliente",
 				"users.nome as técnico",
 				"atividades.created_at",
 				"atividades.updated_at"
@@ -116,39 +120,40 @@ module.exports = {
 
 	findOne: (ID) => {
 		return knex
-		.select(
-			"atividades.id",
-			"clientes.nome_fantasia as cliente",
-			"users.nome as técnico",
-			"atividades.created_at",
-			"atividades.updated_at"
-		)
-		.from("atividades")
-		.join("clientes", "clientes.id", "=", "atividades.cliente_id")
-		.join("users", "users.id", "=", "atividades.user_id")
-		.where("atividades.id",'=', ID)
-		.then(Atividade => {
-
-			if(Atividade.length <= 0) return false;
-
-			return knex.select(
-				"info.id",
-				"descricao",
-				"categorias.nome as categoria",
-				"info.created_at",
-				"info.updated_at",
+			.select(
+				"atividades.id",
+				"atividades.ticket",
+				"clientes.nome_fantasia as cliente",
+				"users.nome as técnico",
+				"atividades.created_at",
+				"atividades.updated_at"
 			)
-			.from("infos_atividades as info")
-			.join("categorias", "categorias.id", "=", "info.categoria_id")
-			.where("info.atividade_id", "=", Atividade[0].id)
-			.then(infos => {
-				return {
-					...Atividade[0],
-					infos
-				}
-			})
+			.from("atividades")
+			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
+			.join("users", "users.id", "=", "atividades.user_id")
+			.where("atividades.id", "=", ID)
+			.then((Atividade) => {
+				if (Atividade.length <= 0) return false;
 
-		})
+				return knex
+					.select(
+						"info.id",
+						"descricao",
+						"info.info_ticket",
+						"categorias.nome as categoria",
+						"info.created_at",
+						"info.updated_at"
+					)
+					.from("infos_atividades as info")
+					.join("categorias", "categorias.id", "=", "info.categoria_id")
+					.where("info.atividade_id", "=", Atividade[0].id)
+					.then((infos) => {
+						return {
+							...Atividade[0],
+							infos,
+						};
+					});
+			});
 
 	},
 
