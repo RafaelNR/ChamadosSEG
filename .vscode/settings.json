@@ -1,5 +1,5 @@
 {
-	"files.autoSave": "onFocusChange",
+	"files.autoSave": "onWindowChange",
 	"files.autoSaveDelay": 50,
 	"editor.formatOnPaste": true,
 	"editor.formatOnType": true,
@@ -11,5 +11,102 @@
 	"editor.fontFamily": "Fira Code",
 	"editor.fontSize": 14,
 	"editor.fontLigatures": true,
-	"editor.formatOnSaveMode": "modifications"
+	"editor.formatOnSaveMode": "modifications",
+	"better-comments.tags": [
+		{
+			"tag": "!",
+			"color": "#FF2D00",
+			"strikethrough": false,
+			"underline": false,
+			"backgroundColor": "transparent",
+			"bold": false,
+			"italic": false
+		},
+		{
+			"tag": "?",
+			"color": "#3498DB",
+			"strikethrough": false,
+			"underline": false,
+			"backgroundColor": "transparent",
+			"bold": false,
+			"italic": false
+		},
+		{
+			"tag": "//",
+			"color": "#474747",
+			"strikethrough": true,
+			"underline": false,
+			"backgroundColor": "transparent",
+			"bold": false,
+			"italic": false
+		},
+		{
+			"tag": "todo",
+			"color": "#fff200",
+			"strikethrough": false,
+			"underline": false,
+			"backgroundColor": "transparent",
+			"bold": false,
+			"italic": false
+		},
+		{
+			"tag": "*",
+			"color": "#98C379",
+			"strikethrough": false,
+			"underline": false,
+			"backgroundColor": "transparent",
+			"bold": false,
+			"italic": false
+		},
+		{
+			"tag": "+",
+			"color": "#20bf6b",
+			"strikethrough": false,
+			"underline": false,
+			"backgroundColor": "transparent",
+			"bold": false,
+			"italic": false
+		},
+		{
+			"tag": "-",
+			"color": "#F79F1F",
+			"strikethrough": false,
+			"underline": false,
+			"backgroundColor": "transparent",
+			"bold": false,
+			"italic": false
+		},
+		{
+			"tag": "&",
+			"color": "#12CBC4",
+			"strikethrough": false,
+			"underline": false,
+			"backgroundColor": "transparent",
+			"bold": false,
+			"italic": false
+		},
+		{
+			"tag": "$",
+			"color": "#95a5a6",
+			"strikethrough": false,
+			"underline": false,
+			"backgroundColor": "transparent",
+			"bold": false,
+			"italic": false
+		},
+	],
+	"bracket-pair-colorizer-2.activeScopeCSS": [
+
+		"borderStyle : solid",
+		"borderWidth : 1px",
+		"borderColor : {color}",
+		"opacity: 0.5"
+	],
+	"bracket-pair-colorizer-2.colors": [
+	
+		"Gold",
+		"Orchid",
+		"LightSkyBlue"
+	],
+	"better-comments.highlightPlainText": true
 }

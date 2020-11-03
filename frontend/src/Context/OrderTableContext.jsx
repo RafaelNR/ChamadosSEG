@@ -7,9 +7,6 @@ const OrderTableProvider = ({ children }) => {
 	const [order, setOrder] = useState("asc");
 	const [orderBy, setOrderBy] = useState("");
 
-	/**
-	 * Manipula a ordenação
-	 */
 	const handleRequestSort = useCallback(
 		(property) => {
 			const isAsc = orderBy === property && order === "asc";

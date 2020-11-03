@@ -10,14 +10,18 @@ class Service {
     		return status < 500;
   		}
 		})
+	}
+
+	getToken() {
+		return JSON.parse(localStorage.getItem("token"));
+	}
+
+	setToken() {
 		this.Api.defaults.headers.access_token = this.getToken();
 	}
 
-	/**
-	 * Pega os dados do token do usuário.
-	 */
-	getToken() {
-		return JSON.parse(localStorage.getItem("token"));
+	removeToken() {
+		this.Api.defaults.headers.access_token = null;
 	}
 
 	/**
@@ -50,6 +54,7 @@ class Service {
 	 */
 	exec(method, url, data = null) {
 		const fn = this.Api[method];
+		this.setToken();
 		if (data) {
 			return fn(url, data, { cancelToken: this.source() });
 		}

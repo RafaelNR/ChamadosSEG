@@ -4,7 +4,7 @@ import { makeStyles, Container } from "@material-ui/core";
 import Main from "../Template/Main";
 //Pages
 import Home from "../Pages/Home";
-import Atividades from "../Pages/Atividades";
+import Atividades from "../Pages/Atividades/";
 import Clientes from "../Pages/Clientes";
 import Categorias from "../Pages/Categorias";
 import Tarefas from "../Pages/Tarefas";

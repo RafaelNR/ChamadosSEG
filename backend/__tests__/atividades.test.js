@@ -16,6 +16,7 @@ describe("itens de Atividades", () => {
 					expect(res.body.data[0]).toHaveProperty("id");
 					expect(res.body.data[0]).toHaveProperty("cliente");
 					expect(res.body.data[0]).toHaveProperty("ticket");
+					expect(res.body.data[0]).toHaveProperty("date");
 					expect(res.body.data[0]).toHaveProperty("técnico");
 					expect(res.body.data[0]).toHaveProperty("created_at");
 					expect(res.body.data[0]).toHaveProperty("updated_at");
@@ -31,6 +32,7 @@ describe("itens de Atividades", () => {
 					expect(res.body).toHaveProperty("data");
 					expect(res.body.data[0]).toHaveProperty("id");
 					expect(res.body.data[0]).toHaveProperty("ticket");
+					expect(res.body.data[0]).toHaveProperty("date");
 					expect(res.body.data[0]).toHaveProperty("cliente");
 					expect(res.body.data[0]).toHaveProperty("técnico");
 					expect(res.body.data[0]).toHaveProperty("created_at");
@@ -47,6 +49,7 @@ describe("itens de Atividades", () => {
 					expect(res.body).toHaveProperty("data");
 					expect(res.body.data[0]).toHaveProperty("id");
 					expect(res.body.data[0]).toHaveProperty("ticket");
+					expect(res.body.data[0]).toHaveProperty("date");
 					expect(res.body.data[0]).toHaveProperty("cliente");
 					expect(res.body.data[0]).toHaveProperty("técnico");
 					expect(res.body.data[0]).toHaveProperty("created_at");
@@ -63,6 +66,7 @@ describe("itens de Atividades", () => {
 					expect(res.body).toHaveProperty("data");
 					expect(res.body.data[0]).toHaveProperty("id");
 					expect(res.body.data[0]).toHaveProperty("ticket");
+					expect(res.body.data[0]).toHaveProperty("date");
 					expect(res.body.data[0]).toHaveProperty("cliente");
 					expect(res.body.data[0]).toHaveProperty("técnico");
 					expect(res.body.data[0]).toHaveProperty("created_at");
@@ -80,6 +84,7 @@ describe("itens de Atividades", () => {
 					expect(res.body).toHaveProperty("data");
 					expect(res.body.data).toHaveProperty("id");
 					expect(res.body.data).toHaveProperty("ticket");
+					expect(res.body.data).toHaveProperty("date");
 					expect(res.body.data).toHaveProperty("cliente");
 					expect(res.body.data).toHaveProperty("técnico");
 					expect(res.body.data).toHaveProperty("infos");

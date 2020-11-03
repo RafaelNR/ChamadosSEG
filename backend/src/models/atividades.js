@@ -6,6 +6,7 @@ const findOneByData = async (Params) => {
 		.select(
 			"atividades.id",
 			"atividades.ticket",
+			"atividades.date",
 			"clientes.nome_fantasia as cliente",
 			"users.nome as técnico",
 			"atividades.created_at",
@@ -73,6 +74,7 @@ module.exports = {
 			.select(
 				"atividades.id",
 				"atividades.ticket",
+				"atividades.date",
 				"clientes.nome_fantasia as cliente",
 				"users.nome as técnico",
 				"atividades.created_at",
@@ -89,6 +91,7 @@ module.exports = {
 			.select(
 				"atividades.id",
 				"atividades.ticket",
+				"atividades.date",
 				"clientes.nome_fantasia as cliente",
 				"users.nome as técnico",
 				"atividades.created_at",
@@ -106,6 +109,7 @@ module.exports = {
 			.select(
 				"atividades.id",
 				"atividades.ticket",
+				"atividades.date",
 				"clientes.nome_fantasia as cliente",
 				"users.nome as técnico",
 				"atividades.created_at",
@@ -123,6 +127,7 @@ module.exports = {
 			.select(
 				"atividades.id",
 				"atividades.ticket",
+				"atividades.date",
 				"clientes.nome_fantasia as cliente",
 				"users.nome as técnico",
 				"atividades.created_at",
@@ -172,10 +177,12 @@ module.exports = {
 			.where("user_id", "=", user_id)
 			.andWhere("cliente_id", "=", cliente_id)
 			.andWhere("date", "=", date)
+			.limit(1)
+			.then((e) => e[0].id);
 	},
 
 	/**
-	 * Conta quantas atividades foram aberta para o client
+	 * Conta quantas atividades já foram abertas para o cliente
 	 * @param {number} clientID
 	 * @return {number}
 	 */
@@ -184,6 +191,7 @@ module.exports = {
 			.count("id as id")
 			.from("atividades")
 			.where("cliente_id", "=", clientID)
+			.limit(1)
 			.then((e) => e[0].id);
 	},
 

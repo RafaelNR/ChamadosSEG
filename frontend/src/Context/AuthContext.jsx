@@ -1,75 +1,85 @@
 import React, { createContext, useState, useEffect, useContext, useCallback } from "react";
-import * as Api from "../Api/Auth";
+import * as Auth from "../Api/Auth";
+import * as Api from "../Api/Crud";
 import PropTypes from "prop-types";
+import useLocalStore from '../Hooks/useLocalStore';
 
 const AuthContext = createContext({});
 
 const AuthProvider = ({ children }) => {
-	const [token, setToken] = useState(localStorage.getItem("token"));
-	const [user, setUser] = useState(localStorage.getItem("user"));
+	const { getData, setData, removeData } = useLocalStore();
+	const [token, setToken] = useState(getData('token'));
+	const [user, setUser] = useState(getData('user'));
 
-	/**
-	 ** Carrrega sempre que o provider é chamado
-	 */
-	useEffect(() => {
-		isAuth();
-
-		return () => {
-			return;
-		}
-		//react-hooks/exhaustive-deps
-	}, []);
-
-
-	/**
-	 ** Efetua a função de logar.
-	 * @param {string} userLogin
-	 * @param {string} passwd
-	 */
 	const handleLogin = useCallback(async (userLogin, passwd) => {
-		console.log(userLogin, passwd);
 		try {
-			const response = await Api.Login(userLogin, passwd);
-			console.log(response);
+			const response = await Auth.Login(userLogin, passwd);
+			console.log(response)
 			if (response.data.success) {
-				localStorage.setItem("token", JSON.stringify(response.data.token));
-				localStorage.setItem("user", JSON.stringify(response.data.user));
-				setUser(response.data.user);
-				setToken(response.data.token);
+				setData('token', response.data.data.token)	
+				setData('user', await getUsuario(response.data.data.user_id))
+				setUser(response.data.data.user);
+				setToken(response.data.data.token);
+				window.location.replace('/')
 			}
 		} catch (error) {
 			console.log(error);
+			// TODO tratar os erros na tela.
 		}
-	}, []);
+	}, [setData]);
 
-	/**
-	 *& Trata o logout
-	 */
+
 	const handleLogout = useCallback(() => {
 		setUser(null);
 		setToken(null);
-		localStorage.removeItem("token");
-		localStorage.removeItem("user");
-	}, []);
+		removeData('token');
+		removeData('user');
+		Auth.removeToken();
+	}, [removeData]);
+
+	const getUsuario = useCallback(
+		async (ID) => {
+			try {
+				return Api.getByID("usuarios", parseInt(ID))
+					.then((resp) => {
+						const { success, data } = resp.data;
+						if (!success) throw resp.data;
+						return data;				
+					})
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		[]
+	);
 
 
-	/**
-	 ** Verifica se o token ainda é valido;
-	 ** Só executa novamente quando token é chamado;
-	 */
-	const isAuth = React.useCallback( async() => {
-		if (!token || token === "undefined") handleLogout();
-		
-		const resp = await Api.Auth();
-		console.log(resp)
-		if (!resp.data.auth) handleLogout();
+	useEffect(() => {
 
-	},[token, handleLogout]);
+		async function isAuth (){
 
+			if (!token || token === "undefined") {
+				console.log('token não encontrado');
+				return handleLogout();
+			}
+			
+			if (!user || user === 'undefined' || !user.nome) {
+				console.log('user não encontrado')
+				return handleLogout();
+			}
 
-	/**
-	 ** Provider
-	 */
+			
+			const resp = await Auth.Auth();
+			console.log(resp)
+			if (!resp.data.auth) handleLogout();
+
+		};
+
+		isAuth();
+
+	},[]);
+	
+
 	return (
 		<AuthContext.Provider
 			value={{ logado: Boolean(user), user, handleLogin, handleLogout }}

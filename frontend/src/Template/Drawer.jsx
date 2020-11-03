@@ -6,7 +6,6 @@ import ListItensMenu from "../Components/ListItens/ListItensMenu";
 import ChevronRightIcon from "@material-ui/icons/ChevronRightSharp";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeftSharp";
 
-//
 import useMenu from "../Context/MenuContext";
 
 const drawerWidth = 240;

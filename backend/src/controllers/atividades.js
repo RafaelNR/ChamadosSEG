@@ -206,7 +206,7 @@ const tools = {
 	verifyAtividade: async (Dados) => {
 		const count = await Model.countByUserClientDate(Dados);
 
-		if (count[0].id >= 1) {
+		if (count.id > 0) {
 			throw "Já existe atividades para esse cliente no dia informado.";
 		}
 

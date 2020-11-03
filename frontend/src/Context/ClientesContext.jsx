@@ -25,15 +25,14 @@ const ClientesProvider = ({ children }) => {
 	const [errors, setErrors] = useState({});
 	const [apiLoading, setApiLoading] = useState(false);
 
-		/**
-	 * Inicia os clientes e monta o componente.
-	 */
+
 	useEffect(
 		() => {
 			Api.get("clientes")
 				.then((resp) => {
 					const { success, data } = resp.data;
 					setLoading(false);
+					console.log(resp)
 					if (success) return setClientes(data);
 					const error = new Error();
 					return error.message("Erro em carregar clientes.")

@@ -10,3 +10,7 @@ export function Login(user, passwd) {
 export function Auth() {
 	return Api.exec('get', '/auth')
 }
+
+export function removeToken() {
+	Api.removeToken();
+}

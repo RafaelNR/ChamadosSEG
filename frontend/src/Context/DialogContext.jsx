@@ -9,26 +9,17 @@ const DialogProvider = ({ children }) => {
 	const [loading, setLoading] = useState(TrainOutlined);
 	const [type, setType] = useState("");
 
-	/**
-	 * Abre o dialog;
-	 */
 	const openDialog = useCallback((currtype = null) => {
 		setOpen(true);
 		setLoading(true);
 		if (typeof type === "string") setType(currtype);
 	}, [type]);
-
-	/**
-	 * Fecha dialog;
-	 */
+	
 	const closeDialog = useCallback(() => {
 		setOpen(false);
 		setLoading(false);
 	}, []);
 
-	/**
-	 * Provider
-	 */
 	return (
 		<DialogContext.Provider
 			value={{
