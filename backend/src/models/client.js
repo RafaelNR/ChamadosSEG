@@ -15,6 +15,7 @@ const findOne = async (ID) => {
 			"cnpj_cpf",
 			"email",
 			"telefone",
+			"representante",
 			"created_at",
 			"updated_at"
 		)
@@ -43,10 +44,13 @@ module.exports = {
 				"nome_fantasia",
 				"cnpj_cpf",
 				"email",
+				"telefone",
+				"representante",
 				"created_at",
 				"updated_at"
 			)
-			.from("clientes").orderBy('nome_fantasia'),
+			.from("clientes")
+			.orderBy("nome_fantasia"),
 
 	/**
 	 * Insere um novo client;

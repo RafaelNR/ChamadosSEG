@@ -1,5 +1,4 @@
 const knex = require("../database/index");
-const Knex = require("knex");
 
 const indexByTask = async (task_id) => {
 	return knex

@@ -8,7 +8,17 @@ module.exports = {
 	 */
 	findClients: async (userID) => {
 		return await knex
-			.select("id", "razao_social", "nome_fantasia", "cnpj_cpf", "email")
+			.select(
+				"id",
+				"razao_social",
+				"nome_fantasia",
+				"cnpj_cpf",
+				"email",
+				"telefone",
+				"representante",
+				"created_at",
+				"updated_at"
+			)
 			.from("cliente_has_user")
 			.join("clientes", "id", "=", "cliente_id")
 			.where("cliente_has_user.user_id", "=", userID);

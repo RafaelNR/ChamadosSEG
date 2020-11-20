@@ -8,6 +8,7 @@
 		"rollback": "knex migrate:rollback --all --env dev",
 		"migration": "knex migrate:latest --env dev",
 		"seed": "knex seed:run --env dev",
+		"newbanco": "yarn rollback && yarn migration && yarn seed", 
 		"pretest": "knex migrate:rollback --all --env dev && knex migrate:latest --env dev && knex seed:run --env dev",
 		"test": "jest main",
 		"testw": "jest main --watch",

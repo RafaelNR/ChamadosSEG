@@ -1,5 +1,4 @@
 const Joi = require("@hapi/joi").extend(require("@hapi/joi-date"));
-const Ticket = require("../functions");
 
 const type = {
 	number: {
@@ -25,8 +24,9 @@ const type = {
 		status: Joi.string().lowercase().min(3).max(50).required(),
 		methodHTTP: Joi.string().min(3).max(10).required(),
 		error: [Joi.string().optional(), Joi.allow(null)],
-		ticket: Joi.string().default(Ticket.created()),
-		info_ticket: Joi.string().default(Ticket.createdInfo()),
+		ticket: Joi.string().min(10).max(14),
+		info_ticket: Joi.string().min(10).max(16),
+		representante: Joi.string().min(3).max(100),
 		default: Joi.string().required(),
 	},
 	date: {

@@ -7,7 +7,7 @@ exports.seed = function (knex) {
 			return knex("atividades").insert([
 				{
 					id: 1,
-					ticket: "0001_20200930",
+					ticket: "1.20200930",
 					user_id: 1,
 					cliente_id: 1,
 					date: "2020-09-30",
@@ -16,7 +16,7 @@ exports.seed = function (knex) {
 				},
 				{
 					id: 2,
-					ticket: "0002_20200930",
+					ticket: "2.20200930",
 					user_id: 2,
 					cliente_id: 1,
 					date: "2020-10-15",

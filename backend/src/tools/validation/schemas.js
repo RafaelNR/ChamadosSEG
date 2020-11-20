@@ -77,6 +77,7 @@ module.exports = {
 				email: type.string.email,
 				user_id: type.number.id,
 				telefone: type.string.telefone,
+				representante: type.string.representante,
 				created_at: type.date.created_at,
 				updated_at: type.date.updated_at,
 			})
@@ -99,6 +100,7 @@ module.exports = {
 				email: type.string.email,
 				user_id: type.number.id,
 				telefone: type.string.telefone,
+				representante: type.string.representante,
 				updated_at: type.date.updated_at,
 			})
 		);
@@ -138,8 +140,8 @@ module.exports = {
 				atividade_id: type.number.id,
 				user_id: type.number.id,
 				created_at: type.date.created_at,
-				updated_at: type.date.updated_at,
-			})
+				updated_at: Joi.date().default(new Date()),
+			}).options({ stripUnknown: true }) // remove as outras propriedades;
 		);
 	},
 
@@ -151,8 +153,8 @@ module.exports = {
 				descricao: type.string.default,
 				categoria_id: type.number.id,
 				user_id: type.number.id,
-				updated_at: type.date.updated_at,
-			})
+				updated_at: Joi.date().default(new Date()),
+			}).options({ stripUnknown: true }) // remove as outras propriedades;
 		);
 	},
 

@@ -195,6 +195,15 @@ module.exports = {
 			.then((e) => e[0].id);
 	},
 
+	countAtividadeByID: async (ID) => {
+		return await knex
+			.count("id as id")
+			.from("atividades")
+			.where("id", "=", ID)
+			.limit(1)
+			.then((e) => e[0].id);
+	},
+
 	insert: (Dados) => {
 		return knex.insert(Dados).into("atividades");
 	},

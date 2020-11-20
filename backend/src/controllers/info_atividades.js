@@ -1,7 +1,8 @@
 const Validate = require("../tools/validation/schemas"); /* Validation */
 const Model = require("../models/infos_atividades");
 const Atividades = require('../models/atividades')
-const Result =  require('../tools/result');
+const Result = require('../tools/result');
+const Ticket = require("../classes/ticket.class");
 
 
 const insert = async (req, res) => {
@@ -25,7 +26,7 @@ const update = async (req, res) => {
 		const Dados = await tools.handlingUpdate({ user_id: req.userId, ...req.body });
 		await Model.update(Dados);
 		
-		Result.ok(204);
+		Result.ok(200, Dados);
 	} catch (error) {
 		Result.fail(400,error);
 	}
@@ -52,8 +53,13 @@ const deletar = async (req,res) => {
 
 
 const tools = {
-  handlingInsert: async (Dados) => {
-		const newDados = Validate.insertInfoAtividades(Dados);
+	handlingInsert: async (Dados) => {
+
+		const newDados = Validate.insertInfoAtividades({
+			...Dados,
+			info_ticket: await Ticket.createdInfo(Dados.ticket, Dados.atividade_id),
+		});
+
 		await tools.isExistAtividade(newDados.atividade_id);
 		return newDados;
 	},
@@ -64,9 +70,8 @@ const tools = {
 	},
 	
 	isExistAtividade: async (atividade_id) => {
-		const Atividade = await Atividades.findOne(atividade_id);
-		console.log(Atividade)
-		if(!Atividade) throw 'Atividade não existe, informação não inserida.';
+		const Atividade = await Atividades.countAtividadeByID(atividade_id);
+		if(Atividade <= 0) throw 'Atividade não existe, informação não inserida.';
 	},
 
 }

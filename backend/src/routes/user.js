@@ -4,6 +4,7 @@ const Controller = require("../controllers/user");
 
 Router.get("/", Controller.index);
 Router.get("/:id", Controller.findOne);
+Router.get('/clientes/:id', Controller.findMyClientes);
 Router.post("/", Controller.insert);
 Router.put("/:id", Controller.update);
 Router.put("/actived/:id", Controller.actived);

@@ -10,6 +10,13 @@ module.exports = {
 			user: config.DB_USER,
 			password: config.DB_PASSWD,
 		},
+		// pool: {
+		// 	afterCreate: function (connection, callback) {
+		// 		connection.query('SET time_zone = America/Sao_Paulo;', function (err) {
+		// 			callback(err, connection);
+		// 		});
+		// 	}
+		// },
 		migrations: {
 			tableName: "migrations",
 			directory: `${__dirname}/src/database/migrations`,

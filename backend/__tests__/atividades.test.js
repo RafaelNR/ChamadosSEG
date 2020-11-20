@@ -102,7 +102,7 @@ describe("itens de Atividades", () => {
 				.post("/atividades")
 				.send({
 					cliente_id: 1,
-					date: '2020-10-29'
+					date: '2020-11-10'
 				})
 				.set("access_token", Token())
 				.then((res) => {
@@ -171,28 +171,51 @@ describe("itens de Atividades", () => {
 				.post("/atividades")
 				.send({
 					cliente_id: 1,
-					date: '2020-10-14'
+					date: '2020-11-01'
 				})
 				.set("access_token", Token())
 				.then((res) => {
 					expect(res.status).toBe(400);
 					expect(res.body).toHaveProperty("success", false);
-					expect(res.body).toHaveProperty("message", 'Não criar atividade com mais de 15 dias.')
+					expect(res.body).toHaveProperty(
+						"message",
+						"Não é permitido criar um atividade com mais de 15 dias da data de hoje."
+					);
 				})
 		})
-		it("Deve deve receber um erros, pois está inserindo atividade fora do período de 15 dias.", async () => {
+		it("Deve deve receber um erros, pois está inserindo atividade de um mes diferente do atual.", async () => {
 			return await request
 				.post("/atividades")
 				.send({
 					cliente_id: 1,
-					date: '2020-10-14'
+					date: '2020-09-11'
 				})
 				.set("access_token", Token())
 				.then((res) => {
 					expect(res.status).toBe(400);
 					expect(res.body).toHaveProperty("success", false);
-					expect(res.body).toHaveProperty("message", 'Não criar atividade com mais de 15 dias.')
+					// expect(res.body).toHaveProperty(
+					// 	"message",
+					// 	"Não é permitido criar uma atividade fora do mês atual."
+					// );
 				})
 		})
+		it("Deve deve receber um erros, pois está inserindo atividade maior que a data de hoje.", async () => {
+			return await request
+				.post("/atividades")
+				.send({
+					cliente_id: 1,
+					date: "2020-11-19",
+				})
+				.set("access_token", Token())
+				.then((res) => {
+					expect(res.status).toBe(400);
+					expect(res.body).toHaveProperty("success", false);
+					expect(res.body).toHaveProperty(
+						"message",
+						"Não é permitido criar um atividade com data maior que hoje."
+					);
+				});
+		});
 	});
 });

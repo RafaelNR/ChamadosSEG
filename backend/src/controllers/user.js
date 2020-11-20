@@ -2,6 +2,7 @@ const Validate = require("../tools/validation/schemas");
 const Model = require("../models/user");
 const { Crypt } = require("../tools/bcryp");
 const Result =  require('../tools/result');
+const { findClients } = require("../models/clients_has_users");
 
 async function index(req, res) {
 	try {
@@ -27,6 +28,21 @@ async function findOne(req, res) {
 	}
 
 	Result.registerLog(req.userId, "user", "findOne");
+	return res.status(Result.status).json(Result.res);
+}
+
+async function findMyClientes(req	,res ){
+	try {
+		if (!req.userId) throw "Paramentos não encontrados!";
+
+		await tools.checkIfExist(req.userId);
+
+		Result.ok(200,await findClients(req.userId));
+	} catch (error) {
+		Result.fail(400, error);
+	}
+
+	Result.registerLog(req.userId, "user", "findMyClientes");
 	return res.status(Result.status).json(Result.res);
 }
 
@@ -162,6 +178,7 @@ const tools = {
 module.exports = {
 	index,
 	findOne,
+	findMyClientes,
 	insert,
 	update,
 	deletar,

@@ -20,7 +20,6 @@ describe("Testes de Usuários, com rotas definidas", () => {
 			.get("/usuarios/1")
 			.set("access_token", Token())
 			.then((res) => {
-				console.log(res.body)
 				expect(res.status).toBe(200); // Deve ser;
 				expect(res.body).toHaveProperty("data"); // deve possuir a propriedade data;
 				expect(res.body.data).toHaveProperty("id", 1); // deve possuir id;
@@ -33,6 +32,22 @@ describe("Testes de Usuários, com rotas definidas", () => {
 				expect(res.body.data).toHaveProperty("clients"); // deve possuir clients;
 				expect(res.body.data.clients).toBeArray();
 				expect(res.body.data).not.toHaveProperty("passwd"); // não deve possuir passwd;
+			});
+	});
+
+	it("Deve receber os clientes do meu usuário logado.", async () => {
+		return await request
+			.get("/usuarios/clientes/1")
+			.set("access_token", Token())
+			.then((res) => {
+				console.log(res.body)
+				expect(res.status).toBe(200);
+				expect(res.body).toHaveProperty("data");
+				expect(res.body.data[0]).toHaveProperty("id");
+				expect(res.body.data[0]).toHaveProperty("razao_social");
+				expect(res.body.data[0]).toHaveProperty("nome_fantasia");
+				expect(res.body.data[0]).toHaveProperty("cnpj_cpf");
+				expect(res.body.data[0]).toHaveProperty("email");
 			});
 	});
 

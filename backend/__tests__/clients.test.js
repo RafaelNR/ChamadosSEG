@@ -27,6 +27,7 @@ describe("Teste de Clients", () => {
 				expect(res.body.data).toHaveProperty("cnpj_cpf");
 				expect(res.body.data).toHaveProperty("email");
 				expect(res.body.data).toHaveProperty("telefone");
+				expect(res.body.data).toHaveProperty("representante");
 				expect(res.body.data).toHaveProperty("usuarios");
 				expect(res.body.data.usuarios).toBeArray();
 			});
@@ -62,6 +63,7 @@ describe("Teste de Clients", () => {
 			cnpj_cpf: "11.111.110/0001-" + rand,
 			email: rand + "client@client.com",
 			telefone: "9" + Math.floor(Math.random() * 9999999999),
+			representante: 'Rafael',
 			user_id: 1,
 		};
 		return await request
@@ -76,6 +78,10 @@ describe("Teste de Clients", () => {
 				expect(res.body.data).toHaveProperty("cnpj_cpf", Dados.cnpj_cpf);
 				expect(res.body.data).toHaveProperty("email"), Dados.email;
 				expect(res.body.data).toHaveProperty("telefone", Dados.telefone);
+				expect(res.body.data).toHaveProperty(
+					"representante",
+					Dados.representante
+				);
 				expect(res.body.data).toHaveProperty("usuarios");
 				expect(res.body.data.usuarios).toBeArray();
 			});

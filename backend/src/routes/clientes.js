@@ -1,5 +1,5 @@
 const Router = require("express").Router();
-const Controller = require("../controllers/client");
+const Controller = require("../controllers/clientes");
 
 Router.get("/", Controller.index);
 Router.get("/:id", Controller.findOne);
