@@ -7,11 +7,10 @@ import {
 	TableContainer,
 	TableRow,
 } from "@material-ui/core/";
-import Typography from "@material-ui/core/Typography";
 
 //* COMPONENTES
-import EnhancedTableHead from "./TableHead";
-import EnhancedTableToolbar from "./ToolBar";
+import { AtividadesTableToolBar as Toolbar } from "./ToolBar";
+import TableHead from "./TableHead";
 import TablePagination from "./TablePagination";
 import Actions from "./Actions";
 import sortObject from "../../Utils/sortObject";
@@ -23,7 +22,7 @@ import useOrderTable from "../../Context/OrderTableContext";
 import usePageTable from "../../Context/PageTableContext";
 import useSearch from "../../Context/SearchContext";
 
-//* FUNCTIONS
+//* UTILS
 import { handleDate } from '../../Utils/dates';
 
 // Header Table
@@ -46,7 +45,7 @@ const headCells = [
 		id: "técnico",
 		numeric: false,
 		disablePadding: false,
-		label: "Técnico",
+		label: "Aberto Por",
 		sort: true,
 	},
 	{
@@ -93,19 +92,22 @@ export default () => {
   const classes = useStyles();
 	const { atividades } = useAtividades();
 	const { search, searchResults, setSearchResults } = useSearch();
-	const { order, orderBy, setOrderBy } = useOrderTable();
+	const { order, orderBy, setOrderBy,setOrder } = useOrderTable();
   const { page, rows, setRows, rowsPerPage, emptyRows } = usePageTable();
 
+	//& Order e por onde será renderizado as atividades.
 	useEffect(() => {
-		setOrderBy("nome");
+		setOrderBy("date");
+		setOrder('desc');
 		setRows(search && search.length > 3 ? searchResults : atividades);
 	}, [atividades, searchResults,search, setOrderBy, setRows]);
 
+	//& Renderiza a pesquisa;
 	useEffect(() => {
 		if (search) {
 			const results = atividades.filter((atv) => {
 				const técnico = atv['técnico'].toLowerCase();
-				const cliente = atv.nome_fantasia.toLowerCase();
+				const cliente = atv.cliente.toLowerCase();
 
 				if (
 					técnico.includes(search.toLowerCase()) ||
@@ -115,14 +117,14 @@ export default () => {
 				}
 				return;
 			});
-			setSearchResults(results);
+			return setSearchResults(results);
 		}
 		return setSearchResults(atividades);
 	}, [search, setSearchResults, atividades]);
   
 	return (
 		<React.Fragment>
-			<EnhancedTableToolbar
+			<Toolbar
 				title="Lista de Atividades"
 				data={atividades && atividades.length > 0 ? true : false}
 			 />
@@ -133,7 +135,7 @@ export default () => {
 					size="medium"
 					aria-label="enhanced table"
 				>
-					<EnhancedTableHead headCells={headCells} />
+					<TableHead headCells={headCells} />
 					<TableBody>
 						{!atividades || atividades.length === 0
 							? (<CircularProcess type="Table" />)
@@ -150,13 +152,13 @@ export default () => {
                       {row.ticket}
                       </TableCell>
 											<TableCell align="left" className={classes.tablerow}>
+												{handleDate(row.date)}
+											</TableCell>				
+											<TableCell align="left" className={classes.tablerow}>
 												{row.técnico}
 											</TableCell>
 											<TableCell align="left" className={classes.tablerow}>
 												{row.cliente}
-											</TableCell>
-											<TableCell align="left" className={classes.tablerow}>
-												{handleDate(row.date)}
 											</TableCell>
 										</TableRow>
 									);

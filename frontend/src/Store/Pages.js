@@ -23,11 +23,11 @@ const defaultMenu = [
 		icon: <AssignmentSharp />,
 		path: "/atividades",
 	},
-	{
-		nome: "Tarefa",
-		icon: <LibraryBooksSharp />,
-		path: "/tarefas",
-	},
+	// {
+	// 	nome: "Tarefa",
+	// 	icon: <LibraryBooksSharp />,
+	// 	path: "/tarefas",
+	// },
 	{
 		nome: "Relatórios",
 		icon: <InsertChartSharp />,
@@ -36,6 +36,10 @@ const defaultMenu = [
 	{
 		nome: "Perfil",
 		path: "/perfil",
+	},
+	{
+		nome: "Criar Atividade",
+		path: "/atividades/create",
 	},
 ];
 

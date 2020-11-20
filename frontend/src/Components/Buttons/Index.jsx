@@ -1,13 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { NavLink } from 'react-router-dom'
 import { makeStyles, Button, DialogActions } from "@material-ui/core/";
-import { Save, Close, NavigateNextSharp, NavigateBeforeSharp } from "@material-ui/icons/";
+import { Edit, Save, Close, NavigateNextSharp, NavigateBeforeSharp } from "@material-ui/icons/";
 
 const useStyles = makeStyles((theme) => ({
 	cancel: {
 		backgroundColor: "white",
 		color: "#b71c1c",
+		padding: "8px 15px",
 		border: "1px solid #b71c1c",
+		fontWeight: 'bold',
 		"&:hover": {
 			transition: "",
 			color: "white",
@@ -17,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 	save: {
 		backgroundColor: "#1b5e20",
 		color: "white",
-		padding: "8px",
+		padding: "8px 15px",
 		marginRight: "8px",
 		"&:hover": {
 			transition: "",
@@ -27,8 +30,9 @@ const useStyles = makeStyles((theme) => ({
 	next: {
 		backgroundColor: "blue",
 		color: "white",
-		padding: "8px",
+		padding: "8px 15px",
 		marginRight: "8px",
+		fontWeight: 'bold',
 		"&:hover": {
 			transition: "",
 			backgroundColor: "blue",
@@ -42,8 +46,8 @@ const useStyles = makeStyles((theme) => ({
 const SaveButton = React.memo(({disabled}) => {
 	const classes = useStyles();
 	return (
-			<Button type="submit" className={classes.save} disabled={disabled}>
-				<Save className={classes.icon}/>
+			<Button type="submit" className={classes.save} disabled={disabled} startIcon={<Save className={classes.icon}/>}>
+				SALVAR
 			</Button>
 	);
 });
@@ -65,15 +69,30 @@ const CancelButton = React.memo(({ clickClose }) => {
 	const classes = useStyles();
 	return (
 		<DialogActions>
-			<Button className={classes.cancel} onClick={clickClose}>
-				<Close className={classes.icon} />
+			<Button className={classes.cancel} onClick={clickClose} startIcon={<Close className={classes.icon} />}>
+				CANCELAR
 			</Button>
 		</DialogActions>
 	);
 });
 
-CancelButton.propTypes = {
-	clickClose: PropTypes.func.isRequired,
-};
+const CreatedTicket = React.memo(() => {
+	const classes = useStyles();
+	return (
+		<NavLink to='/atividades/create'>
+			<Button color="primary" startIcon={<Save className={classes.icon}/>} />
+		</NavLink>
+	);
+});
 
-export { SaveButton, CancelButton, NavigatorButton };
+
+const EditInfoAtividade = React.memo(({handleEdit}) => { 
+	const classes = useStyles();
+	return (
+		<Button variant="contained" color="primary" onClick={(event) => handleEdit(event)}>
+  		<Edit />
+		</Button>
+	)
+})
+
+export { SaveButton, CancelButton, NavigatorButton, CreatedTicket, EditInfoAtividade };

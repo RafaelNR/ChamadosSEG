@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { Toolbar, Typography } from "@material-ui/core";
 import { AddIconButton } from "../Buttons/Icons";
+import { CreatedTicket } from "../Buttons/Index";
 import Search from "../Search";
 import useSearch from "../../Context/SearchContext";
 
-// Titulo da tabela
 const useToolbarStyles = makeStyles((theme) => ({
 	root: {
 		paddingLeft: theme.spacing(2),
@@ -17,12 +17,34 @@ const useToolbarStyles = makeStyles((theme) => ({
 	},
 }));
 
-/**
- * Renderiza toolbar da tabela.
- * @param {string} title
- * @param {Boolean} data
- */
-const EnhancedTableToolbar = ({ title, data }) => {
+
+const AtividadesTableToolBar = React.memo(({ title, data }) => {
+	const classes = useToolbarStyles();
+	const { handleChangeSearch } = useSearch();
+
+	const handleTickeSearch = (e) => {
+		
+	}
+
+	return (
+		<Toolbar className={classes.root}>
+			<React.Fragment>
+				<Typography
+					className={classes.title}
+					variant="h6"
+					id="tableTitle"
+					component="span"
+				>
+					{title}
+				</Typography>
+			</React.Fragment>
+			<Search handleChangeSearch={handleChangeSearch} />
+			<CreatedTicket />
+		</Toolbar>
+	);
+});
+
+const TableToolbar = React.memo(({ title, data }) => {
 	const classes = useToolbarStyles();
 	const { handleChangeSearch } = useSearch();
 
@@ -30,23 +52,34 @@ const EnhancedTableToolbar = ({ title, data }) => {
 		<Toolbar className={classes.root}>
 			<React.Fragment>
 
-			<Typography
-				className={classes.title}
-				variant="h6"
-				id="tableTitle"
-				component="span"
+				<Typography
+					className={classes.title}
+					variant="h6"
+					id="tableTitle"
+					component="span"
 				>
-				{title}
+					{title}
 				</Typography>
 			</React.Fragment>
 			<Search handleChangeSearch={handleChangeSearch} />
-			{data ? (<AddIconButton />) : null }
+			{data ? (<AddIconButton />) : null}
 		</Toolbar>
 	);
-};
+})
 
-EnhancedTableToolbar.propTypes = {
+export {
+	AtividadesTableToolBar
+}
+
+export default TableToolbar;
+
+TableToolbar.propTypes = {
 	title: PropTypes.string.isRequired,
+ 	data: PropTypes.array.isRequired,
 };
 
-export default React.memo(EnhancedTableToolbar);
+AtividadesTableToolBar.propTypes = {
+	title: PropTypes.string.isRequired,
+ 	data: PropTypes.array.isRequired,
+};
+

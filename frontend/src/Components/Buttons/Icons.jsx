@@ -10,7 +10,6 @@ import {
 } from "@material-ui/icons";
 import useDialog from "../../Context/DialogContext";
 
-// Tabela
 const useStyles = makeStyles((theme) => ({
 	add: {
 		fontSize: "25px",

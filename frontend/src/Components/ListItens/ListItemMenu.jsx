@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { NavLink,Link } from "react-router-dom";
 
 import useMenu from "../../Context/MenuContext";
 
@@ -29,7 +29,7 @@ const MyListItem = memo(({ menu }) => {
 const ListItemTooltip = memo(({ menu }) => {
 	return (
 		<Tooltip title={menu.nome}>
-			<ListItem button component={Link} to={menu.path}>
+			<ListItem button component={NavLink} to={menu.path}>
 				<ListItemIcon aria-label={menu.nome}>{menu.icon}</ListItemIcon>
 				<ListItemText primary={menu.nome} />
 			</ListItem>

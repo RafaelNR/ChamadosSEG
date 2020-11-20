@@ -36,6 +36,16 @@ const Insert = [
 		value: "",
 	},
 	{
+		id: "representante",
+		label: "Representante",
+		required: true,
+		autofocus: false,
+		margin: "normal",
+		type: "text",
+		option: "input",
+		value: "",
+	},
+	{
 		id: "email",
 		label: "Email",
 		required: true,
@@ -87,6 +97,16 @@ const Update = [
 	{
 		id: "cnpj_cpf",
 		label: "CNPJ/CPF",
+		required: true,
+		autofocus: false,
+		margin: "normal",
+		type: "text",
+		option: "input",
+		value: "",
+	},
+	{
+		id: "representante",
+		label: "Representante",
 		required: true,
 		autofocus: false,
 		margin: "normal",

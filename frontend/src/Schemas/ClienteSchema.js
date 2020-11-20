@@ -29,6 +29,11 @@ const InsertSchema = (data) => {
 			.min(14, "No mínimo 14 caracteres")
 			.max(20, "No máximo 20 caracteres")
 			.required("Telefone é obrigatório"),
+		representante: yup
+			.string()
+			.min(3, "No mínimo 3 caracteres")
+			.max(100, "No máximo 100 caracteres")
+			.required("Representante é obrigatório"),
 	});
 
 	
@@ -65,6 +70,11 @@ const UpdateSchema = async (data) => {
 			.min(14, "No mínimo 14 caracteres")
 			.max(20, "No máximo 20 caracteres")
 			.required("Telefone é obrigatório"),
+		representante: yup
+			.string()
+			.min(3, "No mínimo 3 caracteres")
+			.max(100, "No máximo 100 caracteres")
+			.required("Representante é obrigatório"),
 	});
 	const Val = new Validate(schema, data);
 	return await Val.exec();

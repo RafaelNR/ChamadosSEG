@@ -28,7 +28,8 @@ class Service {
 	 * Cancela a requisição a api, quando ainda está sendo processada.
 	 */
 	source() {
-		this.axios.CancelToken.source().cancel("Operação cancelado pelo usuário!");
+		console.log("Operação cancelada pelo usuário!");
+		this.axios.CancelToken.source().cancel("Operação cancelada pelo usuário!");
 	}
 
 	/**

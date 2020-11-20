@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default React.memo(({ handleChangeSearch }) => {
+export default React.memo(({ handleChangeSearch , placeholder = null }) => {
 	const classes = useStyles();
 
 	return (
@@ -53,7 +53,7 @@ export default React.memo(({ handleChangeSearch }) => {
 			</div>
 			<InputBase
 				type="search"
-				placeholder="Buscar…"
+				placeholder={placeholder ? placeholder : "Buscar…"}
 				classes={{
 					root: classes.inputRoot,
 					input: classes.inputInput,
@@ -64,3 +64,26 @@ export default React.memo(({ handleChangeSearch }) => {
 		</div>
 	);
 });
+
+
+export function Ticket({handleTickeSearch}){
+	const classes = useStyles();
+
+	return (
+		<div className={classes.search}>
+			<div className={classes.searchIcon}>
+				<SearchIcon />
+			</div>
+			<InputBase
+				type="search"
+				placeholder="Buscar por ticked"
+				classes={{
+					root: classes.inputRoot,
+					input: classes.inputInput,
+				}}
+				inputProps={{ "aria-label": "search" }}
+				onChange={handleTickeSearch}
+			/>
+		</div>
+	);
+}

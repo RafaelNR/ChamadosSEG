@@ -7,10 +7,6 @@ import React, {
 } from "react";
 import PropTypes from "prop-types";
 import * as Api from "../Api/Crud";
-import {
-	InsertSchema,
-	UpdateSchema,
-} from "../Schemas/UserSchema";
 
 import useSnackBar from "./SnackBarContext";
 import useLoading from "./LoadingContext";
@@ -26,38 +22,31 @@ const AtividadesProvider = ({ children }) => {
   const [apiLoading, setApiLoading] = useState(false);
   
   useEffect(() => { 
+			async function init (){
+				try {
+					const resp = await Api.get('atividades/user');
+					const { success, data } = resp.data;
+					if (!success) throw resp.data.message;
+					setLoading(false);
+					setAtividades(data);
+				} catch (error) {
+					console.log(error);
+					setLoading(false);
+					handleSnackBar({
+						type: "error",
+						message: "Erro em carregar atividades, Por favor tente mais tarde.",
+					});
+				}
+			}
+			
+			init();
+			
+			return function cleanup() {
+				console.log("unmounted component");
+				Api.default.source();
+			};
 
-      async function init (){
-        try {
-          const resp = await Api.get('atividades/user');
-          const { success, data } = resp.data;
-          if (!success) throw resp.data.message;
-          setLoading(false);
-          setAtividades(data);
-          console.log(data[0])
-        } catch (error) {
-          console.log(error);
-          setLoading(false);
-          handleSnackBar({
-            type: "error",
-            message: error ? error :
-              "Erro em carregar atividades, Por favor tente mais tarde.",
-          });
-        }
-    }
-    
-    init();
-    
-
-    return function cleanup() {
-      console.log("unmounted component");
-      Api.default.source();
-    };
-
-		},
-		
-		[]
-	);
+		},[]);
 
 
 	// const getUsuario = useCallback(
