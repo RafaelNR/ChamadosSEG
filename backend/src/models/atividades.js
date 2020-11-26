@@ -83,7 +83,9 @@ module.exports = {
 			.from("atividades")
 			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
 			.join("users", "users.id", "=", "atividades.user_id")
-			.limit(100);
+			.orderBy("atividades.id", "desc")
+			.orderBy("atividades.date", "desc")
+			.limit(60);
 	},
 
 	findByUser_id: async (user_id) => {
@@ -101,7 +103,9 @@ module.exports = {
 			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
 			.join("users", "users.id", "=", "atividades.user_id")
 			.where("users.id", "=", user_id)
-			.limit(100);
+			.orderBy("atividades.id", 'desc')
+			.orderBy("atividades.date", 'desc')
+			.limit(60);
 	},
 
 	findByClient_id: async (client_id) => {
@@ -119,10 +123,12 @@ module.exports = {
 			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
 			.join("users", "users.id", "=", "atividades.user_id")
 			.where("clientes.id", "=", client_id)
-			.limit(100);
+			.orderBy("atividades.id", "desc")
+			.orderBy("atividades.date", "desc")
+			.limit(60);
 	},
 
-	findOne: (ID) => {
+	findOne: async (ID) => {
 		return knex
 			.select(
 				"atividades.id",
@@ -146,11 +152,56 @@ module.exports = {
 						"descricao",
 						"info.info_ticket",
 						"categorias.nome as categoria",
+						"categorias.id as categoria_id",
 						"info.created_at",
 						"info.updated_at"
 					)
 					.from("infos_atividades as info")
 					.join("categorias", "categorias.id", "=", "info.categoria_id")
+					.join("users", "users.id", "=", "info.user_id")
+					.where("info.atividade_id", "=", Atividade[0].id)
+					.then((infos) => {
+						return {
+							...Atividade[0],
+							infos,
+						};
+					});
+			});
+
+	},
+
+	findOneByTicket: async (ticket) => {
+		return knex
+			.select(
+				"atividades.id",
+				"atividades.ticket",
+				"atividades.date",
+				"clientes.id as cliente_id",
+				"users.nome as técnico",
+				"atividades.created_at",
+				"atividades.updated_at"
+			)
+			.from("atividades")
+			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
+			.join("users", "users.id", "=", "atividades.user_id")
+			.where("atividades.ticket", "=", ticket)
+			.then((Atividade) => {
+				if (Atividade.length <= 0) return false;
+
+				return knex
+					.select(
+						"info.id",
+						"descricao",
+						"info.info_ticket",
+						"users.nome as técnico",
+						"categorias.nome as categoria",
+						"categorias.id as categoria_id",
+						"info.created_at",
+						"info.updated_at"
+					)
+					.from("infos_atividades as info")
+					.join("categorias", "categorias.id", "=", "info.categoria_id")
+					.join("users", "users.id", "=", "info.user_id")
 					.where("info.atividade_id", "=", Atividade[0].id)
 					.then((infos) => {
 						return {

@@ -9,6 +9,7 @@ Router.get("/user", Controller.findAllByMy);
 Router.get("/user/:user_id", Controller.findAllByUser);
 Router.get("/cliente/:cliente_id", Controller.findAllByCliente);
 Router.get("/:id", Controller.findOne);
+Router.get("/ticket/:ticket", Controller.findOneByTicket);
 
 // Router.get(
 // 	["/user/:userID/:data", "/client/:clientID/:data"],

@@ -16,12 +16,12 @@ module.exports = async (req, res) => {
 
 		// tem token no header do login
 		if (token && token !== "undefined" && token !== "null") {
-			jwt.verify(token, config.SECRET, function (err, decoded) {
+			jwt.verify(token, config.SECRET, async function (err, decoded) {
 				if (err) {
 					return res.status(401).json(Result.auth(false,"Autenticação expirou ou não é mais valida."));
 				} else {
 					req.userId = Validation.ID(decoded.id);
-					return res.status(200).json({ auth: true, id: req.userId });
+					return res.status(200).json({ success: true, data: { auth: true, user: await Model.getDataAfterLogin(req.userId) }});
 				}
 			});
 		}
@@ -33,7 +33,7 @@ module.exports = async (req, res) => {
 		const bodyUser = Validation.login({ user, passwd });
 
 		// Dados do Banco
-		const dbUser = await Model.getUserlogin(bodyUser.user);
+		const dbUser = await Model.login(bodyUser.user);
 
 		// Se Senha inválida.
 		if (!dbUser || 
@@ -49,7 +49,7 @@ module.exports = async (req, res) => {
 		Result.ok(200,{
 			auth: true,
 			token: newToken,
-			user_id: req.userId ? req.userId : dbUser.id,
+			user: await Model.getDataAfterLogin(req.userId ? req.userId : dbUser.id)
 		});
 	} catch (error) {
 		console.log(error)

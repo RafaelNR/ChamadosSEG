@@ -14,7 +14,7 @@ module.exports = {
 	Data: (Data) => validate(Data, type.string.date),
 	DiaMesAno: (Data) => type.date.DiaMesAno(Data),
 	status: (Status) => validate(Status, type.string.status),
-
+	Ticket: (Ticket) => validate(Ticket, type.string.ticket), 
 	clientsUser: (Dados) => validate(Dados, type.array.clients),
 	subCategorias_array: (Dados) => validate(Dados, type.array.subCategorias),
 

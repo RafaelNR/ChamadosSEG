@@ -7,7 +7,8 @@ const findOne = (ID) => {
 			"descricao",
 			"info.info_ticket",
 			"categorias.nome as categoria",
-			"users.nome as user",
+			"categorias.id as categoria_id",
+			"users.nome as técnico",
 			"info.created_at",
 			"info.updated_at"
 		)

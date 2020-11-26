@@ -83,6 +83,24 @@ const findOne = async (req, res) => {
 	return res.status(Result.status).json(Result.res);
 };
 
+const findOneByTicket = async (req, res) => {
+	try {
+		console.log(req.params)
+		if (!req.params.ticket) throw "Parâmetros inválidos";
+		const ID = Validate.Ticket(req.params.ticket);
+		const Dados = await Model.findOneByTicket(ID);
+
+		if (!Dados) throw "Atividade não existe!";
+
+		Result.ok(200, Dados);
+	} catch (error) {
+		Result.fail(400, error);
+	}
+
+	Result.registerLog(req.userId, "atividades", "findOne");
+	return res.status(Result.status).json(Result.res);
+}
+
 const insert = async (req, res) => {
 	try {
 		if (!req.body) throw "Informações não encontradas!";
@@ -141,6 +159,8 @@ const tools = {
 	 * @param {Object} Dados
 	 */
 	handlingInsert: async (Dados) => {
+		console.log(Dados)
+		
 		const newDados = Validate.insertAtividades({
 			...Dados,
 			ticket: await Ticket.created(),
@@ -242,6 +262,7 @@ module.exports = {
 	findAllByUser,
 	findAllByCliente,
 	findOne,
+	findOneByTicket,
 	update,
 	insert,
 	deletar,

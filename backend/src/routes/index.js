@@ -4,6 +4,7 @@ const verifyToken = require("../middlewares/jwt");
 // Controllers
 const Login = require("../controllers/login");
 const Auth = require("../controllers/auth");
+const Perfil = require("../controllers/perfil");
 
 Router.get("/", (req, res) =>
 	res.status(200).json({
@@ -21,6 +22,7 @@ Router.use("/atividades", verifyToken, require("./atividades"));
 Router.use("/categorias", verifyToken, require("./category"));
 Router.use("/subcategorias", verifyToken, require("./subcategory"));
 Router.use(["/tasks", "/tarefas"], verifyToken, require("./tasks"));
+Router.use('/perfil', verifyToken, Perfil);
 
 Router.get("/logout", (req, res) => {
 	return res.status(200).json({
