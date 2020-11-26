@@ -1,100 +1,137 @@
-import React, { createContext, useState, useEffect, useContext, useCallback } from "react";
-import * as Auth from "../Api/Auth";
-import * as Api from "../Api/Crud";
 import PropTypes from "prop-types";
-import useLocalStore from '../Hooks/useLocalStore';
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useContext,
+  useCallback,
+} from "react";
+import * as Auth from "../Api/Auth";
+import { Login } from '../Service/login.service'
+
+import useLocalStore from "../Hooks/useLocalStore";
 
 const AuthContext = createContext({});
 
 const AuthProvider = ({ children }) => {
-	const { getData, setData, removeData } = useLocalStore();
-	const [token, setToken] = useState(getData('token'));
-	const [user, setUser] = useState(getData('user'));
+  const { getData, setData, removeData } = useLocalStore();
+  const [token, setToken] = useState(getData("token"));
+  const [user, setUser] = useState(getData("user"));
+  const [errors, setErrors] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-	const handleLogin = useCallback(async (userLogin, passwd) => {
-		try {
-			const response = await Auth.Login(userLogin, passwd);
-			console.log(response)
-			if (response.data.success) {
-				setData('token', response.data.data.token)	
-				setData('user', await getUsuario(response.data.data.user_id))
-				setUser(response.data.data.user);
-				setToken(response.data.data.token);
-				window.location.replace('/')
-			}
-		} catch (error) {
-			console.log(error);
-			// TODO tratar os erros na tela.
-		}
-	}, [setData]);
+  useEffect(() => {
 
+    return async () => {
 
-	const handleLogout = useCallback(() => {
-		setUser(null);
-		setToken(null);
-		removeData('token');
-		removeData('user');
-		Auth.removeToken();
-	}, [removeData]);
+      if (!token || token === "undefined") {
+        console.log("token não encontrado");
+        return handleLogout();
+      }
 
-	const getUsuario = useCallback(
-		async (ID) => {
-			try {
-				return Api.getByID("usuarios", parseInt(ID))
-					.then((resp) => {
-						const { success, data } = resp.data;
-						if (!success) throw resp.data;
-						return data;				
-					})
-			} catch (error) {
-				console.log(error);
-			}
-		},
-		[]
-	);
+      if (!user || user === "undefined" || !user.nome) {
+        console.log("user não encontrado");
+        return handleLogout();
+      }
+
+      const resp = await Auth.Auth();
+      if (!resp.data.auth) return handleLogout();
+
+    }
+
+  },[]);
 
 
-	useEffect(() => {
+  const handleLogin = useCallback((user, passwd) => {
 
-		async function isAuth (){
+      Login(user, passwd).then((Dados) => {
 
-			if (!token || token === "undefined") {
-				console.log('token não encontrado');
-				return handleLogout();
-			}
-			
-			if (!user || user === 'undefined' || !user.nome) {
-				console.log('user não encontrado')
-				return handleLogout();
-			}
+        setErrors([])
 
-			
-			const resp = await Auth.Auth();
-			console.log(resp)
-			if (!resp.data.auth) handleLogout();
+        if(Dados.auth && Dados.token){
+          setData("token", Dados.token);
+          setData("user", Dados.user);
+          return window.location.replace("/");
+        }
 
-		};
+        if(Dados.auth && Dados.user){
+          setData("user", Dados.user);
+          return window.location.replace("/");
+        }
 
-		isAuth();
+        throw {
+          success: false,
+          message: 'Erro em logar no sistema'
+        }
 
-	},[]);
-	
+      }).catch((error) => {
+        if(error.error){
+          return setErrors(error.errors)
+        }
+        setErrors(error)
 
-	return (
-		<AuthContext.Provider
-			value={{ logado: Boolean(user), user, handleLogin, handleLogout }}
-		>
-			{children}
-		</AuthContext.Provider>
-	);
+      })
+
+    },
+    [setData]
+  );
+
+  const handleLogout = useCallback(() => {
+    setUser(null);
+    setToken(null);
+    removeData("token");
+    removeData("user");
+    Auth.removeToken();
+  }, [removeData]);
+
+
+  const handleAuth = useCallback(async () => {
+    
+    const storageToken = getData("token")
+    const storageUser = getData("user")
+
+    if (!storageToken || storageToken === "undefined") {
+      setErrors({
+        success: false,
+        message: 'Erro, token de autenticação não encontrado, você foi deslogado!!'
+      });
+      return handleLogout();
+    }
+
+    if (!storageUser || storageUser === "undefined" || !storageUser.nome) {
+      setErrors({
+        success: false,
+        message: 'Erro, usuário não encontrado, você foi deslogado!'
+      });
+      return handleLogout();
+    }
+
+    const resp = await Auth.Auth();
+    if (!resp.data.auth) {
+      setErrors({
+        success: false,
+        message: 'Autenticação expirou, você foi deslogado!'
+      });
+      return handleLogout();
+    }
+
+  },[handleLogout])
+
+  return (
+    <AuthContext.Provider
+      value={{ logado: Boolean(user), user, handleLogin, handleLogout, errors, loading, handleAuth }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 AuthProvider.propTypes = {
-	children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default function useAuth() {
-	return useContext(AuthContext);
+  return useContext(AuthContext);
 }
 
 export { AuthContext, AuthProvider };

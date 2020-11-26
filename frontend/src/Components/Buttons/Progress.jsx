@@ -1,39 +1,39 @@
-import React from 'react';
-import clsx from 'clsx';
-import { CircularProgress , makeStyles, Button } from '@material-ui/core';
-import { green } from '@material-ui/core/colors';
-import CheckIcon from '@material-ui/icons/Check';
+import React from "react";
+import clsx from "clsx";
+import { CircularProgress, makeStyles, Button } from "@material-ui/core";
+import { green } from "@material-ui/core/colors";
+import CheckIcon from "@material-ui/icons/Check";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
   },
   wrapper: {
     margin: theme.spacing(1),
-    position: 'relative',
+    position: "relative",
   },
   buttonSuccess: {
     backgroundColor: green[500],
-    '&:hover': {
+    "&:hover": {
       backgroundColor: green[700],
     },
-    '&:disabled': {
+    "&:disabled": {
       backgroundColor: green[700],
-      color: 'white'
+      color: "white",
     },
   },
   buttonProgress: {
     color: green[500],
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
     marginTop: -12,
     marginLeft: -12,
   },
 }));
 
-export default ({ children, handleSubmit, loading, success}) => {
+export default ({ children, handleSubmit, loading, success }) => {
   const classes = useStyles();
   const timer = React.useRef();
 
@@ -58,10 +58,12 @@ export default ({ children, handleSubmit, loading, success}) => {
           disabled={loading || success}
           onClick={handleSubmit}
         >
-          { success ? <CheckIcon /> : children }
+          {success ? <CheckIcon /> : children}
         </Button>
-        {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+        {loading && (
+          <CircularProgress size={24} className={classes.buttonProgress} />
+        )}
       </div>
     </div>
   );
-}
+};

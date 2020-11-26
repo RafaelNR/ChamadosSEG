@@ -6,11 +6,11 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import useAuth from "../../Context/AuthContext";
 
 export default () => {
-	const { handleLogout } = useAuth();
+  const { handleLogout } = useAuth();
 
-	return (
-		<IconButton color="inherit" title="Sair" onClick={handleLogout}>
-			<ExitToAppIcon />
-		</IconButton>
-	);
+  return (
+    <IconButton color="inherit" title="Sair" onClick={handleLogout}>
+      <ExitToAppIcon />
+    </IconButton>
+  );
 };

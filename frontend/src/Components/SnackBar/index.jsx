@@ -5,36 +5,36 @@ import MuiAlert from "@material-ui/lab/Alert";
 import useSnackBar from "../../Context/SnackBarContext";
 
 function Alert(props) {
-	return <MuiAlert elevation={6} variant="filled" {...props} />;
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 const useStyles = makeStyles((theme) => ({
-	root: {
-		width: "100%",
-		"& > * + *": {
-			marginTop: theme.spacing(2),
-		},
-	},
+  root: {
+    width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2),
+    },
+  },
 }));
 
 export default React.memo(() => {
-	const classes = useStyles();
-	const SnackBar = useSnackBar();
+  const classes = useStyles();
+  const SnackBar = useSnackBar();
 
-	return (
-		<div className={classes.root}>
-			<Snackbar
-				open={SnackBar.openSnackBar}
-				autoHideDuration={SnackBar.severity === "error" ? 30000 : 6000}
-				onClose={SnackBar.clickSnackBar}
-			>
-				<Alert
-					onClose={SnackBar.clickSnackBar}
-					severity={SnackBar.severity ? SnackBar.severity : "success"}
-				>
-					{SnackBar.message}
-				</Alert>
-			</Snackbar>
-		</div>
-	);
+  return (
+    <div className={classes.root}>
+      <Snackbar
+        open={SnackBar.openSnackBar}
+        autoHideDuration={SnackBar.severity === "error" ? 30000 : 6000}
+        onClose={SnackBar.clickSnackBar}
+      >
+        <Alert
+          onClose={SnackBar.clickSnackBar}
+          severity={SnackBar.severity ? SnackBar.severity : "success"}
+        >
+          {SnackBar.message}
+        </Alert>
+      </Snackbar>
+    </div>
+  );
 });

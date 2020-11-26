@@ -2,29 +2,29 @@ import * as yup from "yup";
 import Validate from "../Utils/Validate";
 
 const InsertSchema = (data) => {
-	const schema = yup.object().shape({
-		nome: yup
-			.string()
-			.min(3, "No mínimo 3 Caracteres")
-			.max(100, "No máximo 100 caracteres")
-			.required("Nome da categoria é obrigatório"),
-	});
+  const schema = yup.object().shape({
+    nome: yup
+      .string()
+      .min(3, "No mínimo 3 Caracteres")
+      .max(100, "No máximo 100 caracteres")
+      .required("Nome da categoria é obrigatório"),
+  });
 
-	const Val = new Validate(schema, data);
-	return Val.exec();
+  const Val = new Validate(schema, data);
+  return Val.exec();
 };
 
 const UpdateSchema = async (data) => {
-	const schema = yup.object().shape({
-		id: yup.number().required(),
-		nome: yup
-			.string()
-			.min(3, "No mínimo 3 Caracteres")
-			.max(100, "No máximo 100 caracteres")
-			.required("Nome da categoria é obrigatório"),
-	});
-	const Val = new Validate(schema, data);
-	return await Val.exec();
+  const schema = yup.object().shape({
+    id: yup.number().required(),
+    nome: yup
+      .string()
+      .min(3, "No mínimo 3 Caracteres")
+      .max(100, "No máximo 100 caracteres")
+      .required("Nome da categoria é obrigatório"),
+  });
+  const Val = new Validate(schema, data);
+  return await Val.exec();
 };
 
 export { InsertSchema, UpdateSchema };
