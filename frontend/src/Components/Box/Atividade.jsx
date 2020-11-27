@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Paper, Grid, Typography } from "@material-ui/core/";
 
 //* Utils
-import { handleDateTime } from "../../Utils/dates";
+import { handleDateTime, handleDate } from "../../Utils/dates";
 
 const useStyles = makeStyles((theme) => ({
   gridCliente: {
@@ -45,8 +45,8 @@ const AtividadeClientes = ({ Atividade, Clientes }) => {
         <Typography className="title">Informações do Cliente</Typography>
         {Atividade && Atividade.cliente_id ? (
           Clientes.map((cliente) => {
-            if (cliente.id === Atividade.cliente_id) {
-              return (
+            return cliente.id === Atividade.cliente_id &&
+              (
                 <>
                   <Typography display="block" className={classes.cliente}>
                     Razão Social: <span>{cliente.razao_social}</span>
@@ -65,7 +65,6 @@ const AtividadeClientes = ({ Atividade, Clientes }) => {
                   </Typography>
                 </>
               );
-            }
           })
         ) : (
           <Typography display="block" className={classes.notCliente}>
@@ -111,6 +110,13 @@ const Atividade = ({ Atividade }) => {
         <Typography className="title">Informações da atividade</Typography>
         {Atividade && Atividade.ticket ? (
           <>
+            { Atividade.date 
+              &&  ( 
+                <Typography display="block" className={classes.cliente}>
+                Data da Atividade: <span>{handleDate(Atividade.date)}</span>
+                </Typography>
+              )
+            }
             <Typography display="block" className={classes.cliente}>
               Ticked: <span>{Atividade.ticket}</span>
             </Typography>

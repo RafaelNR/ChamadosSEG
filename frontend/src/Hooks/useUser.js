@@ -11,7 +11,7 @@ const useUser = () => {
     const Dados = getData("user");
     setNome(Dados.nome);
     setUser(Dados.user);
-  });
+  },[setNome,setUser, getData]);
 
   return {
     nome,

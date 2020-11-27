@@ -47,7 +47,7 @@ const FormInsert = () => {
       return false;
     };
     // react-hooks/exhaustive-deps
-  }, []);
+  }, [setCategoria,setErrors,setLoading]);
 
   /**
    ** Quando clica no button que faz a action envia.
@@ -207,7 +207,7 @@ const FormUpdate = () => {
         resp ? setOpen(false) : setLoading(false)
       );
     },
-    [handleActions, setLoading, setErrors, type, values]
+    [handleActions, setLoading, setErrors, setOpen, type, values]
   );
 
   /**

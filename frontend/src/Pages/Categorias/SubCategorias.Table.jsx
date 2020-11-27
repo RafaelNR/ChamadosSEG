@@ -101,10 +101,7 @@ export default function () {
     if (subcategorias) {
       const results = subcategorias.filter((sub) => {
         const nome = sub.nome.toLowerCase();
-        if (nome.includes(search.toLowerCase())) {
-          return sub;
-        }
-        return;
+        return nome.includes(search.toLowerCase()) ? sub : null
       });
       return setSearchResults(results);
     }

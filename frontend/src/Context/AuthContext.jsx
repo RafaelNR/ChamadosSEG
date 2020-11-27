@@ -18,7 +18,15 @@ const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(getData("token"));
   const [user, setUser] = useState(getData("user"));
   const [errors, setErrors] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); // TODO Loading
+
+  const handleLogout = useCallback(() => {
+    setUser(null);
+    setToken(null);
+    removeData("token");
+    removeData("user");
+    Auth.removeToken();
+  }, [removeData]);
 
   useEffect(() => {
 
@@ -39,14 +47,14 @@ const AuthProvider = ({ children }) => {
 
     }
 
-  },[]);
-
+  },[token, user, handleLogout]);
 
   const handleLogin = useCallback((user, passwd) => {
 
       Login(user, passwd).then((Dados) => {
 
         setErrors([])
+        setLoading(false);
 
         if(Dados.auth && Dados.token){
           setData("token", Dados.token);
@@ -59,30 +67,22 @@ const AuthProvider = ({ children }) => {
           return window.location.replace("/");
         }
 
-        throw {
-          success: false,
-          message: 'Erro em logar no sistema'
-        }
+        throw new Error('Erro em logar no sistema');
 
       }).catch((error) => {
         if(error.error){
           return setErrors(error.errors)
         }
-        setErrors(error)
+        setErrors({
+          success: false,
+          message: 'Erro em logar no sistema'
+        })
 
       })
 
     },
     [setData]
   );
-
-  const handleLogout = useCallback(() => {
-    setUser(null);
-    setToken(null);
-    removeData("token");
-    removeData("user");
-    Auth.removeToken();
-  }, [removeData]);
 
 
   const handleAuth = useCallback(async () => {
@@ -115,7 +115,7 @@ const AuthProvider = ({ children }) => {
       return handleLogout();
     }
 
-  },[handleLogout])
+  },[handleLogout, getData  ])
 
   return (
     <AuthContext.Provider

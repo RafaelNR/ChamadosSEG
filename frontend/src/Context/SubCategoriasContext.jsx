@@ -16,7 +16,7 @@ const SubCategoriasContext = createContext({});
 
 const SubCategoriasProvider = ({ children }) => {
   const { handleSnackBar } = useSnackBar();
-  const { loading, setLoading } = useLoading();
+  const {setLoading } = useLoading();
   const [subcategorias, setSubCategorias] = useState([]);
   const [subcategoria, setSubCategoria] = useState({});
   const [errors, setErrors] = useState({});
@@ -34,7 +34,7 @@ const SubCategoriasProvider = ({ children }) => {
             const { success, data } = resp.data;
             if (success) return setSubCategorias(data);
             setLoading(false);
-            throw "Erro em carregar sub-categorias.";
+            throw new Error("Erro em carregar sub-categorias.");
           })
           .catch((error) => {
             console.log(error);
@@ -159,23 +159,12 @@ const SubCategoriasProvider = ({ children }) => {
     // },
   };
 
-  /**
-   ** Trata as actions dos cliente
-   * @param {string} type
-   * @param {objeto} categoria
-   */
-  const handleActions = useCallback(
-    (type, categoria) => {
+  const handleActions = (type, categoria) => {
       const fn = Actions[type];
       setApiLoading(true);
       return fn(categoria);
-    },
-    [Actions]
-  );
+  }
 
-  /**
-   * Provider
-   */
   return (
     <SubCategoriasContext.Provider
       value={{
@@ -185,6 +174,7 @@ const SubCategoriasProvider = ({ children }) => {
         setSubCategoria,
         errors,
         setErrors,
+        apiLoading,
         getSubCategoria,
         handleActions,
       }}

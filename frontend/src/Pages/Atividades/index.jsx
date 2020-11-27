@@ -1,7 +1,7 @@
 import React from "react";
 
 import Paper from "../../Components/Paper/PaperNoDialog";
-import Table from "./Atividades.table";
+import Table from "./Atividades.Table";
 
 import { LoadingProvider } from "../../Context/LoadingContext";
 import { AtividadesProvider } from "../../Context/AtividadesContext";

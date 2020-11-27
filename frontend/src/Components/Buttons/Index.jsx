@@ -1,9 +1,6 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { NavLink } from "react-router-dom";
 import { makeStyles, Button, DialogActions } from "@material-ui/core/";
 import {
-  Edit,
   Save,
   Close,
   NavigateNextSharp,

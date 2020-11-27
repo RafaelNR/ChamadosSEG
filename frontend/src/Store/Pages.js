@@ -1,7 +1,6 @@
 import React from "react";
 // Icons
 import {
-  LibraryBooksSharp,
   AssignmentSharp,
   HomeSharp,
   InsertChartSharp,

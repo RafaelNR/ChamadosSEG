@@ -11,11 +11,11 @@ export const getAtividade = async (ticket) => {
     const Url = `/atividades/ticket/${ticket}`;
     const Dados = await Service.exec("get", Url);
 
-    if (Dados.data.success) {
+    if (Dados.data.success) 
       return Dados.data.data;
-    } else {
-      throw Dados;
-    }
+
+    throw new Error(Dados);
+    
   } catch (error) {
     throw error.data;
   }
@@ -32,11 +32,11 @@ export const Insert = async (data) => {
       date: handleDate(validateData.date, "YYYY-MM-DD"),
     });
 
-    if (Dados.data.success) {
+    if (Dados.data.success) 
       return Dados.data.data;
-    } else {
-      throw Dados;
-    }
+
+    throw new Error(Dados);
+
   } catch (error) {
     throw error.data;
   }
@@ -50,11 +50,11 @@ export const InsertInfo = async (data) => {
     const Url = "/atividades/infos";
     const Dados = await Service.exec("post", Url, validateData);
 
-    if (Dados.data.success) {
+    if (Dados.data.success)
       return Dados.data.data;
-    } else {
-      throw Dados;
-    }
+
+    throw new Error(Dados);
+
   } catch (error) {
     throw error.data;
   }
@@ -73,12 +73,11 @@ export const UpdateInfo = async (data) => {
     const Url = `/atividades/infos/${data.id}`;
     const Dados = await Service.exec("put", Url, validateData);
 
-    console.log(Dados);
-    if (Dados.data.success) {
+    if (Dados.data.success)
       return Dados.data.data;
-    } else {
-      throw Dados;
-    }
+
+    throw new Error(Dados);
+
   } catch (error) {
     throw error.data;
   }

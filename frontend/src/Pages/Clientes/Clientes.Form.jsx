@@ -35,8 +35,7 @@ const FormInsert = () => {
     setCliente({});
     setErrors({});
     setLoading(false);
-    // react-hooks/exhaustive-deps
-  }, []);
+  }, [setCliente,setErrors,setLoading]);
 
   /**
    ** Quando clica no button que faz a action

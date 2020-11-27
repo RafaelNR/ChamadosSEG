@@ -53,7 +53,7 @@ const itensSelect = [
 ];
 
 const FormInsert = React.memo(({ changeForm, handleChange, values }) => {
-  const { errors, setUsuario, setErrors } = useUsuarios();
+  const { errors, setUsuario } = useUsuarios();
   const { setLoading } = useDialog();
 
   React.useEffect(() => {
@@ -121,9 +121,6 @@ const FormUpdate = React.memo(
     const { usuario, errors, apiLoading } = useUsuarios();
     const { loading, setLoading } = useDialog();
 
-    /**
-     ** Quando termina de carregar o getUsuario, remove o loading;
-     */
     React.useEffect(() => {
       if (usuario && usuario.id && !apiLoading) {
         setLoading(false);
@@ -298,7 +295,7 @@ const FactorForm = (props) => {
         }
       });
     },
-    [setLoading, handleActions, setOpen, type, values]
+    [setLoading, handleActions, setOpen, setErrors, type, values]
   );
 
   const changeForm = React.useCallback(() => {
@@ -313,7 +310,7 @@ const FactorForm = (props) => {
       let currClients = !values.clients ? [] : values.clients;
       action === "add"
         ? currClients.push(ID)
-        : (currClients = currClients.filter((c) => c != ID));
+        : (currClients = currClients.filter((c) => c !== ID));
 
       // Adiciona o Valor
       setValues({
@@ -334,15 +331,15 @@ const FactorForm = (props) => {
         />
       );
 
-    case "update":
-      return (
-        <FormUpdate
-          changeForm={changeForm}
-          handleSubmit={handleSubmit}
-          handleChange={handleChange}
-          values={values}
-        />
-      );
+    // case "update":
+    //   return (
+    //     <FormUpdate
+    //       changeForm={changeForm}
+    //       handleSubmit={handleSubmit}
+    //       handleChange={handleChange}
+    //       values={values}
+    //     />
+    //   );
 
     case "activeddisabled":
       return (

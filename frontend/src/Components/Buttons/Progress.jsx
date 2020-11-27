@@ -45,7 +45,7 @@ export default ({ children, handleSubmit, loading, success }) => {
     return () => {
       clearTimeout(timer.current);
     };
-  }, []);
+  }, [timer.current]);
 
   return (
     <div className={classes.root}>

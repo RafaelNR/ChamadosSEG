@@ -71,116 +71,110 @@ const UsuariosProvider = ({ children }) => {
   );
 
   const Actions = {
-    async insert(usuario) {
-      try {
-        const data = await InsertSchema(usuario);
-        if (data.error) throw data;
-        const resp = await Api.insert("usuarios", data);
-        if (!resp.data.success) throw resp.data;
-        console.log(resp.data.data);
-        setUsuarios((usuarios) =>
-          usuarios.concat({ ...usuario, id: resp.data.data.id })
-        );
-        handleSnackBar({
-          type: "success",
-          message: "Usuario Inserido!",
-        });
-        return true;
-      } catch (error) {
-        console.log(error);
-        if (error && error.errors) setErrors(error.errors);
-        handleSnackBar({
-          type: "error",
-          message:
-            error && error.message
-              ? error.message
-              : "Erro em inserir o usuario.",
-        });
-      }
-    },
-    async update(usuario) {
-      try {
-        console.log(usuario);
-        const data = await UpdateSchema(usuario);
-        console.log(data);
-        if (data.error) throw data;
-        const resp = await Api.update("usuarios", data);
-        if (!resp.data.success) throw resp.data.error;
-        const newUser = resp.data.data;
-        setUsuarios((usuarios) =>
-          usuarios.map((u) => (newUser.id === u.id ? newUser : u))
-        );
-        handleSnackBar({
-          type: "success",
-          message: "Informações do usuario alteradas!",
-        });
-        return true;
-      } catch (error) {
-        console.log(error);
-        if (error && error.errors) setErrors(error.errors);
-        handleSnackBar({
-          type: "error",
-          message:
-            error && error.message
-              ? error.message
-              : "Erro em alterar o usuario.",
-        });
-      }
-    },
-    async disabled(usuario) {
-      try {
-        const resp = await Api.disabled("usuarios", usuario.id);
-        if (!resp.data.success) throw resp.data.error;
-        const newUser = { ...usuario, actived: 0 };
-        setUsuarios((usuarios) =>
-          usuarios.map((u) => (newUser.id === u.id ? newUser : u))
-        );
-        handleSnackBar({
-          type: "success",
-          message: `Sucesso em desabilitar o usuário`,
-        });
-      } catch (error) {
-        console.log(error);
-        handleSnackBar({
-          type: "error",
-          message: `Erro em desabilitar o usuário.`,
-        });
-      }
-    },
-    async actived(usuario) {
-      try {
-        const resp = await Api.actived("usuarios", usuario.id);
-        if (!resp.data.success) throw resp.data.error;
-        const newUser = { ...usuario, actived: 1 };
-        setUsuarios((usuarios) =>
-          usuarios.map((u) => (newUser.id === u.id ? newUser : u))
-        );
-        handleSnackBar({
-          type: "success",
-          message: `Sucesso em habiltar o usuário`,
-        });
-      } catch (error) {
-        console.log(error);
-        handleSnackBar({
-          type: "error",
-          message: `Erro em habilitar o usuário.`,
-        });
-      }
-    },
+    // async insert(usuario) {
+    //   try {
+    //     const data = await InsertSchema(usuario);
+    //     if (data.error) throw data;
+    //     const resp = await Api.insert("usuarios", data);
+    //     if (!resp.data.success) throw resp.data;
+    //     console.log(resp.data.data);
+    //     setUsuarios((usuarios) =>
+    //       usuarios.concat({ ...usuario, id: resp.data.data.id })
+    //     );
+    //     handleSnackBar({
+    //       type: "success",
+    //       message: "Usuario Inserido!",
+    //     });
+    //     return true;
+    //   } catch (error) {
+    //     console.log(error);
+    //     if (error && error.errors) setErrors(error.errors);
+    //     handleSnackBar({
+    //       type: "error",
+    //       message:
+    //         error && error.message
+    //           ? error.message
+    //           : "Erro em inserir o usuario.",
+    //     });
+    //   }
+    // },
+    // async update(usuario) {
+    //   try {
+    //     console.log(usuario);
+    //     const data = await UpdateSchema(usuario);
+    //     console.log(data);
+    //     if (data.error) throw data;
+    //     const resp = await Api.update("usuarios", data);
+    //     if (!resp.data.success) throw resp.data.error;
+    //     const newUser = resp.data.data;
+    //     setUsuarios((usuarios) =>
+    //       usuarios.map((u) => (newUser.id === u.id ? newUser : u))
+    //     );
+    //     handleSnackBar({
+    //       type: "success",
+    //       message: "Informações do usuario alteradas!",
+    //     });
+    //     return true;
+    //   } catch (error) {
+    //     console.log(error);
+    //     if (error && error.errors) setErrors(error.errors);
+    //     handleSnackBar({
+    //       type: "error",
+    //       message:
+    //         error && error.message
+    //           ? error.message
+    //           : "Erro em alterar o usuario.",
+    //     });
+    //   }
+    // },
+    // async disabled(usuario) {
+    //   try {
+    //     const resp = await Api.disabled("usuarios", usuario.id);
+    //     if (!resp.data.success) throw resp.data.error;
+    //     const newUser = { ...usuario, actived: 0 };
+    //     setUsuarios((usuarios) =>
+    //       usuarios.map((u) => (newUser.id === u.id ? newUser : u))
+    //     );
+    //     handleSnackBar({
+    //       type: "success",
+    //       message: `Sucesso em desabilitar o usuário`,
+    //     });
+    //   } catch (error) {
+    //     console.log(error);
+    //     handleSnackBar({
+    //       type: "error",
+    //       message: `Erro em desabilitar o usuário.`,
+    //     });
+    //   }
+    // },
+    // async actived(usuario) {
+    //   try {
+    //     const resp = await Api.actived("usuarios", usuario.id);
+    //     if (!resp.data.success) throw resp.data.error;
+    //     const newUser = { ...usuario, actived: 1 };
+    //     setUsuarios((usuarios) =>
+    //       usuarios.map((u) => (newUser.id === u.id ? newUser : u))
+    //     );
+    //     handleSnackBar({
+    //       type: "success",
+    //       message: `Sucesso em habiltar o usuário`,
+    //     });
+    //   } catch (error) {
+    //     console.log(error);
+    //     handleSnackBar({
+    //       type: "error",
+    //       message: `Erro em habilitar o usuário.`,
+    //     });
+    //   }
+    // },
   };
 
-  const handleActions = useCallback(
-    (type, usuario) => {
+  const handleActions =  (type, usuario) => {
       const fn = Actions[type];
       setApiLoading(true);
       return fn(usuario);
-    },
-    [Actions]
-  );
+  }
 
-  /**
-   * Provider
-   */
   return (
     <UsuariosContext.Provider
       value={{

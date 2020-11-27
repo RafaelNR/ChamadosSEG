@@ -119,7 +119,6 @@ export default function () {
       ) {
         return usuario;
       }
-      return;
     });
     setSearchResults(results);
     return;

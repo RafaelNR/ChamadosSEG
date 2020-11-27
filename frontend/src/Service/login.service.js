@@ -12,7 +12,7 @@ export async function Login(user, passwd) {
       passwd: passwd,
     })
 
-    if(Dados.error) throw Dados;
+    if(Dados.error) throw new Error(Dados);
     
     const Resp = await Service.exec("post", '/login', Dados);
 

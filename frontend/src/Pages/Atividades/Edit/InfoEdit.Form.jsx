@@ -79,7 +79,7 @@ export default ({ Info, ticket }) => {
           message: err.message,
         });
       });
-  }, []);
+  }, [Info, ticket, handleSnackBar]);
 
   const handleInfo = React.useCallback(
     (e) => {
@@ -127,7 +127,7 @@ export default ({ Info, ticket }) => {
           });
       }
     },
-    [info]
+    [info, loading, handleSnackBar]
   );
 
   const handleEdit = React.useCallback(() => {

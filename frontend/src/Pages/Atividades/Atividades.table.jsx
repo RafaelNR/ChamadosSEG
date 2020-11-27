@@ -99,7 +99,7 @@ export default () => {
     setOrderBy("");
     setOrder("desc");
     setRows(search && search.length > 3 ? searchResults : atividades);
-  }, [atividades, searchResults, search, setOrderBy, setRows]);
+  }, [atividades, searchResults, search, setOrderBy, setRows, setOrder]);
 
   //& Renderiza a pesquisa;
   useEffect(() => {
@@ -114,7 +114,7 @@ export default () => {
         ) {
           return atv;
         }
-        return;
+        return false;
       });
       return setSearchResults(results);
     }

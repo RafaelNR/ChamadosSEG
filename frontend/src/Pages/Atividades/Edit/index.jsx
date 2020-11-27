@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import {
   makeStyles,
   Paper,
@@ -11,8 +11,15 @@ import InfoCreate from "../Create/InfoCreate.Form";
 import InfoEdit from "./InfoEdit.Form";
 import Loading from '../../../Components/Loading'
 
+//* CONTEXT
+import useSnackBar from "../../../Context/SnackBarContext";
+
+//* SERVICE
 import { getAtividade } from "../../../Service/atividade.service";
 import { getCliente } from "../../../Service/clientes.service";
+
+//*UTILS 
+import * as Data from '../../../Utils/dates'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,6 +37,8 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
   const classes = useStyles();
   const { ticket } = useParams();
+  const history = useHistory();
+  const { handleSnackBar } = useSnackBar();
   const [atividade, setAtividade] = React.useState({});
   const [cliente, setCliente] = React.useState({});
   const [atividadeInfos, setAtividadeInfos] = React.useState([]);
@@ -39,16 +48,36 @@ export default () => {
   // TODO Tratar os erros
   React.useEffect(() => {
     async function init() {
-      const Dados = await getAtividade(ticket);
-      setAtividade(Dados);
-      setAtividadeInfos(Dados.infos);
-      const Cliente = await getCliente(Dados.cliente_id);
-      setCliente(Cliente.data);
-      setLoading(false);
+
+      try {
+        const Dados = await getAtividade(ticket);
+
+        console.log(Dados, Data.permissionEditAtividade(Dados.date), history)
+  
+        if(!Data.permissionEditAtividade(Dados.date)){
+          throw new Error({ success: false, message: 'Você não pode mais editar essa atividade.'});
+          
+        }
+  
+  
+        setAtividade(Dados);
+        setAtividadeInfos(Dados.infos);
+        const Cliente = await getCliente(Dados.cliente_id);
+        setCliente(Cliente.data);
+        setLoading(false);
+        
+      } catch (error) {
+        console.log(error)
+        handleSnackBar({
+          type: "error",
+          message: error.message ? error.message : `Erro em carregar a atividade.`,
+        });
+        return history.replace('/atividades');
+      }
     }
 
     init();
-  }, []);
+  }, [handleSnackBar, history, ticket]);
 
   function incrementInfos() {
     setInfos((_) => infos + 1);

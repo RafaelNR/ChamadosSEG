@@ -43,7 +43,7 @@ export default () => {
 
     init();
 
-  },[])
+  },[handleSnackBar])
 
   return (
     <Container maxWidth="lg" class={classes.root}>

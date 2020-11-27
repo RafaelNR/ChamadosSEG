@@ -14,14 +14,13 @@ import {
   AtividadeClientes,
 } from "../../../Components/Box/Atividade";
 import Progress from "../../../Components/Buttons/Progress";
-import Loading from '../../../Components/Loading'
 
 //* Service
 import { getMyClientes } from "../../../Service/user.service";
 import { Insert } from "../../../Service/atividade.service";
 
 //* Utils
-import { TodayDate, handleDateTime } from "../../../Utils/dates";
+import { TodayDate } from "../../../Utils/dates";
 
 import useSnackBar from "../../../Context/SnackBarContext";
 
@@ -102,7 +101,7 @@ export default ({ setTicket, setAtividadeID, newInfo }) => {
           message: err.message && err.message !== 'Network Error' ? err.message : 'Erro em carregar clientes. Por favor tentar mais tarde.',
         });
       });
-  }, []);
+  }, [handleSnackBar])
 
   React.useEffect(() => {
     setAtividade({
@@ -124,7 +123,7 @@ export default ({ setTicket, setAtividadeID, newInfo }) => {
         [key]: null,
       });
     },
-    [atividade, setAtividade, setErrors]
+    [atividade, setAtividade, setErrors, errors]
   );
 
   const handleSubmit = React.useCallback(
@@ -167,7 +166,7 @@ export default ({ setTicket, setAtividadeID, newInfo }) => {
           });
       }
     },
-    [atividade]
+    [atividade,handleSnackBar, loading, setAtividadeID, setTicket, newInfo]
   );
 
   return (

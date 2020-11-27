@@ -86,7 +86,7 @@ export default function () {
       setLoading(false);
       return;
     };
-  }, []);
+  }, [setLoading]);
 
   return (
     <div className={classes.root}>

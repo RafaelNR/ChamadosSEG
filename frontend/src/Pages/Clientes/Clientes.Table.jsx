@@ -105,7 +105,7 @@ export default function () {
       if (nome.includes(search.toLowerCase())) {
         return cliente;
       }
-      return;
+      return false
     });
     setSearchResults(results);
   }, [search, setSearchResults, clientes]);

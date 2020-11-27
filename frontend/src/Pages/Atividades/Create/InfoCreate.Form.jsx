@@ -80,7 +80,7 @@ export default ({ ticket, atividadeID, newInfo }) => {
           message: err.message,
         });
       });
-  }, [atividadeID, ticket]);
+  }, [atividadeID, ticket, handleSnackBar]);
 
   const handleInfo = React.useCallback(
     (e) => {
@@ -90,10 +90,10 @@ export default ({ ticket, atividadeID, newInfo }) => {
         [key]: e.target.value,
       });
     },
-    [info, setInfo]
+    [info, setInfo ]
   );
 
-  const handleInsert = async () => {
+  const handleInsert = React.useCallback(() => {
     InsertInfo(info)
       .then((Dados) => {
         if (Dados.error) {
@@ -123,9 +123,9 @@ export default ({ ticket, atividadeID, newInfo }) => {
           message: "Erro em inserir informação da atividade.",
         });
       });
-  };
+  }, [info, newInfo, handleSnackBar]);
 
-  const handleUpdate = React.useCallback(async () => {
+  const handleUpdate = React.useCallback(() => {
     UpdateInfo(info)
       .then((Dados) => {
         if (Dados && Dados.error) {
@@ -151,9 +151,9 @@ export default ({ ticket, atividadeID, newInfo }) => {
           message: "Erro fazer o update informação da atividade.",
         });
       });
-  }, [info]);
+  }, [info,  handleSnackBar]);
 
-  const handleSubmit = React.useCallback(
+  const handleSubmit =
     async (e) => {
       e.preventDefault();
 
@@ -167,9 +167,7 @@ export default ({ ticket, atividadeID, newInfo }) => {
           await handleUpdate();
         }
       }
-    },
-    [type, handleInsert, handleUpdate]
-  );
+  }
 
   const handleEdit = React.useCallback(() => {
     setSuccess(false);

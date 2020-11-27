@@ -158,23 +158,12 @@ const CategoriasProvider = ({ children }) => {
     },
   };
 
-  /**
-   * Trata as actions dos cliente
-   * @param {string} type
-   * @param {objeto} categoria
-   */
-  const handleActions = useCallback(
-    (type, categoria) => {
+  const handleActions = (type, categoria) => {
       const fn = Actions[type];
       setApiLoading(true);
       return fn(categoria);
-    },
-    [Actions]
-  );
+  }
 
-  /**
-   * Provider
-   */
   return (
     <CategoriasContext.Provider
       value={{
@@ -184,6 +173,7 @@ const CategoriasProvider = ({ children }) => {
         setCategoria,
         errors,
         setErrors,
+        apiLoading,
         getCategoria,
         handleActions,
       }}

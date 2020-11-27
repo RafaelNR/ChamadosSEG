@@ -173,19 +173,12 @@ const ClientesProvider = ({ children }) => {
     },
   };
 
-  /**
-   * Trata as actions dos cliente
-   * @param {string} type
-   * @param {objeto} cliente
-   */
-  const handleActions = useCallback(
-    async (type, cliente) => {
+
+  const handleActions = (type, cliente) => {
       const fn = Actions[type];
       setApiLoading(true);
-      return await fn(cliente);
-    },
-    [Actions]
-  );
+      return fn(cliente);
+  }
 
   return (
     <ClientesContext.Provider

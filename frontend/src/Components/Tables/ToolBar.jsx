@@ -21,8 +21,6 @@ const AtividadesTableToolBar = React.memo(({ title, data }) => {
   const classes = useToolbarStyles();
   const { handleChangeSearch } = useSearch();
 
-  const handleTickeSearch = (e) => {};
-
   return (
     <Toolbar className={classes.root}>
       <React.Fragment>

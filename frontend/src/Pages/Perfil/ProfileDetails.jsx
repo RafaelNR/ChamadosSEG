@@ -136,7 +136,6 @@ export default ({ Dados }) => {
                     label="Email"
                     name="email"
                     onChange={handleChange}
-                    required
                     value={values.email}
                     variant="outlined"
                     error={errors["email"] ? true : false}

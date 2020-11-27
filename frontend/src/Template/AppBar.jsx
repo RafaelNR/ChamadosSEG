@@ -11,7 +11,6 @@ import {
   Badge,
 } from "@material-ui/core";
 import ButtonLogout from "../Components/LogOut";
-import MenuAccount from "../Components/Menu/Account";
 
 import useMenu from "../Context/MenuContext";
 

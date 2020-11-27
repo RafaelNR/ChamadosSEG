@@ -6,7 +6,7 @@
  * @param {Array} stateArray
  */
 export function newArrayState(newObject, stateArray) {
-  const elementsIndex = stateArray.findIndex((obj) => obj.id == newObject.id);
+  const elementsIndex = stateArray.findIndex((obj) => obj.id === newObject.id);
   if (elementsIndex >= 0) stateArray[elementsIndex] = newObject;
 
   return stateArray;
@@ -27,8 +27,10 @@ export function uniquesValues(Values) {
       }) > -1;
 
     if (!duplicated) {
-      newArray.push(value);
+      return newArray.push(value);
     }
+
+    return false;
   });
 
   return newArray;
@@ -53,9 +55,9 @@ export function comparaArrays(BigArray, Array) {
       }) > -1;
 
     if (!duplicated) {
-      newBigArray.push(value);
+      return newBigArray.push(value);
     } else {
-      newArray.push(value);
+      return newArray.push(value);
     }
   });
 

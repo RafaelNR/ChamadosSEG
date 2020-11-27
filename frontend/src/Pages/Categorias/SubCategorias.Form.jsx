@@ -53,8 +53,7 @@ const FormInsert = () => {
     return () => {
       return false;
     };
-    //react-hooks/exhaustive-deps
-  }, []);
+  }, [setErrors, setLoading, setSubCategoria]);
 
   /**
    ** Quando clica no button que faz a action envia.
@@ -143,25 +142,15 @@ const FormUpdate = () => {
   const { type, loading, setLoading, setOpen } = useDialog();
   const { values, setValues, handleChange } = useForm();
 
-  /**
-   ** Seta os valores quando inicia a form.
-   */
+
   React.useEffect(() => {
     setValues(subcategoria);
-  }, [setValues]);
-
-  /**
-   ** Quando termina de carregar o get, remove o loading
-   */
-  React.useEffect(() => {
     if (subcategoria && subcategoria.id && !apiLoading) {
       setLoading(false);
     }
-  }, [apiLoading, subcategoria, setLoading]);
+  }, [apiLoading, subcategoria, setLoading, setValues]);
 
-  /**
-   ** Quando clica no button que faz a action
-   */
+
   const handleSubmit = React.useCallback(
     (event) => {
       event.preventDefault();

@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 // Retorna o array sem o item selecionado.
 function notItem(a, value) {
-  return a.filter((b) => b.id != value.id);
+  return a.filter((b) => b.id !== value.id);
 }
 
 export default function TransferList({ disponiveis, selecionados, setValue }) {

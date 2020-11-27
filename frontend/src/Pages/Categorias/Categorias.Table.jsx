@@ -113,7 +113,6 @@ export default function () {
       if (nome.includes(search.toLowerCase())) {
         return categoria;
       }
-      return;
     });
     return setSearchResults(results);
   }, [search, setSearchResults, categorias]);
