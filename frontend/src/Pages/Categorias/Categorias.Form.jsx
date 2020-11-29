@@ -19,7 +19,6 @@ import Fields from "../../Store/CategoriasFields";
 import useCategorias from "../../Context/CategoriasContext";
 import useSubCategorias from "../../Context/SubCategoriasContext";
 import useDialog from "../../Context/DialogContext";
-import useForm from "../../Hooks/useForm";
 
 const useStyles = makeStyles(() => ({
   dialogLoader: {
@@ -33,25 +32,17 @@ const useStyles = makeStyles(() => ({
 
 const FormInsert = () => {
   const classes = useStyles();
+  const [ values, setValues ] = React.useState({})
   const { errors, setCategoria, setErrors, handleActions } = useCategorias();
   const { subcategorias } = useSubCategorias();
   const { type, loading, setLoading, setOpen } = useDialog();
-  const { values, setValues, handleChange } = useForm();
 
   React.useEffect(() => {
     setCategoria({});
     setErrors({});
     setLoading(false);
-
-    return () => {
-      return false;
-    };
-    // react-hooks/exhaustive-deps
   }, [setCategoria,setErrors,setLoading]);
 
-  /**
-   ** Quando clica no button que faz a action envia.
-   */
   const handleSubmit = React.useCallback(
     (event) => {
       event.preventDefault();
@@ -64,11 +55,6 @@ const FormInsert = () => {
     [setLoading, handleActions, setOpen, setErrors, type, values]
   );
 
-  /**
-   ** Recebe uma action, add ou remove uma subcategoria no values corrente.
-   * @param {string} action
-   * @param {number} ID
-   */
   const handleSubCategoria = React.useCallback(
     (action, ID) => {
       // Verifica se o values já tem subcategoria
@@ -87,6 +73,18 @@ const FormInsert = () => {
     },
     [values, setValues]
   );
+
+  const handleChange = React.useCallback(
+    (event) => {
+      const key = event.target.name;
+      const value = event.target.value
+      setValues({
+        ...values,
+        [key]: value,
+      });
+    },
+    [values],
+  )
 
   return (
     <form noValidate onSubmit={handleSubmit}>
@@ -153,6 +151,7 @@ const FormInsert = () => {
 
 const FormUpdate = () => {
   const classes = useStyles();
+  const [ values, setValues ] = React.useState({})
   const {
     categoria,
     errors,
@@ -162,11 +161,8 @@ const FormUpdate = () => {
   } = useCategorias();
   const { subcategorias } = useSubCategorias();
   const { type, loading, setLoading, setOpen } = useDialog();
-  const { values, setValues, handleChange } = useForm();
 
-  /**
-   ** Seta os valores quando inicia a form.
-   */
+
   React.useEffect(() => {
     // Trata das subCategoria no render;
     let subCategoriasID = [];
@@ -181,23 +177,15 @@ const FormUpdate = () => {
       setValues(categoria);
     }
 
-    return () => {
-      return false;
-    };
-  }, [setValues, categoria]);
-
-  /**
-   ** Quando termina de carregar o get, remove o loading
-   */
-  React.useEffect(() => {
     if (categoria && categoria.id && !apiLoading) {
       setLoading(false);
     }
-  }, [apiLoading, categoria, setLoading]);
 
-  /**
-   ** Quando clica no button que faz a action
-   */
+    return () => {
+      return false;
+    };
+  }, [setValues, categoria, apiLoading, setLoading]);
+
   const handleSubmit = React.useCallback(
     (event) => {
       event.preventDefault();
@@ -210,11 +198,6 @@ const FormUpdate = () => {
     [handleActions, setLoading, setErrors, setOpen, type, values]
   );
 
-  /**
-   ** Recebe uma action, add ou remove uma subcategoria no values corrente.
-   * @param {string} action
-   * @param {number} ID
-   */
   const handleSubCategoria = React.useCallback(
     (action, ID) => {
       // Verifica se o values já tem subcategoria
@@ -236,6 +219,18 @@ const FormUpdate = () => {
     },
     [values, setValues]
   );
+
+  const handleChange = React.useCallback(
+    (event) => {
+      const key = event.target.name;
+      const value = event.target.value
+      setValues({
+        ...values,
+        [key]: value,
+      });
+    },
+    [values],
+  )
 
   return (
     <form

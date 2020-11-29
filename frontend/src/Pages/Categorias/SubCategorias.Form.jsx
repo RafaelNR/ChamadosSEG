@@ -18,8 +18,6 @@ import Fields from "../../Store/CategoriasFields";
 import useSubCategorias from "../../Context/SubCategoriasContext";
 import useDialog from "../../Context/DialogContext";
 
-//* HOOKS
-import useForm from "../../Hooks/useForm";
 
 const useStyles = makeStyles((theme) => ({
   dialogLoader: {
@@ -36,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 const FormInsert = () => {
   const classes = useStyles();
+  const [values, setValues] = React.useState({})
   const {
     errors,
     setSubCategoria,
@@ -43,7 +42,6 @@ const FormInsert = () => {
     handleActions,
   } = useSubCategorias();
   const { type, loading, setLoading, setOpen } = useDialog();
-  const { values, handleChange } = useForm();
 
   React.useEffect(() => {
     setSubCategoria({});
@@ -55,9 +53,6 @@ const FormInsert = () => {
     };
   }, [setErrors, setLoading, setSubCategoria]);
 
-  /**
-   ** Quando clica no button que faz a action envia.
-   */
   const handleSubmit = React.useCallback(
     (event) => {
       event.preventDefault();
@@ -69,6 +64,18 @@ const FormInsert = () => {
     },
     [setLoading, setErrors, setOpen, handleActions, type, values]
   );
+
+  const handleChange = React.useCallback(
+    (event) => {
+      const key = event.target.name;
+      const value = event.target.value
+      setValues({
+        ...values,
+        [key]: value,
+      });
+    },
+    [values],
+  )
 
   return (
     <form noValidate onSubmit={handleSubmit}>
@@ -132,6 +139,7 @@ const FormInsert = () => {
 
 const FormUpdate = () => {
   const classes = useStyles();
+  const [values, setValues] = React.useState({})
   const {
     subcategoria,
     errors,
@@ -140,7 +148,6 @@ const FormUpdate = () => {
     apiLoading,
   } = useSubCategorias();
   const { type, loading, setLoading, setOpen } = useDialog();
-  const { values, setValues, handleChange } = useForm();
 
 
   React.useEffect(() => {
@@ -149,7 +156,6 @@ const FormUpdate = () => {
       setLoading(false);
     }
   }, [apiLoading, subcategoria, setLoading, setValues]);
-
 
   const handleSubmit = React.useCallback(
     (event) => {
@@ -162,6 +168,18 @@ const FormUpdate = () => {
     },
     [handleActions, setLoading, setOpen, setErrors, type, values]
   );
+
+  const handleChange = React.useCallback(
+    (event) => {
+      const key = event.target.name;
+      const value = event.target.value
+      setValues({
+        ...values,
+        [key]: value,
+      });
+    },
+    [values],
+  )
 
   return (
     <form noValidate onSubmit={handleSubmit}>
@@ -217,9 +235,6 @@ const FormDelete = () => {
   const { subcategoria, handleActions } = useSubCategorias();
   const { type, closeDialog, setLoading, setOpen } = useDialog();
 
-  /**
-   * Quando clica no button que faz a action
-   */
   const handleSubmit = (event) => {
     event.preventDefault();
     setLoading(true);
