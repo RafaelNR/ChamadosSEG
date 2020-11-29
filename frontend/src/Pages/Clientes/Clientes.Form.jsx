@@ -13,7 +13,7 @@ import { SaveButton, CancelButton } from "../../Components/Buttons/Index";
 //* CONTEXT E HOOKS
 import useClientes from "../../Context/ClientesContext";
 import useDialog from "../../Context/DialogContext";
-import useForm from "../../Hooks/useForm";
+import useMasker from "../../Hooks/useMasker";
 
 const useStyles = makeStyles(() => ({
   dialogLoader: {
@@ -25,38 +25,16 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const FormInsert = () => {
+const FormInsert = ({ handleChange, handleSubmit, values }) => {
   const classes = useStyles();
-  const { errors, setCliente, setErrors, handleActions } = useClientes();
-  const { type, loading, setLoading, setOpen } = useDialog();
-  const { values, handleChange } = useForm();
+  const { errors, setCliente, setErrors } = useClientes();
+  const { loading, setLoading } = useDialog();
 
   React.useEffect(() => {
     setCliente({});
     setErrors({});
     setLoading(false);
   }, [setCliente,setErrors,setLoading]);
-
-  /**
-   ** Quando clica no button que faz a action
-   */
-  const handleSubmit = React.useCallback(
-    (event) => {
-      event.preventDefault();
-
-      setLoading(true);
-      setErrors(false);
-      handleActions(type, values).then((resp) => {
-        console.log(resp);
-        if (resp) {
-          setOpen(false);
-        } else {
-          setLoading(false);
-        }
-      });
-    },
-    [setLoading, handleActions, setOpen, setErrors, type, values]
-  );
 
   return (
     <form noValidate onSubmit={handleSubmit}>
@@ -108,56 +86,16 @@ const FormInsert = () => {
   );
 };
 
-const FormUpdate = () => {
+const FormUpdate = ({ handleChange, handleSubmit, values}) => {
   const classes = useStyles();
-  const {
-    cliente,
-    errors,
-    setErrors,
-    handleActions,
-    apiLoading,
-  } = useClientes();
-  const { type, loading, setLoading, setOpen } = useDialog();
-  const { values, setValues, handleChange } = useForm();
-
-  /**
-   ** Seta os valores quando inicia a form.
-   */
+  const { cliente, errors, apiLoading } = useClientes();
+  const { loading, setLoading } = useDialog();
+  
   React.useEffect(() => {
-    setValues(cliente);
-    return () => {
-      return;
-    };
-  }, [setValues, cliente]);
-
-  /**
-   ** Quando termina de carregar o get, remove o loading
-   */
-  React.useEffect(() => {
-    console.log(cliente);
     if (cliente && cliente.id && !apiLoading) {
       setLoading(false);
     }
   }, [apiLoading, cliente, setLoading]);
-
-  /**
-   ** Quando clica no button que faz a action
-   */
-  const handleSubmit = React.useCallback(
-    (event) => {
-      event.preventDefault();
-      setLoading(true);
-      setErrors(false);
-      handleActions(type, values).then((resp) => {
-        if (resp) {
-          setOpen(false);
-        } else {
-          setLoading(false);
-        }
-      });
-    },
-    [handleActions, setLoading, setOpen, setErrors, type, values]
-  );
 
   return (
     <form
@@ -222,36 +160,103 @@ const FormUpdate = () => {
   );
 };
 
-const FormActivedDisabled = () => {
-  const { cliente, handleActions } = useClientes();
-  const { type, closeDialog, setLoading, setOpen } = useDialog();
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setLoading(true);
-    if (handleActions(type, cliente)) {
-      setOpen(false);
-    } else {
-      setLoading(false);
-    }
-  };
+const FormActivedDisabled = ({ handleSubmit }) => {
+  const { cliente } = useClientes();
+  const { type, closeDialog } = useDialog();
 
   return (
     <>
-      <DialogContent dividers>
-        <form onSubmit={handleSubmit}>
-          <h4>
-            Quer realmente {type === "disabled" ? "desabilitar" : "habilitar"} o
-            cliente, {cliente.nome_fantasia} ?
-          </h4>
-        </form>
-      </DialogContent>
-      <DialogActions>
-        <SaveButton />
-        <CancelButton clickClose={closeDialog} />
-      </DialogActions>
+      <form onSubmit={handleSubmit}>
+        <DialogContent dividers>
+            <h4>
+              Quer realmente {type === "disabled" ? "desabilitar" : "habilitar"} o
+              cliente, {cliente.nome_fantasia} ?
+            </h4>
+        </DialogContent>
+        <DialogActions>
+          <SaveButton />
+          <CancelButton clickClose={closeDialog} />
+        </DialogActions>
+      </form>
     </>
   );
 };
 
-export { FormInsert, FormUpdate, FormActivedDisabled };
+export default () => {
+  const [ values, setValues ] = React.useState({});
+  const { type, setLoading, setOpen } = useDialog();
+  const { cliente, setErrors, handleActions } = useClientes();
+  const { Masker } = useMasker();
+
+  React.useEffect(() => {
+    setValues(cliente);  
+  }, [setValues,cliente]);
+
+  const handleSubmit = React.useCallback(
+    (e) => {
+      e.preventDefault();
+
+      setLoading(true);
+      setErrors(false);
+
+      console.log('submit')
+
+      handleActions(type, values).then((resp) => {
+        console.log(resp);
+        if (resp) {
+          setOpen(false);
+        } else {
+          setLoading(false);
+        }
+      });
+
+    },
+    [setLoading, handleActions, setOpen, setErrors, type, values]
+  );
+
+  const handleChange = React.useCallback(
+    (event) => {
+      const key = event.target.name;
+      const value = Masker(event.target.value, key);
+      console.log(values);
+      setValues({
+        ...values,
+        [key]: value,
+      });
+    },
+    [values, Masker]
+  );
+
+  
+  console.log(type)
+
+  switch (type) {
+    case "insert":
+      return (
+        <FormInsert
+          handleSubmit={handleSubmit}
+          handleChange={handleChange}
+          values={values}
+        />
+      );
+
+    case "update":
+      return (
+        <FormUpdate
+          handleSubmit={handleSubmit}
+          handleChange={handleChange}
+          values={values}
+        />
+      );
+
+    case "disabled":
+    case "actived":
+      return (
+        <FormActivedDisabled handleSubmit={handleSubmit} />
+      );
+
+    default:
+      return <></>;
+  }
+
+}

@@ -134,7 +134,7 @@ const ClientesProvider = ({ children }) => {
     async disabled(cliente) {
       try {
         const resp = await Api.disabled("clientes", cliente.id);
-        if (!resp.data.success) throw resp.data.error;
+        if (!resp.data.success) throw resp.data;
         const value = { ...cliente, actived: 0 };
         setClientes((clientes) =>
           clientes.map((u) => (value.id === u.id ? value : u))
@@ -143,12 +143,14 @@ const ClientesProvider = ({ children }) => {
           type: "success",
           message: `Sucesso em desabilitar o cliente`,
         });
+        return true;
       } catch (error) {
         console.log(error);
         handleSnackBar({
           type: "error",
-          message: `Erro em desabilitar o cliente.`,
+          message: error.message ? error.message : `Erro em desabilitar o cliente.`,
         });
+        return false;
       }
     },
     async actived(cliente) {
@@ -163,21 +165,24 @@ const ClientesProvider = ({ children }) => {
           type: "success",
           message: `Sucesso em habiltar o cliente`,
         });
+        return true;
       } catch (error) {
         console.log(error);
         handleSnackBar({
           type: "error",
-          message: `Erro em habilitar o cliente.`,
+          message: error.message ? error.message :`Erro em habilitar o cliente.`,
         });
+        return false;
       }
     },
   };
 
 
   const handleActions = (type, cliente) => {
-      const fn = Actions[type];
-      setApiLoading(true);
-      return fn(cliente);
+    console.log(type,cliente)
+    const fn = Actions[type];
+    setApiLoading(true);
+    return fn(cliente);
   }
 
   return (

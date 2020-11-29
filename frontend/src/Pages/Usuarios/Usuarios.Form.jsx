@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-
 //* COMPONENTES
 import {
   makeStyles,
@@ -25,7 +24,7 @@ import Fields from "../../Store/UsuariosFields";
 import useClientes, { ClientesProvider } from "../../Context/ClientesContext";
 import useUsuarios from "../../Context/UsuariosContext";
 import useDialog from "../../Context/DialogContext";
-import useForm from "../../Hooks/useForm";
+import useMasker from "../../Hooks/useMasker";
 
 const useStyles = makeStyles(() => ({
   dialogLoader: {
@@ -266,11 +265,12 @@ const FormClients = React.memo(
 );
 
 const FactorForm = (props) => {
-  const [currForm, setCurrForm] = useState(props.currForm);
-  const [nextForm, setNextForm] = useState("clients");
+  const [ currForm, setCurrForm ] = useState(props.currForm);
+  const [ nextForm, setNextForm ] = useState("clients");
+  const [ values, setValues ] = useState({});
   const { usuario, setErrors, handleActions } = useUsuarios();
   const { type, setLoading, setOpen } = useDialog();
-  const { values, setValues, handleChange } = useForm();
+  const { Masker } = useMasker();
 
   React.useEffect(() => {
     if (type !== "insert") {
@@ -288,6 +288,7 @@ const FactorForm = (props) => {
       setLoading(true);
       setErrors(false);
       handleActions(type, values).then((resp) => {
+        console.log(resp)
         if (resp) {
           setOpen(false);
         } else {
@@ -321,6 +322,18 @@ const FactorForm = (props) => {
     [values, setValues]
   );
 
+  const handleChange = React.useCallback(
+    (event) => {
+      const key = event.target.name;
+      const value = Masker(event.target.value, key);
+      setValues({
+        ...values,
+        [key]: value,
+      });
+    },
+    [values],
+  )
+
   switch (currForm) {
     case "insert":
       return (
@@ -331,15 +344,15 @@ const FactorForm = (props) => {
         />
       );
 
-    // case "update":
-    //   return (
-    //     <FormUpdate
-    //       changeForm={changeForm}
-    //       handleSubmit={handleSubmit}
-    //       handleChange={handleChange}
-    //       values={values}
-    //     />
-    //   );
+    case "update":
+      return (
+        <FormUpdate
+          changeForm={changeForm}
+          handleSubmit={handleSubmit}
+          handleChange={handleChange}
+          values={values}
+        />
+      );
 
     case "activeddisabled":
       return (

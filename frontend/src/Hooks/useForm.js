@@ -9,10 +9,6 @@ const useForm = (currValues = {}) => {
     setValues(currValues);
   },[currValues])
 
-  /**
-   * Trata quando usuário digita no teclado
-   * @param {object} event
-   */
   const handleChange = useCallback(
     (event) => {
       const key = event.target.name;
