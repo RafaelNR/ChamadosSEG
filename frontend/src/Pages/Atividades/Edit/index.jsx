@@ -59,7 +59,6 @@ export default () => {
           
         }
   
-  
         setAtividade(Dados);
         setAtividadeInfos(Dados.infos);
         const Cliente = await getCliente(Dados.cliente_id);
@@ -96,8 +95,8 @@ export default () => {
           <Loading type='Paper' />
         ) : (
           <Grid container md={12} spacing={2}>
-            <AtividadeCliente Cliente={cliente} />
             <Atividade Atividade={atividade} />
+            <AtividadeCliente Cliente={cliente} />
           </Grid>
         )}
       </Paper>

@@ -73,6 +73,18 @@ export function comparaArrays(BigArray, Array) {
  */
 export function initialsName(FullName) {
   const arrayName = FullName.split(" ");
-  const Iniciais = arrayName[0][0] + arrayName[1][0];
-  return Iniciais.toUpperCase();
+
+
+  if(arrayName.length >= 2){
+    const I1 = arrayName[0][0] ? arrayName[0][0] : '';
+    const I2 = arrayName[1][0] ? arrayName[1][0] : '';
+    const Iniciais = I1 + I2;
+    return Iniciais.toUpperCase();
+  }
+
+  return FullName.substr(0, 2).toUpperCase();
+
+
+
+
 }

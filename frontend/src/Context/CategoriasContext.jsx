@@ -21,9 +21,7 @@ const CategoriasProvider = ({ children }) => {
   const [categoria, setCategoria] = useState({});
   const [errors, setErrors] = useState({});
   const [apiLoading, setApiLoading] = useState();
-  /**
-   * Inicia os clientes e monta o componentes.
-   */
+
   useEffect(
     () => {
       async function init() {
@@ -32,15 +30,14 @@ const CategoriasProvider = ({ children }) => {
             const { success, data } = resp.data;
             if (success) return setCategorias(data);
             setLoading(false);
-            const error = new Error();
-            return error.message("Erro em carregar categorias.");
+            throw { success: false, message: resp.data.message};
           })
           .catch((error) => {
             console.log(error);
             setLoading(false);
             handleSnackBar({
               type: "error",
-              message:
+              message: error.message ? error.message :
                 "Erro em carregar categorias, Por favor tente mais tarde.",
             });
           });
@@ -53,13 +50,9 @@ const CategoriasProvider = ({ children }) => {
         Api.default.source();
       };
     },
-    // eslint-disable-next-line
     []
   );
 
-  /**
-   * Busca o cliente
-   */
   const getCategoria = useCallback(
     async (ID) => {
       try {

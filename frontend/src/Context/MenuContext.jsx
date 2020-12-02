@@ -6,14 +6,14 @@ const MenuProvider = ({ children }) => {
 
   const handleDrawerOpen = useCallback(() => {
     setOpen(true);
-  }, []);
+  }, [setOpen]);
 
   const handleDrawerClose = useCallback(() => {
     setOpen(false);
-  }, []);
+  }, [setOpen]);
 
   return (
-    <MenuContext.Provider value={{ open, handleDrawerOpen, handleDrawerClose }}>
+    <MenuContext.Provider value={{ open, setOpen, handleDrawerOpen, handleDrawerClose }}>
       {children}
     </MenuContext.Provider>
   );

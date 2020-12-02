@@ -9,7 +9,10 @@ import ProfileDetails from './ProfileDetails';
 import ProfileClientes from './ProfileClientes'
 
 import { getPerfil } from '../../Service/user.service';
+
+//* CONTEXT
 import useSnackBar from "../../Context/SnackBarContext";
+import useMenu from '../../Context/MenuContext'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,23 +23,38 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
+  const { handleDrawerClose } = useMenu();
   const { handleSnackBar } = useSnackBar();
   const [values, setValues] = React.useState({});
 
   React.useEffect(() => {
-
+    handleDrawerClose();
     async function init(){
+      try {
+
       const Dados = await getPerfil();
       if(Dados.success){
-        setValues({
+        return setValues({
           ...Dados.data,
           passwd: '******'
         })
-      }else{
+      }
+        
+      throw ({ message: Dados.message });
+        
+      } catch (error) {
         handleSnackBar({
           type: "error",
-          message: Dados.message ? Dados.message : 'Erro em carregar os dados.',
+          message: error.message ? error.message : 'Erro em carregar os dados.',
         });
+      }
+
+      const Dados = await getPerfil();
+      if(Dados.success){
+        return setValues({
+          ...Dados.data,
+          passwd: '******'
+        })
       }
       return;
     }

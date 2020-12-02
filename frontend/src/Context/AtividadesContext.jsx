@@ -22,15 +22,15 @@ const AtividadesProvider = ({ children }) => {
       try {
         const resp = await Api.get("atividades/user");
         const { success, data } = resp.data;
-        if (!success) throw resp.data.message;
+        if (!success) throw resp.data;
         setLoading(false);
-        setAtividades(data);
+        return setAtividades(data);
       } catch (error) {
         console.log(error);
         setLoading(false);
-        handleSnackBar({
+        return handleSnackBar({
           type: "error",
-          message: "Erro em carregar atividades. Por favor tente mais tarde.",
+          message: error.message ? error.message : "Erro em carregar atividades. Por favor tente mais tarde.",
         });
       }
     }

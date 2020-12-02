@@ -5,7 +5,7 @@ export const getMyClientes = async () => {
     const Url = "/usuarios/clientes/1";
     const Dados = await Service.exec("get", Url);
 
-    if(!Dados.data.success)throw new Error({ success: false, message: 'Error em buscas os clientes do seu usuário.'});
+    if(!Dados.data.success) throw ({ success: false, message: Dados.data.message ? Dados.data.message : 'Error em buscas os clientes do seu usuário.'});
 
     return {
       success: true,
@@ -23,7 +23,7 @@ export const getPerfil = async () => {
     const Url = "/perfil";
     const Dados = await Service.exec("get", Url);
 
-    if(!Dados.data.success) throw new Error({ success: false, message:"Error em buscas os meus dados."});
+    if(!Dados.data.success) throw ({ success: false, message: Dados.data.message ? Dados.data.message : "Error em buscas os meus dados."});
 
     return {
       success: true,
@@ -41,7 +41,7 @@ export const update = async (data) => {
     const Url = `/usuarios/${data.id}`;
     const Dados = await Service.exec("put", Url, data);
 
-    if(!Dados.data.success) throw new Error({ success: false, message:"Error em buscas os meus dados."});
+    if(!Dados.data.success) throw ({ success: false, message: Dados.data.message ? Dados.data.message : "Error em buscas os meus dados."});
 
     return {
       success: true,

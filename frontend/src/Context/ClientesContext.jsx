@@ -29,15 +29,14 @@ const ClientesProvider = ({ children }) => {
         setLoading(false);
         console.log(resp);
         if (success) return setClientes(data);
-        const error = new Error();
-        return error.message("Erro em carregar clientes.");
+        throw { success: false, message: resp.data.message};
       })
       .catch((error) => {
         console.log(error);
         setLoading(false);
         handleSnackBar({
           type: "error",
-          message: "Erro em carregar clientes, Por favor tente mais tarde.",
+          message: error.message ? error.message : "Erro em carregar clientes, Por favor tente mais tarde.",
         });
       });
 

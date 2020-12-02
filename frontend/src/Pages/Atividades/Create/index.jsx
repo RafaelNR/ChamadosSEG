@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     marginTop: "-6rem",
+    minHeight: 300
   },
   title: {
     fontSize: "25px",

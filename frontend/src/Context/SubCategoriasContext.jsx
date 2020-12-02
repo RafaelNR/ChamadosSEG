@@ -34,14 +34,14 @@ const SubCategoriasProvider = ({ children }) => {
             const { success, data } = resp.data;
             if (success) return setSubCategorias(data);
             setLoading(false);
-            throw new Error("Erro em carregar sub-categorias.");
+            throw { success: false, message: resp.data.message };
           })
           .catch((error) => {
             console.log(error);
             setLoading(false);
             handleSnackBar({
               type: "error",
-              message:
+              message: error.message ? error.message :
                 "Erro em carregar sub-categorias, Por favor tente mais tarde.",
             });
           });
@@ -54,13 +54,9 @@ const SubCategoriasProvider = ({ children }) => {
         return Api.default.source();
       };
     },
-    // eslint-disable-next-line
     []
   );
 
-  /**
-   ** BUSCA SUBCATEGORIA PELO ID
-   */
   const getSubCategoria = useCallback(
     async (ID) => {
       try {
@@ -84,9 +80,7 @@ const SubCategoriasProvider = ({ children }) => {
     [handleSnackBar]
   );
 
-  /**
-   ** ACTIONS
-   */
+
   const Actions = {
     async insert(subcategoria) {
       try {

@@ -28,15 +28,14 @@ const UsuariosProvider = ({ children }) => {
         const { success, data } = resp.data;
         setLoading(false);
         if (success) return setUsuarios(data);
-        const error = new Error();
-        return error.message("Erro em carregar usuários.");
+        throw { success: false, message: resp.data.message};
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error)
         setLoading(false);
         handleSnackBar({
           type: "error",
-          message: "Erro em carregar usuários, Por favor tente mais tarde.",
+          message: error.message ? error.message : "Erro em carregar usuários, por favor tente mais tarde.",
         });
       });
 

@@ -25,7 +25,7 @@ export default React.memo(() => {
     <div className={classes.root}>
       <Snackbar
         open={SnackBar.openSnackBar}
-        autoHideDuration={SnackBar.severity === "error" ? 30000 : 6000}
+        autoHideDuration={SnackBar.severity === "error" ? (60000 * 5) : 6000}
         onClose={SnackBar.clickSnackBar}
       >
         <Alert

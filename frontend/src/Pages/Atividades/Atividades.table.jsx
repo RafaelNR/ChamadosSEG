@@ -20,6 +20,7 @@ import { EditTicket, View } from "../../Components/Buttons/Atividades";
 import useAtividades from "../../Context/AtividadesContext";
 import useOrderTable from "../../Context/OrderTableContext";
 import usePageTable from "../../Context/PageTableContext";
+import useLoading from "../../Context/LoadingContext";
 import useSearch from "../../Context/SearchContext";
 
 //* UTILS
@@ -90,6 +91,7 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
   const classes = useStyles();
   const { atividades } = useAtividades();
+  const { loading } = useLoading();
   const { search, searchResults, setSearchResults } = useSearch();
   const { order, orderBy, setOrderBy, setOrder } = useOrderTable();
   const { page, rows, setRows, rowsPerPage, emptyRows } = usePageTable();
@@ -121,6 +123,7 @@ export default () => {
     return setSearchResults(atividades);
   }, [search, setSearchResults, atividades]);
 
+
   return (
     <React.Fragment>
       <Toolbar
@@ -136,7 +139,7 @@ export default () => {
         >
           <TableHead headCells={headCells} />
           <TableBody>
-            {!atividades || atividades.length === 0 ? (
+            { loading ? (
               <CircularProcess type="Table" />
             ) : (
               sortObject(rows, order, orderBy, page, rowsPerPage).map(

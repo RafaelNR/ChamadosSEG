@@ -6,6 +6,7 @@ import HeaderPage from "../Components/HeaderPage/";
 import SnackBar from "../Components/SnackBar";
 
 import { SnackBarProvider } from "../Context/SnackBarContext";
+import { MenuProvider } from "../Context/MenuContext";
 
 const useStyles = makeStyles((theme) => ({
   hide: {
@@ -22,10 +23,12 @@ const Main = ({ children }) => {
 
   return (
     <SnackBarProvider>
-      <MyMenu />
-      <HeaderPage />
-      <main className={classes.content}>{children}</main>
-      <SnackBar />
+      <MenuProvider>
+        <MyMenu />
+        <HeaderPage />
+        <main className={classes.content}>{children}</main>
+        <SnackBar />
+      </MenuProvider>
     </SnackBarProvider>
   );
 };

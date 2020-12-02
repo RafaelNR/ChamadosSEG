@@ -77,6 +77,8 @@ const MiniDrawer = () => {
   const theme = useTheme();
   const { open, handleDrawerClose } = useMenu();
 
+  console.log(open);
+
   return (
     <Drawer
       variant="permanent"
