@@ -331,7 +331,7 @@ const FactorForm = (props) => {
         [key]: value,
       });
     },
-    [values],
+    [values, Masker],
   )
 
   switch (currForm) {

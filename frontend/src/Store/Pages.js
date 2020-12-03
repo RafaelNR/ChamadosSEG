@@ -15,7 +15,7 @@ const defaultMenu = [
   {
     nome: "Home",
     icon: <HomeSharp />,
-    path: "/",
+    path: "/", 
   },
   {
     nome: "Atividades",
@@ -31,6 +31,7 @@ const defaultMenu = [
     nome: "Relatórios",
     icon: <InsertChartSharp />,
     path: "/relatorios",
+    permission: 2
   },
   {
     nome: "Perfil",
@@ -46,6 +47,25 @@ const defaultMenu = [
   },
 ];
 
+
+const analistaMenu = [
+  {
+    nome: 'Categorias',
+    icon: <CategorySharp />,
+    path: '/categorias'
+  },
+  {
+    nome: 'Usuários',
+    icon: <GroupSharp />,
+    path: '/usuarios'
+  },
+  {
+    nome: 'Log',
+    icon: <ReportSharp />,
+    path: '/log'
+  }
+];
+
 const adminMenu = [
   {
     nome: "Modelos",
@@ -57,21 +77,6 @@ const adminMenu = [
     icon: <BusinessSharp />,
     path: "/clientes",
   },
-  {
-    nome: "Categorias",
-    icon: <CategorySharp />,
-    path: "/categorias",
-  },
-  {
-    nome: "Usuários",
-    icon: <GroupSharp />,
-    path: "/usuarios",
-  },
-  {
-    nome: "Log",
-    icon: <ReportSharp />,
-    path: "/log",
-  },
   // {
   // 	nome: "Configurações",
   // 	icon: <SettingsSharp />,
@@ -79,4 +84,4 @@ const adminMenu = [
   // },
 ];
 
-export { adminMenu, defaultMenu };
+export { adminMenu, analistaMenu, defaultMenu };

@@ -50,7 +50,7 @@ const CategoriasProvider = ({ children }) => {
         Api.default.source();
       };
     },
-    []
+    [handleSnackBar,setLoading]
   );
 
   const getCategoria = useCallback(

@@ -30,7 +30,6 @@ const SubCategoriasProvider = ({ children }) => {
       async function init() {
         await Api.get("subcategorias")
           .then((resp) => {
-            console.log(resp);
             const { success, data } = resp.data;
             if (success) return setSubCategorias(data);
             setLoading(false);
@@ -54,7 +53,7 @@ const SubCategoriasProvider = ({ children }) => {
         return Api.default.source();
       };
     },
-    []
+    [handleSnackBar,setLoading]
   );
 
   const getSubCategoria = useCallback(

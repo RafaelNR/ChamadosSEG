@@ -32,15 +32,15 @@ export default () => {
     async function init(){
       try {
 
-      const Dados = await getPerfil();
-      if(Dados.success){
-        return setValues({
-          ...Dados.data,
-          passwd: '******'
-        })
-      }
-        
-      throw ({ message: Dados.message });
+        const Dados = await getPerfil();
+        if(Dados.success){
+          return setValues({
+            ...Dados.data,
+            passwd: '******'
+          })
+        }
+          
+        throw ({ message: Dados.message });
         
       } catch (error) {
         handleSnackBar({
@@ -49,19 +49,11 @@ export default () => {
         });
       }
 
-      const Dados = await getPerfil();
-      if(Dados.success){
-        return setValues({
-          ...Dados.data,
-          passwd: '******'
-        })
-      }
-      return;
     }
 
-    init();
+    return init();
 
-  },[handleSnackBar])
+  },[handleSnackBar,handleDrawerClose])
 
   return (
     <Container maxWidth="lg" class={classes.root}>

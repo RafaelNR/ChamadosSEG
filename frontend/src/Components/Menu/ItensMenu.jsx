@@ -2,9 +2,13 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { List, Divider } from "@material-ui/core/";
 import { MyListItem as ListItem, ListItemTooltip } from "./ItemMenu";
-import { adminMenu, defaultMenu } from "../../Store/Pages";
+import { adminMenu, analistaMenu, defaultMenu } from "../../Store/Pages";
 
-const listItemMenu = ({ open }) => {
+import useUser from '../../Hooks/useUser';
+
+const ListItemMenu = ({ open }) => {
+	const { roleID } = useUser();
+
 	return (
 		<>
 			<List>
@@ -20,9 +24,23 @@ const listItemMenu = ({ open }) => {
 					)
 				)}
 			</List>
-			<Divider />
+			{ roleID <= 2 && <Divider />}
 			<List>
-				{adminMenu.map((menu, index) =>
+				{ roleID <= 2 && analistaMenu.map((menu, index) =>
+					!open ? (
+						<Fragment key={index}>
+							<ListItemTooltip menu={menu} />
+						</Fragment>
+					) : (
+						<Fragment key={index}>
+							<ListItem menu={menu} />
+						</Fragment>
+					)
+				)}
+			</List>
+			{ roleID === 1 && <Divider />}
+			<List>
+				{ roleID === 1 && adminMenu.map((menu, index) =>
 					!open ? (
 						<Fragment key={index}>
 							<ListItemTooltip menu={menu} />
@@ -38,8 +56,8 @@ const listItemMenu = ({ open }) => {
 	);
 };
 
-listItemMenu.propTypes = {
+ListItemMenu.propTypes = {
 	open: PropTypes.bool.isRequired,
 };
 
-export default listItemMenu;
+export default ListItemMenu;
