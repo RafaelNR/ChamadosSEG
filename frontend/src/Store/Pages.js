@@ -68,15 +68,15 @@ const analistaMenu = [
 
 const adminMenu = [
   {
-    nome: "Modelos",
-    icon: <MessageSharp />,
-    path: "/modelos",
+    nome: 'Clientes',
+    icon: <BusinessSharp />,
+    path: '/clientes'
   },
   {
-    nome: "Clientes",
-    icon: <BusinessSharp />,
-    path: "/clientes",
-  },
+    nome: 'Modelos',
+    icon: <MessageSharp />,
+    path: '/modelos'
+  }
   // {
   // 	nome: "Configurações",
   // 	icon: <SettingsSharp />,

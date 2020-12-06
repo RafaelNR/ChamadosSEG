@@ -42,7 +42,7 @@ const AtividadeClientes = ({ Atividade, Clientes }) => {
   return (
     <Grid item md={6} className={classes.gridCliente}>
       <Paper className={classes.paperCliente}>
-        <Typography className="title">Informações do Cliente</Typography>
+        <Typography className="title">Informações do cliente</Typography>
         {Atividade && Atividade.cliente_id ? (
           Clientes.map((cliente) => {
             return cliente.id === Atividade.cliente_id &&

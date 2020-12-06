@@ -59,8 +59,8 @@ export default ({ ticket, atividadeID, newInfo }) => {
   const [categorias, setCategorias] = React.useState([]);
   const [info, setInfo] = React.useState([]);
   const [errors, setErrors] = React.useState(true);
-  const [loading, setLoading] = React.useState(false); //! false
-  const [success, setSuccess] = React.useState(false); //! false
+  const [loading, setLoading] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
   const [type, setType] = React.useState("insert");
 
   React.useEffect(() => {

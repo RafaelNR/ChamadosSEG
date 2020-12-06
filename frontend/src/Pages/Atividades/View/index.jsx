@@ -6,9 +6,8 @@ import {
   Grid,
   Typography,
 } from "@material-ui/core/";
+import InfosView from "./Infos";
 import { Atividade, AtividadeCliente } from "../../../Components/Box/Atividade";
-import InfoCreate from "../Create/InfoCreate.Form";
-import InfoEdit from "./InfoEdit.Form";
 import Loading from '../../../Components/Loading'
 
 //* CONTEXT
@@ -18,8 +17,6 @@ import useSnackBar from "../../../Context/SnackBarContext";
 import { getAtividade } from "../../../Service/atividade.service";
 import { getCliente } from "../../../Service/clientes.service";
 
-//*UTILS 
-import * as Data from '../../../Utils/dates'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,48 +38,36 @@ export default () => {
   const { handleSnackBar } = useSnackBar();
   const [atividade, setAtividade] = React.useState({});
   const [cliente, setCliente] = React.useState({});
-  const [atividadeInfos, setAtividadeInfos] = React.useState([]);
-  const [infos, setInfos] = React.useState(1);
   const [loading, setLoading] = React.useState(true);
 
-  // TODO Tratar os erros
+  
   React.useEffect(() => {
-    async function init() {
+
+    async function init(){
 
       try {
+        console.log('view')
         const Dados = await getAtividade(ticket);
-  
-        if(!Data.permissionEditAtividade(Dados.date)){
-          throw ({ success: false, message: 'Você não pode mais editar essa atividade.'});
-        }
-  
+        console.log(Dados)
         setAtividade(Dados);
-        setAtividadeInfos(Dados.infos);
         const Cliente = await getCliente(Dados.cliente_id);
         setCliente(Cliente.data);
-        return setLoading(false);
+        setLoading(false);
+        
       } catch (error) {
-        console.log(error)
         handleSnackBar({
           type: "error",
           message: error.message ? error.message : `Erro em carregar a atividade.`,
         });
         return history.replace('/atividades');
       }
-    }
+
+    };
 
     init();
-  }, [handleSnackBar, history, ticket]);
 
-  function incrementInfos() {
-    setInfos((_) => infos + 1);
-  }
-
-  let rows = [];
-  for (let i = 0; i < infos; i++) {
-    rows.push(i);
-  }
-
+  },[handleSnackBar, history, ticket])
+  
   return (
     <>
       <Paper className={classes.root}>
@@ -96,26 +81,9 @@ export default () => {
           </Grid>
         )}
       </Paper>
-
-      {!loading &&
-        atividadeInfos &&
-        atividadeInfos.map((info) => {
-          return (
-            <InfoEdit key={info.id} Info={info} ticket={atividade.ticket} />
-          );
-        })}
-
-      {!loading &&
-        rows.map((id) => {
-          return (
-            <InfoCreate
-              key={id}
-              newInfo={incrementInfos}
-              atividadeID={atividade.id}
-              ticket={atividade.ticket}
-            />
-          );
-        })}
+      <>
+        <InfosView infos={atividade.infos} ticket={atividade.ticket} />
+      </> 
     </>
   );
-};
+}

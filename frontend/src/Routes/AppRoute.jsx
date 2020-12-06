@@ -6,8 +6,9 @@ import Main from "../Template/Main";
 //Pages
 import Home from "../Pages/Home";
 import Atividades from "../Pages/Atividades/";
-import AtividadesCreate from "../Pages/Atividades/Create/index";
+import AtividadesCreate from "../Pages/Atividades/Create/";
 import AtividadesEdit from "../Pages/Atividades/Edit/";
+import AtividadesView from "../Pages/Atividades/View/";
 import Clientes from "../Pages/Clientes/";
 import Categorias from "../Pages/Categorias/";
 import Usuarios from "../Pages/Usuarios/";
@@ -28,6 +29,7 @@ const useStyles = makeStyles(() => ({
 function Routes() {
 	const classes = useStyles();
 	const { handleAuth } = useAuth();
+	const { roleID } = useUser();
 
 	React.useEffect(() => {
 		handleAuth();
@@ -43,11 +45,12 @@ function Routes() {
 					<Route path="/atividades" exact component={Atividades} />
 					<Route path="/atividades/create" exact component={AtividadesCreate} />
 					<Route path="/atividades/edit/:ticket" component={AtividadesEdit} />
+					<Route path="/atividades/view/:ticket" component={AtividadesView} />
 
-					<AnalistaRoute path="/categorias" component={Categorias} />
-					<AnalistaRoute path="/usuarios" component={Usuarios} />
-					<AdminRoute path="/clientes" component={Clientes} />
-					<AdminRoute path="/modelos" component={Modelos} />
+					<AnalistaRoute path="/categorias" exact component={Categorias} role_id={roleID} />
+					<AnalistaRoute path="/usuarios" exact component={Usuarios} role_id={roleID} />
+					<AdminRoute path="/clientes" exact component={Clientes} role_id={roleID} />
+					<AdminRoute path="/modelos" exact component={Modelos} role_id={roleID} />
 
 					<Route path="*">
 						<Redirect to="/" />
@@ -60,12 +63,11 @@ function Routes() {
 
 
 const AdminRoute = (props) => {
-	const { roleID } = useUser();
-
+	const { role_id } = props;
 	return (
 		<>
 		{
-			roleID === 1 ? <Route {...props} /> : <Redirect to='/' />
+			role_id === 1 ? <Route {...props} /> : <Redirect to='/' />
 		}
 		</>
 	)
@@ -73,12 +75,11 @@ const AdminRoute = (props) => {
 }
 
 const AnalistaRoute = (props) => {
-	const { roleID } = useUser();
-
+	const { role_id } = props;
 	return (
 		<>
 		{
-			roleID <= 2 ? <Route {...props} /> : <Redirect to='/' />
+			role_id <= 2 ? <Route {...props} /> : <Redirect to='/' />
 		}
 		</>
 	)

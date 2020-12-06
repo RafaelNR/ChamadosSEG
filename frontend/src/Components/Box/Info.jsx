@@ -38,7 +38,7 @@ export default ({ info }) => {
       </Grid>
       <Grid item md className={classes.grid}>
         <Typography display="block" className={classes.info}>
-          Última Alteração:
+          Última Alteração: 
           <span>
             {info.created_at === info.updated_at
               ? handleDateTime(info.created_at)
@@ -50,4 +50,3 @@ export default ({ info }) => {
   );
 };
 
-//handleDateTime(info.created_at)
