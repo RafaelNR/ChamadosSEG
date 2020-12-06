@@ -9,18 +9,20 @@ import * as Api from "../Api/Crud";
 
 import useSnackBar from "./SnackBarContext";
 import useLoading from "./LoadingContext";
+import useUser from '../Hooks/useUser';
 
 const AtividadesContext = createContext({});
 
 const AtividadesProvider = ({ children }) => {
   const { handleSnackBar } = useSnackBar();
   const { setLoading } = useLoading();
+  const { roleID } = useUser();
   const [atividades, setAtividades] = useState([]);
 
   useEffect(() => {
     async function init() {
       try {
-        const resp = await Api.get("atividades/user");
+        const resp = roleID <= 2 ? await Api.get("atividades") : await Api.get("atividades/user");
         const { success, data } = resp.data;
         if (!success) throw resp.data;
         setLoading(false);

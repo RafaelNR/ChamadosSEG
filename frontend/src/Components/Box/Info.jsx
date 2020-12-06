@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     "& > span": {
       fontWeight: "normal",
+      paddingLeft: '5px'
     },
   },
 }));
@@ -23,17 +24,17 @@ export default ({ info }) => {
     <Grid container direction="row" justify="flex-start" alignItems="center">
       <Grid item md className={classes.grid}>
         <Typography display="block" className={classes.info}>
-          Técnico: <span>{info["técnico"]}</span>
+          Técnico:<span>{info["técnico"]}</span>
         </Typography>
       </Grid>
       <Grid item md className={classes.grid}>
         <Typography display="block" className={classes.info}>
-          Ticket da Atividade: <span>{info.ticket}</span>
+          Ticket da Atividade:<span>{info.ticket}</span>
         </Typography>
       </Grid>
       <Grid item md className={classes.grid}>
         <Typography display="block" className={classes.info}>
-          Ticket da Descrição: <span>{info.info_ticket}</span>
+          Ticket da Descrição:<span>{info.info_ticket}</span>
         </Typography>
       </Grid>
       <Grid item md className={classes.grid}>
