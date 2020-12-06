@@ -58,6 +58,7 @@ const findOneByData = async (Params) => {
 		.from("infos_atividades as info")
 		.join("categorias", "categorias.id", "=", "info.categoria_id")
 		.where("info.atividade_id", "=", Atividade.id)
+		.orderBy("info.id")
 		.then((info) => {
 			return {
 				...Atividade,
@@ -160,6 +161,7 @@ module.exports = {
 					.join("categorias", "categorias.id", "=", "info.categoria_id")
 					.join("users", "users.id", "=", "info.user_id")
 					.where("info.atividade_id", "=", Atividade[0].id)
+					.orderBy('info.id')
 					.then((infos) => {
 						return {
 							...Atividade[0],
@@ -203,6 +205,7 @@ module.exports = {
 					.join("categorias", "categorias.id", "=", "info.categoria_id")
 					.join("users", "users.id", "=", "info.user_id")
 					.where("info.atividade_id", "=", Atividade[0].id)
+					.orderBy('info.id')
 					.then((infos) => {
 						return {
 							...Atividade[0],
