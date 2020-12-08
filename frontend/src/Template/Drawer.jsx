@@ -70,6 +70,12 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
+  img: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    width: 50
+  }
 }));
 
 const MiniDrawer = () => {
@@ -93,9 +99,9 @@ const MiniDrawer = () => {
     >
       <div className={classes.toolbar}>
         <Typography className={classes.title} variant="h6" noWrap>
-        <img
+        <img className={classes.img}
           alt="Logo"
-          src="/static/logo.svg"
+          src="/static/logo.png"
         />
         </Typography>
         <IconButton onClick={handleDrawerClose}>

@@ -60,9 +60,9 @@ const analistaMenu = [
     path: '/usuarios'
   },
   {
-    nome: 'Log',
+    nome: 'Log de Usuários',
     icon: <ReportSharp />,
-    path: '/log'
+    path: '/logs'
   }
 ];
 

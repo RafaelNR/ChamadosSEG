@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { adminMenu, defaultMenu } from "../../Store/Pages";
+import { adminMenu, defaultMenu, analistaMenu } from "../../Store/Pages";
 
 const useStyles = makeStyles((theme) => ({
 	box_header: {
@@ -27,13 +27,14 @@ export default () => {
 	const [path, setPath] = useState("Home");
 
 	useEffect(() => {
-		const Menus = adminMenu.concat(defaultMenu);
+		const Menus = adminMenu.concat(defaultMenu).concat(analistaMenu);
 
 		const Menu = Object.values(Menus).filter((Menu) =>
 			Menu.path === pathname ? Menu : null
 		);
 
 		if (Menu && Menu[0]) setPath(Menu[0].nome);
+
 	}, [pathname]);
 
 	return (

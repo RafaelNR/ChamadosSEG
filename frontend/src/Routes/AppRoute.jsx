@@ -14,6 +14,7 @@ import Categorias from "../Pages/Categorias/";
 import Usuarios from "../Pages/Usuarios/";
 import Modelos from "../Pages/Modelos";
 import Perfil from "../Pages/Perfil/";
+import Logs from "../Pages/Logs/";
 
 import useAuth from '../Context/AuthContext';
 import useUser from '../Hooks/useUser';
@@ -49,6 +50,7 @@ function Routes() {
 
 					<AnalistaRoute path="/categorias" exact component={Categorias} role_id={roleID} />
 					<AnalistaRoute path="/usuarios" exact component={Usuarios} role_id={roleID} />
+					<AnalistaRoute path="/logs" exact component={Logs} role_id={roleID} />
 					<AdminRoute path="/clientes" exact component={Clientes} role_id={roleID} />
 					<AdminRoute path="/modelos" exact component={Modelos} role_id={roleID} />
 

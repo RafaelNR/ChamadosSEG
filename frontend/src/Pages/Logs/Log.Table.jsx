@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   makeStyles,
   Table,
@@ -6,61 +6,52 @@ import {
   TableCell,
   TableContainer,
   TableRow,
-  Avatar,
-} from "@material-ui/core/";
+} from "@material-ui/core/"
 
 //* COMPONENTES
 import EnhancedTableHead from "../../Components/Tables/TableHead";
 import EnhancedTableToolbar from "../../Components/Tables/ToolBar";
 import TablePagination from "../../Components/Tables/TablePagination";
-import Actions from "../../Components/Tables/Actions";
 import sortObject from "../../Utils/sortObject";
 import CircularProcess from "../../Components/Loading";
 
-//* FUNCTIONS
-import { initialsName } from "../../Utils/functions";
-
 //* CONTEXT
-import useUsuarios from "../../Context/UsuariosContext";
+import useLogs from "../../Context/Log.Context";
 import useOrderTable from "../../Context/OrderTableContext";
 import usePageTable from "../../Context/PageTableContext";
 import useSearch from "../../Context/SearchContext";
 
+
+import { handleDateTimeFull } from '../../Utils/dates'
+
 // Header Table
 const headCells = [
   {
-    id: "avatar",
+    id: "created_at",
     numeric: false,
     disablePadding: false,
-    label: "",
+    label: "Registro",
+    sort: false,
+  },
+  {
+    id: "type",
+    numeric: false,
+    disablePadding: false,
+    label: "Página",
+    sort: false,
+  },
+  {
+    id: "category",
+    numeric: false,
+    disablePadding: false,
+    label: "Action",
     sort: false,
   },
   {
     id: "nome",
     numeric: false,
     disablePadding: false,
-    label: "Nome Completo",
-    sort: true,
-  },
-  {
-    id: "user",
-    numeric: false,
-    disablePadding: false,
-    label: "Login",
-    sort: true,
-  },
-  {
-    id: "email",
-    numeric: false,
-    disablePadding: false,
-    label: "Email",
-    sort: true,
-  },
-  {
-    id: "actions",
-    numeric: false,
-    disablePadding: false,
-    label: "Ações",
+    label: "Nome",
     sort: false,
   },
 ];
@@ -89,40 +80,45 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 export default function () {
   const classes = useStyles();
-  const { usuarios, getUsuario } = useUsuarios();
+  const { logs } = useLogs();
   const { search, searchResults, setSearchResults } = useSearch();
-  const { order, orderBy, setOrderBy } = useOrderTable();
+  const { order, orderBy, setOrderBy, setOrder } = useOrderTable();
   const { page, rows, setRows, rowsPerPage, emptyRows } = usePageTable();
-
+  
+  useEffect(() => {
+    if (logs) {
+      setOrderBy("id");
+      setOrder('desc');
+      setRows(search && search.length > 3 ? searchResults : logs);
+    }
+  }, [logs, searchResults, search, setOrderBy, setRows]);
 
   useEffect(() => {
-    setOrderBy("nome");
-    setRows(search && search.length > 3 ? searchResults : usuarios);
-  }, [usuarios, searchResults, search, setOrderBy, setRows]);
-
-  useEffect(() => {
-    const results = usuarios.filter((usuario) => {
-      const nome = usuario.nome.toLowerCase();
-      const user = usuario.user.toLowerCase();
+    const results = logs && logs.filter((log) => {
+      const nome = log.nome.toLowerCase();
+      const type = log.type.toLowerCase();
+      const category = log.category.toLowerCase();
 
       if (
         nome.includes(search.toLowerCase()) ||
-        user.includes(search.toLowerCase())
+        type.includes(search.toLowerCase()) ||
+        category.includes(search.toLowerCase())
       ) {
-        return usuario;
+        return log;
       }
     });
     setSearchResults(results);
     return;
-  }, [search, setSearchResults, usuarios]);
+  }, [search, setSearchResults, logs]);
 
   return (
     <React.Fragment>
       <EnhancedTableToolbar
-        title="Lista de usuários"
-        data={usuarios && usuarios.length > 0 ? true : false}
+        title="Log"
+        data={false}
       />
       <TableContainer>
         <Table
@@ -133,11 +129,11 @@ export default function () {
         >
           <EnhancedTableHead headCells={headCells} />
           <TableBody>
-            {!usuarios || usuarios.length === 0 ? (
+            {!logs || logs.length === 0 ? (
               <CircularProcess type="Table" />
             ) : (
               sortObject(rows, order, orderBy, page, rowsPerPage).map(
-                (row, index) => {
+                (row) => {
                   return (
                     <TableRow hover tabIndex={-1} key={row.id}>
                       <TableCell
@@ -146,38 +142,23 @@ export default function () {
                         scope="row"
                         padding="default"
                       >
-                        <Avatar alt={row.nome} className={classes.orange}>
-                          {initialsName(row.nome)}
-                        </Avatar>
+                        { handleDateTimeFull(row.created_at) }
                       </TableCell>
-                      <TableCell
-                        component="th"
-                        className={classes.tablerow}
-                        scope="row"
-                        padding="default"
-                      >
+                      <TableCell align="left" className={classes.tablerow}>
+                        {row.type}
+                      </TableCell>
+                      <TableCell align="left" className={classes.tablerow}>
+                        {row.category}
+                      </TableCell>
+                      <TableCell align="left" className={classes.tablerow}>
                         {row.nome}
-                      </TableCell>
-                      <TableCell align="left" className={classes.tablerow}>
-                        {row.user}
-                      </TableCell>
-                      <TableCell align="left" className={classes.tablerow}>
-                        {row.email}
-                      </TableCell>
-                      <TableCell align="center" className={classes.tablerow}>
-                        <Actions
-                          id={row.id}
-                          getID={getUsuario}
-                          disabled={row.actived}
-                          buttons={["edit", "disable"]}
-                        />
                       </TableCell>
                     </TableRow>
                   );
                 }
               )
             )}
-            {usuarios && usuarios.length > 0 && emptyRows > 0 && (
+            {emptyRows > 0 && (
               <TableRow style={{ height: 53 * emptyRows }}>
                 <TableCell colSpan={6} />
               </TableRow>
@@ -189,3 +170,6 @@ export default function () {
     </React.Fragment>
   );
 }
+
+
+
