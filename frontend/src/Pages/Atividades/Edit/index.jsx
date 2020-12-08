@@ -14,6 +14,9 @@ import Loading from '../../../Components/Loading'
 //* CONTEXT
 import useSnackBar from "../../../Context/SnackBarContext";
 
+//& RPOVIDER
+import { CategoriasProvider } from "../../../Context/CategoriasContext";
+
 //* SERVICE
 import { getAtividade } from "../../../Service/atividade.service";
 import { getCliente } from "../../../Service/clientes.service";
@@ -45,7 +48,6 @@ export default () => {
   const [infos, setInfos] = React.useState(1);
   const [loading, setLoading] = React.useState(true);
 
-  // TODO Tratar os erros
   React.useEffect(() => {
     async function init() {
 
@@ -60,6 +62,7 @@ export default () => {
         setAtividadeInfos(Dados.infos);
         const Cliente = await getCliente(Dados.cliente_id);
         setCliente(Cliente.data);
+
         return setLoading(false);
       } catch (error) {
         console.log(error)
@@ -97,25 +100,28 @@ export default () => {
         )}
       </Paper>
 
-      {!loading &&
-        atividadeInfos &&
-        atividadeInfos.map((info) => {
-          return (
-            <InfoEdit key={info.id} Info={info} ticket={atividade.ticket} />
-          );
-        })}
+      <CategoriasProvider>
+        {!loading &&
+          atividadeInfos &&
+          atividadeInfos.map((info) => {
+            return (
+                <InfoEdit key={info.id} Info={info} ticket={atividade.ticket} />
+            );
+          })}
 
-      {!loading &&
-        rows.map((id) => {
-          return (
-            <InfoCreate
+        {!loading &&
+          rows.map((id) => {
+            return (
+              <InfoCreate
               key={id}
               newInfo={incrementInfos}
               atividadeID={atividade.id}
               ticket={atividade.ticket}
-            />
-          );
-        })}
+              />
+            );
+          }
+        )}
+      </CategoriasProvider>
     </>
   );
 };
