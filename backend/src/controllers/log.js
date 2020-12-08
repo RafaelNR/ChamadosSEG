@@ -1,55 +1,18 @@
 const Model = require("../models/log");
-const Validation = require("../tools/validation/schemas");
+const Result = require('../tools/result')
+
+
+const index = async (req, res) => {
+	try {
+			Result.ok(200, await Model.index());
+		} catch (error) {
+			Result.fail(400, error);
+	}
+	
+		Result.registerLog(req.userId, "log", "index");
+		return res.status(Result.status).json(Result.res);
+}
 
 module.exports = {
-	Save: async (user_id, type, category, res) => {
-		const Dados = new Promise((resolve, reject) => {
-			const validadoDados = Validation.insertLog({
-				user_id,
-				type,
-				category,
-				error: handlingError(res),
-			});
-
-			resolve(validadoDados);
-			reject(
-				new Error({
-					...err,
-					type,
-					category,
-				})
-			);
-		});
-
-		return await Dados.then(async (Dados) => {
-			await Model.insert(Dados);
-			return Dados;
-		}).catch((err) => {
-			console.log(err);
-			return err;
-		});
-	},
-};
-
-const handlingError = (Response) => {
-	if (!Response) return null;
-
-	if (!Response.success && Response.error) {
-		if (typeof Response.error === "object") {
-			if (Response.error.validationError) {
-				// Error de validação
-				console.log(Response.error.error);
-				return Response.error.error.details[0].message;
-			} else {
-				console.log(Response.error);
-				return "Possível erro de código!";
-			}
-		} else {
-			// Error simples, strings
-			console.log(Response.error);
-			return Response.error;
-		}
-	}
-
-	return null;
+	index
 };

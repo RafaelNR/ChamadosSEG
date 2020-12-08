@@ -1,5 +1,5 @@
 const Errors = require('./errors/handle')
-const Log = require("../controllers/log"); /* Log */
+const Log = require("../classes/log.class"); /* Log */
 
 class Result{
 
@@ -47,7 +47,7 @@ class Result{
     }
   }
 
-  registerLog(userID,action,func){
+  registerLog(userID, action, func) {
     if(this.res){
       Log.Save(userID, action, func, this.res);
     }

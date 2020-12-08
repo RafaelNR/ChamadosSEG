@@ -171,8 +171,8 @@ module.exports = {
 				type: type.string.categoria,
 				category: type.string.categoria,
 				error: type.string.error,
-				created_at: type.date.created_at,
-				updated_at: type.date.updated_at,
+				created_at: Joi.date().default(new Date()),
+				updated_at: Joi.date().default(new Date()),
 			})
 		);
 	},
