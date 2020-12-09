@@ -11,6 +11,7 @@ import {
 const useStyles = makeStyles({
   formControl: {
     width: "100%",
+    marginTop: 16,
     "& > label": {
       fontSize: "1rem",
     },

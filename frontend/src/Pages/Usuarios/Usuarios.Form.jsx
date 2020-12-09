@@ -184,6 +184,7 @@ const FormUpdate = React.memo(
                     handleChange={handleChange}
                     id="role_id"
                     name="role_id"
+                    fullWidth
                     value={values.role_id}
                     itens={itensSelect}
                     errorText={errors["role_id"]}

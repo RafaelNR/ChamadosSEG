@@ -21,7 +21,6 @@ import useUser from '../Hooks/useUser';
 
 const useStyles = makeStyles(() => ({
 	container: {
-		backgroundColor: "#f0f0f0f0",
 		paddingTop: "30px",
 		paddingBottom: "30px",
 	},
