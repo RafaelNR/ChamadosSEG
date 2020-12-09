@@ -12,7 +12,10 @@ import {
 } from "@material-ui/core";
 import ButtonLogout from "../Components/LogOut";
 
+//* CONTEXT
 import useMenu from "../Context/MenuContext";
+import SwitchDarkMode from "../Components/FormControl/DarkMode.Switch";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -90,6 +93,7 @@ export default () => {
               </Badge>
             </IconButton>
             <ButtonLogout />
+            <SwitchDarkMode />
           </div>
         </Toolbar>
       </AppBar>

@@ -28,11 +28,14 @@ export default () => {
   const [values, setValues] = React.useState({});
 
   React.useEffect(() => {
+
     handleDrawerClose();
+
     async function init(){
       try {
 
         const Dados = await getPerfil();
+
         if(Dados.success){
           return setValues({
             ...Dados.data,
@@ -51,7 +54,7 @@ export default () => {
 
     }
 
-    return init();
+    init();
 
   },[handleSnackBar,handleDrawerClose])
 
