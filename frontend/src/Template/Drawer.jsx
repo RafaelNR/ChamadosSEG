@@ -115,6 +115,9 @@ const MiniDrawer = () => {
         open && <Perfil />
       }
       <ListItensMenu open={open} />
+      <span>
+        fdfdjkf
+      </span>
     </Drawer>
   );
 };
