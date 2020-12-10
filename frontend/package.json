@@ -13,6 +13,7 @@
     "@types/vanilla-masker": "^1.2.0",
     "axios": "^0.20.0",
     "history": "^5.0.0",
+    "md5": "^2.3.0",
     "moment": "^2.29.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

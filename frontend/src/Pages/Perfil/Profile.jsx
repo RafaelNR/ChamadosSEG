@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Avatar,
   Box,
   Button,
   Card,
@@ -11,6 +10,9 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
+
+import Gravatar from '../../Components/Box/Gravatar';
+import useUser from "../../Hooks/useUser";
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -35,9 +37,9 @@ const Roles = [
   },
 ];
 
-
 const Profile = ({values}) => {
   const classes = useStyles();
+  const { email } = useUser();
 
   const getRole = () => {
     const Role = Roles.filter(Role => Role.id === values.role_id ? Role : null);
@@ -54,9 +56,9 @@ const Profile = ({values}) => {
           display="flex"
           flexDirection="column"
         >
-          <Avatar
+          <Gravatar
+            email={email}
             className={classes.avatar}
-            src={values && values.avatar}
           />
           <Typography
             color="textPrimary"

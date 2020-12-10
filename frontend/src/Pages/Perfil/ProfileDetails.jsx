@@ -30,10 +30,9 @@ export default ({ Dados }) => {
 
   const handleSubmit = async () => {
     const Dados = await PerfilSchema(values);
+    if(Dados.error) return setErrors(Dados.errors)
 
     setLoading(true)
-
-    if(Dados.error) return setErrors(Dados.errors)
 
     return update(Dados).then(Dados => {
       setLoading(false)
@@ -42,10 +41,12 @@ export default ({ Dados }) => {
         passwd: '******'
       });
       handleSnackBar({
-        type: "success",
+        type: "success",  
         message: 'Dados Atualizados!',
       });
     }).catch(error => {
+      console.log(error)
+      setLoading(false)
       handleSnackBar({
         type: "error",
         message: error.message ? error.message : 'Erro em carregar os dados.',
@@ -135,6 +136,7 @@ export default ({ Dados }) => {
                     fullWidth
                     label="Email"
                     name="email"
+                    type="email"
                     onChange={handleChange}
                     value={values.email}
                     variant="outlined"

@@ -5,8 +5,13 @@ const useMessage = () => {
   const [message, setMessage] = useState("");
   const history = useHistory();
 
- function handleMessage(type, msg){
-    return type !== 'success' && handleError(msg);
+  function handleMessage(type, msg) {
+
+    if (type !== 'success') return handleError(msg);
+
+    if (msg.message) return setMessage(msg);
+    
+    return setMessage(msg);
   }
 
   const handleError = useCallback((msg) => {
@@ -16,7 +21,8 @@ const useMessage = () => {
       return history.replace('/');
     }
 
-    else if(msg.message){
+    else if (msg.message) {
+      console.log('msg.message')
       return setMessage(msg.message)
     }
 

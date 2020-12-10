@@ -16,6 +16,7 @@ import TablePagination from "../../Components/Tables/TablePagination";
 import Actions from "../../Components/Tables/Actions";
 import sortObject from "../../Utils/sortObject";
 import CircularProcess from "../../Components/Loading";
+import Gravatar from '../../Components/Box/Gravatar';
 
 //* FUNCTIONS
 import { initialsName } from "../../Utils/functions";
@@ -146,9 +147,9 @@ export default function () {
                         scope="row"
                         padding="default"
                       >
-                        <Avatar alt={row.nome} className={classes.orange}>
+                        <Gravatar alt={row.nome} className={classes.orange} email={row.email}>
                           {initialsName(row.nome)}
-                        </Avatar>
+                        </Gravatar>
                       </TableCell>
                       <TableCell
                         component="th"

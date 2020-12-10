@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import MyMenu from "./Menu";
-import HeaderPage from "../Components/HeaderPage/";
+import HeaderPage from "../Components/Header";
 import SnackBar from "../Components/SnackBar";
 
 import { SnackBarProvider } from "../Context/SnackBarContext";

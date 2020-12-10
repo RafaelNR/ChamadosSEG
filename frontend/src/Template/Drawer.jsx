@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import ListItensMenu from "../Components/Menu/ItensMenu";
+import HeaderMenu from '../Components/Header/Drawer';
 import Perfil from './Perfil'
 import ChevronRightIcon from "@material-ui/icons/ChevronRightSharp";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeftSharp";
@@ -100,12 +101,7 @@ const MiniDrawer = () => {
       }}
     >
       <div className={classes.toolbar}>
-        <Typography className={classes.title} variant="h6" noWrap>
-        <img className={classes.img}
-          alt="Logo"
-          src="/static/logo.png"
-        />
-        </Typography>
+        <HeaderMenu />
         <IconButton onClick={handleDrawerClose}>
           {theme.direction === "rtl" ? (
             <ChevronRightIcon />
@@ -119,9 +115,6 @@ const MiniDrawer = () => {
         open && <Perfil />
       }
       <ListItensMenu open={open} />
-      <span>
-        fdfdjkf
-      </span>
     </Drawer>
   );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "../Header/node_modules/react-router-dom";
 import {
   makeStyles,
   Button,

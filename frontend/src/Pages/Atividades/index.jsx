@@ -1,5 +1,4 @@
 import React from "react";
-
 import Paper from "../../Components/Paper/PaperNoDialog";
 import Table from "./Atividades.Table";
 

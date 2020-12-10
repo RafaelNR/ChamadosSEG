@@ -4,6 +4,7 @@ import useLocalStore from "./useLocalStore";
 const useUser = () => {
   const [nome, setNome] = useState("");
   const [user, setUser] = useState("");
+  const [email, SetEmail] = useState("");
   const [roleID, setRoleID] = useState(null)
   const [permission, setPermission] = useState(null);
   const { getData } = useLocalStore();
@@ -12,13 +13,15 @@ const useUser = () => {
     const Dados = getData("user");
     setNome(Dados.nome);
     setUser(Dados.user);
-    setRoleID(Dados.role_id)
+    setRoleID(Dados.role_id);
+    SetEmail(Dados.email);
   }, [setNome, setUser, getData]);
   
 
   return {
     nome,
     user,
+    email,
     permission,
     roleID,
     setPermission,

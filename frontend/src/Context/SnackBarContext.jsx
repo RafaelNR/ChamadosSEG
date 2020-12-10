@@ -14,7 +14,6 @@ const SnackBarProvider = ({ children }) => {
   }, [openSnackBar]);
 
   const handleSnackBar = useCallback(({ type, message }) => {
-    console.log(message)
     handleMessage(type,message);
     setSeverity(type);
     setOpenSnackBar(true);

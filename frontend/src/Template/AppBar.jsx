@@ -14,7 +14,7 @@ import ButtonLogout from "../Components/LogOut";
 
 //* CONTEXT
 import useMenu from "../Context/MenuContext";
-import SwitchDarkMode from "../Components/FormControl/DarkMode.Switch";
+import SwitchDarkMode from "../Components/Buttons/DarkMode.Switch";
 
 
 const useStyles = makeStyles((theme) => ({

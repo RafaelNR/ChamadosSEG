@@ -13,6 +13,7 @@ export const getMyClientes = async () => {
     };
 
   } catch (error) {
+    console.log(error)
     throw error;
   }
 };
@@ -31,6 +32,7 @@ export const getPerfil = async () => {
     };
 
   } catch (error) {
+    console.log(error)
     throw error;
   }
 }
@@ -41,6 +43,8 @@ export const update = async (data) => {
     const Url = `/usuarios/${data.id}`;
     const Dados = await Service.exec("put", Url, data);
 
+    console.log(Dados)
+
     if(!Dados.data.success) throw ({ success: false, message: Dados.data.message ? Dados.data.message : "Error em buscas os meus dados."});
 
     return {
@@ -49,6 +53,7 @@ export const update = async (data) => {
     };
 
   } catch (error) {
+    console.log(error)
     throw error;
   }
 }
