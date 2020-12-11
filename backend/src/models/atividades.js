@@ -104,8 +104,8 @@ module.exports = {
 			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
 			.join("users", "users.id", "=", "atividades.user_id")
 			.where("users.id", "=", user_id)
-			.orderBy("atividades.id", 'desc')
-			.orderBy("atividades.date", 'desc')
+			.orderBy("atividades.id", "desc")
+			.orderBy("atividades.date", "desc")
 			.limit(60);
 	},
 
@@ -161,7 +161,7 @@ module.exports = {
 					.join("categorias", "categorias.id", "=", "info.categoria_id")
 					.join("users", "users.id", "=", "info.user_id")
 					.where("info.atividade_id", "=", Atividade[0].id)
-					.orderBy('info.id')
+					.orderBy("info.id")
 					.then((infos) => {
 						return {
 							...Atividade[0],
@@ -169,7 +169,6 @@ module.exports = {
 						};
 					});
 			});
-
 	},
 
 	findOneByTicket: async (ticket) => {
@@ -205,7 +204,7 @@ module.exports = {
 					.join("categorias", "categorias.id", "=", "info.categoria_id")
 					.join("users", "users.id", "=", "info.user_id")
 					.where("info.atividade_id", "=", Atividade[0].id)
-					.orderBy('info.id')
+					.orderBy("info.id")
 					.then((infos) => {
 						return {
 							...Atividade[0],
@@ -213,7 +212,6 @@ module.exports = {
 						};
 					});
 			});
-
 	},
 
 	/**
@@ -224,7 +222,6 @@ module.exports = {
 	 * @return {number}
 	 */
 	countByUserClientDate: async ({ user_id, cliente_id, date }) => {
-
 		return await knex
 			.count("id as id")
 			.from("atividades")
@@ -258,17 +255,24 @@ module.exports = {
 			.then((e) => e[0].id);
 	},
 
+	countAtividadeByTicket: async (ticket) => {
+		return await knex
+			.count("ticket as ticket")
+			.from("atividades")
+			.where("ticket", "=", ticket)
+			.limit(1)
+			.then((e) => e[0].ticket);
+	},
+
 	insert: (Dados) => {
 		return knex.insert(Dados).into("atividades");
 	},
 
 	update: (Dados) => {
-		return knex("atividades")
-			.where({ id: Dados.id })
-			.update(Dados)
+		return knex("atividades").where({ id: Dados.id }).update(Dados);
 	},
 
 	deletar: async (ID) => {
-		await knex("atividades").del().where("id", "=",ID).limit(1);
+		await knex("atividades").del().where("id", "=", ID).limit(1);
 	},
 };

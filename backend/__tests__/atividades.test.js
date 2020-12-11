@@ -1,7 +1,9 @@
 const App = require("../src/core/app");
 const request = require("supertest")(App);
+const moment = require('moment')
 
 const { Token } = require("./auth.test");
+let Atividade_ID = null;
 
 describe("itens de Atividades", () => {
 	describe("Pesquisa uma atividade, sem erro", () => {
@@ -102,7 +104,7 @@ describe("itens de Atividades", () => {
 				.post("/atividades")
 				.send({
 					cliente_id: 1,
-					date: '2020-11-10'
+					date: moment(new Date()).format('YYYY-MM-DD') // Data de hoje
 				})
 				.set("access_token", Token())
 				.then((res) => {
@@ -120,19 +122,20 @@ describe("itens de Atividades", () => {
 						expect(res.body.data.infos[0]).toHaveProperty("descricao");
 						expect(res.body.data.infos[0]).toHaveProperty("categoria");
 					}
+					Atividade_ID = res.body.data.id;
 				})
 		})
 		it("Deve atualizar o cliente da atividade", async () => {
 			return await request
 				.put("/atividades/1")
 				.send({
-					id: 2,
+					id: Atividade_ID,
 					cliente_id: 2,
 				})
 				.set("access_token", Token())
 				.then((res) => {
 					expect(res.status).toBe(204);
-				})
+				});
 		})
 	});
 	describe("Pesquisa uma atividade, passando parametros inválidos", () => {
@@ -171,7 +174,7 @@ describe("itens de Atividades", () => {
 				.post("/atividades")
 				.send({
 					cliente_id: 1,
-					date: '2020-11-01'
+					date: moment(new Date()).add(-1, "month").format("YYYY-MM-DD"),
 				})
 				.set("access_token", Token())
 				.then((res) => {
@@ -181,31 +184,31 @@ describe("itens de Atividades", () => {
 						"message",
 						"Não é permitido criar um atividade com mais de 15 dias da data de hoje."
 					);
-				})
+				});
 		})
 		it("Deve deve receber um erros, pois está inserindo atividade de um mes diferente do atual.", async () => {
 			return await request
 				.post("/atividades")
 				.send({
 					cliente_id: 1,
-					date: '2020-09-11'
+					date: moment(new Date).add(-15, "days").format('YYYY-MM-DD')
 				})
 				.set("access_token", Token())
 				.then((res) => {
 					expect(res.status).toBe(400);
 					expect(res.body).toHaveProperty("success", false);
-					// expect(res.body).toHaveProperty(
-					// 	"message",
-					// 	"Não é permitido criar uma atividade fora do mês atual."
-					// );
-				})
+					expect(res.body).toHaveProperty(
+						"message",
+						"Não é permitido criar uma atividade fora do mês atual."
+					);
+				});
 		})
 		it("Deve deve receber um erros, pois está inserindo atividade maior que a data de hoje.", async () => {
 			return await request
 				.post("/atividades")
 				.send({
 					cliente_id: 1,
-					date: "2020-11-19",
+					date: moment(new Date()).add(1, "days").format("YYYY-MM-DD"),
 				})
 				.set("access_token", Token())
 				.then((res) => {
@@ -214,6 +217,22 @@ describe("itens de Atividades", () => {
 					expect(res.body).toHaveProperty(
 						"message",
 						"Não é permitido criar um atividade com data maior que hoje."
+					);
+				});
+		});
+		it("Deve receber um erro, pois estou tentando editar uma atividade fora da data.", async () => {
+			return await request
+				.put("/atividades/1")
+				.send({
+					id: 2,
+					cliente_id: 2,
+				})
+				.set("access_token", Token())
+				.then((res) => {
+					expect(res.status).toBe(400);
+					expect(res.body).toHaveProperty(
+						"message",
+						"Período para editar atividade ultrapassado."
 					);
 				});
 		});
