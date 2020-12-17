@@ -82,3 +82,22 @@ export const UpdateInfo = async (data) => {
     throw error.data;
   }
 };
+
+export const CreatedPDF = async (ticket) => {
+  try {
+
+    const url = `/pdf/atividade/${ticket}`;
+    const Dados = await Service.exec('get', url);
+
+    console.log(Dados)
+    if (Dados.data.success) {
+      return Dados.data
+    }
+
+    throw new Error(Dados.data);
+    
+  } catch (error) {
+    console.log(error)
+    throw error;
+  }
+};

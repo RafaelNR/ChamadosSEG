@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     "& > p": {
       fontWeight: "bold",
       fontSize: "14px",
-      color: "#404040",
+      color: theme.palette.text.atividade,
       "& > span": {
         fontSize: "13px",
         fontWeight: "normal",

@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   details: {
-    borderTop: "1px solid #ccc",
+    borderTop: `1px solid ${theme.palette.primary.light}`,
     padding: "15px",
   },
   button: {

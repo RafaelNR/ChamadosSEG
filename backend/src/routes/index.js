@@ -25,6 +25,7 @@ Router.use("/subcategorias", verifyToken, require("./subcategory"));
 Router.use(["/tasks", "/tarefas"], verifyToken, require("./tasks"));
 Router.use('/perfil', verifyToken, Perfil);
 Router.get("/log", verifyToken, Log.index);
+Router.use("/pdf", verifyToken, require('./pdf'));
 
 Router.get("/logout", (req, res) => {
 	return res.status(200).json({
@@ -33,6 +34,7 @@ Router.get("/logout", (req, res) => {
 		token: null,
 	});
 });
+
 
 // Página não existe
 Router.use((req, res, next) => {

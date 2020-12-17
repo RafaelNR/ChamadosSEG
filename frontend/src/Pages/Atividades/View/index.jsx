@@ -9,6 +9,7 @@ import {
 import InfosView from "./Infos";
 import { Atividade, AtividadeCliente } from "../../../Components/Box/Atividade";
 import Loading from '../../../Components/Loading'
+import { PDFIconAtividade } from '../../../Components/Buttons/pdf'
 
 //* CONTEXT
 import useSnackBar from "../../../Context/SnackBarContext";
@@ -27,8 +28,12 @@ const useStyles = makeStyles((theme) => ({
   title: {
     fontSize: "20px",
     padding: "15px",
-    color: "#3f51b5 !important",
+    color: theme.palette.text.title,
   },
+  icons: {
+    display: 'flex',
+    justifyContent: 'flex-end'
+  }
 }));
 
 export default () => {
@@ -39,14 +44,12 @@ export default () => {
   const [atividade, setAtividade] = React.useState({});
   const [cliente, setCliente] = React.useState({});
   const [loading, setLoading] = React.useState(true);
-
   
   React.useEffect(() => {
 
     async function init(){
 
       try {
-        console.log('view')
         const Dados = await getAtividade(ticket);
         console.log(Dados)
         setAtividade(Dados);
@@ -66,16 +69,26 @@ export default () => {
 
     init();
 
-  },[handleSnackBar, history, ticket])
+  }, [handleSnackBar, history, ticket])
+  
   
   return (
     <>
       <Paper className={classes.root}>
-        <Typography className={classes.title}>Dados da Atividade</Typography>
+        <Grid container>
+          <Grid item md={6}>
+            <Typography className={classes.title}>
+              Dados da Atividade
+            </Typography>
+          </Grid>
+          <Grid item md={6} className={classes.icons}>
+            <PDFIconAtividade ticket={ticket} />
+          </Grid>
+        </Grid>
         {loading ? (
           <Loading type='Paper' />
         ) : (
-          <Grid container md={12} spacing={2}>
+            <Grid container md={12} spacing={2}>
             <Atividade Atividade={atividade} />
             <AtividadeCliente Cliente={cliente} />
           </Grid>

@@ -8,7 +8,7 @@ import { handleDateTime } from "../../Utils/dates";
 const useStyles = makeStyles((theme) => ({
   info: {
     fontSize: 13,
-    color: "#676767",
+    color: theme.palette.text.info,
     fontWeight: "bold",
     "& > span": {
       fontWeight: "normal",

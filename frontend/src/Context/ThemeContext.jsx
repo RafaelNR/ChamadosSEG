@@ -13,8 +13,13 @@ const MythemeProvider = ({ children }) => {
       background: {
         default: darkMode ? '#303030' : '#f0f0f0',
       },
-      type: darkMode ? 'dark' : 'light'
-    }
+      type: darkMode ? 'dark' : 'light',
+      text: {
+        title: darkMode ? 'white ' : '#3f51b5',
+        info: darkMode ? 'rgba(255, 255, 255, 0.5)' : '#676767',
+        atividade: darkMode ? 'rgba(255, 255, 255, 0.5)' : '#676767',
+      }
+    },
   })
   
 

@@ -7,6 +7,7 @@ import {
   VisibilityOffSharp,
   VisibilitySharp,
   DeleteForeverSharp,
+  PictureAsPdfSharp
 } from "@material-ui/icons";
 import useDialog from "../../Context/DialogContext";
 
@@ -31,6 +32,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "18px",
     color: "blue",
   },
+  pdf: {
+    marginRight: 20,
+    width: 50,
+    height: 50
+  }
 }));
 
 const AddIconButton = memo(() => {
@@ -132,6 +138,7 @@ ActivedIconButton.propTypes = {
   id: PropTypes.number.isRequired,
   getID: PropTypes.func.isRequired,
 };
+
 
 export {
   AddIconButton,
