@@ -1,0 +1,6 @@
+.cliente:{
+  
+}
+.cliente > span{
+  display: block;
+}
