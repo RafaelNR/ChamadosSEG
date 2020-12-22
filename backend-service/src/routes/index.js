@@ -8,10 +8,14 @@ Router.get("/pdf/atividade/:ticket", (req, res, next) =>
 	Atividade.createPDF(req, res, next)
 );
 
-Router.get("/atividade/email/:ticket", Atividade.submitEmailWithPDF);
+Router.get('/pdf/atividades', (req, res, next) => {
+	Atividades.createPDF(req, res, next);
+})
 
-Router.get("/atividades/pdf", Atividades.createPDF);
-Router.get("/atividades/email", Atividades.submitEmailWithPDF);
+// Router.get("/atividade/email/:ticket", Atividade.submitEmailWithPDF);
+
+// Router.get("/atividades/pdf", Atividades.createPDF);
+// Router.get("/atividades/email", Atividades.submitEmailWithPDF);
 
 // Página não existe
 Router.use((req, res, next) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import { IconButton, Tooltip, makeStyles } from "@material-ui/core";
+import { IconButton, Tooltip, CircularProgress, makeStyles } from "@material-ui/core";
 import {
   PictureAsPdfSharp
 } from "@material-ui/icons";
@@ -68,7 +68,7 @@ const PDFIconAtividade = ({ ticket }) => {
           <IconButton className={classes.pdf} onClick={handleClick}>
             <Tooltip title="PDF">
               {
-                loading ? <cr></cr> : <PictureAsPdfSharp className={classes.actived} />
+                loading ? <CircularProgress size={24} /> : <PictureAsPdfSharp className={classes.actived} />
               }
             </Tooltip>
           </IconButton>

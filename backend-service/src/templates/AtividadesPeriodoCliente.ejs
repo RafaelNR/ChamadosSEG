@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <title></title>
+</head>
+<style>
+  :root {
+    --cor-primaria: #2B5077;
+    --cor-secundaria: #929297;
+    --cor-teciaria: #FF7F00;
+    --cor-boder: #8CA0B6;
+  }
+
+  body {
+    font-size: 12px;
+    background-color: rgb(82, 86, 89);
+  }
+
+  h3{
+    color: #2B5077 !important;
+    text-align: center;
+  }
+
+  h5{
+    color: #2B5077 !important;
+    text-align: center;
+    margin-bottom: 20px !important;
+  }
+
+  .cliente {
+    height: 180px;
+  }
+
+  .cliente .border{
+    border: 1px solid #8CA0B6;
+    height: 140px;
+    border-radius: 0 0 5px 5px;
+  }
+
+  .cliente .title{
+    font-size: 20px;
+    padding-left: 30px !important;
+    color: white !important;
+    background: #2B5077 !important;
+    padding: 5px;
+    border-radius: 5px 5px 0 0;
+  }
+
+  .cliente .imagem{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+  }
+
+  .cliente .imagem img {
+    width: 115px;    
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cliente .dados {
+    display: grid;
+    padding: 10px 20px;
+    margin-top: 10px;
+  }
+
+  .cliente .dados>span {
+    display: block;
+  }
+
+  .tecnicos {
+    margin-top: 10px;
+    height: 100px;
+  }
+
+  .tecnicos .border{
+    border: 1px solid #8CA0B6;
+    height: 50px;
+    border-radius: 0 0 5px 5px;
+    padding: 10px;
+  }
+
+  .tecnicos .title{
+    font-size: 20px;
+    padding-left: 30px !important;
+    color: white !important;
+    background: #2B5077 !important;
+    padding: 5px;
+    border-radius: 5px 5px 0 0;
+  }
+
+  .tecnicos .imagem{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+  }
+
+  .tecnicos .imagem img {
+    width: 115px;    
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .tecnicos .dados {
+    display: grid;
+    padding: 10px 20px;
+    margin-top: 10px;
+  }
+
+  .tecnicos .dados>span {
+    display: block;
+  }
+
+  .infos{
+    margin-top: 5px;
+  }
+
+  .infos .title{
+    font-size: 20px;
+    padding-left: 30px !important;
+    color: white !important;
+    background: #2B5077 !important;
+    padding: 5px;
+    border-radius: 5px 5px 0 0;
+  }
+
+  .infos .border{
+    border: 1px solid #8CA0B6;
+    border-radius: 0 0 5px 5px;
+  }
+  table thead{
+    background: red !important;
+  }
+
+  table thead th{
+    text-align: center !important;
+  }
+</style>
+
+<body>
+  <div id="pageHeader"><img src="http://cisru.esy.es/include/img/header.jpg" /></div>
+
+  <div class="container">
+
+    <h3>Relatório de Serviços Técnico </h3>
+    <h5>Período: <%- Dados.mes %>/<%- Dados.ano %> </h5>
+
+    <div class="cliente">
+
+      <div class="title">
+        Dados do Cliente
+      </div>
+
+      <div class="border">
+        <div class="col-xs-3 imagem">
+          <img
+          src="https://lh3.googleusercontent.com/proxy/YQJWXCDCNP5tcwoNZO6hXwImmhDGCc6vHn5cmFW_9iv5wVmezxxr39o7qKpy--fCb7p0cm5-MFsC9Az09xh1jWEVQlpYQRcyw7pbLHBSumo8ahvMdaCdOnhCgGOR" />
+        </div>
+        <div class="col-xs-9 dados">
+          <span><strong>Nome Fantasia:</strong> <%- Dados.Cliente.nome_fantasia %></span>
+          <span><strong>CNPJ/CPF:</strong> <%- Dados.Cliente.cnpj_cpf %></span>
+          <span><strong>Nº Contrato:</strong> <%- Dados.Cliente.contrato %></span>
+          <span><strong>Representante:</strong> <%- Dados.Cliente.representante %></span>
+          <span><strong>Telefone:</strong> <%- Dados.Cliente.telefone %></span>
+          <span><strong>Email:</strong> <%- Dados.Cliente.email %></span>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="tecnicos">
+
+      <div class="title">
+        Técnicos 
+      </div>
+
+      <div class="border">
+
+        <% Dados.Tecnicos.map( tecnico => {%>
+
+          <div class="col-xs-6">
+            <span><strong>Técnico:</strong> <%- tecnico.nome %></span>
+          </div>
+
+        <% }) %>
+
+      </div>
+
+    </div>
+
+    <div class="infos">
+
+      <div class="title">
+        Atividades Realizadas
+      </div>
+
+      <div class="border">
+        <table class="table table-striped table-bordered">
+          <thead style="background-color: #8CA0B6 !important;">
+            <tr>
+              <th scope="col">Data</th>
+              <th scope="col">Técnico</th>
+              <th scope="col">Categoria</th>
+              <th scope="col">Descrição</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% Dados.Infos.map(info => {%>
+
+              <tr>
+                <th scope="row"><%- info.date_format %></th>
+                <td><%- info.tecnico %></td>
+                <td><%- info.categoria %></td>
+                <td><%- info.descricao %></td>
+              </tr>
+
+            <% }) %>
+
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  
+  <div id="pageFooter"><img src="http://cisru.esy.es/include/img/footer.jpg" /></div>
+</body>
+
+</html>

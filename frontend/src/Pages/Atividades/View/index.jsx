@@ -9,7 +9,7 @@ import {
 import InfosView from "./Infos";
 import { Atividade, AtividadeCliente } from "../../../Components/Box/Atividade";
 import Loading from '../../../Components/Loading'
-import { PDFIconAtividade } from '../../../Components/Buttons/pdf'
+import { PDFIconAtividade } from '../../../Components/Buttons/Pdf'
 
 //* CONTEXT
 import useSnackBar from "../../../Context/SnackBarContext";
