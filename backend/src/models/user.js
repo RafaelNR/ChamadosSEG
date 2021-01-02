@@ -135,9 +135,17 @@ module.exports = {
 	 */
 	countID: async (ID) => {
 		return await knex
-			.count("id as id")
-			.from("users")
-			.where("id", "=", ID)
-			.then((e) => e[0].id);
+						.count("id as id")
+						.from("users")
+						.where("id", "=", ID)
+						.then((e) => e[0].id);
 	},
+
+	getRole: async (ID) => {
+		return await knex
+						.count("role_id")
+						.from("users")
+						.where("id", "=", ID)
+						.then((e) => e[0].id);
+	}
 };

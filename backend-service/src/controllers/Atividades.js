@@ -11,7 +11,7 @@ class Atividades {
 		this.Cliente = null;
 		this.Mes = null;
 		this.Ano = null;
-		this.Type = null;
+		this.TypeView = null;
 		this.FileName = null;
 		this.Path = "/tmp/uploads/";
 		this.Link = `http://localhost:3001$${this.Path}`;
@@ -32,17 +32,17 @@ class Atividades {
 		};
 	}
 
-	async createPDF(req, res, next) {
+	async createPDF(req, res) {
 		try {
 			this.handleErrors(req.query);
 			
 			let Dados = await this.handleDados(req.query);
 
-			if (!Dados || Dados.length <= 0) throw new Error("Sem informações de atividades.");
+			if (!Dados || Dados.Infos.length <= 0) throw new Error("Sem informações de atividades.");
 
 			Dados.Infos = handleDataInfo(Dados.Infos);
 
-			const view = new View(this.Type, {
+			const view = new View(this.TypeView, {
 				...Dados,
 				data_inicial: dateFormat(this.DataInicial),
 				data_final: dateFormat(this.DataFinal),
@@ -73,7 +73,7 @@ class Atividades {
 
 			);
 		} catch (error) {
-			next(error);
+			return res.status(404).send(error.message);
 		}
 	}
 
@@ -92,7 +92,7 @@ class Atividades {
 
 
 		if (this.DataInicial && this.DataFinal && this.Tecnico) {
-			this.Type = 'DataTécnico';
+			this.TypeView = 'DataTécnico';
 			this.FileName = `${this.DataInicial}-${this.DataFinal}-${this.Tecnico}`;
 
 			return {
@@ -103,7 +103,7 @@ class Atividades {
 
 			
 		} else if (this.DataInicial && this.DataFinal && this.Cliente) {
-			this.Type = "DataCliente";
+			this.TypeView = "DataCliente";
 			this.FileName = `${this.DataInicial}-${this.DataFinal}-${this.Cliente}`;
 			return {
 				Infos,
@@ -112,7 +112,7 @@ class Atividades {
 			};
 			
 		} else if (this.Mes && this.Ano && this.Tecnico) {
-			this.Type = "PeríodoTécnico";
+			this.TypeView = "PeríodoTécnico";
 			this.FileName = `${this.Mes}-${this.Ano}-${this.Tecnico}`;
 			return {
 				Infos,
@@ -121,7 +121,7 @@ class Atividades {
 			};
 			
 		} else if (this.Mes && this.Ano && this.Cliente) {
-			this.Type = "PeríodoCliente";
+			this.TypeView = "PeríodoCliente";
 			this.FileName = `${this.Mes}-${this.Ano}-${this.Cliente}`;
 			return {
 				Infos,
@@ -179,7 +179,7 @@ class Atividades {
 		this.Cliente = null;
 		this.Mes = null;
 		this.Ano = null;
-		this.Type = null;
+		this.TypeView = null;
 		this.FileName = null;
 	}
 }

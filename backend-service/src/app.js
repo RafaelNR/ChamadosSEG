@@ -6,7 +6,7 @@ const Routes = require('./routes/index')
 
 const App = Express();
 
-App.use("/tmp", Access.Purchase, Express.static("tmp"));
+App.use("/tmp", Express.static("tmp"));
 App.use(Cors())
 App.use(Helmet());
 App.use(Access.Purchase);
@@ -22,11 +22,12 @@ App.use((req, res, next) => {
 
 // Erro genérico 
 App.use((error, req, res, next) => {
+	console.log(error)
 	res.status(404).json({
 		code: 404,
 		success: false,
 		message: error.message,
-    error: error.stack,
+    error: error.stack, //!! CONFIGURAR PARA APARECER SÓ EM DEV;
 	});
 	next();
 });

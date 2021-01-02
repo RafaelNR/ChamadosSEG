@@ -320,4 +320,18 @@ module.exports = {
 			})
 		);
 	},
+
+	PDFAtividades: (Dados) => {
+		return validate(
+			Dados,
+			Joi.object({
+				data_inicial: Joi.date().format("YYYY-MM-DD"),
+				data_final: Joi.date().format("YYYY-MM-DD"),
+				mes: Joi.number().integer().positive().min(1).max(12),
+				ano: Joi.number().integer().positive().min(2000).max(2030),
+				tecnico: Joi.number().integer().positive().min(1).max(999),
+				cliente: Joi.number().integer().positive().min(1).max(99),
+			})
+		);
+	}
 };

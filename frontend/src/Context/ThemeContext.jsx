@@ -11,16 +11,21 @@ const MythemeProvider = ({ children }) => {
   const theme = createMuiTheme({
     palette: {
       background: {
-        default: darkMode ? '#303030' : '#f0f0f0',
+        default: darkMode ? '#303030' : '#f0f0f0'
       },
       type: darkMode ? 'dark' : 'light',
       text: {
         title: darkMode ? 'white ' : '#3f51b5',
         info: darkMode ? 'rgba(255, 255, 255, 0.5)' : '#676767',
-        atividade: darkMode ? 'rgba(255, 255, 255, 0.5)' : '#676767',
+        atividade: darkMode ? 'rgba(255, 255, 255, 0.5)' : '#676767'
+      },
+      button: {
+        downloadpdf: '#3f51b5',
+        viewpdf: '#3949ab',
+        hover: '#7986cb'
       }
-    },
-  })
+    }
+  });
   
 
   return (

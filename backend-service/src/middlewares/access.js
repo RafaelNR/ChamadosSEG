@@ -4,8 +4,10 @@ class Access {
 
 	Purchase(req, res, next) {
 
-    const currToken = "rafael@access";
-    const Token = "rafael@access"; // req.headers.token
+		console.log(req.headers.authorization)
+
+    const currToken = "Bearer rafael@access";
+    const Token = req.headers.authorization;
 
 		if (Token === currToken) {
 			next();

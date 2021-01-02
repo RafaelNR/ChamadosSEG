@@ -15,6 +15,9 @@ import Usuarios from "../Pages/Usuarios/";
 import Modelos from "../Pages/Modelos";
 import Perfil from "../Pages/Perfil/";
 import Logs from "../Pages/Logs/";
+import Relatorios from '../Pages/Relatorios/';
+import RAtividades from '../Pages/Relatorios/Atividades';
+import RMyAtividades from '../Pages/Relatorios/Atividades/my';
 
 import useAuth from '../Context/AuthContext';
 import useUser from '../Hooks/useUser';
@@ -39,8 +42,11 @@ function Routes() {
 		<Main>
 			<Container maxWidth={false} className={classes.container}>
 				<Switch>
-					<Route exact path="/" component={Home} />
-					<Route path="/perfil" component={Perfil} />
+					<Route exact path="/" exact component={Home} />
+					<Route path="/perfil" exact component={Perfil} />
+
+					<Route path="/relatorios" exact component={Relatorios} />
+					<TecnicoRoute path="/relatorios/atividades/my" exact component={RMyAtividades} redirect="/relatorios/atividades" />
 
 					<Route path="/atividades" exact component={Atividades} />
 					<Route path="/atividades/create" exact component={AtividadesCreate} />
@@ -50,6 +56,8 @@ function Routes() {
 					<AnalistaRoute path="/categorias" exact component={Categorias} role_id={roleID} />
 					<AnalistaRoute path="/usuarios" exact component={Usuarios} role_id={roleID} />
 					<AnalistaRoute path="/logs" exact component={Logs} role_id={roleID} />
+					<AnalistaRoute path="/relatorios/atividades" exact component={RAtividades} role_id={roleID} />
+
 					<AdminRoute path="/clientes" exact component={Clientes} role_id={roleID} />
 					<AdminRoute path="/modelos" exact component={Modelos} role_id={roleID} />
 
@@ -82,6 +90,18 @@ const AnalistaRoute = (props) => {
 		{
 			role_id <= 2 ? <Route {...props} /> : <Redirect to='/' />
 		}
+		</>
+	)
+}
+
+
+const TecnicoRoute = (props) => {
+	const { role_id } = props;
+	return (
+		<>
+			{
+				role_id === 3 ? <Route {...props} /> : <Redirect to={props.redirect ? props.redirect : '/'} />
+			}
 		</>
 	)
 }

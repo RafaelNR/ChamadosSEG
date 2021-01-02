@@ -40,7 +40,7 @@ function dateMoreDays(date: string, Days: number): string {
 export {
   TodayDate,
   handleDateTime,
-   handleDateTimeFull,
+  handleDateTimeFull,
   handleDate,
   dateMoreDays,
   permissionEditAtividade,

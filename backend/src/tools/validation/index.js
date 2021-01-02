@@ -4,7 +4,7 @@ const type = {
 	number: {
 		id: Joi.number().integer().positive().required(),
 		role_id: Joi.number().integer().min(1).max(10).required(),
-		ano: Joi.number().integer().positive().min(2020).max(2030).required(),
+		ano: Joi.number().integer().positive().min(2000).max(2030).required(),
 		mes: Joi.number().integer().positive().min(1).max(12).required(),
 		dia: Joi.number().integer().positive().min(1).max(31).required(),
 		actived: Joi.number().integer().default(1),

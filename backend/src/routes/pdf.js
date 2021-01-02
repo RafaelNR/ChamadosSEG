@@ -1,34 +1,11 @@
 const Router = require("express").Router();
-const axios = require("axios").default;
-const Model = require("../models/atividades");
+const Controller = require('../controllers/pdf');
 
 
-Router.get("/atividade/:ticket", async (req, res) => {
-  try {  
-    const ticket = req.params.ticket;
-    if(!ticket) throw new Error('ticket não existe.')
+//! SE ROLE FOR IGUAL TECNICO, SÓ PODE TIRAR RELATÓRIO DELE OU DO SEUS CLIENTES;
 
-    if (Model.countAtividadeByTicket(ticket) <= 0) throw new Error('Ticket não existe.');
-
-		const Dados = await axios.get(
-			`http://localhost:3001/pdf/atividade/${ticket}`
-		);
-
-		if (Dados.data.success) {
-			return res.status(200).json(Dados.data);
-		}
-
-
-		throw new Error("Erro em gerar PDF.");
-
-	} catch (error) {
-		return res.send(error);
-	}
-});
-
-Router.get("/atividade", async (req, res) => {
-  res.send('Ativ');
-})
+Router.get("/atividade/:ticket", Controller.Atividade);
+Router.get("/atividades", Controller.Atividades);
 
 
 module.exports = Router;
