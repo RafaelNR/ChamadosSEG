@@ -29,7 +29,7 @@ const Main = ({ children }) => {
         <MenuProvider>
           <MyMenu />
           <HeaderPage />
-          <main className={classes.content}>{children}</main>
+            <main className={classes.content}>{children}</main>
           <SnackBar />
         </MenuProvider>
       </SnackBarProvider>

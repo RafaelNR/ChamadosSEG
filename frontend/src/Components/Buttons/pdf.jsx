@@ -13,8 +13,8 @@ import { CreatedPDF } from "../../Service/atividade.service";
 
 const useStyles = makeStyles((theme) => ({
   pdf: {
-    fontSize: "18px",
-    color: "blue",
+    fontSize: '18px',
+    color: theme.palette.button.pdf,
     marginRight: 20,
     width: 50,
     height: 50

@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "15px",
   },
   button: {
-    color: theme.palette.primary.dark,
+    color: theme.palette.button.accordion,
     marginTop: "5px",
   },
 }));

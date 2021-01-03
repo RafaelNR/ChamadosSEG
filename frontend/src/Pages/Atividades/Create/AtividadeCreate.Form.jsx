@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
     },
     "& > .title": {
       paddingBottom: "9px",
-      color: "#3f51b5 !important",
+      color: theme.palette.text.title,
     },
   },
   button: {

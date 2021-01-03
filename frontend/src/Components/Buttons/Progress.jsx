@@ -6,31 +6,31 @@ import CheckIcon from "@material-ui/icons/Check";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center'
   },
   wrapper: {
     margin: theme.spacing(1),
-    position: "relative",
+    position: 'relative'
   },
   buttonSuccess: {
-    backgroundColor: green[500],
-    "&:hover": {
-      backgroundColor: green[700],
+    backgroundColor: theme.palette.button.success,
+    '&:hover': {
+      backgroundColor: green[900]
     },
-    "&:disabled": {
-      backgroundColor: green[700],
-      color: "white",
-    },
+    '&:disabled': {
+      backgroundColor: '#123F15',
+      color: theme.palette.text.icon
+    }
   },
   buttonProgress: {
-    color: green[500],
-    position: "absolute",
-    top: "50%",
-    left: "50%",
+    color: theme.palette.button.success,
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
     marginTop: -12,
-    marginLeft: -12,
-  },
+    marginLeft: -12
+  }
 }));
 
 export default ({ children, handleSubmit, loading, success }) => {

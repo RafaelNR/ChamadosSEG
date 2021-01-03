@@ -12,24 +12,24 @@ import useDialog from "../../Context/DialogContext";
 
 const useStyles = makeStyles((theme) => ({
   add: {
-    fontSize: "25px",
-    color: "#3f51b5",
+    fontSize: '25px',
+    color: theme.palette.button.create
   },
   edit: {
-    fontSize: "18px",
-    color: "green",
+    fontSize: theme.size.button.common,
+    color: theme.palette.button.edit
   },
   delete: {
-    fontSize: "18px",
-    color: "red",
+    fontSize: theme.size.button.common,
+    color: theme.palette.button.delete
   },
   disabled: {
-    fontSize: "18px",
-    color: "red",
+    fontSize: theme.size.button.common,
+    color: theme.palette.button.delete
   },
   actived: {
-    fontSize: "18px",
-    color: "blue",
+    fontSize: theme.size.button.common,
+    color: theme.palette.button.active
   },
   pdf: {
     marginRight: 20,

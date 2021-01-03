@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		height: "250px",
 		borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
-		backgroundColor: "#3f51b5",
+		backgroundColor: theme.palette.primary.main,
 		color: "white",
 	},
 	span: {

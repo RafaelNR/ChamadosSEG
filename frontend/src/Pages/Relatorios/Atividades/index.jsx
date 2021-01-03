@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 const MyRadio = withStyles({
   root: {
     '&$checked': {
-      color: green[600]
+      color: '#f58634'
     }
   },
   checked: {}

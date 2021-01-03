@@ -9,8 +9,7 @@ import {
   MenuItem,
   FormHelperText,
 } from "@material-ui/core/";
-import { SaveSharp } from "@material-ui/icons";
-import Progress from "../../../Components/Buttons/Progress";
+import { SaveInfo } from '../../../Components/Buttons/Atividades';
 import { EditInfoAtividade } from "../../../Components/Buttons/Atividades";
 import Accordion from "../../../Components/Accordion/Accordion";
 
@@ -242,14 +241,11 @@ export default ({ ticket, atividadeID, newInfo }) => {
             </FormControl>
           </Grid>
           <Grid item style={{ padding: "0px" }} className={classes.buttons}>
-            <Progress
+            <SaveInfo
               handleSubmit={handleSubmit}
               loading={loading}
               success={success}
-            >
-              <SaveSharp />
-            </Progress>
-
+            />
             {success && <EditInfoAtividade handleEdit={handleEdit} />}
           </Grid>
         </Grid>

@@ -9,23 +9,23 @@ import Accordion from "../../../Components/Accordion/Accordion";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
-    margin: '20px 5px',    
+    margin: '20px 5px'
   },
   categoria: {
     '& .MuiTypography-h5': {
       fontSize: '15px',
-      color: '#676767',
+      color: theme.palette.text.atividade,
       fontWeight: 'bold',
-      paddingBottom: '5px',
-    },
+      paddingBottom: '5px'
+    }
   },
   descricao: {
     '& .MuiTypography-h5': {
       fontSize: '15px',
-      color: '#676767',
+      color: theme.palette.text.atividade,
       fontWeight: 'bold',
-      paddingBottom: '5px',
-    },
+      paddingBottom: '5px'
+    }
   }
 }));
 

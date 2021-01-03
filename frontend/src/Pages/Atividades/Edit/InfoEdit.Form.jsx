@@ -9,8 +9,7 @@ import {
   MenuItem,
   FormHelperText,
 } from "@material-ui/core/";
-import { SaveSharp } from "@material-ui/icons";
-import Progress from "../../../Components/Buttons/Progress";
+import { SaveInfo } from '../../../Components/Buttons/Atividades';
 import { EditInfoAtividade } from "../../../Components/Buttons/Atividades";
 import Accordion from "../../../Components/Accordion/Accordion";
 
@@ -155,7 +154,7 @@ export default ({ Info, ticket }) => {
               variant="outlined"
               className={classes.formControl}
               disabled={success}
-              error={errors["categorias_id"] ? true : false}
+              error={errors['categorias_id'] ? true : false}
             >
               <InputLabel id="categoria">Categorias *</InputLabel>
               <Select
@@ -166,8 +165,8 @@ export default ({ Info, ticket }) => {
                 autoFocus
                 onChange={handleInfo}
                 value={Info.categoria_id}
-                error={errors["categoria_id"] ? true : false}
-                helperText={errors["categoria_id"]}
+                error={errors['categoria_id'] ? true : false}
+                helperText={errors['categoria_id']}
                 required
               >
                 {categorias &&
@@ -179,7 +178,7 @@ export default ({ Info, ticket }) => {
                     );
                   })}
               </Select>
-              <FormHelperText>{errors["categoria_id"]}</FormHelperText>
+              <FormHelperText>{errors['categoria_id']}</FormHelperText>
             </FormControl>
           </Grid>
           <Grid item className={classes.input}>
@@ -187,7 +186,7 @@ export default ({ Info, ticket }) => {
               variant="outlined"
               className={classes.info}
               disabled={success}
-              error={errors["info"] ? true : false}
+              error={errors['info'] ? true : false}
             >
               <TextField
                 id="descricao"
@@ -197,22 +196,19 @@ export default ({ Info, ticket }) => {
                 variant="outlined"
                 onChange={handleInfo}
                 value={info.descricao}
-                error={errors["descricao"] ? true : false}
-                helperText={errors["descricao"]}
+                error={errors['descricao'] ? true : false}
+                helperText={errors['descricao']}
                 required
                 disabled={success}
               />
             </FormControl>
           </Grid>
-          <Grid item style={{ padding: "0px" }} className={classes.buttons}>
-            <Progress
+          <Grid item style={{ padding: '0px' }} className={classes.buttons}>
+            <SaveInfo
               handleSubmit={handleSubmit}
               loading={loading}
               success={success}
-            >
-              <SaveSharp />
-            </Progress>
-
+            />
             {success && <EditInfoAtividade handleEdit={handleEdit} />}
           </Grid>
         </Grid>

@@ -9,53 +9,47 @@ import {
 
 const useStyles = makeStyles((theme) => ({
   cancel: {
-    backgroundColor: "white",
-    color: "#b71c1c",
-    padding: "8px 15px",
-    border: "1px solid #b71c1c",
-    fontWeight: "bold",
-    "&:hover": {
-      transition: "",
-      color: "white",
-      backgroundColor: "#b71c1c",
-    },
+    backgroundColor: 'transparent',
+    color: '#b71c1c',
+    padding: '8px 15px',
+    border: '1px solid #b71c1c',
+    fontWeight: 'bold',
+    '&:hover': {
+      transition: '',
+      color: 'white',
+      backgroundColor: '#b71c1c'
+    }
   },
   save: {
-    backgroundColor: "#1b5e20",
-    color: "white",
-    padding: "8px 15px",
-    marginRight: "8px",
-    "&:hover": {
-      transition: "",
-      backgroundColor: "#124116",
-    },
+    backgroundColor: theme.palette.button.success,
+    color: 'white',
+    padding: '8px 15px',
+    marginRight: '8px',
+    '&:hover': {
+      transition: '',
+      backgroundColor: '#124116'
+    }
   },
   next: {
-    backgroundColor: "blue",
-    color: "white",
-    padding: "8px 15px",
-    marginRight: "8px",
-    fontWeight: "bold",
-    "&:hover": {
-      transition: "",
-      backgroundColor: "blue",
-    },
+    backgroundColor: theme.palette.primary.main,
+    color: 'white',
+    padding: '8px 15px',
+    marginRight: '8px',
+    fontWeight: 'bold',
+    '&:hover': {
+      backgroundColor: theme.palette.primary.dark
+    }
   },
   icon: {
-    fontSize: "20px",
-  },
+    fontSize: '20px'
+  }
 }));
 
 const SaveButton = React.memo(({ disabled }) => {
   const classes = useStyles();
   return (
-    <Button
-      type="submit"
-      className={classes.save}
-      disabled={disabled}
-      startIcon={<Save className={classes.icon} />}
-    >
-      SALVAR
+    <Button type="submit" className={classes.save} disabled={disabled}>
+      <Save className={classes.icon} />
     </Button>
   );
 });
@@ -78,12 +72,8 @@ const CancelButton = React.memo(({ clickClose }) => {
   const classes = useStyles();
   return (
     <DialogActions>
-      <Button
-        className={classes.cancel}
-        onClick={clickClose}
-        startIcon={<Close className={classes.icon} />}
-      >
-        CANCELAR
+      <Button className={classes.cancel} onClick={clickClose}>
+        <Close className={classes.icon} />
       </Button>
     </DialogActions>
   );

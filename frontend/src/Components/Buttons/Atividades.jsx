@@ -1,12 +1,20 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { makeStyles, Button } from "@material-ui/core/";
-import { Edit, VisibilitySharp, AddBoxSharp } from "@material-ui/icons/";
+import { Edit, VisibilitySharp, AddBoxSharp, SaveSharp } from "@material-ui/icons/";
+import Progress from "./Progress";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
-    fontSize: "20px",
+    fontSize: '20px',
+    color: theme.palette.button.create
   },
+  edit: {
+    color: theme.palette.text.icon,
+  },
+  save: {
+    color: theme.palette.text.icon
+  }
 }));
 
 const View = React.memo(({ ticket }) => {
@@ -43,9 +51,11 @@ const EditTicket = React.memo(({ ticket }) => {
 });
 
 const EditInfoAtividade = React.memo(({ handleEdit }) => {
+  const classes = useStyles();
   return (
     <Button
       variant="contained"
+      className={classes.edit}
       color="primary"
       onClick={(event) => handleEdit(event)}
     >
@@ -54,4 +64,18 @@ const EditInfoAtividade = React.memo(({ handleEdit }) => {
   );
 });
 
-export { View, CreatedTicket, EditTicket, EditInfoAtividade };
+
+const SaveInfo = React.memo(({ handleSubmit, loading, success }) => {
+  const classes = useStyles();
+  return (
+    <Progress
+      handleSubmit={handleSubmit}
+      loading={loading}
+      success={success}
+    >
+      <SaveSharp className={classes.save} />
+    </Progress>
+  );
+});
+
+export { View, CreatedTicket, EditTicket, EditInfoAtividade, SaveInfo };

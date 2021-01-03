@@ -7,34 +7,35 @@ import { handleDateTime, handleDate } from "../../Utils/dates";
 
 const useStyles = makeStyles((theme) => ({
   gridCliente: {
-    width: "600px",
-    height: "160px",
+    width: '600px',
+    height: '160px'
   },
   notCliente: {
-    height: "100px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    color: "#aaa !important",
+    height: '100px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: '#aaa !important'
   },
   paperCliente: {
-    padding: "15px 28px",
-    border: "1px solid #d9d9d9",
-    margin: "10px",
-    "& > p": {
-      fontWeight: "bold",
-      fontSize: "14px",
+    padding: '15px 28px',
+    border: `1px solid ${theme.palette.border.infos}`,
+    margin: '10px',
+    '& > p': {
+      fontWeight: 'bold',
+      fontSize: '14px',
       color: theme.palette.text.atividade,
-      "& > span": {
-        fontSize: "13px",
-        fontWeight: "normal",
-      },
+      '& > span': {
+        fontSize: '13px',
+        fontWeight: 'normal',
+        color: theme.palette.text.common
+      }
     },
-    "& > .title": {
-      paddingBottom: "9px",
-      color: "#3f51b5 !important",
-    },
-  },
+    '& > .title': {
+      paddingBottom: '9px',
+      color: theme.palette.text.subtitle
+    }
+  }
 }));
 
 const AtividadeClientes = ({ Atividade, Clientes }) => {
@@ -42,7 +43,7 @@ const AtividadeClientes = ({ Atividade, Clientes }) => {
   return (
     <Grid item md={6} className={classes.gridCliente}>
       <Paper className={classes.paperCliente}>
-        <Typography className="title">Informações do cliente</Typography>
+        <Typography className="title">Cliente</Typography>
         {Atividade && Atividade.cliente_id ? (
           Clientes.map((cliente) => {
             return cliente.id === Atividade.cliente_id &&
@@ -81,7 +82,7 @@ const AtividadeCliente = ({ Cliente }) => {
   return (
     <Grid item md={6} xl={12} className={classes.gridCliente}>
       <Paper className={classes.paperCliente}>
-        <Typography className="title">Informações do Cliente</Typography>
+        <Typography className="title">Cliente</Typography>
         <Typography display="block" className={classes.cliente}>
           Razão Social: <span>{Cliente.razao_social}</span>
         </Typography>
@@ -107,7 +108,7 @@ const Atividade = ({ Atividade }) => {
   return (
     <Grid item md={6} className={classes.gridCliente}>
       <Paper className={classes.paperCliente}>
-        <Typography className="title">Informações da atividade</Typography>
+        <Typography className="title">Atividade</Typography>
         {Atividade && Atividade.ticket ? (
           <>
             { Atividade.date 

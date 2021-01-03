@@ -9,7 +9,7 @@ import {
 import InfosView from "./Infos";
 import { Atividade, AtividadeCliente } from "../../../Components/Box/Atividade";
 import Loading from '../../../Components/Loading'
-import { PDFIconAtividade } from '../../../Components/Buttons/Pdf'
+import { PDFIconAtividade } from '../../../Components/Buttons/pdf'
 
 //* CONTEXT
 import useSnackBar from "../../../Context/SnackBarContext";
@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     marginTop: "-6rem",
     height: 300,
+  },
+  header: {
+    paddingTop: 5,
   },
   title: {
     fontSize: "20px",
@@ -75,7 +78,7 @@ export default () => {
   return (
     <>
       <Paper className={classes.root}>
-        <Grid container>
+        <Grid container className={classes.header}>
           <Grid item md={6}>
             <Typography className={classes.title}>
               Dados da Atividade
@@ -86,9 +89,9 @@ export default () => {
           </Grid>
         </Grid>
         {loading ? (
-          <Loading type='Paper' />
+          <Loading type="Paper" />
         ) : (
-            <Grid container md={12} spacing={2}>
+          <Grid container md={12} spacing={2}>
             <Atividade Atividade={atividade} />
             <AtividadeCliente Cliente={cliente} />
           </Grid>
@@ -96,7 +99,7 @@ export default () => {
       </Paper>
       <>
         <InfosView infos={atividade.infos} ticket={atividade.ticket} />
-      </> 
+      </>
     </>
   );
 }

@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     width: 200,
     height: 230,
-    border: "1px solid #ddd",
+    border: `1px solid ${theme.palette.border.infos}`,
     marginTop: "10px",
     overflow: "auto",
   },
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     fontSize: "18px",
     fontWeight: "bold",
-    color: "darkblue",
+    color: theme.palette.text.subtitle,
   },
 }));
 
