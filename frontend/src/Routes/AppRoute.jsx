@@ -42,7 +42,7 @@ function Routes() {
 		<Main>
 			<Container maxWidth={false} className={classes.container}>
 				<Switch>
-					<Route exact path="/" exact component={Home} />
+					<Route path="/" exact component={Home} />
 					<Route path="/perfil" exact component={Perfil} />
 
 					<Route path="/relatorios" exact component={Relatorios} />

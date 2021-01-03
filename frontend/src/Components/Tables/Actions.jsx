@@ -40,7 +40,7 @@ const Actions = (props) => {
           );
 
         default:
-          break;
+          return;
       }
     });
   };

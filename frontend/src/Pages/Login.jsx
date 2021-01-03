@@ -83,7 +83,7 @@ export default function SignInSide() {
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} elevation={6} square className={classes.gridLogin}>
         <div className={classes.paper}>
-          <img className={classes.avatar} src='/static/logo.png' title="Logo"/>
+          <img className={classes.avatar} src='/static/logo.png' title="Logo" alt="logo" />
           { errors.message && !errors.success && <Alert type="error" title='Erro!' message={errors.message} /> }
           <form
             className={classes.form}

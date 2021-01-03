@@ -7,7 +7,6 @@ import {
   VisibilityOffSharp,
   VisibilitySharp,
   DeleteForeverSharp,
-  PictureAsPdfSharp
 } from "@material-ui/icons";
 import useDialog from "../../Context/DialogContext";
 

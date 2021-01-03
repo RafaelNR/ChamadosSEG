@@ -189,7 +189,7 @@ export default () => {
           : 'Erro gerar PDF.'
       });
     }
-  }, [values]);
+  }, [values,handleSnackBar,setDownload,setErrors,type]);
 
 
 

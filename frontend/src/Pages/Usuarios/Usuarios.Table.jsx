@@ -6,7 +6,6 @@ import {
   TableCell,
   TableContainer,
   TableRow,
-  Avatar,
 } from "@material-ui/core/";
 
 //* COMPONENTES
@@ -105,6 +104,7 @@ export default function () {
 
   useEffect(() => {
     const results = usuarios.filter((usuario) => {
+      //array-callback-return
       const nome = usuario.nome.toLowerCase();
       const user = usuario.user.toLowerCase();
 

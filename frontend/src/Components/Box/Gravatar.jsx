@@ -1,9 +1,6 @@
 import React from 'react';
 import {
   Avatar,
-  Box,
-  Divider,
-  Typography,
 } from '@material-ui/core';
 
 import useUser from "../../Hooks/useUser";

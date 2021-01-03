@@ -8,7 +8,6 @@ import {
   Drawer,
   Divider,
   IconButton,
-  Typography,
 } from "@material-ui/core";
 import ListItensMenu from "../Components/Menu/ItensMenu";
 import HeaderMenu from '../Components/Header/Drawer';

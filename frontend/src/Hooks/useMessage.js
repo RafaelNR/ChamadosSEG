@@ -14,21 +14,21 @@ const useMessage = () => {
     return setMessage(msg);
   }
 
-  const handleError = useCallback((msg) => {
-    console.log(msg)
-    if(msg.code && msg.code === 'ECONNREFUSED'){
-      setMessage('Erro em se conectar com banco de dados.');
-      return history.replace('/');
-    }
+  const handleError = useCallback(
+    (msg) => {
+      console.log(msg);
+      if (msg.code && msg.code === 'ECONNREFUSED') {
+        setMessage('Erro em se conectar com banco de dados.');
+        return history.replace('/');
+      } else if (msg.message) {
+        console.log('msg.message');
+        return setMessage(msg.message);
+      }
 
-    else if (msg.message) {
-      console.log('msg.message')
-      return setMessage(msg.message)
-    }
-
-    return setMessage(msg);
-
-  },[setMessage])
+      return setMessage(msg);
+    },
+    [setMessage, history]
+  );
 
 
   function handleSuccess(){
@@ -39,6 +39,7 @@ const useMessage = () => {
     message,
     setMessage,
     handleMessage,
+    handleSuccess
   };
 };
 

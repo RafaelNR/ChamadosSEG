@@ -21,7 +21,7 @@ export default () => {
       setdarkMode(mode)
     }
     
-  }, [])
+  }, [darkMode, getData, setData, setdarkMode])
 
   function changeDarkMode(event) {
     setdarkMode(!darkMode)

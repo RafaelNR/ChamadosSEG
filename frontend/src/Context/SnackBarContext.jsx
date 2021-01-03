@@ -13,11 +13,14 @@ const SnackBarProvider = ({ children }) => {
     setOpenSnackBar(!openSnackBar);
   }, [openSnackBar]);
 
-  const handleSnackBar = useCallback(({ type, message }) => {
-    handleMessage(type,message);
-    setSeverity(type);
-    setOpenSnackBar(true);
-  }, [setMessage,setSeverity,setOpenSnackBar]);
+  const handleSnackBar = useCallback(
+    ({ type, message }) => {
+      handleMessage(type, message);
+      setSeverity(type);
+      setOpenSnackBar(true);
+    },
+    [setSeverity, setOpenSnackBar, handleMessage]
+  );
 
   return (
     <SnackBarContext.Provider

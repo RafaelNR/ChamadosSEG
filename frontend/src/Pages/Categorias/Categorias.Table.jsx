@@ -109,6 +109,7 @@ export default function () {
    */
   useEffect(() => {
     const results = categorias.filter((categoria) => {
+      // array-callback-return
       const nome = categoria.nome.toLowerCase();
       if (nome.includes(search.toLowerCase())) {
         return categoria;
