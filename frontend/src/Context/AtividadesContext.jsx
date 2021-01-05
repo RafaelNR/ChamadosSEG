@@ -21,31 +21,30 @@ const AtividadesProvider = ({ children }) => {
 
   useEffect(() => {
     async function init() {
-      try {
-        const resp =
-          roleID <= 2
-            ? await Api.get('atividades')
-            : await Api.get('atividades/user');
-        const { success, data } = resp.data;
-        if (!success) throw resp.data;
-        setLoading(false);
-        return setAtividades(data);
-      } catch (error) {
-        console.log(error);
-        setLoading(false);
-        return handleSnackBar({
-          type: 'error',
-          message: error.message
-            ? error.message
-            : 'Erro em carregar atividades. Por favor tente mais tarde.'
-        });
+      if (roleID) {
+        try {
+          const URL = roleID <= 2 ? 'atividades' : 'atividades/clientes';
+          const resp = await Api.get(URL);
+          const { success, data } = resp.data;
+          if (!success) throw resp.data;
+          setLoading(false);
+          return setAtividades(data);
+        } catch (error) {
+          console.log(error);
+          setLoading(false);
+          return handleSnackBar({
+            type: 'error',
+            message: error.message
+              ? error.message
+              : 'Erro em carregar atividades. Por favor tente mais tarde.'
+          });
+        }
       }
     }
 
     init();
 
     return function cleanup() {
-      console.log('unmounted component');
       Api.default.source();
     };
   }, [handleSnackBar, setLoading, roleID]);

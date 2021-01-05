@@ -22,17 +22,6 @@ const defaultMenu = [
     icon: <AssignmentSharp />,
     path: "/atividades",
   },
-  // {
-  // 	nome: "Tarefa",
-  // 	icon: <LibraryBooksSharp />,
-  // 	path: "/tarefas",
-  // },
-  {
-    nome: "Relatórios",
-    icon: <InsertChartSharp />,
-    path: "/relatorios",
-    permission: 2
-  },
   {
     nome: "Perfil",
     path: "/perfil",
@@ -47,8 +36,21 @@ const defaultMenu = [
   },
 ];
 
+const tecnicoMenu = [
+  {
+    nome: "Relatórios",
+    icon: <InsertChartSharp />,
+    path: "/relatorios/atividades/my",
+  },
+];
+
 
 const analistaMenu = [
+  {
+    nome: 'Relatórios',
+    icon: <InsertChartSharp />,
+    path: '/relatorios/atividades/'
+  },
   {
     nome: 'Categorias',
     icon: <CategorySharp />,
@@ -84,4 +86,4 @@ const adminMenu = [
   // },
 ];
 
-export { adminMenu, analistaMenu, defaultMenu };
+export { adminMenu, analistaMenu, tecnicoMenu, defaultMenu };

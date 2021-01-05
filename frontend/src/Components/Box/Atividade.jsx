@@ -80,7 +80,7 @@ const AtividadeClientes = ({ Atividade, Clientes }) => {
 const AtividadeCliente = ({ Cliente }) => {
   const classes = useStyles();
   return (
-    <Grid item md={6} xl={12} className={classes.gridCliente}>
+    <Grid item md={6} xl={6} className={classes.gridCliente}>
       <Paper className={classes.paperCliente}>
         <Typography className="title">Cliente</Typography>
         <Typography display="block" className={classes.cliente}>
@@ -106,7 +106,7 @@ const AtividadeCliente = ({ Cliente }) => {
 const Atividade = ({ Atividade }) => {
   const classes = useStyles();
   return (
-    <Grid item md={6} className={classes.gridCliente}>
+    <Grid item md={6} xl={6} className={classes.gridCliente}>
       <Paper className={classes.paperCliente}>
         <Typography className="title">Atividade</Typography>
         {Atividade && Atividade.ticket ? (

@@ -89,6 +89,32 @@ module.exports = {
 			.limit(60);
 	},
 
+	findAllByClientes: async (user_id) => {
+
+		return await knex
+			.select(
+				"a.id",
+				"a.ticket",
+				"a.date",
+				"c.nome_fantasia as cliente",
+				"u.nome as técnico",
+				"a.created_at",
+				"a.updated_at"
+			)
+			.from("atividades as a")
+			.leftJoin("users as u", "u.id", "=", "a.user_id")
+			.leftJoin("clientes as c", "c.id", "=", "a.cliente_id")
+			.whereIn("a.cliente_id", function () {
+				this.select("cliente_id")
+					.from("cliente_has_user as chu")
+					.where("chu.user_id", "=", user_id);
+			})
+			.orderBy("a.id", "desc")
+			.orderBy("a.date", "desc")
+			.limit(60);
+
+	},
+
 	findByUser_id: async (user_id) => {
 		return await knex
 			.select(

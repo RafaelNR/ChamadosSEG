@@ -77,8 +77,20 @@ export default () => {
     init();
   }, [handleSnackBar, history, ticket]);
 
+
+  const scroll = () => {
+    console.log('acroll');
+    window.scrollTo({
+      top: document.documentElement.scrollTop + 200,
+      behavior: 'smooth',
+      duration: 5000
+    });
+  }; 
+  
+
   function incrementInfos() {
     setInfos((_) => infos + 1);
+    scroll();
   }
 
   let rows = [];

@@ -27,8 +27,18 @@ export default () => {
   const [ticket, setTicket] = React.useState(null);
   const [infos, setInfos] = React.useState(0);
 
+  const scroll = () => {
+    console.log('acroll')
+    window.scrollTo({
+      top: document.documentElement.scrollTop + 200,
+      behavior: 'smooth',
+      duration: 5000
+    });
+  }; 
+
   const incrementInfos = React.useCallback(() => {
     setInfos((_) => infos + 1);
+    scroll();
   }, [infos]);
 
   let rows = [];

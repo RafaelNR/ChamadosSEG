@@ -54,7 +54,6 @@ export default () => {
 
       try {
         const Dados = await getAtividade(ticket);
-        console.log(Dados)
         setAtividade(Dados);
         const Cliente = await getCliente(Dados.cliente_id);
         setCliente(Cliente.data);

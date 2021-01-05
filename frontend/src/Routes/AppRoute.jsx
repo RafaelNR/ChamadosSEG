@@ -46,12 +46,13 @@ function Routes() {
 					<Route path="/perfil" exact component={Perfil} />
 
 					<Route path="/relatorios" exact component={Relatorios} />
-					<TecnicoRoute path="/relatorios/atividades/my" exact component={RMyAtividades} redirect="/relatorios/atividades" />
 
 					<Route path="/atividades" exact component={Atividades} />
 					<Route path="/atividades/create" exact component={AtividadesCreate} />
 					<Route path="/atividades/edit/:ticket" component={AtividadesEdit} />
 					<Route path="/atividades/view/:ticket" component={AtividadesView} />
+
+					<TecnicoRoute path="/relatorios/atividades/my" exact component={RMyAtividades} role_id={roleID} redirect="/relatorios/atividades" />
 
 					<AnalistaRoute path="/categorias" exact component={Categorias} role_id={roleID} />
 					<AnalistaRoute path="/usuarios" exact component={Usuarios} role_id={roleID} />
@@ -98,12 +99,18 @@ const AnalistaRoute = (props) => {
 const TecnicoRoute = (props) => {
 	const { role_id } = props;
 	return (
-		<>
-			{
-				role_id === 3 ? <Route {...props} /> : <Redirect to={props.redirect ? props.redirect : '/'} />
-			}
-		</>
-	)
+    <>
+      {role_id ? (
+        role_id === 3 ? (
+          <Route {...props} />
+        ) : (
+          <Redirect to={props.redirect ? props.redirect : '/'} />
+        )
+      ) : (
+        <Redirect to="/" />
+      )}
+    </>
+  );
 }
 
 

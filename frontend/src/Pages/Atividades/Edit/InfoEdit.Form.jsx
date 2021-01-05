@@ -13,7 +13,7 @@ import { SaveInfo } from '../../../Components/Buttons/Atividades';
 import { EditInfoAtividade } from "../../../Components/Buttons/Atividades";
 import Accordion from "../../../Components/Accordion/Accordion";
 
-//* Service
+//* SERVICE
 import { UpdateInfo } from "../../../Service/atividade.service";
 
 //* CONTEXT
@@ -112,7 +112,6 @@ export default ({ Info, ticket }) => {
               setLoading(false);
               return setErrors(Dados.errors);
             }
-
             setSuccess(true);
             setLoading(false);
             setInfo({

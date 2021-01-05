@@ -17,20 +17,24 @@ const Atividade = async (req,res) => {
 		if (Model.countAtividadeByTicket(ticket) <= 0)
 			throw new Error("Ticket não existe.");
 
-		const Dados = await axios.get(
-			`http://localhost:3001/pdf/atividade/${ticket}`
+		const resp = await axios.get(
+			`http://localhost:3001/pdf/atividade/${ticket}`,
+			{
+				headers: { Authorization: `Bearer rafael@access` },
+			}
 		);
 
-		if (Dados.data.success) {
-			return Result.ok(200, Dados.data);
+		if (resp.data.success) {
+			return res.status(200).json(resp.data);
 		}
 
 		throw new Error("Erro em gerar PDF.");
 	} catch (error) {
-		Result.fail(400, error);
+		Result.fail(400, error.response && error.response.data ? error.response.data : error);
 	}
 
 	Result.registerLog(req.userId, "PDF", "Atividade");
+	console.log(Result.res)
 	return res.status(Result.status).json(Result.res);
 };
 

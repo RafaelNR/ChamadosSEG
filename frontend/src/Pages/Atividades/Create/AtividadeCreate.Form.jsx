@@ -151,7 +151,6 @@ export default ({ setTicket, setAtividadeID, newInfo }) => {
             setTicket(Dados.ticket);
             setAtividadeID(Dados.id);
             newInfo();
-            window.scrollTo({ top: 60000, behavior: "smooth" });
             return setErrors([]);
           })
           .catch((error) => {

@@ -7,6 +7,7 @@ const Permission = require("../middlewares/permission");
 Router.get("/", Permission.admin, Controller.index);
 Router.get("/user", Controller.findAllByMy);
 Router.get("/user/:user_id", Controller.findAllByUser);
+Router.get("/clientes", Controller.findAllByClientes);
 Router.get("/cliente/:cliente_id", Controller.findAllByCliente);
 Router.get("/:id", Controller.findOne);
 Router.get("/ticket/:ticket", Controller.findOneByTicket);

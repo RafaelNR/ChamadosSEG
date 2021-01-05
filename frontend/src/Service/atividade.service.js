@@ -83,13 +83,15 @@ export const UpdateInfo = async (data) => {
   }
 };
 
-export const CreatedPDF = async (ticket) => {
+export const AtividadePDF = async (ticket) => {
   try {
 
     const url = `/pdf/atividade/${ticket}`;
+    console.log(url)
     const Dados = await Service.exec('get', url);
 
     console.log(Dados)
+
     if (Dados.data.success) {
       return Dados.data
     }

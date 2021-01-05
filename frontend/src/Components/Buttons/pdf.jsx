@@ -9,7 +9,7 @@ import {
 import useSnackBar from "../../Context/SnackBarContext";
 
 //* SERVICE
-import { CreatedPDF } from "../../Service/atividade.service";
+import { AtividadePDF } from "../../Service/atividade.service";
 
 const useStyles = makeStyles((theme) => ({
   pdf: {
@@ -30,8 +30,10 @@ const PDFIconAtividade = ({ ticket }) => {
   const [loading, setLoading] = React.useState(false);
 
   const handleClick = async (e) => {
+    console.log('click')
     setLoading(true);
-    await CreatedPDF(ticket).then(resp => {
+    await AtividadePDF(ticket).then(resp => {
+      console.log(resp)
       window.open(resp.link, '_blank');
       setLink(resp.link);
       setLoading(false);

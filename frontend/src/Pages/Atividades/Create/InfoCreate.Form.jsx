@@ -108,10 +108,6 @@ export default ({ ticket, atividadeID, newInfo }) => {
           ...Dados,
         });
         newInfo();
-        window.scrollTo({
-          top: document.documentElement.scrollTop + 200,
-          behavior: "smooth",
-        });
         return setErrors([]);
       })
       .catch((err) => {
@@ -192,7 +188,6 @@ export default ({ ticket, atividadeID, newInfo }) => {
             >
               <InputLabel id="categoria">Categorias *</InputLabel>
               <Select
-                autoFocus
                 labelId="categoria_id"
                 id="categoria_id"
                 name="categoria_id"

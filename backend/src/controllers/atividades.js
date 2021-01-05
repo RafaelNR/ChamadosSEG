@@ -23,8 +23,8 @@ const index = async (req, res) => {
 };
 
 const findAllByMy = async (req, res) => {
-	const user_id = Validate.UserID(req.userId);
 	try {
+		const user_id = Validate.UserID(req.userId);
 		const Dados = await Model.findByUser_id(user_id);
 		Result.ok(200,Dados);
 	} catch (error) {
@@ -48,6 +48,19 @@ const findAllByUser = async (req, res) => {
 	}
 
 	Result.registerLog(req.userId, "atividades", "findAllByUser");
+	return res.status(Result.status).json(Result.res);
+};
+
+const findAllByClientes = async (req,res) => {
+	try {
+		const user_id = Validate.UserID(req.userId);
+		const Dados = await Model.findAllByClientes(user_id);
+		Result.ok(200, Dados);
+	} catch (error) {
+		Result.fail(400, error);
+	}
+
+	Result.registerLog(req.userId, "atividades", "findAllByClientes");
 	return res.status(Result.status).json(Result.res);
 };
 
@@ -122,7 +135,7 @@ const update = async (req, res) => {
 		const Dados = await tools.handlingUpdate(req.body);
 		await Model.update(Dados)
 
-		Result.ok(204);
+		Result.ok(200, { success: true });
 	} catch (error) {
 		Result.fail(400,error);
 	}
@@ -261,6 +274,7 @@ module.exports = {
 	findAllByMy,
 	findAllByUser,
 	findAllByCliente,
+	findAllByClientes,
 	findOne,
 	findOneByTicket,
 	update,

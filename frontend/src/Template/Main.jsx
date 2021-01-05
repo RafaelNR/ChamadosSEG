@@ -1,13 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import MyMenu from "./Menu";
+import AppBar from './AppBar';
+import Drawer from './Drawer';
 import HeaderPage from "../Components/Header";
 import SnackBar from "../Components/SnackBar";
 
 import { SnackBarProvider } from "../Context/SnackBarContext";
 import { MenuProvider } from "../Context/MenuContext";
 import { MythemeProvider } from '../Context/ThemeContext';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -27,9 +29,10 @@ const Main = ({ children }) => {
     <MythemeProvider>
       <SnackBarProvider>
         <MenuProvider>
-          <MyMenu />
+          <AppBar />
+          <Drawer />
           <HeaderPage />
-            <main className={classes.content}>{children}</main>
+          <main className={classes.content}>{children}</main>
           <SnackBar />
         </MenuProvider>
       </SnackBarProvider>

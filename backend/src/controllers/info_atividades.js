@@ -27,7 +27,7 @@ const update = async (req, res) => {
 		const Dados = await tools.handlingUpdate({ user_id: req.userId, ...req.body });
 		await Model.update(Dados);
 		
-		Result.ok(204, Dados);
+		Result.ok(200, true);
 	} catch (error) {
 		Result.fail(400,error);
 	}
