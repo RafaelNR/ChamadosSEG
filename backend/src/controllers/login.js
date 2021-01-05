@@ -1,8 +1,6 @@
 const jwt = require("jsonwebtoken");
-const config = require("dotenv").config().parsed;
-
-const Model = require("../models/login"); /* Model */
-const Validation = require("../tools/validation/schemas"); /* Validation */
+const Model = require("../models/login");
+const Validation = require("../tools/validation/schemas");
 const { Compare } = require("../tools/bcryp");
 const Result =  require('../tools/result');
 
@@ -16,7 +14,7 @@ module.exports = async (req, res) => {
 
 		// tem token no header do login
 		if (token && token !== "undefined" && token !== "null") {
-			jwt.verify(token, config.SECRET, async function (err, decoded) {
+			jwt.verify(token, process.env.SECRET, async function (err, decoded) {
 				if (err) {
 					return res.status(401).json(Result.auth(false,"Autenticação expirou ou não é mais valida."));
 				} else {
@@ -41,10 +39,14 @@ module.exports = async (req, res) => {
 			!Compare(bodyUser.passwd, dbUser.passwd)) 
 			throw "Usuário ou Senha são inválidos.";
 
-		const newToken = jwt.sign({ id: dbUser.id /* Playload */ }, config.SECRET, {
-			//expiresIn: process.env.NODE_ENV === 'dev' ? null : 300,
-			// expiresIn: 60,
-		});
+		const newToken = jwt.sign(
+			{ id: dbUser.id /* Playload */ },
+			process.env.SECRET,
+			{
+				//expiresIn: process.env.NODE_ENV === 'dev' ? null : 300,
+				// expiresIn: 60,
+			}
+		);
 
 		Result.ok(200,{
 			auth: true,

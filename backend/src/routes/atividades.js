@@ -3,19 +3,16 @@ const Controller = require("../controllers/atividades");
 const InfosController =  require("../controllers/info_atividades")
 const Permission = require("../middlewares/permission");
 
-
 Router.get("/", Permission.admin, Controller.index);
 Router.get("/user", Controller.findAllByMy);
 Router.get("/user/:user_id", Controller.findAllByUser);
+
 Router.get("/clientes", Controller.findAllByClientes);
 Router.get("/cliente/:cliente_id", Controller.findAllByCliente);
-Router.get("/:id", Controller.findOne);
-Router.get("/ticket/:ticket", Controller.findOneByTicket);
 
-// Router.get(
-// 	["/user/:userID/:data", "/client/:clientID/:data"],
-// 	Controller.findOne
-// );
+Router.get("/:id", Controller.findOne);
+
+Router.get("/ticket/:ticket", Controller.findOneByTicket);
 
 Router.post("/", Controller.insert);
 Router.put("/:id", Controller.update);

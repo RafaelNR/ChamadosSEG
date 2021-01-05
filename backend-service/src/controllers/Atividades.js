@@ -67,7 +67,7 @@ class Atividades {
 					return res.status(200).json({
 						success: true,
 						path: `.${fileName}`,
-						link: `http://localhost:3001${fileName}`,
+						link: `${process.env.URL_SERVICE}${fileName}`,
 					});
 				}
 

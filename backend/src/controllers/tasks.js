@@ -1,14 +1,12 @@
 const Model = require("../models/tasks");
 
 const { countClientByUser } = require("../models/clients_has_users");
-const Validate = require("../tools/validation/schemas"); /* Validation */
-const Log = require("./log"); /* LOG */
+const Validate = require("../tools/validation/schemas");
+const Log = require("./log");
 
 let response;
 let status = 200;
-/**
- * Todas as tarefas
- */
+
 const index = async (req, res) => {
 	try {
 		response = { success: true, data: await Model.index() };
@@ -20,9 +18,7 @@ const index = async (req, res) => {
 	Log.Save(req.userId, "tasks", "index", response);
 	return res.status(status).json(response);
 };
-/**
- * Minhas tarefas
- */
+
 const indexMy = async (req, res) => {
 	try {
 		const userID = Validate.ID(req.userId);
@@ -36,9 +32,6 @@ const indexMy = async (req, res) => {
 	return res.status(status).json(response);
 };
 
-/**
- * Tarefas dos meus clientes ou de um cliente
- */
 const indexMyCliente = async (req, res) => {
 	try {
 		if (!req.params && !req.params.client_id) throw "Parâmetros inválidos";
@@ -56,9 +49,6 @@ const indexMyCliente = async (req, res) => {
 	return res.status(status).json(response);
 };
 
-/**
- * Dados de uma tarefa
- */
 const findOne = async (req, res) => {
 	try {
 		if (!req.params || !req.params.id) throw "Parametros inválidos";
@@ -74,9 +64,6 @@ const findOne = async (req, res) => {
 	return res.status(status).json(response);
 };
 
-/**
- * Insert
- */
 const insert = async (req, res) => {
 	try {
 		if (!req.body) throw "Parametros inválidos";
@@ -95,9 +82,6 @@ const insert = async (req, res) => {
 	return res.status(status).json(response);
 };
 
-/**
- * Update
- */
 const update = async (req, res) => {
 	try {
 		if (!req.body && req.body.id !== req.params.id)
@@ -119,9 +103,6 @@ const update = async (req, res) => {
 	return res.status(status).json(response);
 };
 
-/**
- * Altera o status da task
- */
 async function changeStatus(req, res) {
 	try {
 		if (!req.body && !req.body.id) throw "Parâmetros inválidos";
@@ -144,9 +125,6 @@ async function changeStatus(req, res) {
 	return res.status(status).json(response);
 }
 
-/**
- * Altera o dono da task
- */
 async function changeOwner(req, res) {
 	try {
 		if (!req.body && !req.body.id) throw "Parâmetros inválidos";
@@ -169,9 +147,6 @@ async function changeOwner(req, res) {
 	return res.status(status).json(response);
 }
 
-/**
- * Ferramentas para modulo
- */
 const tools = {
 	/**
 	 * Trata os dado para insert

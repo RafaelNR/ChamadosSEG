@@ -1,4 +1,4 @@
-const Validate = require("../tools/validation/schemas"); /* Validation */
+const Validate = require("../tools/validation/schemas");
 const Model = require("../models/infos_atividades");
 const Atividades = require('../models/atividades');
 const Categorias = require('../models/category');

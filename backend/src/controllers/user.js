@@ -116,9 +116,6 @@ async function actived(req, res) {
 	return res.status(Result.status).json(Result.res);
 }
 
-/**
- * Ferramentas para o modulo
- */
 const tools = {
 	handilingInsert(Dados) {
 		// Sem Clients vinculado

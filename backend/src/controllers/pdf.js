@@ -18,9 +18,9 @@ const Atividade = async (req,res) => {
 			throw new Error("Ticket não existe.");
 
 		const resp = await axios.get(
-			`http://localhost:3001/pdf/atividade/${ticket}`,
+			`${process.env.URL_SERVICE}/pdf/atividade/${ticket}`,
 			{
-				headers: { Authorization: `Bearer rafael@access` },
+				headers: { Authorization: `Bearer ${process.env.ACCESS_SERVICE}` },
 			}
 		);
 
@@ -53,8 +53,8 @@ const Atividades = async (req,res) => {
 
 		if (URL) {
 			const resp = await axios.get(URL, {
-				headers: { Authorization: `Bearer rafael@access` },
-			}); //!! COLOCAR NO ENV `Bearer ${token}`
+				headers: { Authorization: `Bearer ${process.env.ACCESS_SERVICE}` },
+			});
 
 			if (resp.data.success) {
 				Result.ok(200, resp.data);
@@ -116,18 +116,18 @@ const tools = {
 
   getUrl: (Query) => {
 		if (Query.data_inicial && Query.data_final && (Query.cliente || Query.tecnico)) {
-			return `http://localhost:3001/pdf/atividades?data_inicial=${Moment(
+			return `${process.env.URL_SERVICE}/pdf/atividades?data_inicial=${Moment(
 				Query.data_inicial
 			).format("YYYY-MM-DD")}&data_final=${Moment(Query.data_final).format(
 				"YYYY-MM-DD"
 			)}&${
 				Query.cliente ? "cliente=" + Query.cliente : "tecnico=" + Query.tecnico
-				}`;
+			}`;
 		} else if (Query.mes && Query.ano && (Query.cliente || Query.tecnico)) {
-			return `http://localhost:3001/pdf/atividades?mes=${Query.mes}&ano=${Query.ano}&${
-				Query.cliente
-					? "cliente=" + Query.cliente
-					: "tecnico=" + Query.tecnico
+			return `${process.env.URL_SERVICE}/pdf/atividades?mes=${Query.mes}&ano=${
+				Query.ano
+			}&${
+				Query.cliente ? "cliente=" + Query.cliente : "tecnico=" + Query.tecnico
 			}`;
     }
 	},

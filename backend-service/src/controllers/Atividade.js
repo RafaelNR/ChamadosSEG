@@ -44,7 +44,7 @@ class Atividade {
         return res.status(200).json({
           success: true,
           path: `/tmp/${this.ticket}.pdf`,
-          link: `http://localhost:3001/tmp/uploads/${this.ticket}.pdf`
+          link: `${process.env.URL_SERVICE}/tmp/uploads/${this.ticket}.pdf`
         })
 
         // res.type('pdf')

@@ -1,14 +1,21 @@
 // Update with your config settings.
-const config = require("dotenv").config({ path: ".env" }).parsed;
-
 module.exports = {
 	dev: {
-		client: config.DB_DIALECT ? config.DB_DIALECT : "mysql2",
+		client: process.env.DB_DIALECT ? process.env.DB_DIALECT : "mysql2",
 		connection: {
-			host: config.DB_HOST,
-			database: config.DB_NAME,
-			user: config.DB_USER,
-			password: config.DB_PASSWD,
+			host: process.env.DB_HOST,
+			database: process.env.DB_NAME,
+			user: process.env.DB_USER,
+			password: process.env.DB_PASSWD,
 		},
-	}
+	},
+	prod: {
+		client: process.env.DB_DIALECT ? process.env.DB_DIALECT : "mysql2",
+		connection: {
+			host: process.env.DB_HOST,
+			database: process.env.DB_NAME,
+			user: process.env.DB_USER,
+			password: process.env.DB_PASSWD,
+		},
+	},
 };

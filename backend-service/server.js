@@ -1,8 +1,8 @@
+require("dotenv/config");
 const App = require('./src/app')
 const knex = require("./src/database");
 
-
-App.listen(3001, (err) => {
+App.listen(process.env.BACK_PORT, (err) => {
 	if (err) console.log("> [Server] - Down -> , erro: " + err);
 	console.log("> [Server] - Running...");
 });

@@ -1,14 +1,7 @@
-/**
- ** MODELS  
- */
 const Model = require("../models/client");
 const { countActivityforClient } = require("../models/atividades");
 const { countLinkedToClient } = require("../models/clients_has_users");
-
-/**
- ** TOOLS
- */
-const Validate = require("../tools/validation/schemas"); /* Validation */
+const Validate = require("../tools/validation/schemas");
 const Result =  require('../tools/result');
 
 

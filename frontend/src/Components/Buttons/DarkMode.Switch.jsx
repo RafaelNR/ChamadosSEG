@@ -35,7 +35,8 @@ const useStyles = makeStyles((theme) => ({
   },
   dark: {
     color: '#404040',
-    fontSize: 17
+    fontSize: 17,
+    transform: 'rotate(45deg)'
   },
 }));
 

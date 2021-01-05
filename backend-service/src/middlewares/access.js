@@ -3,13 +3,10 @@
 class Access {
 
 	Purchase(req, res, next) {
-
-		console.log(req.headers.authorization)
-
-    const currToken = "Bearer rafael@access";
+		
     const Token = req.headers.authorization;
 
-		if (Token === currToken) {
+		if (Token === process.env.SECRET) {
 			next();
 		} else {
 			const error = new Error("Sem permissão de acesso.");

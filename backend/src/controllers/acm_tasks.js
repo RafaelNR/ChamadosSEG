@@ -1,6 +1,6 @@
 const Model = require("../models/acm_tasks");
-const Validate = require("../tools/validation/schemas"); /* Validation */
-const Log = require("./log"); /* LOG */
+const Validate = require("../tools/validation/schemas");
+const Log = require("./log");
 
 let response;
 let status = 200;

@@ -27,7 +27,7 @@ App.use((error, req, res, next) => {
 		code: 404,
 		success: false,
 		message: error.message,
-    error: error.stack, //!! CONFIGURAR PARA APARECER SÓ EM DEV;
+		error: process.env.NODE_ENV === "dev" ? error.stack : "",
 	});
 	next();
 });

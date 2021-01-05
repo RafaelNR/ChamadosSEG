@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const config = require("dotenv").config().parsed;
 const ApiErrors = require('../tools/errors/handle');
 
 module.exports = (req, res, next) => {
@@ -10,7 +9,7 @@ module.exports = (req, res, next) => {
 
 	if (!token) return ApiErrors(res,{ message: "Precisa efetuar o login para acessar a página." }).AuthErrors();
 
-	jwt.verify(token, config.SECRET, function (err, decoded) {
+	jwt.verify(token, process.env.SECRET, function (err, decoded) {
 		if (err) {
 			return res.status(401).json({
 				success: false,

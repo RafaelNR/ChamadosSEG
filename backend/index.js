@@ -1,15 +1,16 @@
 "use strict";
 
-const config = require("dotenv").config().parsed;
+require("dotenv/config");
 const App = require("./src/core/app");
 const knex = require('./src/database');
 
-App.listen(config.BACK_PORT, (err) => {
-	if (err) console.log("> [Server] - Down -> , erro: " + err);
-	console.log("> [Server] - Running...");
-	console.log("> [Server] - BackEnd Port: ", config.BACK_PORT);
-	console.log("> [Server] - Connecion IP: ", config.IP);
-	console.log("> [Server] - NODE: ", config.NODE_ENV);
+App.listen(process.env.BACK_PORT, (err) => {
+	if (err) return console.log("> [BACKEND] - Down -> , erro: " + err);
+	console.log("> [BACKEND] - Running...");
+	console.log("> [BACKEND] - Nome Service: ", process.env.APP_NAME);
+	console.log("> [BACKEND] - Connecion IP: ", process.env.IP);
+	console.log("> [BACKEND] - BackEnd Port: ", process.env.BACK_PORT);
+	console.log("> [BACKEND] - NODE: ", process.env.NODE_ENV);
 });
 
 // Quando finalizar o express, finaliza todas os processos e fecha o banco de dados.

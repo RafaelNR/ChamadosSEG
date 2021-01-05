@@ -1,14 +1,13 @@
 // Update with your config settings.
-const config = require("dotenv").config({ path: ".env" }).parsed;
 
 module.exports = {
 	dev: {
-		client: config.DB_DIALECT ? config.DB_DIALECT : "mysql2",
+		client: process.env.DB_DIALECT ? process.env.DB_DIALECT : "mysql2",
 		connection: {
-			host: config.DB_HOST,
-			database: config.DB_NAME,
-			user: config.DB_USER,
-			password: config.DB_PASSWD,
+			host: process.env.DB_HOST,
+			database: process.env.DB_NAME,
+			user: process.env.DB_USER,
+			password: process.env.DB_PASSWD,
 		},
 		// pool: {
 		// 	afterCreate: function (connection, callback) {
@@ -27,13 +26,37 @@ module.exports = {
 	},
 
 	migration: {
-		client: config.DB_DIALECT ? config.DB_DIALECT : "mysql2",
+		client: process.env.DB_DIALECT ? process.env.DB_DIALECT : "mysql2",
 		connection: {
-			host: config.DB_HOST,
+			host: process.env.DB_HOST,
 			database: "chamadostest",
-			user: config.DB_USER,
-			password: config.DB_PASSWD,
+			user: process.env.DB_USER,
+			password: process.env.DB_PASSWD,
 		},
+		migrations: {
+			tableName: "migrations",
+			directory: `${__dirname}/src/database/migrations`,
+		},
+		seeds: {
+			directory: `${__dirname}/src/database/seeds`,
+		},
+	},
+
+	prod: {
+		client: process.env.DB_DIALECT ? process.env.DB_DIALECT : "mysql2",
+		connection: {
+			host: process.env.DB_HOST,
+			database: process.env.DB_NAME,
+			user: process.env.DB_USER,
+			password: process.env.DB_PASSWD,
+		},
+		// pool: {
+		// 	afterCreate: function (connection, callback) {
+		// 		connection.query('SET time_zone = America/Sao_Paulo;', function (err) {
+		// 			callback(err, connection);
+		// 		});
+		// 	}
+		// },
 		migrations: {
 			tableName: "migrations",
 			directory: `${__dirname}/src/database/migrations`,
