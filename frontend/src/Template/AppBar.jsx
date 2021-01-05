@@ -87,13 +87,13 @@ export default () => {
 
           <div className={classes.grow} />
           <div className={classes.buttons}>
+            <SwitchDarkMode />
             <IconButton aria-label="show 17 new notifications" color="inherit">
               <Badge badgeContent={1} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
             <ButtonLogout />
-            <SwitchDarkMode />
           </div>
         </Toolbar>
       </AppBar>
