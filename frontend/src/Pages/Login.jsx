@@ -11,6 +11,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import Alert from '../Components/Alert/index'
+import { ProgressSubmit } from '../Components/Buttons/Progress';
 
 //* CONTEXT
 import useAuth from "../Context/AuthContext";
@@ -59,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignInSide() {
   const classes = useStyles();
-  const { handleLogin, errors } = useAuth();
+  const { handleLogin, errors,success, loading } = useAuth();
   const [user, setUser] = useState(null);
   const [passwd, setPasswd] = useState(null);
 
@@ -81,10 +82,25 @@ export default function SignInSide() {
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      <Grid item xs={12} sm={8} md={5} elevation={6} square className={classes.gridLogin}>
+      <Grid
+        item
+        xs={12}
+        sm={8}
+        md={5}
+        elevation={6}
+        square
+        className={classes.gridLogin}
+      >
         <div className={classes.paper}>
-          <img className={classes.avatar} src='/static/logo.png' title="Logo" alt="logo" />
-          { errors.message && !errors.success && <Alert type="error" title='Erro!' message={errors.message} /> }
+          <img
+            className={classes.avatar}
+            src="/static/logo.png"
+            title="Logo"
+            alt="logo"
+          />
+          {errors.message && !errors.success && (
+            <Alert type="error" title="Erro!" message={errors.message} />
+          )}
           <form
             className={classes.form}
             onSubmit={(e) => handleSubmit(e)}
@@ -122,15 +138,9 @@ export default function SignInSide() {
               control={<Checkbox value="remember" color="primary" />}
               label="Lembrar-me"
             />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign In
-            </Button>
+            <ProgressSubmit  success={success} loading={loading}>
+                Entrar
+            </ProgressSubmit>
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">

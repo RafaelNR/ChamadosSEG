@@ -27,8 +27,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
   },
-  formControl: {
-    width: "100%",
+  form: {
+    width: 500,
   },
 }));
 
@@ -78,7 +78,7 @@ const FormInsert = () => {
   )
 
   return (
-    <form noValidate onSubmit={handleSubmit}>
+    <form noValidate onSubmit={handleSubmit} className={classes.form}>
       {loading ? (
         <div className={classes.dialogLoader}>
           <CircularProgress />
@@ -94,7 +94,7 @@ const FormInsert = () => {
                 <TextField
                   variant="filled"
                   margin="normal"
-                  value={values.nome ? values.nome : ""}
+                  value={values.nome ? values.nome : ''}
                   id="nome"
                   label="Nome da Sub-Categoria"
                   name="nome"
@@ -107,30 +107,11 @@ const FormInsert = () => {
                   helperText={errors.nome}
                 />
               </Grid>
-              <Grid item xs={12} lg={12} md={12}>
-                {/* <FormControl variant="filled" className={classes.formControl} error={errors.categoria ? true : false} >
-									<InputLabel id="categoria">Seleciona a categoria vinculada.</InputLabel>
-									<Select
-										labelId="categoria"
-										id="categoria_id"
-										name="categoria_id"
-										onChange={handleChange}
-									>
-										{
-											categorias.map(c => {
-												return (
-													<MenuItem value={c.id} key={c.id}>
-													<em>{c.nome}</em>
-												</MenuItem>);
-											})
-										}
-										</Select>
-										<FormHelperText>{errors.categoria || ''}</FormHelperText>
-								</FormControl> */}
-              </Grid>
             </Grid>
           </DialogContent>
-          <SaveButton />
+          <DialogActions>
+            <SaveButton />
+          </DialogActions>
         </>
       )}
     </form>
@@ -182,7 +163,7 @@ const FormUpdate = () => {
   )
 
   return (
-    <form noValidate onSubmit={handleSubmit}>
+    <form noValidate onSubmit={handleSubmit} className={classes.form}>
       {loading ? (
         <div className={classes.dialogLoader}>
           <CircularProgress />
@@ -207,7 +188,7 @@ const FormUpdate = () => {
                     <TextField
                       variant="filled"
                       margin="normal"
-                      value={values[[field.id]] ? values[[field.id]] : ""}
+                      value={values[[field.id]] ? values[[field.id]] : ''}
                       id={field.id}
                       label={field.label}
                       name={field.id}
@@ -224,7 +205,9 @@ const FormUpdate = () => {
               })}
             </Grid>
           </DialogContent>
-          <SaveButton />
+          <DialogActions>
+            <SaveButton />
+          </DialogActions>
         </>
       )}
     </form>

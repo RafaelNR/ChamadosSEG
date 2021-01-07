@@ -44,23 +44,28 @@ export default function AtividadesInfo({ info, children }) {
     setExpanded(isExpanded && info ? panel : false);
   };
 
+  console.log(info)
+
   return (
     <div className={classes.root}>
       <Accordion
-        expanded={expanded === "panel1"}
-        onChange={handleChange("panel1")}
+        expanded={expanded === 'panel1'}
+        onChange={handleChange('panel1')}
       >
         <AccordionSummary
-          expandIcon={info && <ExpandMoreIcon className={classes.button} />}
+          expandIcon={info && info.created_at && <ExpandMoreIcon className={classes.button} />}
           aria-controls="panel1a-content"
           id="panel1a-header"
           className={classes.summary}
         >
           {children}
         </AccordionSummary>
-        <AccordionDetails className={classes.details}>
-          {info && info.created_at && expanded && <BoxInfo info={info} />}
-        </AccordionDetails>
+
+        {info && info.created_at && (
+            <AccordionDetails className={classes.details}>
+              { expanded && <BoxInfo info={info} />}
+            </AccordionDetails>
+          )}
       </Accordion>
     </div>
   );

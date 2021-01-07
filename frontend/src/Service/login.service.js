@@ -1,4 +1,4 @@
-import Service from "../Api/Api";
+import Service from "../Api/Service";
 import {
   LoginSchema
 } from "../Schemas/UserSchema";
@@ -15,6 +15,8 @@ export async function Login(user, passwd) {
     if(Dados.error) throw new Error(Dados);
     
     const Resp = await Service.exec("post", '/login', Dados);
+
+    console.log(Resp)
 
     if (Resp.data.success) {
       return Resp.data.data;

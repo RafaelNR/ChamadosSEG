@@ -32,7 +32,7 @@ const Main = ({ children }) => {
           <AppBar />
           <Drawer />
           <HeaderPage />
-          <main className={classes.content}>{children}</main>
+            <main className={classes.content}>{children}</main>
           <SnackBar />
         </MenuProvider>
       </SnackBarProvider>

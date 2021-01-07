@@ -2,12 +2,13 @@ import axios from "axios";
 
 class Service {
   constructor() {
+    console.log(process.env.REACT_APP_API_ENDPOINT);
     this.axios = axios;
     this.Api = this.axios.create({
-      baseURL: process.env.REACT_APP_API_URL,
+      baseURL: process.env.REACT_APP_API_ENDPOINT,
       validateStatus: function (status) {
         return status < 500;
-      },
+      }
     });
   }
 
@@ -55,7 +56,8 @@ class Service {
     const fn = this.Api[method];
     this.setToken();
     if (data) {
-      return fn(url, data, { cancelToken: this.source() });
+      return this.promise(fn(url, data, { cancelToken: this.source() }))
+      return;
     }
 
     return fn(url, { cancelToken: this.source() });

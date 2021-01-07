@@ -1,4 +1,4 @@
-import Service from "../Api/Api";
+import Service from "../Api/Service";
 
 export const getClientes = async () => {
   try {

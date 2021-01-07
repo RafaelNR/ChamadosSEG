@@ -43,7 +43,7 @@ const AddIconButton = memo(() => {
   const { openDialog } = useDialog();
   return (
     <IconButton onClick={() => openDialog("insert")}>
-      <Tooltip title="Add">
+      <Tooltip title="Novo">
         <AddBox className={classes.add} />
       </Tooltip>
     </IconButton>

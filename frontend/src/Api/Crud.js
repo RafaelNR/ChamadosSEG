@@ -1,4 +1,4 @@
-import Service from "./Api";
+import Service from "./Service";
 
 /**
  *& Busca por todos os dados;

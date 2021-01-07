@@ -6,7 +6,7 @@ import React, {
   useContext,
   useCallback,
 } from "react";
-import * as Auth from "../Api/Auth";
+import { Auth, removeToken }  from "../Service/auth.service";
 import { Login } from '../Service/login.service'
 
 import useLocalStore from "../Hooks/useLocalStore";
@@ -19,13 +19,14 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(getData("user"));
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false); // TODO Loading
+  const [success, setSuccess] = useState(false);
 
   const handleLogout = useCallback(() => {
     setUser(null);
     setToken(null);
     removeData("token");
     removeData("user");
-    Auth.removeToken();
+    removeToken();
   }, [removeData]);
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const AuthProvider = ({ children }) => {
         return handleLogout();
       }
 
-      const resp = await Auth.Auth();
+      const resp = await Auth();
       if (!resp.data.auth) return handleLogout();
 
     }
@@ -51,39 +52,43 @@ const AuthProvider = ({ children }) => {
 
   const handleLogin = useCallback((user, passwd) => {
 
-      Login(user, passwd).then((Dados) => {
+    setLoading(true);
+    Login(user, passwd).then((Dados) => {
 
-        setErrors([])
-        setLoading(false);
+      setErrors([])
+      setLoading(false);
 
-        if(Dados.auth && Dados.token){
-          setData("token", Dados.token);
-          setData("user", Dados.user);
-          return window.location.replace("/");
-        }
+      if(Dados.auth && Dados.token){
+        setData("token", Dados.token);
+        setData("user", Dados.user);
+        setSuccess(true);
+        return window.location.replace("/");
+      }
 
-        if(Dados.auth && Dados.user){
-          setData("user", Dados.user);
-          return window.location.replace("/");
-        }
+      if(Dados.auth && Dados.user){
+        setData("user", Dados.user);
+        setSuccess(true);
+        return window.location.replace("/");
+      }
 
-        throw new Error('Erro em logar no sistema');
+      throw new Error('Erro em logar no sistema');
 
-      }).catch((error) => {
-        if(error.error){
-          return setErrors(error.errors)
-        }
-        setErrors({
-          success: false,
-          message: 'Erro em logar no sistema'
-        })
-
+    }).catch((error) => {
+      setLoading(false);
+      if (error.errors)
+        return setErrors(error.errors);
+      
+      
+      setErrors({
+        success: false,
+        message: error && error.message ? error.message : 'Erro em logar no sistema.'
       })
+
+    })
 
     },
     [setData]
   );
-
 
   const handleAuth = useCallback(async () => {
     
@@ -106,7 +111,7 @@ const AuthProvider = ({ children }) => {
       return handleLogout();
     }
 
-    const resp = await Auth.Auth();
+    const resp = await Auth();
     if (!resp.data.auth) {
       setErrors({
         success: false,
@@ -119,7 +124,16 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ logado: Boolean(user), user, handleLogin, handleLogout, errors, loading, handleAuth }}
+      value={{
+        logado: Boolean(user),
+        user,
+        success,
+        errors,
+        loading,
+        handleLogin,
+        handleLogout,
+        handleAuth,
+      }}
     >
       {children}
     </AuthContext.Provider>

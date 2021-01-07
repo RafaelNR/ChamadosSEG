@@ -208,7 +208,7 @@ export default ({ Info, ticket }) => {
               loading={loading}
               success={success}
             />
-            {success && <EditInfoAtividade handleEdit={handleEdit} />}
+            {success && !loading && <EditInfoAtividade handleEdit={handleEdit} />}
           </Grid>
         </Grid>
       </form>

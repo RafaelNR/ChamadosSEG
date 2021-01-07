@@ -30,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
     left: '50%',
     marginTop: -12,
     marginLeft: -12
+  },
+  buttonNone: {
+    opacity: 0
   }
 }));
 
@@ -38,7 +41,8 @@ export default ({ children, handleSubmit, loading, success }) => {
   const timer = React.useRef();
 
   const buttonClassname = clsx({
-    [classes.buttonSuccess]: success,
+    [classes.buttonSuccess]: success && !loading,
+    [classes.buttonNone]: success && loading
   });
 
   React.useEffect(() => {
@@ -58,7 +62,44 @@ export default ({ children, handleSubmit, loading, success }) => {
           disabled={loading || success}
           onClick={handleSubmit}
         >
-          {success ? <CheckIcon /> : children}
+          { success && !loading ? <CheckIcon /> : children}
+        </Button>
+        {loading && (
+          <CircularProgress size={24} className={classes.buttonProgress} />
+        )}
+      </div>
+    </div>
+  );
+};
+
+
+export const ProgressSubmit = ({ children, loading, success }) => {
+  const classes = useStyles();
+  const timer = React.useRef();
+
+  const buttonClassname = clsx({
+    [classes.buttonSuccess]: success && !loading,
+    [classes.buttonNone]: success && loading
+  });
+
+  React.useEffect(() => {
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, [timer.current]);
+
+  return (
+    <div className={classes.root}>
+      <div className={classes.wrapper} style={{ width: '100%' }}>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          className={buttonClassname}
+          disabled={loading || success}
+          style={{ width: '100%' }}
+        >
+          {success && !loading ? <CheckIcon /> : children}
         </Button>
         {loading && (
           <CircularProgress size={24} className={classes.buttonProgress} />
