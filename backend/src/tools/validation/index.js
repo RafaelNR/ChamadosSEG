@@ -26,7 +26,8 @@ const type = {
 		error: [Joi.string().optional(), Joi.allow(null)],
 		ticket: Joi.string().min(10).max(14),
 		info_ticket: Joi.string().min(10).max(16),
-		representante: Joi.string().min(3).max(100),
+		representante: Joi.string().min(3).max(100).required(),
+		n_contrato: Joi.string().min(3).max(15).required(),
 		default: Joi.string().required(),
 	},
 	date: {

@@ -5,6 +5,7 @@ exports.up = function (knex) {
 		table.string("nome_fantasia").unique().notNullable();
 		table.string("cnpj_cpf").unique().notNullable();
 		table.string("email").notNullable();
+		table.string("n_contrato").unique().notNullable();
 		table.string("telefone").unique().notNullable();
 		table.string("representante").notNullable();
 		table.integer("actived").unsigned().defaultTo(1);

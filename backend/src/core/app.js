@@ -16,9 +16,6 @@ App.use((req, res, next) => {
 });
 
 
-/**
- * Tratamento de erro genérico;
- */
 App.use((error, req, res, next) => {
 	res.status(404).json({
 		message: error.message,

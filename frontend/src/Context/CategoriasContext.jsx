@@ -25,6 +25,7 @@ const CategoriasProvider = ({ children }) => {
   useEffect(
     () => {
       async function init() {
+        setLoading(true);
         await Api.get("categorias")
           .then((resp) => {
             const { success, data } = resp.data;
@@ -37,7 +38,7 @@ const CategoriasProvider = ({ children }) => {
             setLoading(false);
             handleSnackBar({
               type: "error",
-              message: error.message ? error.message :
+              message: error && error.message ? error.message :
                 "Erro em carregar categorias, Por favor tente mais tarde.",
             });
           });

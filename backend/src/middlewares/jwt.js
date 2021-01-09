@@ -21,6 +21,7 @@ module.exports = (req, res, next) => {
 
 		// Set o user ip do usuário
 		req.userId = decoded.id;
+		console.log('DECODESD: ',req.userId,decoded.id)
 	});
 
 	next();

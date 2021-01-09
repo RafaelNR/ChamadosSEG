@@ -17,8 +17,8 @@ import Accordion from "../../../Components/Accordion/Accordion";
 import { UpdateInfo } from "../../../Service/atividade.service";
 
 //* CONTEXT
-import useSnackBar from "../../../Context/SnackBarContext";
 import useCategorias from '../../../Context/CategoriasContext';
+import useSnackBar from "../../../Context/SnackBarContext";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -56,34 +56,17 @@ export default ({ Info, ticket }) => {
   const classes = useStyles();
   const { handleSnackBar } = useSnackBar();
   const { categorias } = useCategorias();
-  // const [categorias, setCategorias] = React.useState([]);
   const [info, setInfo] = React.useState([]);
   const [errors, setErrors] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(true);
 
   React.useEffect(() => {
-    setInfo({
+    return setInfo({
       ...Info,
-      ticket,
-    })
+      ticket
+    });
 
-    // getAllCategorias()
-    //   .then((Dados) => {
-    //     if (Dados.success) {
-    //       setCategorias(Dados.data);
-    //       setInfo({
-    //         ...Info,
-    //         ticket,
-    //       });
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     handleSnackBar({
-    //       type: "error",
-    //       message: err.message,
-    //     });
-    //   });
   }, [Info, ticket, handleSnackBar]);
 
   const handleInfo = React.useCallback(

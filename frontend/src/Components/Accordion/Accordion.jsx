@@ -44,8 +44,6 @@ export default function AtividadesInfo({ info, children }) {
     setExpanded(isExpanded && info ? panel : false);
   };
 
-  console.log(info)
-
   return (
     <div className={classes.root}>
       <Accordion

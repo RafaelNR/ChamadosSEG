@@ -13,7 +13,6 @@ export const getAllCategorias = async () => {
     };
 
   } catch (error) {
-    console.log(error);
-    console.log("Error em buscar categorias");
+    throw error.data;
   }
 };

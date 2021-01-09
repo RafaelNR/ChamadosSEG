@@ -60,9 +60,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignInSide() {
   const classes = useStyles();
-  const { handleLogin, errors,success, loading } = useAuth();
+  const { handleLogin, errors, success, loading } = useAuth();
   const [user, setUser] = useState(null);
   const [passwd, setPasswd] = useState(null);
+
+  React.useEffect(() => {
+    document.title = `Login - OS Técnicos`;
+  },[])
 
   const handleChange = useCallback((e) => {
     const el = e.target.name;

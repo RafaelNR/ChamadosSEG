@@ -19,12 +19,19 @@ function useMasker() {
     return inputHandler(telMask, 14, value);
   }, []);
 
+  const maskerContrato = useCallback((value) => {
+    const Mask = ['999-9999', '9999-9999'];
+    return inputHandler(Mask, 8, value);
+  }, []);
+
   const Masker = (value, name) => {
     switch (name) {
       case "telefone":
         return maskerTel(value);
       case "cnpj_cpf":
         return maskerDoc(value);
+      case "n_contrato":
+        return maskerContrato(value);
       default:
         return value;
     }

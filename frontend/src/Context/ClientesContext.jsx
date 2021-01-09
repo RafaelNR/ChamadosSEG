@@ -27,7 +27,6 @@ const ClientesProvider = ({ children }) => {
       .then((resp) => {
         const { success, data } = resp.data;
         setLoading(false);
-        console.log(resp);
         if (success) return setClientes(data);
         throw { success: false, message: resp.data.message};
       })

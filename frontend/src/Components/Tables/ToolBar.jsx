@@ -67,7 +67,7 @@ export default TableToolbar;
 
 TableToolbar.propTypes = {
   title: PropTypes.string.isRequired,
-  data: PropTypes.array.isRequired,
+  data: PropTypes.bool.isRequired
 };
 
 AtividadesTableToolBar.propTypes = {

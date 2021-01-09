@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { adminMenu, defaultMenu, analistaMenu } from "../../Store/Pages";
+import { Headers } from "../../Store/Pages";
+
+import { handleHeaderName } from '../../Utils/functions'
 
 const useStyles = makeStyles((theme) => ({
 	box_header: {
@@ -24,23 +26,27 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
 	const classes = useStyles();
 	const { pathname } = useLocation();
-	const [path, setPath] = useState("Home");
+	const [nome, setNome] = useState();
 
 	useEffect(() => {
-		const Menus = adminMenu.concat(defaultMenu).concat(analistaMenu);
 
-		const Menu = Object.values(Menus).filter((Menu) =>
-			Menu.path === pathname ? Menu : null
-		);
-
-		if (Menu && Menu[0]) setPath(Menu[0].nome);
+		if (pathname && pathname !== '/') {
+			const Header = handleHeaderName(pathname, Headers);
+			if (Header && Header.nome) {
+				document.title = `${Header.nome} - OS Técnicos`;
+				setNome(Header.nome);
+			}
+		} else {
+			setNome('Dashboard');
+			document.title = `${nome ? nome : 'Dashboard' } - OS Técnicos`;
+		}
 
 	}, [pathname]);
 
 	return (
 		<>
 			<div className={classes.box_header}>
-				<span className={classes.span}>{path}</span>
+				<span className={classes.span}>{nome}</span>
 			</div>
 		</>
 	);

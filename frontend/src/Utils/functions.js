@@ -88,3 +88,38 @@ export function initialsName(FullName) {
 
 
 }
+
+
+export function handleHeaderName(Path, Headers) {
+  
+  const paths = Path.split('/');
+
+  const Acc = Headers.reduce((acc, valorAtual, index, array) => {
+
+    if (acc.length === 0) {
+      if (paths[index] && paths[index] !== "") {
+        return array.filter(({ nome, path }) => {
+          if (path.includes(paths[index])) {
+            return { nome, path };
+          }
+        });
+      } else {
+        return []
+      }
+    } else {
+      return acc.filter(({ nome, path }) => {
+        if (Path.includes(path)) {
+          return { nome, path };
+        }
+      })
+    }
+
+  },[])
+
+  return Acc[Acc.length - 1];
+
+
+
+
+
+}

@@ -18,11 +18,6 @@ module.exports = {
 	clientsUser: (Dados) => validate(Dados, type.array.clients),
 	subCategorias_array: (Dados) => validate(Dados, type.array.subCategorias),
 
-	/**
-	 *& Valida Dados para Insert de um user;
-	 * @param {Object} Dados
-	 * @return {Object}
-	 */
 	insertUser: (Dados) => {
 		return validate(
 			Dados,
@@ -40,11 +35,6 @@ module.exports = {
 		);
 	},
 
-	/**
-	 *& Valida Dados para Update de um user;
-	 * @param {Object} Dados
-	 * @return {Object}
-	 */
 	updateUser: (Dados) => {
 		return validate(
 			Dados,
@@ -62,11 +52,6 @@ module.exports = {
 		);
 	},
 
-	/**
-	 *& Valida Dados para Insert de um cliente;
-	 * @param {Object} Dados
-	 * @return {Object}
-	 */
 	insertClient: (Dados) => {
 		return validate(
 			Dados,
@@ -78,17 +63,13 @@ module.exports = {
 				user_id: type.number.id,
 				telefone: type.string.telefone,
 				representante: type.string.representante,
+				n_contrato: type.string.n_contrato,
 				created_at: type.date.created_at,
 				updated_at: type.date.updated_at,
 			})
 		);
 	},
 
-	/**
-	 *& Valida Dados para Update de um cliente;
-	 * @param {Object} Dados
-	 * @return {Object}
-	 */
 	updateClient: (Dados) => {
 		return validate(
 			Dados,
@@ -101,10 +82,12 @@ module.exports = {
 				user_id: type.number.id,
 				telefone: type.string.telefone,
 				representante: type.string.representante,
+				n_contrato: type.string.n_contrato,
 				updated_at: type.date.updated_at,
 			})
 		);
 	},
+
 	insertAtividades: (Dados) => {
 		return validate(
 			Dados,
@@ -158,11 +141,6 @@ module.exports = {
 		);
 	},
 
-	/**
-	 *& Valida Dados para Insert do log;
-	 * @param {Object} Dados
-	 * @return {Object}
-	 */
 	insertLog: (Dados) => {
 		return validate(
 			Dados,
@@ -177,11 +155,6 @@ module.exports = {
 		);
 	},
 
-	/**
-	 *& Valida Dados para Insert de um categoria;
-	 * @param {Object} Dados
-	 * @return {Object}
-	 */
 	insertCategoria: (Dados) => {
 		return validate(
 			Dados,
@@ -194,11 +167,6 @@ module.exports = {
 		);
 	},
 
-	/**
-	 *& Valida Dados para Update de um categoria;
-	 * @param {Object} Dados
-	 * @return {Object}
-	 */
 	updateCategoria: (Dados) => {
 		return validate(
 			Dados,
@@ -211,11 +179,6 @@ module.exports = {
 		);
 	},
 
-	/**
-	 *& Valida Dados para insert de um Sub-Categoria
-	 % @param {Object} Dados
-	 % @return {Object}
-	 */
 	insertSubCategoria: (Dados) => {
 		return validate(
 			Dados,
@@ -228,11 +191,6 @@ module.exports = {
 		);
 	},
 
-	/**
-	 *& Valida Dados para Update de um Sub-Categoria;
-	 * @param {Object} Dados
-	 * @return {Object}
-	 */
 	updateSubCategoria: (Dados) => {
 		return validate(
 			Dados,
@@ -245,11 +203,6 @@ module.exports = {
 		);
 	},
 
-	/**
-	 *& Valida Dados para Insert de um tasks
-	 * @param {Object} Dados
-	 * @return {Object}
-	 */
 	InsertTask: (Dados) => {
 		return validate(
 			Dados,
@@ -264,11 +217,6 @@ module.exports = {
 		);
 	},
 
-	/**
-	 *& Valida Dados para Update de um tasks
-	 * @param {Object} Dados
-	 * @return {Object}
-	 */
 	UpdateTask: (Dados) => {
 		return validate(
 			Dados,
@@ -283,11 +231,6 @@ module.exports = {
 		);
 	},
 
-	/**
-	 *& Valida Dados para Insert de um acompanhamento da tasks
-	 * @param {Object} Dados
-	 * @return {Object}
-	 */
 	InsertAcmTask: (Dados) => {
 		return validate(
 			Dados,
@@ -302,11 +245,6 @@ module.exports = {
 		);
 	},
 
-	/**
-	 *& Valida Dados para Update de um acompanhamento da tasks
-	 * @param {Object} Dados
-	 * @return {Object}
-	 */
 	UpdateAcmTask: (Dados) => {
 		return validate(
 			Dados,

@@ -218,7 +218,6 @@ export default () => {
     (event) => {
       const key = event.target.name;
       const value = Masker(event.target.value, key);
-      console.log(values);
       setValues({
         ...values,
         [key]: value,
@@ -226,9 +225,6 @@ export default () => {
     },
     [values, Masker]
   );
-
-  
-  console.log(type)
 
   switch (type) {
     case "insert":

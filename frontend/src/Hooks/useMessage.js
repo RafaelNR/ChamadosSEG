@@ -1,8 +1,11 @@
 import { useState, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 
+import useAuth from './useAuth';
+
 const useMessage = () => {
   const [message, setMessage] = useState("");
+  const { Logout } = useAuth();
   const history = useHistory();
 
   function handleMessage(type, msg) {
@@ -16,12 +19,14 @@ const useMessage = () => {
 
   const handleError = useCallback(
     (msg) => {
-      console.log(msg);
-      if (msg.code && msg.code === 'ECONNREFUSED') {
-        setMessage('Erro em se conectar com banco de dados.');
-        return history.replace('/');
+      if (
+        msg === 'Network Error' ||
+        msg === 'Autenticação expirou.'
+        ) {
+        return Logout();
+      } else if (msg.code && msg.code === 'ECONNREFUSED') {
+        return Logout();
       } else if (msg.message) {
-        console.log('msg.message');
         return setMessage(msg.message);
       }
 

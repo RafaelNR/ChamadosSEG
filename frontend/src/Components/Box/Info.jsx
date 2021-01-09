@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default ({ info }) => {
-  console.log(info);
   const classes = useStyles();
   return (
     <Grid container direction="row" justify="flex-start" alignItems="center">

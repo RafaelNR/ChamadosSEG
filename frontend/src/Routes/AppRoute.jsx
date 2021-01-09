@@ -76,9 +76,9 @@ const AdminRoute = (props) => {
 	const { role_id } = props;
 	return (
 		<>
-		{
-			role_id === 1 ? <Route {...props} /> : <Redirect to='/' />
-		}
+			{
+				role_id === 1 ? <Route {...props} /> : <Redirect to='/' />
+			}
 		</>
 	)
 

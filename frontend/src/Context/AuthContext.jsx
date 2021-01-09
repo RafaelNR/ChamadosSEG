@@ -48,7 +48,7 @@ const AuthProvider = ({ children }) => {
 
     }
 
-  },[token, user, handleLogout]);
+  },[handleLogout, token, user]);
 
   const handleLogin = useCallback((user, passwd) => {
 

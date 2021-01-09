@@ -62,7 +62,7 @@ export default () => {
       } catch (error) {
         handleSnackBar({
           type: "error",
-          message: error.message ? error.message : `Erro em carregar a atividade.`,
+          message: error && error.message ? error.message : `Erro em carregar a atividade.`,
         });
         return history.replace('/atividades');
       }

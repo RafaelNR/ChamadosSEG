@@ -17,7 +17,7 @@ it("Deve receber um erro quando token não é passado ou menor que 10 caracteres
 });
 
 
-it("Deve receber um erro quando token é passado porém inválido", async () => {
+it("Deve receber um erro quando enviar um token invalido.", async () => {
 	await request
 		.get(MAIN_ROUTE)
     .set("access_token", '5659f78f7f8f7f8f5f8f98f7f8f4f5')

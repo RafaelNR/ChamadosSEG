@@ -28,6 +28,7 @@ describe("Teste de Clients", () => {
 				expect(res.body.data).toHaveProperty("email");
 				expect(res.body.data).toHaveProperty("telefone");
 				expect(res.body.data).toHaveProperty("representante");
+				expect(res.body.data).toHaveProperty("n_contrato");
 				expect(res.body.data).toHaveProperty("usuarios");
 				expect(res.body.data.usuarios).toBeArray();
 			});
@@ -41,6 +42,8 @@ describe("Teste de Clients", () => {
 			cnpj_cpf: "11.111.110/0001-" + rand,
 			email: rand + "client@client.com",
 			telefone: "9" + Math.floor(Math.random() * 9999999999),
+			representante: 'rafael' + rand,
+			n_contrato: "0"+rand+'-2021',
 			user_id: 1,
 		};
 		return await request
@@ -48,6 +51,7 @@ describe("Teste de Clients", () => {
 			.set("access_token", Token())
 			.send(Dados)
 			.then((res) => {
+				console.log(res.body)
 				expect(res.status).toBe(201); // Deve ser;
 				expect(res.body).toHaveProperty("success", true);
 				expect(res.body).toHaveProperty("data");
@@ -63,7 +67,8 @@ describe("Teste de Clients", () => {
 			cnpj_cpf: "11.111.110/0001-" + rand,
 			email: rand + "client@client.com",
 			telefone: "9" + Math.floor(Math.random() * 9999999999),
-			representante: 'Rafael',
+			representante: "Rafael",
+			n_contrato: "00" + rand + "-2021",
 			user_id: 1,
 		};
 		return await request
@@ -95,7 +100,10 @@ describe("Teste de Clients", () => {
 				.then((res) => {
 					expect(res.status).toBe(400);
 					expect(res.body).toHaveProperty("success", false);
-					expect(res.body).toHaveProperty("message", '"value" deve ser um número');
+					expect(res.body).toHaveProperty(
+						"message",
+						'"value" must be a number'
+					);
 				});
 		});
 		it("Devo receber um erro quando pesquisar ID client como numero negativo", async () => {
@@ -105,7 +113,7 @@ describe("Teste de Clients", () => {
 				.then((res) => {
 					expect(res.status).toBe(400);
 					expect(res.body).toHaveProperty("success", false);
-					expect(res.body).toHaveProperty("message", '"value" deve ser um número positivo');
+					expect(res.body).toHaveProperty("message", '"value" must be a positive number');
 				});
 		});
 		it("Devo receber um erro quando pesquisar cliente que não existe", async () => {

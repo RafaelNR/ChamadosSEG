@@ -86,4 +86,63 @@ const adminMenu = [
   // },
 ];
 
-export { adminMenu, analistaMenu, tecnicoMenu, defaultMenu };
+
+const Headers = [
+  {
+    nome: 'Dashboard',
+    path: '/'
+  },
+  {
+    nome: 'Modelos',
+    path: '/modelos'
+  },
+  {
+    nome: 'Clientes',
+    path: '/clientes'
+  },
+  {
+    nome: 'Atividades',
+    path: '/atividades'
+  },
+  {
+    nome: 'Perfil',
+    path: '/perfil'
+  },
+  {
+    nome: 'Criar Atividade',
+    path: '/atividades/create'
+  },
+  {
+    nome: 'Editar Atividade',
+    path: '/atividades/edit/'
+  },
+  {
+    nome: 'Visualizar Atividade',
+    path: '/atividades/view/'
+  },
+  {
+    nome: 'Relatórios Minhas Atividades',
+    path: '/relatorios/atividades/my'
+  },
+  {
+    nome: 'Relatórios Atividades',
+    path: '/relatorios/atividades/'
+  },
+  {
+    nome: 'Categorias',
+    icon: <CategorySharp />,
+    path: '/categorias'
+  },
+  {
+    nome: 'Usuários',
+    icon: <GroupSharp />,
+    path: '/usuarios'
+  },
+  {
+    nome: 'Log dos Usuários',
+    icon: <ReportSharp />,
+    path: '/logs'
+  }
+];
+
+export { adminMenu, analistaMenu, tecnicoMenu, defaultMenu , Headers };

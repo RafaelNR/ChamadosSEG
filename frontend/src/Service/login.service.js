@@ -16,8 +16,6 @@ export async function Login(user, passwd) {
     
     const Resp = await Service.exec("post", '/login', Dados);
 
-    console.log(Resp)
-
     if (Resp.data.success) {
       return Resp.data.data;
     } else {
@@ -25,7 +23,7 @@ export async function Login(user, passwd) {
     }
 
   } catch (error) {
-    throw error.data ? error.data : error 
+    throw error && error.data ? error.data : error 
   }
 
 }

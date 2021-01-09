@@ -1,3 +1,4 @@
+require("dotenv/config");
 const App = require("../src/core/app");
 const request = require("supertest")(App);
 // const knexfile = require("../knexfile");

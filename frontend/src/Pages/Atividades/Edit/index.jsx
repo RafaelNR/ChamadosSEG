@@ -15,7 +15,8 @@ import Loading from '../../../Components/Loading'
 import useSnackBar from "../../../Context/SnackBarContext";
 
 //& RPOVIDER
-import { CategoriasProvider } from "../../../Context/CategoriasContext";
+import { CategoriasProvider } from '../../../Context/CategoriasContext';
+import { LoadingProvider } from '../../../Context/LoadingContext';
 
 //* SERVICE
 import { getAtividade } from "../../../Service/atividade.service";
@@ -68,7 +69,7 @@ export default () => {
         console.log(error)
         handleSnackBar({
           type: "error",
-          message: error.message ? error.message : `Erro em carregar a atividade.`,
+          message: error && error.message ? error.message : `Erro em carregar a atividade.`,
         });
         return history.replace('/atividades');
       }
@@ -79,7 +80,6 @@ export default () => {
 
 
   const scroll = () => {
-    console.log('acroll');
     window.scrollTo({
       top: document.documentElement.scrollTop + 200,
       behavior: 'smooth',
@@ -103,7 +103,7 @@ export default () => {
       <Paper className={classes.root}>
         <Typography className={classes.title}>Dados da Atividade</Typography>
         {loading ? (
-          <Loading type='Paper' />
+          <Loading type="Paper" />
         ) : (
           <Grid container md={12} spacing={2}>
             <Atividade Atividade={atividade} />
@@ -112,12 +112,13 @@ export default () => {
         )}
       </Paper>
 
-      <CategoriasProvider>
+      <LoadingProvider>
+        <CategoriasProvider>
         {!loading &&
           atividadeInfos &&
           atividadeInfos.map((info) => {
             return (
-                <InfoEdit key={info.id} Info={info} ticket={atividade.ticket} />
+              <InfoEdit key={info.id} Info={info} ticket={atividade.ticket} />
             );
           })}
 
@@ -125,15 +126,15 @@ export default () => {
           rows.map((id) => {
             return (
               <InfoCreate
-              key={id}
-              newInfo={incrementInfos}
-              atividadeID={atividade.id}
-              ticket={atividade.ticket}
+                key={id}
+                newInfo={incrementInfos}
+                atividadeID={atividade.id}
+                ticket={atividade.ticket}
               />
             );
-          }
-        )}
-      </CategoriasProvider>
+          })}
+          </CategoriasProvider>
+      </LoadingProvider>
     </>
   );
 };

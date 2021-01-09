@@ -2,7 +2,6 @@ import axios from "axios";
 
 class Service {
   constructor() {
-    console.log(process.env.REACT_APP_API_ENDPOINT);
     this.axios = axios;
     this.Api = this.axios.create({
       baseURL: process.env.REACT_APP_API_ENDPOINT,

@@ -34,7 +34,7 @@ const AtividadesProvider = ({ children }) => {
           setLoading(false);
           return handleSnackBar({
             type: 'error',
-            message: error.message
+            message: error && error.message
               ? error.message
               : 'Erro em carregar atividades. Por favor tente mais tarde.'
           });

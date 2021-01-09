@@ -73,6 +73,8 @@ export const UpdateInfo = async (data) => {
     const Url = `/atividades/infos/${data.id}`;
     const Dados = await Service.exec("put", Url, validateData);
 
+    console.log(Dados)
+
     if (Dados.data.success)
       return Dados.data.data;
 

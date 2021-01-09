@@ -16,6 +16,7 @@ const findOne = async (ID) => {
 			"email",
 			"telefone",
 			"representante",
+			"n_contrato",
 			"created_at",
 			"updated_at"
 		)
@@ -46,6 +47,7 @@ module.exports = {
 				"email",
 				"telefone",
 				"representante",
+				"n_contrato",
 				"created_at",
 				"updated_at"
 			)

@@ -76,7 +76,7 @@ export default ({ ticket, atividadeID, newInfo }) => {
       .catch((err) => {
         handleSnackBar({
           type: "error",
-          message: err.message,
+          message: err && err.message ? err.messagee : 'Erro encontrar categorias;'
         });
       });
   }, [atividadeID, ticket, handleSnackBar]);
