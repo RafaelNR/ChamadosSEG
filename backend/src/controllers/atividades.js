@@ -172,12 +172,13 @@ const tools = {
 	 * @param {Object} Dados
 	 */
 	handlingInsert: async (Dados) => {
-		console.log(Dados)
 		
 		const newDados = Validate.insertAtividades({
 			...Dados,
 			ticket: await Ticket.created(),
 		});
+
+		console.log(newDados)
 
 		return await tools
 			.verifyAtividade(newDados)

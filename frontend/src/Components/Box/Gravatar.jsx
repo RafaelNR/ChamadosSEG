@@ -3,7 +3,6 @@ import {
   Avatar,
 } from '@material-ui/core';
 
-import useUser from "../../Hooks/useUser";
 import Gravatar from '../../Service/gravatar.service';
 
 const MyGravatar = (props) => {

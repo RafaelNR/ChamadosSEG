@@ -39,7 +39,9 @@ const FormInsert = ({ handleChange, handleSubmit, values }) => {
   return (
     <form noValidate onSubmit={handleSubmit}>
       {loading ? (
-        <CircularProgress />
+        <div className={classes.dialogLoader}>
+          <CircularProgress />
+        </div>
       ) : (
         <>
           <DialogContent
@@ -60,7 +62,7 @@ const FormInsert = ({ handleChange, handleSubmit, values }) => {
                     <TextField
                       variant="filled"
                       margin="normal"
-                      value={values[[field.id]] ? values[[field.id]] : ""}
+                      value={values[[field.id]] ? values[[field.id]] : ''}
                       id={field.id}
                       label={field.label}
                       name={field.id}

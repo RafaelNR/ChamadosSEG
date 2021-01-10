@@ -1,7 +1,6 @@
 import React from "react";
 import clsx from 'clsx';
 import { Grid, Paper, makeStyles, FormLabel, RadioGroup, FormControlLabel, Radio } from '@material-ui/core'
-import { green } from '@material-ui/core/colors';
 import { withStyles } from '@material-ui/core/styles';
 
 //* COMPONENTES

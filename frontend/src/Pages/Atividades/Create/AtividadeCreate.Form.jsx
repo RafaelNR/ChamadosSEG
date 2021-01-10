@@ -16,7 +16,6 @@ import {
 import Progress from "../../../Components/Buttons/Progress";
 
 //* Service
-import { getMyClientes } from "../../../Service/user.service";
 import { Insert } from "../../../Service/atividade.service";
 
 //* Utils
@@ -78,30 +77,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default ({ setTicket, setAtividadeID, newInfo }) => {
+export default ({ setTicket, setAtividadeID, newInfo, clientes }) => {
   const classes = useStyles();
   const { handleSnackBar } = useSnackBar();
-  const [clientes, setClientes] = React.useState([]);
   const [atividade, setAtividade] = React.useState({});
   const [errors, setErrors] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
-
-  React.useEffect(() => {
-    getMyClientes()
-      .then((Dados) => {
-        if (Dados.success) {
-          setClientes(Dados.data);
-        }
-      })
-      .catch((err) => {
-        console.log(err, err.message)
-        handleSnackBar({
-          type: "error",
-          message: err.message && err.message !== 'Network Error' ? err.message : 'Erro em carregar clientes. Por favor tentar mais tarde.',
-        });
-      });
-  }, [handleSnackBar])
 
   React.useEffect(() => {
     setAtividade({
@@ -154,11 +136,12 @@ export default ({ setTicket, setAtividadeID, newInfo }) => {
             return setErrors([]);
           })
           .catch((error) => {
+            console.log(error)
             setSuccess(false);
             setLoading(false);
             handleSnackBar({
               type: "error",
-              message: error.message
+              message: error && error.message
                 ? error.message
                 : "Erro em inserir atividade.",
             });
@@ -174,7 +157,7 @@ export default ({ setTicket, setAtividadeID, newInfo }) => {
       !success 
       ? (
         <form onSubmit={handleSubmit} autoComplete="off">
-          <Grid container md={12} spacing={2} className={classes.boxgrid}>
+          <Grid container spacing={2} className={classes.boxgrid}>
             <Grid item className={classes.input}>
               <FormControl
                 variant="outlined"
@@ -235,7 +218,7 @@ export default ({ setTicket, setAtividadeID, newInfo }) => {
             </Grid>
           </Grid>
         
-          <Grid container md={12} spacing={2} className={classes.boxgrid}>
+          <Grid container spacing={2} className={classes.boxgrid}>
             <Grid item md={12} className={classes.button}>
               <Progress
                 handleSubmit={handleSubmit}

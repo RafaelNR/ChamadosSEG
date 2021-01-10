@@ -55,8 +55,8 @@ class Service {
     const fn = this.Api[method];
     this.setToken();
     if (data) {
-      return this.promise(fn(url, data, { cancelToken: this.source() }))
-      return;
+      return fn(url, data, { cancelToken: this.source() });
+      //return this.promise(fn(url, data, { cancelToken: this.source() }))
     }
 
     return fn(url, { cancelToken: this.source() });

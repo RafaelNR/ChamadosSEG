@@ -41,7 +41,7 @@ export default () => {
 			document.title = `${nome ? nome : 'Dashboard' } - OS Técnicos`;
 		}
 
-	}, [pathname]);
+	}, [pathname, nome]);
 
 	return (
 		<>

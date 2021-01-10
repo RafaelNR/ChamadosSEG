@@ -17,6 +17,13 @@ exports.seed = (knex) => {
 					created_at: knex.fn.now(),
 					updated_at: knex.fn.now(),
 				},
+				{
+					id: 3,
+					nome: "Suporte",
+					user_id: 1,
+					created_at: knex.fn.now(),
+					updated_at: knex.fn.now(),
+				},
 			]);
 		});
 };

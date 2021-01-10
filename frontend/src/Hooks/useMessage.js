@@ -32,7 +32,7 @@ const useMessage = () => {
 
       return setMessage(msg);
     },
-    [setMessage, history]
+    [setMessage, history, Logout]
   );
 
 

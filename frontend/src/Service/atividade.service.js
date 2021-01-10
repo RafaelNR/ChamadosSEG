@@ -35,10 +35,10 @@ export const Insert = async (data) => {
     if (Dados.data.success) 
       return Dados.data.data;
 
-    throw new Error(Dados);
+    throw new Error(Dados.data);
 
   } catch (error) {
-    throw error.data;
+    throw error;
   }
 };
 

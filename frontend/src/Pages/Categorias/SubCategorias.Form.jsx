@@ -21,7 +21,7 @@ import useDialog from "../../Context/DialogContext";
 
 const useStyles = makeStyles((theme) => ({
   dialogLoader: {
-    width: "800px",
+    width: "500px",
     height: "320px",
     display: "flex",
     justifyContent: "center",

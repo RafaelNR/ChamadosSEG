@@ -27,14 +27,29 @@ class createTicket {
 	getData() {
 		const date = new Date();
 		const Ano = date.getFullYear();
-		const Mes = date.getMonth() + 1;
-		const Day =
-			date.getDate() > 0 && date.getDate() <= 9
-				? `0${date.getDate()}`
-				: date.getDate();
+		const Mes = this.handleMonth(date);
+		const Day = this.handleDay(date);
+
+		console.log(Ano, Mes, Day)
 
 		return `${Ano}` + `${Mes}` + `${Day}`;
-  }
+	}
+
+	handleMonth(date) {
+		const Mes = date.getMonth() + 1;
+
+		return Mes > 0 && Mes <= 9
+			? `0${Mes}`
+			: Mes;	
+	}
+
+	handleDay(date) {
+		const Day = date.getDate();
+
+		return Day > 0 && Day <= 9
+			? `0${Day}`
+			: Day;
+	}
   
   handleTicket(ticket) {
     return `${ticket}`.split(".")[0];

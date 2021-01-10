@@ -7,6 +7,11 @@ import {
 import AtividadeCreate from "./AtividadeCreate.Form";
 import InfoCreate from "./InfoCreate.Form";
 
+//* SERVICE
+import { getMyClientes } from '../../../Service/user.service';
+
+//* CONTEXT
+import useSnackBar from '../../../Context/SnackBarContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,9 +28,28 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
+  const { handleSnackBar } = useSnackBar();
   const [atividadeID, setAtividadeID] = React.useState(null);
+  const [clientes, setClientes] = React.useState([]);
   const [ticket, setTicket] = React.useState(null);
   const [infos, setInfos] = React.useState(0);
+
+  
+  React.useEffect(() => {
+    getMyClientes()
+      .then((Dados) => {
+        if (Dados.success) {
+          setClientes(Dados.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+        handleSnackBar({
+          type: "error",
+          message: err && err.message ? err.message : 'Erro em carregar clientes. Por favor tentar mais tarde.',
+        });
+      });
+  }, [handleSnackBar])
 
   const scroll = () => {
     console.log('acroll')
@@ -54,6 +78,7 @@ export default () => {
           setAtividadeID={setAtividadeID}
           setTicket={setTicket}
           newInfo={incrementInfos}
+          clientes={clientes}
         />
       </Paper>
 
