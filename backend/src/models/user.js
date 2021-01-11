@@ -65,7 +65,6 @@ module.exports = {
 			.insert(userDados)
 			.into("users")
 			.then((ID) => {
-				console.log(ID)
 				// Sem Clients vinculados
 				if (!clientsUser) return ID;
 				// Com clients vinculados

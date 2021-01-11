@@ -30,8 +30,6 @@ class createTicket {
 		const Mes = this.handleMonth(date);
 		const Day = this.handleDay(date);
 
-		console.log(Ano, Mes, Day)
-
 		return `${Ano}` + `${Mes}` + `${Day}`;
 	}
 

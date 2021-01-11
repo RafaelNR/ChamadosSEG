@@ -98,7 +98,6 @@ const findOne = async (req, res) => {
 
 const findOneByTicket = async (req, res) => {
 	try {
-		console.log(req.params)
 		if (!req.params.ticket) throw "Parâmetros inválidos";
 		const ID = Validate.Ticket(req.params.ticket);
 		const Dados = await Model.findOneByTicket(ID);
@@ -177,8 +176,6 @@ const tools = {
 			...Dados,
 			ticket: await Ticket.created(),
 		});
-
-		console.log(newDados)
 
 		return await tools
 			.verifyAtividade(newDados)

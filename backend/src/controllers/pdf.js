@@ -34,7 +34,6 @@ const Atividade = async (req,res) => {
 	}
 
 	Result.registerLog(req.userId, "PDF", "Atividade");
-	console.log(Result.res)
 	return res.status(Result.status).json(Result.res);
 };
 

@@ -74,8 +74,7 @@ module.exports = {
 			.update(Dados)
 			.then(async () => await findOne(Dados.id))
 			.catch(async (error) => {
-				console.log(error);
-				return { error: "Erro em retornar os dados atualizados." };
+				return { error: error && error.messagee ? error : "Erro em retornar os dados atualizados." };
 			});
 	},
 
