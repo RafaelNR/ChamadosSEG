@@ -76,7 +76,6 @@ const UsuariosProvider = ({ children }) => {
         if (data.error) throw data;
         const resp = await Api.insert("usuarios", data);
         if (!resp.data.success) throw resp.data;
-        console.log(resp.data.data);
         setUsuarios((usuarios) =>
           usuarios.concat({ ...usuario, id: resp.data.data.id })
         );
@@ -99,9 +98,7 @@ const UsuariosProvider = ({ children }) => {
     },
     async update(usuario) {
       try {
-        console.log(usuario);
         const data = await UpdateSchema(usuario);
-        console.log(data);
         if (data.error) throw data;
         const resp = await Api.update("usuarios", data);
         if (!resp.data.success) throw resp.data.error;
