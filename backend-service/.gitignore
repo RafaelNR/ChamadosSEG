@@ -3,3 +3,4 @@
 /coverage
 /tmp/*
 /tmp
+ecosystem.config.js

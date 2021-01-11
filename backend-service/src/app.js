@@ -6,9 +6,19 @@ const Routes = require('./routes/index')
 
 const App = Express();
 
-App.use("/tmp", Express.static("tmp"));
-App.use(Cors())
 App.use(Helmet());
+App.use("/tmp", Express.static("tmp"));
+
+//CORS
+const whiteList = ["http://localhost:3000", "http://localhost"];
+App.use(
+	Cors({
+		origin: whiteList,
+		methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+		preflightContinue: false,
+		optionsSuccessStatus: 204,
+	})
+);
 App.use(Access.Purchase);
 
 App.use(Routes)

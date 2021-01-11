@@ -12,14 +12,14 @@ export async function Login(user, passwd) {
       passwd: passwd,
     })
 
-    if(Dados.error) throw new Error(Dados);
+    if (Dados.error) throw Dados;
     
     const Resp = await Service.exec("post", '/login', Dados);
 
     if (Resp.data.success) {
       return Resp.data.data;
     } else {
-      throw Resp;
+      throw Resp.data;
     }
 
   } catch (error) {

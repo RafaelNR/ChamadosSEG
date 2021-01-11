@@ -8,7 +8,14 @@ module.exports = (App) => {
 	App.use(Helmet());
 
 	// Cors
-	App.use(Cors());
+	App.use(
+		Cors({
+			"origin": "*",
+			"methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+			"preflightContinue": false,
+			"optionsSuccessStatus": 204
+		}
+	));
 
 	// BodyParser
 	App.use(BodyParser.urlencoded({ extended: true }));
@@ -24,7 +31,7 @@ module.exports = (App) => {
 	);
 
 	// Morgan
-	if (process.env.NODE_ENV != "test") {
+	if (process.env.NODE_ENV === "dev") {
 		App.use(
 			Morgan((tokens, req, res) => {
 				return [

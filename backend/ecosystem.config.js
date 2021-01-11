@@ -32,7 +32,7 @@ module.exports = {
 				BACK_PORT: 3000,
 				DB_NAME: "segchamados",
 				DB_USER: "root",
-				DB_PASSWORD: "Seg@2020",
+				DB_PASSWORD: "Seg@2021",
 				DB_HOST: "localhost",
 				DB_DIALECT: "mysql2",
 				VERSION: "1.0.0",
