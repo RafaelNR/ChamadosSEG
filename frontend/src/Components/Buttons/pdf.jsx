@@ -30,10 +30,8 @@ const PDFIconAtividade = ({ ticket }) => {
   const [loading, setLoading] = React.useState(false);
 
   const handleClick = async (e) => {
-    console.log('click')
     setLoading(true);
     await AtividadePDF(ticket).then(resp => {
-      console.log(resp)
       window.open(resp.link, '_blank');
       setLink(resp.link);
       setLoading(false);
@@ -46,7 +44,7 @@ const PDFIconAtividade = ({ ticket }) => {
       setLoading(false);
       handleSnackBar({
         type: "error",
-        message: error ? error.message : `Erro em gerar o PDF`,
+        message: error && error.message ? error.message : `Erro em gerar o PDF`,
       });
     })
   }

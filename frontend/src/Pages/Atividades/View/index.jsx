@@ -90,7 +90,7 @@ export default () => {
         {loading ? (
           <Loading type="Paper" />
         ) : (
-          <Grid container md={12} spacing={2}>
+          <Grid container spacing={2}>
             <Atividade Atividade={atividade} />
             <AtividadeCliente Cliente={cliente} />
           </Grid>

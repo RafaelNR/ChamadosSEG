@@ -89,16 +89,13 @@ export const AtividadePDF = async (ticket) => {
   try {
 
     const url = `/pdf/atividade/${ticket}`;
-    console.log(url)
     const Dados = await Service.exec('get', url);
-
-    console.log(Dados)
 
     if (Dados.data.success) {
       return Dados.data
     }
 
-    throw new Error(Dados.data);
+    throw Dados.data
     
   } catch (error) {
     console.log(error)
