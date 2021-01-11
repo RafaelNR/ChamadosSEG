@@ -21,38 +21,41 @@ import useOrderTable from "../../Context/OrderTableContext";
 import usePageTable from "../../Context/PageTableContext";
 import useSearch from "../../Context/SearchContext";
 
-
+//* UTILS
 import { handleDateTimeFull } from '../../Utils/dates'
+
+//* STORE
+import LogMessage from '../../Store/LogStore'
 
 // Header Table
 const headCells = [
   {
-    id: "created_at",
+    id: 'created_at',
     numeric: false,
     disablePadding: false,
-    label: "Registro",
-    sort: false,
+    label: 'Registro',
+    sort: false
   },
   {
-    id: "type",
+    id: 'nome',
     numeric: false,
     disablePadding: false,
-    label: "Página",
-    sort: false,
+    label: 'Nome',
+    sort: false
   },
   {
-    id: "category",
+    id: 'type',
     numeric: false,
     disablePadding: false,
-    label: "Action",
-    sort: false,
+    label: 'Página',
+    sort: false
   },
   {
-    id: "nome",
+    id: '',
     numeric: false,
     disablePadding: false,
-    label: "Nome",
-    sort: false,
+    label: 'Menssagem',
+    sort: false
   },
 ];
 
@@ -142,16 +145,16 @@ export default function () {
                         scope="row"
                         padding="default"
                       >
-                        { handleDateTimeFull(row.created_at) }
+                        {handleDateTimeFull(row.created_at)}
+                      </TableCell>
+                      <TableCell align="left" className={classes.tablerow}>
+                        {row.nome}
                       </TableCell>
                       <TableCell align="left" className={classes.tablerow}>
                         {row.type}
                       </TableCell>
                       <TableCell align="left" className={classes.tablerow}>
-                        {row.category}
-                      </TableCell>
-                      <TableCell align="left" className={classes.tablerow}>
-                        {row.nome}
+                        {LogMessage(row.category)}
                       </TableCell>
                     </TableRow>
                   );
