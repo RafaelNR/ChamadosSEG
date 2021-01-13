@@ -13,7 +13,7 @@ const MythemeProvider = ({ children }) => {
     palette: {
       type: darkMode ? 'dark' : 'light',
       primary: {
-        light: '1161A6',
+        light: '#1161A6',
         main: '#0B4672',
         dark: '#020B13'
       },

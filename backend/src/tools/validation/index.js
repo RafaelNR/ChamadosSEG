@@ -1,5 +1,7 @@
 const Joi = require("@hapi/joi").extend(require("@hapi/joi-date"));
 
+const moment = require('moment');
+
 const type = {
 	number: {
 		id: Joi.number().integer().positive().required(),
@@ -31,11 +33,12 @@ const type = {
 		default: Joi.string().required(),
 	},
 	date: {
-		last_access: Joi.date().default(new Date()),
-		created_at: Joi.date().default(new Date()),
-		updated_at: Joi.date().default(new Date()),
+		last_access: () => moment(new Date()).locale("pt-br").format("YYYY-MM-DD"),
+		created_at: () => moment(new Date()).locale("pt-br").format("YYYY-MM-DD"),
+		updated_at: () => moment(new Date()).locale("pt-br").format("YYYY-MM-DD"),
+		dateAtividade: (Date) => moment(Date).locale("pt-br").format("YYYY-MM-DD"),
 		DiaMesAno: (Date) => checkDateIsExist(Date),
-		default: Joi.date().format("YYYY-MM-DD").utc(),
+		default: Joi.date().format("YYYY-MM-DD"),
 	},
 	array: {
 		clients: Joi.array()

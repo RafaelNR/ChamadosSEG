@@ -14,7 +14,7 @@ export const getAtividade = async (ticket) => {
     if (Dados.data.success) 
       return Dados.data.data;
 
-    throw new Error(Dados);
+    throw Dados.data;
     
   } catch (error) {
     throw error.data;
@@ -32,10 +32,12 @@ export const Insert = async (data) => {
       date: handleDate(validateData.date, "YYYY-MM-DD"),
     });
 
+    console.log(Dados)
+
     if (Dados.data.success) 
       return Dados.data.data;
 
-    throw new Error(Dados.data);
+    throw Dados.data;
 
   } catch (error) {
     throw error;
@@ -53,7 +55,7 @@ export const InsertInfo = async (data) => {
     if (Dados.data.success)
       return Dados.data.data;
 
-    throw new Error(Dados);
+    throw Dados.data;
 
   } catch (error) {
     throw error.data;
@@ -78,7 +80,7 @@ export const UpdateInfo = async (data) => {
     if (Dados.data.success)
       return Dados.data.data;
 
-    throw new Error(Dados);
+    throw Dados.data;
 
   } catch (error) {
     throw error.data;

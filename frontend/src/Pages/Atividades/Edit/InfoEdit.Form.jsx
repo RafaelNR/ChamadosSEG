@@ -121,6 +121,10 @@ export default ({ Info, ticket }) => {
     setSuccess(false);
   }, [setSuccess]);
 
+  const checkUser = () => {
+
+  }
+
   return (
     <Accordion info={success ? info : null}>
       <form onSubmit={handleSubmit} autoComplete="off">
@@ -186,12 +190,16 @@ export default ({ Info, ticket }) => {
             </FormControl>
           </Grid>
           <Grid item style={{ padding: '0px' }} className={classes.buttons}>
-            <SaveInfo
+
+          
+              <SaveInfo
               handleSubmit={handleSubmit}
               loading={loading}
               success={success}
-            />
-            {success && !loading && <EditInfoAtividade handleEdit={handleEdit} />}
+              />
+              { success && !loading && <EditInfoAtividade handleEdit={handleEdit} /> }
+            
+            
           </Grid>
         </Grid>
       </form>

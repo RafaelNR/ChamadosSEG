@@ -118,11 +118,9 @@ export default ({ setTicket, setAtividadeID, newInfo, clientes }) => {
 
         Insert(atividade)
           .then((Dados) => {
-            if (Dados.error) {
-              setSuccess(false);
-              setLoading(false);
-              return setErrors(Dados.errors);
-            }
+            setLoading(false);
+
+            if (Dados.error) return setErrors(Dados.errors);
 
             setSuccess(true);
             setLoading(false);

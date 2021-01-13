@@ -60,7 +60,8 @@ class Atividade {
 						'email',
 						'telefone',
 						'representante',
-						'imagem'
+						'n_contrato',
+						'imagem',
 					)
 					.from('clientes')
 					.where('clientes.id', '=', Dados.cliente_id)

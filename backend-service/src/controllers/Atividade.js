@@ -1,3 +1,4 @@
+const moment = require('moment');
 class Atividade {
   
   constructor() {
@@ -22,7 +23,24 @@ class Atividade {
         height: "30mm",
       }
 		};
-	}
+  }
+  
+
+  async handleAtividade() {
+
+    const Atividade = await this.Model.findByTicket(this.ticket);
+
+    if (!Atividade || Atividade.length <= 0)
+      throw new Error("Atividade não existe");
+    
+    return {
+      new_date: moment(Atividade.date).locale('pt-br').format("DD/MM/YYYY"),
+      new_created_at: moment(Atividade.created_at).locale('pt-br').format('DD/MM/YYYY HH:mm'),
+      new_updated_at: moment(Atividade.updated_at).locale('pt-br').format('DD/MM/YYYY HH:mm'),
+      ...Atividade
+    }
+
+  }
 
   async createPDF(req, res, next) {
     try {
@@ -30,10 +48,10 @@ class Atividade {
       this.ticket = req.params.ticket;
 			if (!this.ticket) throw new Error("Ticket não existe");
       
-      this.Atividade = await this.Model.findByTicket(this.ticket);
-      
-      if (!this.Atividade || this.Atividade.length <= 0) throw new Error('Atividade não existe');
+      this.Atividade = await this.handleAtividade();
 
+      console.log(this.Atividade)
+      
       // Cria o PDF
       this.pdf.create(await this.View.render(this.ticket,this.Atividade),this.config).toFile(`./tmp/uploads/${this.ticket}.pdf`, (err, file) => {
 
@@ -46,9 +64,6 @@ class Atividade {
           path: `/tmp/${this.ticket}.pdf`,
           link: `${process.env.URL_SERVICE}/tmp/uploads/${this.ticket}.pdf`
         })
-
-        // res.type('pdf')
-        // return res.sendFile(`${process.cwd()}/tmp/${this.ticket}.pdf`)
         
       })
 

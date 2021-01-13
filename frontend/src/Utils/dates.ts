@@ -17,6 +17,7 @@ function handleDateTimeFull(data: string): string {
 }
 
 function handleDate(data: string, format: string = "DD/MM/YYYY"): string {
+  console.log(data)
   moment.locale('pt-br');
   return moment(data).format(format);
 }

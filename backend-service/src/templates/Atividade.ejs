@@ -145,12 +145,12 @@
       <div class="border">
         <div class="col-xs-3 imagem">
           <img
-          src="https://lh3.googleusercontent.com/proxy/YQJWXCDCNP5tcwoNZO6hXwImmhDGCc6vHn5cmFW_9iv5wVmezxxr39o7qKpy--fCb7p0cm5-MFsC9Az09xh1jWEVQlpYQRcyw7pbLHBSumo8ahvMdaCdOnhCgGOR" />
+          src="<%= Atividade.imagem %>" />
         </div>
         <div class="col-xs-9 dados">
           <span><strong>Nome Fantasia:</strong> <%= Atividade.cliente.nome_fantasia %></span>
           <span><strong>CNPJ/CPF:</strong> <%= Atividade.cliente.cnpj_cpf %></span>
-          <span><strong>Nº Contrato:</strong> <%= Atividade.cliente.contrato %></span>
+          <span><strong>Nº Contrato:</strong> <%= Atividade.cliente.n_contrato %></span>
           <span><strong>Representante:</strong> <%= Atividade.cliente.representante %></span>
           <span><strong>Telefone:</strong> <%= Atividade.cliente.telefone %></span>
           <span><strong>Email:</strong> <%= Atividade.cliente.email %></span>
@@ -166,11 +166,11 @@
       </div>
 
       <div class="dados">
-        <span><strong>Data:</strong> <%= Atividade.date %> </span>
+        <span><strong>Data:</strong> <%= Atividade.new_date %> </span>
         <span><strong>Ticket:</strong> <%= Atividade.ticket %> </span>
         <span><strong>Criado por:</strong> <%= Atividade['técnico'] %></span>
-        <span><strong>Data de abertura:</strong> <%= Atividade.created_at %></span>
-        <span><strong>Ultima alteração:</strong> <%= Atividade.updated_at %></span>
+        <span><strong>Data de abertura:</strong> <%= Atividade.new_created_at %></span>
+        <span><strong>Ultima alteração:</strong> <%= Atividade.new_updated_at %></span>
       </div>
 
     </div>

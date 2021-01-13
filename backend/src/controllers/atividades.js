@@ -117,6 +117,7 @@ const insert = async (req, res) => {
 	try {
 		if (!req.body) throw "Informações não encontradas!";
 		const Dados = await tools.handlingInsert({ user_id: req.userId, ...req.body });
+		console.log(Dados)
 		const ID = await Model.insert(Dados);
 
 		Result.ok(201, await Model.findOne(ID));
@@ -171,6 +172,8 @@ const tools = {
 	 * @param {Object} Dados
 	 */
 	handlingInsert: async (Dados) => {
+
+		console.log(Dados)
 		
 		const newDados = Validate.insertAtividades({
 			...Dados,
@@ -240,14 +243,14 @@ const tools = {
 	verifyAtividade: async (Dados) => {
 		const count = await Model.countByUserClientDate(Dados);
 
-		if (count.id > 0)
-			throw "Já existe atividades para esse cliente no dia informado.";
+		if (count > 0)
+			throw "Já existe atividades do seu usuário para esse cliente na data informada.";
 
 		if (!Data.compareDateLargerToday(Dados.date))
 			throw "Não é permitido criar um atividade com data maior que hoje.";
 
-		if (!Data.compareDateMaxDays(Dados.date, 15))
-			throw "Não é permitido criar um atividade com mais de 15 dias da data de hoje.";
+		if (!Data.compareDateMaxDays(Dados.date, 10))
+			throw "Não é permitido criar um atividade com mais de 10 dias da data de hoje.";
 			
 		if (!Data.compareDateMonth(Dados.date))
 			throw "Não é permitido criar uma atividade fora do mês atual.";		

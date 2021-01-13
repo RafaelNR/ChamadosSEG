@@ -2,6 +2,7 @@
 
 const { Joi, validate, type } = require("./index");
 
+
 module.exports = {
 	ID: (id) => validate(id, type.number.id),
 	login: (Dados) =>
@@ -29,8 +30,8 @@ module.exports = {
 				telefone: type.string.telefone,
 				role_id: type.number.role_id,
 				actived: type.number.actived,
-				created_at: type.date.created_at,
-				updated_at: type.date.updated_at,
+				created_at: type.date.created_at(),
+				updated_at: type.date.updated_at(),
 			})
 		);
 	},
@@ -47,7 +48,7 @@ module.exports = {
 				telefone: type.string.telefone,
 				role_id: type.number.role_id,
 				actived: type.number.actived,
-				updated_at: type.date.updated_at,
+				updated_at: type.date.updated_at(),
 			})
 		);
 	},
@@ -64,8 +65,8 @@ module.exports = {
 				telefone: type.string.telefone,
 				representante: type.string.representante,
 				n_contrato: type.string.n_contrato,
-				created_at: type.date.created_at,
-				updated_at: type.date.updated_at,
+				created_at: type.date.created_at(),
+				updated_at: type.date.updated_at(),
 			})
 		);
 	},
@@ -83,7 +84,7 @@ module.exports = {
 				telefone: type.string.telefone,
 				representante: type.string.representante,
 				n_contrato: type.string.n_contrato,
-				updated_at: type.date.updated_at,
+				updated_at: type.date.updated_at(),
 			})
 		);
 	},
@@ -95,9 +96,9 @@ module.exports = {
 				ticket: type.string.ticket,
 				user_id: type.number.id,
 				cliente_id: type.number.id,
-				date: type.date.default,
-				created_at: type.date.created_at,
-				updated_at: type.date.updated_at,
+				date: type.date.dateAtividade(Dados.date),
+				created_at: type.date.created_at(),
+				updated_at: type.date.updated_at(),
 			})
 		);
 	},
@@ -108,7 +109,7 @@ module.exports = {
 			Joi.object({
 				id: type.number.id,
 				cliente_id: type.number.id,
-				updated_at: type.date.updated_at,
+				updated_at: type.date.updated_at(),
 			})
 		);
 	},
@@ -122,8 +123,8 @@ module.exports = {
 				categoria_id: type.number.id,
 				atividade_id: type.number.id,
 				user_id: type.number.id,
-				created_at: type.date.created_at,
-				updated_at: Joi.date().default(new Date()),
+				created_at: type.date.created_at(),
+				updated_at: type.date.updated_at(),
 			}).options({ stripUnknown: true }) // remove as outras propriedades;
 		);
 	},
@@ -136,7 +137,7 @@ module.exports = {
 				descricao: type.string.default,
 				categoria_id: type.number.id,
 				user_id: type.number.id,
-				updated_at: Joi.date().default(new Date()),
+				updated_at: type.date.updated_at(),
 			}).options({ stripUnknown: true }) // remove as outras propriedades;
 		);
 	},
@@ -149,8 +150,8 @@ module.exports = {
 				type: type.string.categoria,
 				category: type.string.categoria,
 				error: type.string.error,
-				created_at: Joi.date().default(new Date()),
-				updated_at: Joi.date().default(new Date()),
+				created_at: type.date.created_at(),
+				updated_at: type.date.updated_at(),
 			})
 		);
 	},
@@ -161,8 +162,8 @@ module.exports = {
 			Joi.object({
 				nome: type.string.categoria,
 				user_id: type.number.id,
-				created_at: type.date.created_at,
-				updated_at: type.date.updated_at,
+				created_at: type.date.created_at(),
+				updated_at: type.date.updated_at(),
 			})
 		);
 	},
@@ -174,7 +175,7 @@ module.exports = {
 				id: type.number.id,
 				nome: type.string.categoria,
 				user_id: type.number.id,
-				updated_at: type.date.updated_at,
+				updated_at: type.date.updated_at(),
 			})
 		);
 	},
@@ -185,8 +186,8 @@ module.exports = {
 			Joi.object({
 				nome: type.string.nome,
 				user_id: type.number.id,
-				created_at: type.date.created_at,
-				updated_at: type.date.updated_at,
+				created_at: type.date.created_at(),
+				updated_at: type.date.updated_at(),
 			})
 		);
 	},
@@ -198,7 +199,7 @@ module.exports = {
 				id: type.number.id,
 				nome: type.string.nome,
 				user_id: type.number.id,
-				updated_at: type.date.updated_at,
+				updated_at: type.date.updated_at(),
 			})
 		);
 	},
@@ -211,8 +212,8 @@ module.exports = {
 				owner_user_id: type.number.id,
 				open_by_user_id: type.number.id,
 				status: type.string.status,
-				created_at: type.date.created_at,
-				updated_at: type.date.updated_at,
+				created_at: type.date.created_at(),
+				updated_at: type.date.updated_at(),
 			})
 		);
 	},
@@ -226,7 +227,7 @@ module.exports = {
 				owner_user_id: type.number.id,
 				open_by_user_id: type.number.id,
 				status: type.string.status,
-				updated_at: type.date.updated_at,
+				updated_at: type.date.updated_at(),
 			})
 		);
 	},
@@ -239,8 +240,8 @@ module.exports = {
 				user_id: type.number.id,
 				type: type.string.status,
 				descricao: type.string.default,
-				created_at: type.date.created_at,
-				updated_at: type.date.updated_at,
+				created_at: type.date.created_at(),
+				updated_at: type.date.updated_at(),
 			})
 		);
 	},
@@ -254,7 +255,7 @@ module.exports = {
 				user_id: type.number.id,
 				type: type.string.status,
 				descricao: type.string.default,
-				updated_at: type.date.updated_at,
+				updated_at: type.date.updated_at(),
 			})
 		);
 	},
