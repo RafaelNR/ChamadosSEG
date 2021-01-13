@@ -48,7 +48,7 @@ module.exports = async (req, res) => {
 			{ id: dbUser.id /* Playload */ },
 			process.env.SECRET,
 			{
-				expiresIn: process.env.NODE_ENV === 'dev' ? 9000000 : 3600,
+				expiresIn: process.env.NODE_ENV === 'dev' ? 3600 : 3600,
 				//expiresIn: 60,
 			}
 		);

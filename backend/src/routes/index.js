@@ -16,17 +16,6 @@ Router.get("/", (req, res) =>
 Router.post("/login", Login);
 Router.get("/auth", Auth);
 
-// Essas rotas requerem token;
-Router.use("/usuarios", verifyToken, require("./user"));
-Router.use("/clientes", verifyToken, require("./clientes"));
-Router.use("/atividades", verifyToken, require("./atividades"));
-Router.use("/categorias", verifyToken, require("./category"));
-Router.use("/subcategorias", verifyToken, require("./subcategory"));
-Router.use(["/tasks", "/tarefas"], verifyToken, require("./tasks"));
-Router.use('/perfil', verifyToken, Perfil);
-Router.get("/log", verifyToken, Log.index);
-Router.use("/pdf", verifyToken, require('./pdf'));
-
 Router.get("/logout", (req, res) => {
 	return res.status(200).json({
 		Page: "logout",
@@ -34,6 +23,22 @@ Router.get("/logout", (req, res) => {
 		token: null,
 	});
 });
+
+
+
+
+// Essas rotas requerem token;
+Router.use("/usuarios", verifyToken, require("./user"));
+Router.use("/clientes", verifyToken, require("./clientes"));
+Router.use("/atividades", verifyToken, require("./atividades"));
+Router.use("/categorias", verifyToken, require("./category"));
+Router.use("/subcategorias", verifyToken, require("./subcategory"));
+Router.use(["/tasks", "/tarefas"], verifyToken, require("./tasks"));
+Router.use("/perfil", verifyToken, Perfil);
+Router.use("/pdf", verifyToken, require("./pdf"));
+//Router.use("/dashboard", require('./dashboard.js'));
+Router.get("/log", verifyToken, Log.index);
+
 
 
 // Página não existe
