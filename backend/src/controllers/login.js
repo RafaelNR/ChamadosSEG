@@ -32,17 +32,16 @@ module.exports = async (req, res) => {
 
 		// Dados do Banco
 		const dbUser = await Model.login(bodyUser.user);
-
-		if (!dbUser.actived || dbUser.actived === 0)
-			throw "Usuário sem permissão de login.";
 			
 		if (
 				!dbUser ||
 				(!bodyUser.user !== dbUser.user &&
 					!Compare(bodyUser.passwd, dbUser.passwd))
 			)
-				// Se Senha inválida.
 				throw "Usuário ou Senha são inválidos.";
+
+		if (!dbUser.actived || dbUser.actived === 0)
+			throw "Usuário sem permissão de login.";
 
 		const newToken = jwt.sign(
 			{ id: dbUser.id /* Playload */ },
