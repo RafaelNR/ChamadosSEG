@@ -36,7 +36,7 @@ Router.use("/subcategorias", verifyToken, require("./subcategory"));
 Router.use(["/tasks", "/tarefas"], verifyToken, require("./tasks"));
 Router.use("/perfil", verifyToken, Perfil);
 Router.use("/pdf", verifyToken, require("./pdf"));
-//Router.use("/dashboard", require('./dashboard.js'));
+Router.use("/dashboard", verifyToken, require('./dashboard.js'));
 Router.get("/log", verifyToken, Log.index);
 
 

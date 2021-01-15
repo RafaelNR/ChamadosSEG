@@ -3,7 +3,7 @@
 module.exports = {
 	apps: [
 		{
-			name: "Os Técnicos",
+			name: "OS_BACKEND_SERVICE",
 			script: "./server.js",
 			watch: true,
 			env_dev: {

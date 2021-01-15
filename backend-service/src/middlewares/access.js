@@ -6,7 +6,6 @@ class Access {
 		
 		const Token = req.headers.authorization;
 		
-
 		console.log(Token)
 
 		if (Token === `Bearer ${process.env.SECRET}`) {

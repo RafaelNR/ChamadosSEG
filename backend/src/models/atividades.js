@@ -241,6 +241,106 @@ module.exports = {
 	},
 
 	/**
+	 * Todas minhas atividades editais
+	 * @param {number} user_id 
+	 */
+	findMyOpen: async (user_id) => {
+
+		return await knex
+			.select(
+				"atividades.id",
+				"atividades.ticket",
+				"atividades.date",
+				"clientes.nome_fantasia as cliente",
+				"users.nome as técnico",
+				"atividades.created_at",
+				"atividades.updated_at"
+			)
+			.from("atividades")
+			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
+			.join("users", "users.id", "=", "atividades.user_id")
+			.where("atividades.user_id", "=", user_id)
+			.andWhereRaw("date > DATE_FORMAT(now() - INTERVAL 10 DAY , '%Y-%m-%d')")
+			.orderBy("atividades.id", "desc")
+			.orderBy("atividades.date", "desc")
+		
+	},
+
+	/**
+	 * Todas minhas atividades fechadas
+	 * @param {number} user_id 
+	 */
+	findMyClose: async (user_id) => {
+
+		return await knex
+			.select(
+				"atividades.id",
+				"atividades.ticket",
+				"atividades.date",
+				"clientes.nome_fantasia as cliente",
+				"users.nome as técnico",
+				"atividades.created_at",
+				"atividades.updated_at"
+			)
+			.from("atividades")
+			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
+			.join("users", "users.id", "=", "atividades.user_id")
+			.where("atividades.user_id", "=", user_id)
+			.andWhereRaw(
+				"date < DATE_FORMAT(now() - INTERVAL 10 DAY , '%Y-%m-%d')"
+			)
+			.orderBy("atividades.id", "desc")
+			.orderBy("atividades.date", "desc")
+
+	},
+
+	findMyLastDayOpen: async (user_id) => {
+
+		return await knex
+			.select(
+				"atividades.id",
+				"atividades.ticket",
+				"atividades.date",
+				"clientes.nome_fantasia as cliente",
+				"users.nome as técnico",
+				"atividades.created_at",
+				"atividades.updated_at"
+			)
+			.from("atividades")
+			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
+			.join("users", "users.id", "=", "atividades.user_id")
+			.where("atividades.user_id", "=", user_id)
+			.andWhereRaw("date = DATE_FORMAT(now() - INTERVAL 9 DAY , '%Y-%m-%d')")
+			.orderBy("atividades.id", "desc")
+			.orderBy("atividades.date", "desc")
+		
+	},
+
+	findMyHalfOpen: async (user_id) => {
+
+		return await knex
+			.select(
+				"atividades.id",
+				"atividades.ticket",
+				"atividades.date",
+				"clientes.nome_fantasia as cliente",
+				"users.nome as técnico",
+				"atividades.created_at",
+				"atividades.updated_at"
+			)
+			.from("atividades")
+			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
+			.join("users", "users.id", "=", "atividades.user_id")
+			.where("atividades.user_id", "=", user_id)
+			.andWhereRaw(
+				"date between DATE_FORMAT(now() - INTERVAL 5 DAY , '%Y-%m-%d') and DATE_FORMAT(now(), '%Y-%m-%d')"
+			)
+			.orderBy("atividades.id", "desc")
+			.orderBy("atividades.date", "desc")
+
+	},
+
+	/**
 	 * Conta quantos chamados tem aberto para aquele usuário na data.
 	 * @param {number} user_id
 	 * @param {number} client_id
