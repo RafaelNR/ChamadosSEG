@@ -26,8 +26,8 @@ module.exports = {
 			},
 			env_prod: {
 				APP_NAME: "OSTECNICOS_BACKEND",
-				NODE_ENV: "dev",
-				DEPLOY: "dev",
+				NODE_ENV: "prod",
+				DEPLOY: "prod",
 				IP: "127.0.0.1",
 				SECRET: "rafael@seg@chamados",
 				BACK_PORT: 3000,
