@@ -3,9 +3,10 @@
 module.exports = {
 	apps: [
 		{
-			name: "OS_Backend",
+			name: "OSBackend",
 			script: "./index.js",
 			watch: true,
+			
 			env_dev: {
 				APP_NAME: "OSTECNICOS_BACKEND",
 				NODE_ENV: "dev",
