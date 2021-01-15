@@ -49,8 +49,6 @@ class Atividade {
 			if (!this.ticket) throw new Error("Ticket não existe");
       
       this.Atividade = await this.handleAtividade();
-
-      console.log(this.Atividade)
       
       // Cria o PDF
       this.pdf.create(await this.View.render(this.ticket,this.Atividade),this.config).toFile(`./tmp/uploads/${this.ticket}.pdf`, (err, file) => {

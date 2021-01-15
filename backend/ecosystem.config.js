@@ -3,7 +3,7 @@
 module.exports = {
 	apps: [
 		{
-			name: "Os Técnicos",
+			name: "OS_Backend",
 			script: "./index.js",
 			watch: true,
 			env_dev: {
