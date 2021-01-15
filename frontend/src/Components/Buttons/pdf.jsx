@@ -50,6 +50,7 @@ const PDFIconAtividade = ({ ticket }) => {
   }
 
   const OpenLink = () => {
+    console.log(link)
     return window.open(link, '_blank');
   }
 

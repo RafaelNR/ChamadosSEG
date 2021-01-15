@@ -18,21 +18,17 @@ App.listen(process.env.BACK_PORT, (err) => {
 process.on("SIGTERM", () => {
 	console.info("SIGTERM signal received.");
 	console.log("Closing http server.");
-	App.close(() => {
-		console.log("server closed.");
-    console.log("Knex connection destroy");
-    knex.destroy();
-		process.exit(0);
-	});
+	console.log("Knex connection destroy");
+	console.log("server closed.");
+	knex.destroy();
+	process.exit(0);
 });
 
 process.on("SIGINT", function () {
 	console.info("SIGINT signal received.");
 	console.log("Closing http server.");
-	App.close(() => {
-		console.log("server closed.");
-		console.log("Knex connection destroy");
-		knex.destroy();
-		process.exit(0);
-	});
+	console.log("Knex connection destroy");
+	console.log("server closed.");
+	knex.destroy();
+	process.exit(0);
 });

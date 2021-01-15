@@ -8,7 +8,7 @@ module.exports = {
 			host: 'localhost',
 			database: 'segchamados',
 			user: 'root',
-			passwd: '',
+			password: '',
 		},
 		migrations: {
 			tableName: "migrations",
