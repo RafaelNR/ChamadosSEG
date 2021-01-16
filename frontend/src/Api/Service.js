@@ -55,8 +55,9 @@ class Service {
     const fn = this.Api[method];
     this.setToken();
     if (data) {
-      //return fn(url, data, { cancelToken: this.source() });
-      return this.promise(fn(url, data, { cancelToken: this.source() }))
+      return process.env.REACT_APP_NODE === 'dev'
+        ? this.promise(fn(url, data, { cancelToken: this.source() }))
+        : fn(url, data, { cancelToken: this.source() });
     }
 
     return fn(url, { cancelToken: this.source() });
