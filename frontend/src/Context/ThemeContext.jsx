@@ -2,7 +2,7 @@ import React, { createContext, useState, useContext } from "react";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import { green, red, blue } from '@material-ui/core/colors';
-
+import { CssBaseline } from '@material-ui/core'
 
 const ThemeContext = createContext({})
 
@@ -10,6 +10,19 @@ const MythemeProvider = ({ children }) => {
   const [darkMode, setdarkMode] = useState(false);
 
   const theme = createMuiTheme({
+    overrides: {
+      MuiCssBaseline: {
+        '@global': {
+          '#root': {
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100vh'
+          },
+        }
+      }
+    },
+    darkMode: darkMode,
     palette: {
       type: darkMode ? 'dark' : 'light',
       primary: {
@@ -60,6 +73,7 @@ const MythemeProvider = ({ children }) => {
 
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <ThemeContext.Provider
         value={{
           darkMode,

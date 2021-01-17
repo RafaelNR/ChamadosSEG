@@ -9,16 +9,31 @@ import {
   ListItemIcon,
   ListItemText,
   Tooltip,
-} from "@material-ui/core/";
+  makeStyles
+} from '@material-ui/core/';
+
+
+const useStyles = makeStyles((theme) => ({
+  icon: {
+    marginLeft: 7
+  },
+  '@global': {
+    '.MuiListItemText-primary': {
+      fontSize: 12
+    }
+  }
+}));
+
 
 const MyListItem = memo(({ menu }) => {
+  const classes = useStyles();
   const { open, handleDrawerClose } = useMenu();
   return (
     <ListItem
       button
       component={Link}
       to={menu.path}
-      onClick={() => (open ? handleDrawerClose() : "")}
+      onClick={() => (open ? handleDrawerClose() : '')}
     >
       <ListItemIcon aria-label={menu.nome}>{menu.icon}</ListItemIcon>
       <ListItemText primary={menu.nome} />
@@ -27,10 +42,11 @@ const MyListItem = memo(({ menu }) => {
 });
 
 const ListItemTooltip = memo(({ menu }) => {
+  const classes = useStyles();
   return (
     <Tooltip title={menu.nome}>
       <ListItem button component={NavLink} to={menu.path}>
-        <ListItemIcon aria-label={menu.nome}>{menu.icon}</ListItemIcon>
+        <ListItemIcon className={classes.icon} aria-label={menu.nome}>{menu.icon}</ListItemIcon>
         <ListItemText primary={menu.nome} />
       </ListItem>
     </Tooltip>

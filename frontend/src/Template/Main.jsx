@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from './AppBar';
 import Drawer from './Drawer';
+import Footer from './Footer';
 import HeaderPage from "../Components/Header";
 import SnackBar from "../Components/SnackBar";
 
@@ -34,6 +35,7 @@ const Main = ({ children }) => {
           <HeaderPage />
             <main className={classes.content}>{children}</main>
           <SnackBar />
+          <Footer />
         </MenuProvider>
       </SnackBarProvider>
     </MythemeProvider>

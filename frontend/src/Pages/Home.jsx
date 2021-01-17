@@ -4,7 +4,12 @@ import {
   Paper,
   makeStyles
 } from '@material-ui/core';
-import AlarmOnIcon from '@material-ui/icons/AlarmOn';
+import {
+  HighlightOffSharp,
+  CheckCircleOutlineSharp,
+  ErrorOutlineSharp,
+  RemoveCircleOutlineSharp
+} from '@material-ui/icons/';
 import { CircularProgress } from '@material-ui/core'
 
 //* SERVICE
@@ -25,29 +30,30 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     position: 'absolute',
-    top: 25,
+    top: 40,
     right: 0,
-    fontSize: 100,
-    color: '#555'
+    fontSize: 85,
+    opacity: theme.darkMode ? 0.4 : 0.6
   }
 }));
 
-
 const BoxHome = React.memo((props) => {
   const classes = useStyles();
+
+  const colorIcon = props.color;
+
   return (
     <Paper className={classes.paper}>
       <>
         <span style={{ fontSize: 30 }}>{ props.value >= 0 ? props.value : <CircularProgress />}</span>
         <span>{props.children}</span>
         {props.sub && <span>{props.sub}</span>}
-        <props.Icon className={classes.icon} />
+        <props.Icon className={classes.icon} style={{ color: colorIcon }} />
       </>
     </Paper>
   );
 });
   
-
 export default () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(null);
@@ -55,7 +61,6 @@ export default () => {
   const [last, setLast] = React.useState(null);
   const [close, setClose] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
-
 
   React.useEffect(() => {
     setLoading(true);
@@ -76,33 +81,46 @@ export default () => {
   return (
     <Grid container spacing={3} className={classes.root}>
       <Grid item xs={3}>
-        <BoxHome Icon={AlarmOnIcon} value={open}>
-          Atividades Abertas
+        <BoxHome
+          Icon={CheckCircleOutlineSharp}
+          value={open}
+          sub="Abertas"
+          color="green"
+        >
+          Atividades
         </BoxHome>
       </Grid>
       <Grid item xs={3}>
         <BoxHome
-          Icon={AlarmOnIcon}
+          Icon={RemoveCircleOutlineSharp}
           value={half}
           loading={loading}
-          sub="em 5 dias"
+          sub="fecha em 5 dias"
+          color="yellow"
         >
-          Atividades editáveis
+          Atividades
         </BoxHome>
       </Grid>
       <Grid item xs={3}>
         <BoxHome
-          Icon={AlarmOnIcon}
+          Icon={ErrorOutlineSharp}
           value={last}
           loading={loading}
           sub="último dia"
+          color="orange"
         >
-          Atividades editáveis
+          Atividades
         </BoxHome>
       </Grid>
       <Grid item xs={3}>
-        <BoxHome Icon={AlarmOnIcon} value={close} loading={loading}>
-          Atividades Finalizadas
+        <BoxHome
+          Icon={HighlightOffSharp}
+          value={close}
+          loading={loading}
+          sub="Finalizadas"
+          color="red"
+        >
+          Atividades
         </BoxHome>
       </Grid>
     </Grid>

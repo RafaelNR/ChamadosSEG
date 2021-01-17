@@ -2,38 +2,38 @@ import React from "react";
 // Icons
 import {
   AssignmentSharp,
-  HomeSharp,
+  DashboardSharp,
   InsertChartSharp,
   BusinessSharp,
   CategorySharp,
   GroupSharp,
   ReportSharp,
-  MessageSharp,
-} from "@material-ui/icons";
+  MessageSharp
+} from '@material-ui/icons';
 
 const defaultMenu = [
   {
-    nome: "Home",
-    icon: <HomeSharp />,
-    path: "/", 
+    nome: 'Dashboard',
+    icon: <DashboardSharp />,
+    path: '/'
   },
   {
-    nome: "Atividades",
+    nome: 'Atividades',
     icon: <AssignmentSharp />,
-    path: "/atividades",
+    path: '/atividades'
   },
   {
-    nome: "Perfil",
-    path: "/perfil",
+    nome: 'Perfil',
+    path: '/perfil'
   },
   {
-    nome: "Criar Atividade",
-    path: "/atividades/create",
+    nome: 'Criar Atividade',
+    path: '/atividades/create'
   },
   {
-    nome: "Editar Atividade",
-    path: "/atividades/edit",
-  },
+    nome: 'Editar Atividade',
+    path: '/atividades/edit'
+  }
 ];
 
 const tecnicoMenu = [
@@ -43,7 +43,6 @@ const tecnicoMenu = [
     path: "/relatorios/atividades/my",
   },
 ];
-
 
 const analistaMenu = [
   {
@@ -85,7 +84,6 @@ const adminMenu = [
   // 	path: "/configuracoes",
   // },
 ];
-
 
 const Headers = [
   {

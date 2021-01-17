@@ -6,7 +6,6 @@ import {
   makeStyles,
   AppBar,
   Toolbar,
-  CssBaseline,
   IconButton,
   Badge,
 } from "@material-ui/core";
@@ -65,7 +64,6 @@ export default () => {
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {

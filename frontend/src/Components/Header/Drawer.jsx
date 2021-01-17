@@ -11,15 +11,6 @@ const useStyles = makeStyles((theme) => ({
         height: 40
       }
   },
-  gridVersion: {
-    display: 'flex',
-    flexDirection: 'column',
-    '& span': {
-      color: theme.palette.grey[500],
-      fontSize: 10
-    }
-  }
-
 }));
 
 const Header = () => {
@@ -27,11 +18,6 @@ const Header = () => {
   
   return (
     <Grid container> 
-      <Grid item md={9} className={classes.gridVersion}>
-        <span>VF: 1.0 </span>
-        <span>VB: 1.0 </span>
-        <span>VDB: 1.0 </span>
-      </Grid>
       <Grid item md={3} className={classes.gridImg}>
         <img
           alt="Logo"
