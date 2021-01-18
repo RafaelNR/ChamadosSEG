@@ -5,10 +5,10 @@ module.exports = {
 	dev: {
 		client: "mysql2",
 		connection: {
-			host: 'localhost',
-			database: 'segchamados',
-			user: 'root',
-			password: '',
+			host: "localhost",
+			database: "ostecnicos",
+			user: "root",
+			password: "",
 		},
 		migrations: {
 			tableName: "migrations",
@@ -35,5 +35,4 @@ module.exports = {
 			directory: `${__dirname}/src/database/seeds`,
 		},
 	},
-
 };

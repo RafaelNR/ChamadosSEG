@@ -6,7 +6,7 @@ module.exports = {
 			name: "OSBackend",
 			script: "./index.js",
 			watch: true,
-			
+
 			env_dev: {
 				APP_NAME: "OSTECNICOS_BACKEND",
 				NODE_ENV: "dev",
@@ -14,7 +14,7 @@ module.exports = {
 				IP: "127.0.0.1",
 				SECRET: "rafael@seg@chamados",
 				BACK_PORT: 3000,
-				DB_NAME: "segchamados",
+				DB_NAME: "ostecnicos",
 				DB_USER: "root",
 				DB_PASSWD: "",
 				DB_HOST: "localhost",
@@ -31,7 +31,7 @@ module.exports = {
 				IP: "127.0.0.1",
 				SECRET: "rafael@seg@chamados",
 				BACK_PORT: 3000,
-				DB_NAME: "segchamados",
+				DB_NAME: "ostecnicos",
 				DB_USER: "root",
 				DB_PASSWD: "Seg@2021",
 				DB_HOST: "localhost",
