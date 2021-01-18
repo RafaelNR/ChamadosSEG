@@ -20,7 +20,7 @@ const InsertSchema = (data) => {
     user: yup
       .string()
       .min(3, "No mínimo 3 caracteres")
-      .max(15, "No máximo 15 caracteres")
+      .max(30, "No máximo 15 caracteres")
       .required("Usuário é obrigatório"),
     telefone: yup
       .string()
@@ -86,13 +86,13 @@ const LoginSchema = (data) => {
     user: yup
       .string()
       .min(3, 'No mínimo 3 Caracteres')
-      .max(20, 'No máximo 20 caracteres')
+      .max(30, 'No máximo 20 caracteres')
       .required('Usuário é obrigatório'),
     passwd: yup
       .string()
       .nullable()
       .min(3, 'No mínimo 3 caracteres')
-      .max(20, 'No máximo 20 caracteres')
+      .max(15, 'No máximo 20 caracteres')
       .required('Senha é obrigatório')
   });
 
