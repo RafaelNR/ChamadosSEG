@@ -5,7 +5,7 @@ export const getAllCategorias = async () => {
     const Url = "/categorias";
     const Dados = await Service.exec("get", Url);
 
-    if(!Dados.data.success) throw new Error("Error");
+    if(!Dados.data.success) throw new Error("Error carregar categorias.");
     
     return {
       success: true,

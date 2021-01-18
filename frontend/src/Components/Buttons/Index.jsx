@@ -13,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
     color: '#b71c1c',
     padding: '8px 15px',
     border: '1px solid #b71c1c',
-    fontWeight: 'bold',
     '&:hover': {
       transition: '',
       color: 'white',
@@ -35,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
     padding: '8px 15px',
     marginRight: '8px',
-    fontWeight: 'bold',
     '&:hover': {
       backgroundColor: theme.palette.primary.dark
     }
@@ -48,22 +46,32 @@ const useStyles = makeStyles((theme) => ({
 const SaveButton = React.memo(({ disabled }) => {
   const classes = useStyles();
   return (
-    <Button type="submit" className={classes.save} disabled={disabled}>
-      <Save className={classes.icon} />
+    <Button
+      type="submit"
+      className={classes.save}
+      startIcon={<Save className={classes.icon} />}
+      disabled={disabled}
+    >
+      SALVAR
     </Button>
   );
 });
 
-const NavigatorButton = React.memo(({ clickAction, name, icon }) => {
+const NavigatorButton = React.memo(({ clickAction, icon }) => {
   const classes = useStyles();
   return (
-    <Button onClick={() => clickAction()} className={classes.next}>
-      {icon === "next" ? (
-        <NavigateNextSharp className={classes.icon} />
-      ) : (
-        <NavigateBeforeSharp className={classes.icon} />
-      )}
-      {name ? name : ""}
+    <Button
+      onClick={() => clickAction()}
+      startIcon={
+        icon === 'next' ? (
+          <NavigateNextSharp className={classes.icon} />
+        ) : (
+          <NavigateBeforeSharp className={classes.icon} />
+        )
+      }
+      className={classes.next}
+    >
+      {icon === 'next' ? 'Proxímo' : 'Anterior'}
     </Button>
   );
 });
@@ -72,8 +80,12 @@ const CancelButton = React.memo(({ clickClose }) => {
   const classes = useStyles();
   return (
     <DialogActions>
-      <Button className={classes.cancel} onClick={clickClose}>
-        <Close className={classes.icon} />
+      <Button
+        className={classes.cancel}
+        startIcon={<Close className={classes.icon} />}
+        onClick={clickClose}
+      >
+        CANCELAR
       </Button>
     </DialogActions>
   );

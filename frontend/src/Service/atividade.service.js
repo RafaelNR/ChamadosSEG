@@ -32,8 +32,6 @@ export const Insert = async (data) => {
       date: handleDate(validateData.date, "YYYY-MM-DD"),
     });
 
-    console.log(Dados)
-
     if (Dados.data.success) 
       return Dados.data.data;
 
@@ -74,8 +72,6 @@ export const UpdateInfo = async (data) => {
 
     const Url = `/atividades/infos/${data.id}`;
     const Dados = await Service.exec("put", Url, validateData);
-
-    console.log(Dados)
 
     if (Dados.data.success)
       return Dados.data.data;

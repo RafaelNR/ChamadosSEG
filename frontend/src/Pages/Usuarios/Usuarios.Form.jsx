@@ -255,7 +255,7 @@ const FormClients = React.memo(
               />
             </DialogContent>
             <DialogActions>
-              <NavigatorButton clickAction={changeForm} icon="before" />
+              <NavigatorButton clickAction={changeForm} icon="before"/>
               <SaveButton />
             </DialogActions>
           </>

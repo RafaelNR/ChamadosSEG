@@ -105,7 +105,7 @@ export default () => {
         {loading ? (
           <Loading type="Paper" />
         ) : (
-          <Grid container md={12} spacing={2}>
+          <Grid container spacing={2}>
             <Atividade Atividade={atividade} />
             <AtividadeCliente Cliente={cliente} />
           </Grid>
@@ -116,9 +116,11 @@ export default () => {
         <CategoriasProvider>
         {!loading &&
           atividadeInfos &&
-          atividadeInfos.map((info) => {
+          atividadeInfos.map((info,index) => {
             return (
-              <InfoEdit key={info.id} Info={info} ticket={atividade.ticket} />
+              <div key={index}>
+                <InfoEdit Info={info} ticket={atividade.ticket} />
+              </div>
             );
           })}
 

@@ -61,6 +61,7 @@ export default ({ Info, ticket }) => {
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(true);
 
+
   React.useEffect(() => {
     return setInfo({
       ...Info,
@@ -152,13 +153,12 @@ export default ({ Info, ticket }) => {
                 onChange={handleInfo}
                 value={Info.categoria_id}
                 error={errors['categoria_id'] ? true : false}
-                helperText={errors['categoria_id']}
                 required
               >
                 {categorias &&
                   categorias.map((categoria) => {
                     return (
-                      <MenuItem key={categorias.id} value={categoria.id}>
+                      <MenuItem key={categoria.id} value={categoria.id}>
                         {categoria.nome}
                       </MenuItem>
                     );
@@ -190,16 +190,14 @@ export default ({ Info, ticket }) => {
             </FormControl>
           </Grid>
           <Grid item style={{ padding: '0px' }} className={classes.buttons}>
-
-          
-              <SaveInfo
+            <SaveInfo
               handleSubmit={handleSubmit}
               loading={loading}
               success={success}
-              />
-              { success && !loading && <EditInfoAtividade handleEdit={handleEdit} /> }
-            
-            
+            />
+            {success && !loading && (
+              <EditInfoAtividade handleEdit={handleEdit} />
+            )}
           </Grid>
         </Grid>
       </form>

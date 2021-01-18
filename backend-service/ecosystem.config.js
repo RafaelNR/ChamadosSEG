@@ -37,6 +37,8 @@ module.exports = {
 				VERSIONDB: "1.0.0",
 				SECRET: "rafael@access",
 				URL_SERVICE: "http://10.42.0.252:3001",
+				URL_BACKEND: "http://10.42.0.252:3000",
+				URL_FRONTEND: "http://10.42.0.252",
 			},
 		},
 	],

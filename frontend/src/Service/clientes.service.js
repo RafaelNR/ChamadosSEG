@@ -6,10 +6,7 @@ export const getClientes = async () => {
     const Dados = await Service.exec('get', Url);
 
     if (!Dados.data.success)
-      throw new Error({
-        success: false,
-        message: 'Error em buscas os clientes.'
-      });
+      throw Dados.data
 
     return {
       success: true,
@@ -26,7 +23,8 @@ export const getCliente = async (ID) => {
     const Url = `/clientes/${ID}`;
     const Dados = await Service.exec("get", Url);
 
-    if(!Dados.data.success) throw new Error({ success: false, message:"Error em buscas o cliente"});
+    if (!Dados.data.success)
+      throw Dados.data
     
     return {
       success: true,

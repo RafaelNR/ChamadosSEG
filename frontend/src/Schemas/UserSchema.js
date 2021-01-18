@@ -85,14 +85,15 @@ const LoginSchema = (data) => {
   const schema = yup.object().shape({
     user: yup
       .string()
-      .min(3, "No mínimo 3 Caracteres")
-      .max(20, "No máximo 20 caracteres")
-      .required("Usuário é obrigatório"),
-    passwd:yup
-        .string()
-        .min(3, "No mínimo 3 caracteres")
-        .max(20, "No máximo 20 caracteres")
-        .required("Senha é obrigatório"),
+      .min(3, 'No mínimo 3 Caracteres')
+      .max(20, 'No máximo 20 caracteres')
+      .required('Usuário é obrigatório'),
+    passwd: yup
+      .string()
+      .nullable()
+      .min(3, 'No mínimo 3 caracteres')
+      .max(20, 'No máximo 20 caracteres')
+      .required('Senha é obrigatório')
   });
 
   const Val = new Validate(schema, data);

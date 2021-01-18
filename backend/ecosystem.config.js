@@ -39,7 +39,7 @@ module.exports = {
 				VERSION: "1.0.0",
 				VERSIONDB: "1.0.0",
 				ACCESS_SERVICE: "rafael@access",
-				URL_SERVICE: "http://localhost:3001",
+				URL_SERVICE: "http://10.42.0.252:3001",
 			},
 		},
 	],

@@ -10,7 +10,7 @@ App.use(Helmet());
 App.use("/tmp", Express.static("tmp"));
 
 //CORS
-const whiteList = ["http://localhost:3000", "http://localhost"];
+const whiteList = ["http://localhost:3000", "http://localhost",process.env.URL_BACKEND, process.env.URL_FRONTEND];
 App.use(
 	Cors({
 		origin: whiteList,

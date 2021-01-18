@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, TextField, makeStyles, Button, CircularProgress } from '@material-ui/core';
+import { SendSharp } from '@material-ui/icons';
 
 //* COMPONENTES
 import Select, {
@@ -201,18 +202,15 @@ export default () => {
 
         <Grid item xs={12} className={classes.button}>
           {loading ? (
-             <Button
-                variant="contained"
-                color="success"
-                disabled={loading}
-              >
-                <CircularProgress size={24} />
-              </Button>
+            <Button variant="contained" color="success" disabled={loading}>
+              <CircularProgress size={24} />
+            </Button>
           ) : (
             <>
               <Button
                 variant="contained"
                 color="primary"
+                startIcon={<SendSharp />}
                 onClick={handleSubmit}
               >
                 Enviar

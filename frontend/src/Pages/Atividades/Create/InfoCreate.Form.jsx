@@ -170,7 +170,7 @@ export default ({ ticket, atividadeID, newInfo }) => {
   }, [setType]);
 
   return (
-    <Accordion info={success ? info : null}>
+    <Accordion info={success ? info : null} >
       <form onSubmit={handleSubmit} autoComplete="off">
         <Grid
           container
@@ -184,7 +184,7 @@ export default ({ ticket, atividadeID, newInfo }) => {
               variant="outlined"
               className={classes.formControl}
               disabled={success}
-              error={errors["categorias_id"] ? true : false}
+              error={errors['categorias_id'] ? true : false}
             >
               <InputLabel id="categoria">Categorias *</InputLabel>
               <Select
@@ -194,14 +194,13 @@ export default ({ ticket, atividadeID, newInfo }) => {
                 onChange={handleInfo}
                 label="Categorias"
                 required
-                error={errors["categoria_id"] ? true : false}
-                helperText={errors["categoria_id"]}
+                error={errors['categoria_id'] ? true : false}
               >
                 {categorias &&
                   categorias.map((categoria) => {
                     return (
                       <MenuItem
-                        key={categorias.id}
+                        key={categoria.id}
                         value={categoria.id}
                         selected
                       >
@@ -210,7 +209,7 @@ export default ({ ticket, atividadeID, newInfo }) => {
                     );
                   })}
               </Select>
-              <FormHelperText>{errors["categoria_id"]}</FormHelperText>
+              <FormHelperText>{errors['categoria_id']}</FormHelperText>
             </FormControl>
           </Grid>
           <Grid item className={classes.input}>
@@ -218,7 +217,7 @@ export default ({ ticket, atividadeID, newInfo }) => {
               variant="outlined"
               className={classes.info}
               disabled={success}
-              error={errors["info"] ? true : false}
+              error={errors['info'] ? true : false}
             >
               <TextField
                 id="descricao"
@@ -227,21 +226,23 @@ export default ({ ticket, atividadeID, newInfo }) => {
                 multiline
                 rows={2}
                 variant="outlined"
-                error={errors["descricao"] ? true : false}
-                helperText={errors["descricao"]}
+                error={errors['descricao'] ? true : false}
+                helperText={errors['descricao']}
                 onChange={handleInfo}
                 disabled={success}
                 required
               />
             </FormControl>
           </Grid>
-          <Grid item style={{ padding: "0px" }} className={classes.buttons}>
+          <Grid item style={{ padding: '0px' }} className={classes.buttons}>
             <SaveInfo
               handleSubmit={handleSubmit}
               loading={loading}
               success={success}
             />
-            {success && !loading && <EditInfoAtividade handleEdit={handleEdit} />}
+            {success && !loading && (
+              <EditInfoAtividade handleEdit={handleEdit} />
+            )}
           </Grid>
         </Grid>
       </form>

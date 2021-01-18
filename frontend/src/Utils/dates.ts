@@ -1,24 +1,20 @@
 import moment from "moment";
+moment.locale('pt-br');
 
 
 function TodayDate() {
-  moment.locale('pt-br');
   return moment(new Date()).format("YYYY-MM-DD");
 }
 
 function handleDateTime(data: string): string {
-  moment.locale('pt-br');
   return moment(data).format("DD/MM/YYYY HH:mm");
 }
 
 function handleDateTimeFull(data: string): string {
-  moment.locale('pt-br');
   return moment(data).format("DD/MM/YYYY HH:mm:ss");
 }
 
 function handleDate(data: string, format: string = "DD/MM/YYYY"): string {
-  console.log(data)
-  moment.locale('pt-br');
   return moment(data).format(format);
 }
 
