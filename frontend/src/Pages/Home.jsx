@@ -1,5 +1,8 @@
 import React from "react";
 import {
+  Link,
+} from "react-router-dom";
+import {
   Grid,
   Paper,
   makeStyles
@@ -43,14 +46,16 @@ const BoxHome = React.memo((props) => {
   const colorIcon = props.color;
 
   return (
-    <Paper className={classes.paper}>
-      <>
-        <span style={{ fontSize: 30 }}>{ props.value >= 0 ? props.value : <CircularProgress />}</span>
-        <span>{props.children}</span>
-        {props.sub && <span>{props.sub}</span>}
-        <props.Icon className={classes.icon} style={{ color: colorIcon }} />
-      </>
-    </Paper>
+    <Link to={props.to}>
+      <Paper className={classes.paper}>
+        <>
+          <span style={{ fontSize: 30 }}>{ props.value >= 0 ? props.value : <CircularProgress />}</span>
+          <span>{props.children}</span>
+          {props.sub && <span>{props.sub}</span>}
+          <props.Icon className={classes.icon} style={{ color: colorIcon }} />
+        </>
+      </Paper>
+    </Link>
   );
 });
   
@@ -77,6 +82,10 @@ export default () => {
 
   }, []);
 
+  function handleLink(event){
+    console.log(event)
+  }
+
 
   return (
     <Grid container spacing={3} className={classes.root}>
@@ -86,6 +95,7 @@ export default () => {
           value={open}
           sub="Abertas"
           color="green"
+          to="/atividades?type=open"
         >
           Atividades
         </BoxHome>
@@ -97,6 +107,7 @@ export default () => {
           loading={loading}
           sub="fecha em 5 dias"
           color="yellow"
+          to="/atividades?type=half"
         >
           Atividades
         </BoxHome>
@@ -108,6 +119,7 @@ export default () => {
           loading={loading}
           sub="último dia"
           color="orange"
+          to="/atividades?type=last"
         >
           Atividades
         </BoxHome>
@@ -119,6 +131,7 @@ export default () => {
           loading={loading}
           sub="Finalizadas"
           color="red"
+          to="/atividades?type=close"
         >
           Atividades
         </BoxHome>

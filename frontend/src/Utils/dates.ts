@@ -21,6 +21,12 @@ function handleDate(data: string, format: string = "DD/MM/YYYY"): string {
 function permissionEditAtividade(atividade_date: any): boolean {
   const currDate = new Date().toISOString().split("T")[0];
 
+
+  const MonthAtividade = moment(atividade_date).month() + 1;
+  const MonthCurr = moment(new Date()).month() + 1
+
+  if (MonthAtividade !== MonthCurr) return false;
+
   const t1 = new Date(currDate).getTime();
   const t2 = new Date(atividade_date).getTime();
   //const MaxDate = 86400000 * 2;

@@ -21,6 +21,7 @@ import { LoadingProvider } from '../../../Context/LoadingContext';
 //* SERVICE
 import { getAtividade } from "../../../Service/atividade.service";
 import { getCliente } from "../../../Service/clientes.service";
+import Service from '../../../Api/Service';
 
 //*UTILS 
 import * as Data from '../../../Utils/dates'
@@ -50,13 +51,12 @@ export default () => {
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    async function init() {
 
-      try {
-        const Dados = await getAtividade(ticket);
-  
-        if(!Data.permissionEditAtividade(Dados.date)){
-          throw ({ success: false, message: 'Você não pode mais editar essa atividade.'});
+    getAtividade(ticket)
+      .then( async (Dados) => {
+
+        if (!Data.permissionEditAtividade(Dados.date)) {
+          throw ({ message: 'Você não pode mais editar essa atividade.'});
         }
   
         setAtividade(Dados);
@@ -65,18 +65,25 @@ export default () => {
         setCliente(Cliente.data);
 
         return setLoading(false);
-      } catch (error) {
-        console.log(error)
+
+      }).catch(error => {
+        console.log(error);
         handleSnackBar({
-          type: "error",
-          message: error && error.message ? error.message : `Erro em carregar a atividade.`,
+          type: 'error',
+          message:
+            error && error.message
+              ? error.message
+              : `Erro em carregar a atividade.`
         });
         return history.replace('/atividades');
-      }
-    }
+      })
 
-    init();
-  }, [handleSnackBar, history, ticket]);
+    return function cleanup() {
+      console.log('ummont atividade')
+      return Service.source();
+    };
+    
+  }, [history, ticket]);
 
 
   const scroll = () => {
@@ -111,32 +118,33 @@ export default () => {
           </Grid>
         )}
       </Paper>
+      { !loading &&
+        <LoadingProvider>
+          <CategoriasProvider>
+            {!loading &&
+              atividadeInfos &&
+              atividadeInfos.map((info, index) => {
+                return (
+                  <div key={index}>
+                    <InfoEdit Info={info} ticket={atividade.ticket} />
+                  </div>
+                );
+              })}
 
-      <LoadingProvider>
-        <CategoriasProvider>
-        {!loading &&
-          atividadeInfos &&
-          atividadeInfos.map((info,index) => {
-            return (
-              <div key={index}>
-                <InfoEdit Info={info} ticket={atividade.ticket} />
-              </div>
-            );
-          })}
-
-        {!loading &&
-          rows.map((id) => {
-            return (
-              <InfoCreate
-                key={id}
-                newInfo={incrementInfos}
-                atividadeID={atividade.id}
-                ticket={atividade.ticket}
-              />
-            );
-          })}
+            {!loading &&
+              rows.map((id) => {
+                return (
+                  <InfoCreate
+                    key={id}
+                    newInfo={incrementInfos}
+                    atividadeID={atividade.id}
+                    ticket={atividade.ticket}
+                  />
+                );
+              })}
           </CategoriasProvider>
-      </LoadingProvider>
+        </LoadingProvider>
+      }
     </>
   );
 };
