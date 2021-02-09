@@ -7,7 +7,7 @@ const lastTicket = async () => {
 
 const lastInfoTicket = async (atividade_id) => {
 	return await knex.raw(
-		`SELECT info_ticket FROM infos_atividades WHERE id = (SELECT max(id) FROM infos_atividades) and atividade_id = ${atividade_id};`
+		`SELECT info_ticket FROM infos_atividades WHERE id = (SELECT max(id) FROM infos_atividades where atividade_id = ${atividade_id});`
 	);
 };
 
