@@ -126,10 +126,7 @@ export default () => {
 
   return (
     <React.Fragment>
-      <Toolbar
-        title="Lista de Atividades"
-        data={atividades && atividades.length > 0 ? true : false}
-      />
+      <Toolbar title="Lista de Atividades"/>
       <TableContainer>
         <Table
           className={classes.table}

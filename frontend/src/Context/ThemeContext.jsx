@@ -10,6 +10,7 @@ const MythemeProvider = ({ children }) => {
   const [darkMode, setdarkMode] = useState(false);
 
   const theme = createMuiTheme({
+    darkMode: darkMode,
     overrides: {
       MuiCssBaseline: {
         '@global': {
@@ -19,16 +20,18 @@ const MythemeProvider = ({ children }) => {
             flexDirection: 'column',
             height: '100vh'
           },
+          'a': {
+            textDecoration: 'none'
+          }
         }
       }
     },
-    darkMode: darkMode,
     palette: {
       type: darkMode ? 'dark' : 'light',
       primary: {
         light: '#1161A6',
         main: '#0B4672',
-        dark: '#020B13'
+        dark: '#020B13',
       },
       secondary: {
         light: 'f47e2a',
@@ -37,6 +40,7 @@ const MythemeProvider = ({ children }) => {
       },
       background: {
         default: darkMode ? '#303030' : '#f0f0f0',
+        boxhome: darkMode ? '#666' : '#ddd',
         dialog: '#0B4672'
       },
       text: {
@@ -51,6 +55,8 @@ const MythemeProvider = ({ children }) => {
         downloadpdf: '#0B4672',
         viewpdf: '#3949ab',
         hover: '#7986cb',
+        new: darkMode ? 'rgba(223, 223, 223, 0.15)' : '#0d47a1',
+        newHover: darkMode ? 'rgba(223, 223, 223, 0.30)' : '#093170',
         edit: darkMode ? green[700] : green[900],
         create: darkMode ? blue[700] : blue[900],
         delete: darkMode ? red[700] : red[900],

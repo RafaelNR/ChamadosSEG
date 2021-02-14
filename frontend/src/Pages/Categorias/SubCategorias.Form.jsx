@@ -4,12 +4,13 @@ import React from "react";
 import {
   makeStyles,
   DialogContent,
-  DialogActions,
   Grid,
   TextField,
   CircularProgress,
 } from "@material-ui/core/";
 import { SaveButton, CancelButton } from "../../Components/Buttons/Index";
+import DialogActions from '../../Components/Dialog/Action';
+
 
 //* FIELDS
 import Fields from "../../Store/CategoriasFields";

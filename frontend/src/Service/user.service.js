@@ -24,9 +24,9 @@ export const getUsers = async () => {
   }
 };
 
-export const getMyClientes = async () => {
+export const getMyClientes = async (ID) => {
   try {
-    const Url = "/usuarios/clientes/1";
+    const Url = `/usuarios/clientes/${ID}`;
     const Dados = await Service.exec("get", Url);
 
     if(!Dados.data.success) throw ({ success: false, message: Dados.data.message ? Dados.data.message : 'Error em buscas os clientes do seu usuário.'});

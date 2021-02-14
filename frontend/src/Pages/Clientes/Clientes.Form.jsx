@@ -1,7 +1,6 @@
 import React from "react";
 import {
   DialogContent,
-  DialogActions,
   Grid,
   TextField,
   CircularProgress,
@@ -9,6 +8,8 @@ import {
 } from "@material-ui/core/";
 import Fields from "../../Store/ClientesFields";
 import { SaveButton, CancelButton } from "../../Components/Buttons/Index";
+import DialogActions from '../../Components/Dialog/Action';
+
 
 //* CONTEXT E HOOKS
 import useClientes from "../../Context/ClientesContext";

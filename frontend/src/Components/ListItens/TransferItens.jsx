@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     fontSize: "18px",
     fontWeight: "bold",
-    color: theme.palette.text.subtitle,
+    color: theme.palette.text.hint,
   },
 }));
 

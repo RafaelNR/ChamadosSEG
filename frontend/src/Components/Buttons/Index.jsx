@@ -1,13 +1,25 @@
-import React from "react";
+import React, { memo } from "react";
 import { makeStyles, Button, DialogActions } from "@material-ui/core/";
 import {
+  Add,
   Save,
   Close,
   NavigateNextSharp,
-  NavigateBeforeSharp,
-} from "@material-ui/icons/";
+  NavigateBeforeSharp
+} from '@material-ui/icons/';
+import useDialog from '../../Context/DialogContext';
 
 const useStyles = makeStyles((theme) => ({
+  new: {
+    backgroundColor: theme.palette.button.new,
+    color: 'white',
+    padding: '5px 30px',
+    marginRight: '8px',
+    '&:hover': {
+      transition: '',
+      backgroundColor: theme.palette.button.newHover
+    }
+  },
   cancel: {
     backgroundColor: 'transparent',
     color: '#b71c1c',
@@ -43,6 +55,21 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+
+const NewButton = memo(() => {
+  const classes = useStyles();
+  const { openDialog } = useDialog();
+  return (
+    <Button
+      onClick={() => openDialog('insert')}
+      type="submit"
+      className={classes.new}
+      startIcon={<Add className={classes.icon} />}
+    >
+      Novo
+    </Button>
+  );
+});
 const SaveButton = React.memo(({ disabled }) => {
   const classes = useStyles();
   return (
@@ -91,4 +118,4 @@ const CancelButton = React.memo(({ clickClose }) => {
   );
 });
 
-export { SaveButton, CancelButton, NavigatorButton };
+export { NewButton, SaveButton, CancelButton, NavigatorButton };

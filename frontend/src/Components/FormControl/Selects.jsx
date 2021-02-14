@@ -10,6 +10,7 @@ import {
 
 const useStyles = makeStyles({
   formControl: {
+    marginTop: 15,
     width: "100%",
     "& > label": {
       fontSize: "1rem",
@@ -38,7 +39,6 @@ export default ({ title, handleChange, id, name, value, itens, errorText, varian
         id={id}
         name={name}
         fullWidth
-        className="MuiFilledInput-input"
         value={value || ""}
         {...rest}
       >
@@ -116,6 +116,46 @@ export const SelectMeses = ({ title, handleChange, id, name, value, itens, error
       </Select>
       <FormHelperText>{errorText ? errorText : ""}</FormHelperText>
     </FormControl>
+  );
+};
+
+const useSelectStyle = makeStyles({
+  select: {
+    width: 200,
+    marginRight: '2%',
+    '& .MuiFilledInput-input': {
+      padding: '15px 10px'
+    }
+  }
+});
+  
+export const SelectCommon = ({ handleChange, title, name, value, itens, ...rest }) => {
+  const classes = useSelectStyle();
+  return (
+    <Select
+      label={title}
+      onChange={handleChange}
+      displayEmpty
+      value={value}
+      variant="filled"
+      defaultValue="todos"
+      className={classes.select}
+      {...rest}
+    >
+      <MenuItem value="todos">Todos</MenuItem>
+      {itens.length > 1 &&
+        itens.map((item) => {
+          return (
+            <MenuItem
+              style={{ paddingLeft: 10 }}
+              key={item['id']}
+              value={item['id']}
+            >
+              {item['nome_fantasia']}
+            </MenuItem>
+          );
+        })}
+    </Select>
   );
 };
 

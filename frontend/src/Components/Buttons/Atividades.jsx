@@ -1,22 +1,28 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { makeStyles, IconButton, Tooltip, Button } from '@material-ui/core/';
-import { Edit, VisibilitySharp, AddBoxSharp, SaveSharp } from "@material-ui/icons/";
+import { Edit, VisibilitySharp, Add, SaveSharp } from "@material-ui/icons/";
 import Progress from "./Progress";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    padding: 6,
-  },
-  icon: {
-    fontSize: '20px',
-    color: theme.palette.button.create
+    padding: 6
   },
   edit: {
-    color: theme.palette.text.icon,
+    color: theme.palette.text.icon
   },
   save: {
     color: theme.palette.text.icon
+  },
+  new: {
+    backgroundColor: theme.palette.button.new,
+    color: 'white',
+    padding: '5px 30px',
+    marginRight: '8px',
+    '&:hover': {
+      transition: '',
+      backgroundColor: theme.palette.button.newHover
+    },
   }
 }));
 
@@ -38,9 +44,10 @@ const CreatedTicket = React.memo(() => {
   return (
     <NavLink to="/atividades/create">
       <Tooltip title="Novo">
-        <IconButton>
-          <AddBoxSharp className={classes.icon} />
-        </IconButton>
+        <Button
+          className={classes.new}
+          startIcon={<Add />}
+        />
       </Tooltip>
     </NavLink>
   );

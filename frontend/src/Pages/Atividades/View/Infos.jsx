@@ -34,9 +34,9 @@ export default ({ ticket, infos }) => {
   return (
   <>
     {
-        infos && infos.map(info => {
+        infos && infos.map((info,index) => {
         return (  
-          <Accordion info={{ ...info, ticket }}>
+          <Accordion key={index} info={{ ...info, ticket }}>
             <Grid container className={classes.grid}>
               <Grid item md={3} className={classes.categoria}>
                 <Typography variant="h5">Categoria</Typography>

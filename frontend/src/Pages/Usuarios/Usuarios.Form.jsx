@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import {
   makeStyles,
   DialogContent,
-  DialogActions,
   Grid,
   TextField,
   CircularProgress,
@@ -16,6 +15,7 @@ import {
   NavigatorButton,
 } from "../../Components/Buttons/Index";
 import TransferItems from "../../Components/ListItens/TransferItens";
+import DialogActions from "../../Components/Dialog/Action"
 
 //* STORE
 import Fields from "../../Store/UsuariosFields";
@@ -28,12 +28,15 @@ import useMasker from "../../Hooks/useMasker";
 
 const useStyles = makeStyles(() => ({
   dialogLoader: {
-    width: "800px",
-    height: "320px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    width: '800px',
+    height: '320px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
+  dialogContent: {
+    width: '800px'
+  }
 }));
 
 const itensSelect = [
@@ -52,13 +55,15 @@ const itensSelect = [
 ];
 
 const FormInsert = React.memo(({ changeForm, handleChange, values }) => {
-  const { errors, setUsuario } = useUsuarios();
+  const { errors, setErrors, setUsuario } = useUsuarios();
   const { setLoading } = useDialog();
 
   React.useEffect(() => {
     setUsuario({});
+    setErrors([]);
     setLoading(false);
-  }, [setUsuario, setLoading]);
+
+  }, [setUsuario, setLoading, setErrors]);
 
   return (
     <>
@@ -77,7 +82,7 @@ const FormInsert = React.memo(({ changeForm, handleChange, values }) => {
                 <TextField
                   variant="filled"
                   margin="normal"
-                  value={values[[field.id]] ? values[[field.id]] : ""}
+                  value={values[[field.id]] ? values[[field.id]] : ''}
                   id={field.id}
                   label={field.label}
                   name={field.id}
@@ -102,7 +107,7 @@ const FormInsert = React.memo(({ changeForm, handleChange, values }) => {
               name="role_id"
               value={values.role_id}
               itens={itensSelect}
-              errorText={errors["role_id"]}
+              errorText={errors['role_id']}
             />
           </Grid>
         </Grid>
@@ -143,7 +148,7 @@ const FormUpdate = React.memo(
                 value={values.id}
                 required
                 disabled
-                style={{ display: "none" }}
+                style={{ display: 'none' }}
                 onChange={handleChange}
               />
               <Grid container spacing={2}>
@@ -184,10 +189,9 @@ const FormUpdate = React.memo(
                     handleChange={handleChange}
                     id="role_id"
                     name="role_id"
-                    fullWidth
                     value={values.role_id}
                     itens={itensSelect}
-                    errorText={errors["role_id"]}
+                    errorText={errors['role_id']}
                   />
                 </Grid>
               </Grid>
@@ -247,7 +251,7 @@ const FormClients = React.memo(
           <CircularProgress />
         ) : (
           <>
-            <DialogContent dividers>
+            <DialogContent dividers className={classes.dialogContent}>
               <TransferItems
                 disponiveis={allClients()}
                 selecionados={values.clients}

@@ -89,9 +89,8 @@ module.exports = {
 			.limit(60);
 	},
 
-	findAllByClientes: async (user_id) => {
-
-		return await knex
+	findAllByClientes: async (user_id, type=null) => {
+		let query = knex
 			.select(
 				"a.id",
 				"a.ticket",
@@ -111,12 +110,26 @@ module.exports = {
 			})
 			.orderBy("a.id", "desc")
 			.orderBy("a.date", "desc")
-			.limit(60);
 
+			if (type === 'open') {
+				query.andWhereRaw(
+					"date > DATE_FORMAT(now() - INTERVAL 10 DAY , '%Y-%m-%d')"
+				)
+			}else if(type === 'close'){
+				query.andWhereRaw("date < DATE_FORMAT(now() - INTERVAL 10 DAY , '%Y-%m-%d')")
+			} else if (type === 'last') {
+				query.andWhereRaw("date = DATE_FORMAT(now() - INTERVAL 9 DAY , '%Y-%m-%d')")
+			} else if (type === 'half') {
+				query.andWhereRaw(
+					"date between DATE_FORMAT(now() - INTERVAL 5 DAY , '%Y-%m-%d') and DATE_FORMAT(now(), '%Y-%m-%d')"
+				)
+			}
+
+			return await query.limit(60);
 	},
 
-	findByUser_id: async (user_id) => {
-		return await knex
+	findByUser_id: async (user_id, type) => {
+		let query = knex
 			.select(
 				"atividades.id",
 				"atividades.ticket",
@@ -130,13 +143,28 @@ module.exports = {
 			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
 			.join("users", "users.id", "=", "atividades.user_id")
 			.where("users.id", "=", user_id)
-			.orderBy("atividades.id", "desc")
+
+			if (type === 'open') {
+				query.andWhereRaw(
+					"date > DATE_FORMAT(now() - INTERVAL 10 DAY , '%Y-%m-%d')"
+				)
+			}else if(type === 'close'){
+				query.andWhereRaw("date < DATE_FORMAT(now() - INTERVAL 10 DAY , '%Y-%m-%d')")
+			} else if (type === 'last') {
+				query.andWhereRaw("date = DATE_FORMAT(now() - INTERVAL 9 DAY , '%Y-%m-%d')")
+			} else if (type === 'half') {
+				query.andWhereRaw(
+					"date between DATE_FORMAT(now() - INTERVAL 5 DAY , '%Y-%m-%d') and DATE_FORMAT(now(), '%Y-%m-%d')"
+				)
+			}
+
+			return await query.orderBy("atividades.id", "desc")
 			.orderBy("atividades.date", "desc")
 			.limit(60);
 	},
 
-	findByClient_id: async (client_id) => {
-		return await knex
+	findByClient_id: async (client_id, type=null) => {
+		let query = knex
 			.select(
 				"atividades.id",
 				"atividades.ticket",
@@ -150,9 +178,25 @@ module.exports = {
 			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
 			.join("users", "users.id", "=", "atividades.user_id")
 			.where("clientes.id", "=", client_id)
-			.orderBy("atividades.id", "desc")
-			.orderBy("atividades.date", "desc")
-			.limit(60);
+
+			if (type === 'open') {
+				query.andWhereRaw(
+					"date > DATE_FORMAT(now() - INTERVAL 10 DAY , '%Y-%m-%d')"
+				)
+			}else if(type === 'close'){
+				query.andWhereRaw("date < DATE_FORMAT(now() - INTERVAL 10 DAY , '%Y-%m-%d')")
+			} else if (type === 'last') {
+				query.andWhereRaw("date = DATE_FORMAT(now() - INTERVAL 9 DAY , '%Y-%m-%d')")
+			} else if (type === 'half') {
+				query.andWhereRaw(
+					"date between DATE_FORMAT(now() - INTERVAL 5 DAY , '%Y-%m-%d') and DATE_FORMAT(now(), '%Y-%m-%d')"
+				)
+			}
+		
+		return await query
+									.orderBy("atividades.id", "desc")
+									.orderBy("atividades.date", "desc")
+									.limit(60);
 	},
 
 	findOne: async (ID) => {
@@ -242,11 +286,11 @@ module.exports = {
 
 	/**
 	 * Todas minhas atividades editais
-	 * @param {number} user_id 
+	 * @param {number} user_id
 	 */
-	findMyOpen: async (user_id) => {
+	findMyOpen: async (user_id, type=null) => {
 
-		return await knex
+		let query = knex
 			.select(
 				"atividades.id",
 				"atividades.ticket",
@@ -259,19 +303,22 @@ module.exports = {
 			.from("atividades")
 			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
 			.join("users", "users.id", "=", "atividades.user_id")
-			.where("atividades.user_id", "=", user_id)
-			.andWhereRaw("date > DATE_FORMAT(now() - INTERVAL 10 DAY , '%Y-%m-%d')")
-			.orderBy("atividades.id", "desc")
-			.orderBy("atividades.date", "desc")
-		
+			.where("atividades.user_id", "=", user_id);
+
+		if (type === 'open') {
+			query.andWhereRaw(
+				"date > DATE_FORMAT(now() - INTERVAL 10 DAY , '%Y-%m-%d')"
+			)
+		}
+
+
+		return await query
+						.orderBy("atividades.id", "desc")
+						.orderBy("atividades.date", "desc");
+
 	},
 
-	/**
-	 * Todas minhas atividades fechadas
-	 * @param {number} user_id 
-	 */
-	findMyClose: async (user_id) => {
-
+	findMyClientes: async (user_id) => {
 		return await knex
 			.select(
 				"atividades.id",
@@ -285,59 +332,20 @@ module.exports = {
 			.from("atividades")
 			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
 			.join("users", "users.id", "=", "atividades.user_id")
-			.where("atividades.user_id", "=", user_id)
+			.innerJoin(
+				"cliente_has_user",
+				"cliente_has_user.user_id",
+				"=",
+				"atividades.user_id"
+			)
+			.whereIn("atividades.cliente_id", function () {
+				this.select("cliente_id")
+					.from("cliente_has_user")
+					.where("user_id", "=", user_id);
+			})
 			.andWhereRaw(
-				"date < DATE_FORMAT(now() - INTERVAL 10 DAY , '%Y-%m-%d')"
-			)
-			.orderBy("atividades.id", "desc")
-			.orderBy("atividades.date", "desc")
-
-	},
-
-	findMyLastDayOpen: async (user_id) => {
-
-		return await knex
-			.select(
-				"atividades.id",
-				"atividades.ticket",
-				"atividades.date",
-				"clientes.nome_fantasia as cliente",
-				"users.nome as técnico",
-				"atividades.created_at",
-				"atividades.updated_at"
-			)
-			.from("atividades")
-			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
-			.join("users", "users.id", "=", "atividades.user_id")
-			.where("atividades.user_id", "=", user_id)
-			.andWhereRaw("date = DATE_FORMAT(now() - INTERVAL 9 DAY , '%Y-%m-%d')")
-			.orderBy("atividades.id", "desc")
-			.orderBy("atividades.date", "desc")
-		
-	},
-
-	findMyHalfOpen: async (user_id) => {
-
-		return await knex
-			.select(
-				"atividades.id",
-				"atividades.ticket",
-				"atividades.date",
-				"clientes.nome_fantasia as cliente",
-				"users.nome as técnico",
-				"atividades.created_at",
-				"atividades.updated_at"
-			)
-			.from("atividades")
-			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
-			.join("users", "users.id", "=", "atividades.user_id")
-			.where("atividades.user_id", "=", user_id)
-			.andWhereRaw(
-				"date between DATE_FORMAT(now() - INTERVAL 5 DAY , '%Y-%m-%d') and DATE_FORMAT(now(), '%Y-%m-%d')"
-			)
-			.orderBy("atividades.id", "desc")
-			.orderBy("atividades.date", "desc")
-
+				"AND date > DATE_FORMAT(now() - INTERVAL 10 DAY , '%Y-%m-%d')"
+			);
 	},
 
 	/**
