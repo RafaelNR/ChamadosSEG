@@ -62,6 +62,7 @@ const headCells = [
     disablePadding: false,
     label: "Ações",
     sort: false,
+    align: 'center',
   },
 ];
 

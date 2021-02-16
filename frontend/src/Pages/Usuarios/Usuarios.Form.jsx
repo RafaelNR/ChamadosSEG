@@ -166,7 +166,7 @@ const FormUpdate = React.memo(
                         variant="filled"
                         margin="normal"
                         value={
-                          values[[field.id]] ? values[[field.id]] : field.value
+                          values[[field.id]]
                         }
                         id={field.id}
                         label={field.label}

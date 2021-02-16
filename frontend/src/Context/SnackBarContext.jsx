@@ -10,7 +10,7 @@ const SnackBarProvider = ({ children }) => {
   const { message, setMessage, handleMessage } = useMessage();
 
   const clickSnackBar = useCallback(() => {
-    setOpenSnackBar(!openSnackBar);
+    setOpenSnackBar(!openSnackBar);  
   }, [openSnackBar]);
 
   const handleSnackBar = useCallback(

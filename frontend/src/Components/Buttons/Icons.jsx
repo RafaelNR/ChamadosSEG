@@ -1,6 +1,7 @@
-import React, { memo } from "react";
+import React, { createFactory, memo } from "react";
+import clsx from 'clsx';
 import PropTypes from "prop-types";
-import { IconButton, Tooltip, makeStyles } from "@material-ui/core";
+import { IconButton, Tooltip, Button, makeStyles } from "@material-ui/core";
 import {
   AddBox,
   EditSharp,
@@ -11,30 +12,48 @@ import {
 import useDialog from "../../Context/DialogContext";
 
 const useStyles = makeStyles((theme) => ({
-  add: {
-    fontSize: '25px',
-    color: theme.palette.button.create
+  button: {
+    padding: '5px 0',
+    minWidth: 50,
+    height: 30,
+    color: 'white',
+    '&:hover': {
+      transition: ''
+    },
+    '& .MuiButton-startIcon': {
+      marginLeft: 0,
+      marginRight: 0
+    }
   },
   edit: {
-    fontSize: theme.size.button.common,
-    color: theme.palette.button.edit
-  },
-  delete: {
-    fontSize: theme.size.button.common,
-    color: theme.palette.button.delete
+    marginTop: '-0.032rem',
+    backgroundColor: theme.palette.button.edit,
+    borderTopRightRadius: (props) => props.borderTopRightRadius,
+    borderBottomRightRadius: (props) => props.borderBottomRightRadius,
+    '&:hover': {
+      backgroundColor: theme.palette.button.hover.edit
+    }
   },
   disabled: {
-    fontSize: theme.size.button.common,
-    color: theme.palette.button.delete
+    marginTop: '0.031rem',
+    backgroundColor: theme.palette.button.delete,
+    borderTopLeftRadius: (props) => props.borderTopLeftRadius,
+    borderBottomLeftRadius: (props) => props.borderBottomLeftRadius,
+    '&:hover': {
+      backgroundColor: theme.palette.button.hover.delete
+    }
   },
   actived: {
-    fontSize: theme.size.button.common,
-    color: theme.palette.button.active
+    marginTop: '0.031rem',
+    backgroundColor: theme.palette.button.active,
+    borderTopLeftRadius: (props) => props.borderTopLeftRadius,
+    borderBottomLeftRadius: (props) => props.borderBottomLeftRadius,
+    '&:hover': {
+      backgroundColor: theme.palette.button.hover.active
+    }
   },
-  pdf: {
-    marginRight: 20,
-    width: 50,
-    height: 50
+  icon: {
+    fontSize: '20px'
   }
 }));
 
@@ -50,99 +69,120 @@ const AddIconButton = memo(() => {
   );
 });
 
-const EditIconButton = memo(({ id, getID }) => {
-  const classes = useStyles();
+const DeleteButton = memo(({ id, getID, border = true }) => {
+  const props = !border && {
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0
+  };
+
+  const classes = useStyles(props);
   const { openDialog } = useDialog();
   return (
-    <IconButton
-      onClick={() => {
-        getID(id);
-        openDialog("update");
-      }}
-    >
-      <Tooltip title="Editar">
-        <EditSharp className={classes.edit} />
-      </Tooltip>
-    </IconButton>
+    <Tooltip title="Deletar">
+      <Button
+        className={clsx(classes.button, classes.disabled)}
+        onClick={() => {
+          getID(id);
+          openDialog('delete');
+        }}
+        startIcon={<DeleteForeverSharp className={classes.icon} />}
+      />
+    </Tooltip>
   );
 });
 
-EditIconButton.propTypes = {
+const EditButton = memo(({ id, getID, border = true }) => {
+  const props = !border && {
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0
+  };
+
+  const classes = useStyles(props);
+  const { openDialog } = useDialog();
+  return (
+    <Tooltip title="Editar">
+      <Button
+        className={clsx(classes.button, classes.edit)}
+        onClick={() => {
+          getID(id);
+          openDialog('update');
+        }}
+        startIcon={<EditSharp className={classes.icon} />}
+      />
+    </Tooltip>
+  );
+});
+
+const DisabledButton = memo(({ id, getID, border = true  }) => {
+  const props = !border && {
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0
+  }
+      
+  const classes = useStyles(props);
+  const { openDialog } = useDialog();
+  return (
+    <Tooltip title="Desabilitar">
+      <Button
+        className={clsx(classes.button, classes.disabled)}
+        onClick={() => {
+          getID(id);
+          openDialog('disabled');
+        }}
+        startIcon={<VisibilityOffSharp className={classes.icon} />}
+      />
+    </Tooltip>
+  );
+});
+
+const ActivedButton = memo(({ id, getID, border = true }) => {
+  const props = !border && {
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0
+  };
+
+  const classes = useStyles(props);
+  const { openDialog } = useDialog();
+  return (
+    <Tooltip title="Habilitar">
+      <Button
+        className={clsx(classes.button, classes.actived)}
+        onClick={() => {
+          getID(id);
+          openDialog('actived');
+        }}
+        startIcon={<VisibilitySharp className={classes.icon} />}
+      />
+    </Tooltip>
+  );
+});
+
+EditButton.propTypes = {
   id: PropTypes.number.isRequired,
   getID: PropTypes.func.isRequired,
+  name: PropTypes.string
 };
 
-const DeleteIconButton = memo(({ id, getID }) => {
-  const classes = useStyles();
-  const { openDialog } = useDialog();
-  return (
-    <IconButton
-      onClick={() => {
-        getID(id);
-        openDialog("delete");
-      }}
-    >
-      <Tooltip title="Deletar">
-        <DeleteForeverSharp className={classes.delete} />
-      </Tooltip>
-    </IconButton>
-  );
-});
-
-DeleteIconButton.propTypes = {
+DeleteButton.propTypes = {
   id: PropTypes.number.isRequired,
-  getID: PropTypes.func.isRequired,
+  getID: PropTypes.func.isRequired
 };
 
-const DisabledIconButton = memo(({ id, getID }) => {
-  const classes = useStyles();
-  const { openDialog } = useDialog();
-  return (
-    <IconButton
-      onClick={() => {
-        getID(id);
-        openDialog("disabled");
-      }}
-    >
-      <Tooltip title="Desabilitar">
-        <VisibilityOffSharp className={classes.disabled} />
-      </Tooltip>
-    </IconButton>
-  );
-});
-
-DisabledIconButton.propTypes = {
+DisabledButton.propTypes = {
   id: PropTypes.number.isRequired,
-  getID: PropTypes.func.isRequired,
+  getID: PropTypes.func.isRequired
 };
 
-const ActivedIconButton = memo(({ id, getID }) => {
-  const classes = useStyles();
-  const { openDialog } = useDialog();
-  return (
-    <IconButton
-      onClick={() => {
-        getID(id);
-        openDialog("actived");
-      }}
-    >
-      <Tooltip title="Habilitar">
-        <VisibilitySharp className={classes.actived} />
-      </Tooltip>
-    </IconButton>
-  );
-});
-
-ActivedIconButton.propTypes = {
+ActivedButton.propTypes = {
   id: PropTypes.number.isRequired,
   getID: PropTypes.func.isRequired,
 };
 
 
 export {
+  EditButton,
   AddIconButton,
-  EditIconButton,
-  DeleteIconButton,
-  DisabledIconButton,
-  ActivedIconButton,
+  DeleteButton,
+  DisabledButton,
+  ActivedButton,
 };

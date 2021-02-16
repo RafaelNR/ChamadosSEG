@@ -56,7 +56,7 @@ const TableToolbar = React.memo(({ title, data }) => {
         </Typography>
       </React.Fragment>
       <Search handleChangeSearch={handleChangeSearch} />
-      {data ? <NewButton /> : null}
+      {data ? <NewButton name="Novo"/> : null}
     </Toolbar>
   );
 });

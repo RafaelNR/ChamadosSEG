@@ -20,7 +20,7 @@ const MythemeProvider = ({ children }) => {
             flexDirection: 'column',
             height: '100vh'
           },
-          'a': {
+          a: {
             textDecoration: 'none'
           }
         }
@@ -31,7 +31,7 @@ const MythemeProvider = ({ children }) => {
       primary: {
         light: '#1161A6',
         main: '#0B4672',
-        dark: '#020B13',
+        dark: '#020B13'
       },
       secondary: {
         light: 'f47e2a',
@@ -44,10 +44,10 @@ const MythemeProvider = ({ children }) => {
         dialog: '#0B4672'
       },
       text: {
-        title: darkMode ? 'white ' : '#0B4672',
+        title: darkMode ? 'white' : '#0B4672',
         info: darkMode ? 'rgba(255, 255, 255, 0.5)' : '#676767',
         atividade: darkMode ? 'rgba(255, 255, 255, 0.5)' : '#676767',
-        subtitle: darkMode ? '#f58634' : '#0B4672',
+        subtitle: darkMode ? 'white' : '#0B4672',
         common: darkMode ? '#898989' : 'black',
         icon: 'white'
       },
@@ -56,14 +56,23 @@ const MythemeProvider = ({ children }) => {
         viewpdf: '#3949ab',
         hover: '#7986cb',
         new: darkMode ? 'rgba(223, 223, 223, 0.15)' : '#0d47a1',
-        newHover: darkMode ? 'rgba(223, 223, 223, 0.30)' : '#093170',
-        edit: darkMode ? green[700] : green[900],
-        create: darkMode ? blue[700] : blue[900],
-        delete: darkMode ? red[700] : red[900],
-        active: darkMode ? blue[700] : blue[900],
-        pdf: darkMode ? 'white ' : '#0B4672',
+        edit: darkMode ? '#757575' : green[800],
+        create: darkMode ? blue[700] : blue[800],
+        delete: darkMode ? red[700] : red[800],
+        active: darkMode ? blue[700] : blue[800],
+        pdf: darkMode ? 'rgba(255, 255, 255, 0.08)' : blue[800],
+        view: darkMode ? '#757575' : blue[600],
         accordion: darkMode ? 'white ' : '#0B4672',
-        success: darkMode ? green[700] : green[900]
+        success: darkMode ? green[700] : green[800],
+        hover: {
+          new: darkMode ? 'rgba(223, 223, 223, 0.30)' : '#093170',
+          edit: darkMode ? '#424242' : green[900],
+          pdf: darkMode ? '#424242' : blue[900],
+          view: darkMode ? '#424242' : blue[700],
+          delete: red[900],
+          active: blue[900],
+          success: green[900]
+        }
       },
       border: {
         infos: darkMode ? '#898989' : 'white'

@@ -9,8 +9,7 @@ import {
   MenuItem,
   FormHelperText,
 } from "@material-ui/core/";
-import { SaveInfo } from '../../../Components/Buttons/Atividades';
-import { EditInfoAtividade } from "../../../Components/Buttons/Atividades";
+import { SaveInfo, EditInfo } from '../../../Components/Buttons/Atividades';
 import Accordion from "../../../Components/Accordion/Accordion";
 
 //* SERVICE
@@ -195,9 +194,7 @@ export default ({ Info, ticket }) => {
               loading={loading}
               success={success}
             />
-            {success && !loading && (
-              <EditInfoAtividade handleEdit={handleEdit} />
-            )}
+            {success && !loading && <EditInfo handleEdit={handleEdit} />}
           </Grid>
         </Grid>
       </form>

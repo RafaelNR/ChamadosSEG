@@ -35,7 +35,7 @@ class Service {
    * @param {String} query Recebe um query para execução
    * @param {Number} time Tempo para resolver a promisse
    */
-  promise(query, time = 4000) {
+  promise(query, time = 500) {
     let promise = new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(query);

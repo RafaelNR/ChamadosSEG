@@ -2,39 +2,40 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Grid } from "@material-ui/core";
 import {
-  EditIconButton,
-  DeleteIconButton,
-  DisabledIconButton,
-  ActivedIconButton,
+  EditButton,
+  DeleteButton,
+  DisabledButton,
+  ActivedButton,
 } from "../Buttons/Icons";
 
 const Actions = (props) => {
   const { buttons } = props;
 
   const renderButtons = (props) => {
+
     return buttons.map((button, index) => {
       switch (button) {
         case "edit":
           return (
-            <Grid item md={3} key={index}>
-              <EditIconButton {...props} />
+            <Grid item key={index}>
+              <EditButton {...props} border={false} />
             </Grid>
           );
 
         case "delete":
           return (
-            <Grid item md={3} key={index}>
-              <DeleteIconButton {...props} />
+            <Grid item key={index}>
+              <DeleteButton {...props} border={false} />
             </Grid>
           );
 
         case "disable":
           return (
-            <Grid item md={3} key={index}>
+            <Grid item key={index}>
               {props.disabled === 0 ? (
-                <ActivedIconButton {...props} />
+                <ActivedButton {...props} border={false} />
               ) : (
-                <DisabledIconButton {...props} />
+                <DisabledButton {...props} border={false} />
               )}
             </Grid>
           );
@@ -46,7 +47,7 @@ const Actions = (props) => {
   };
 
   return (
-    <Grid container spacing={0}>
+    <Grid container justify="center" spacing={0}>
       {renderButtons(props)}
     </Grid>
   );

@@ -14,7 +14,11 @@ import TableHead from "../../Components/Tables/TableHead";
 import TablePagination from "../../Components/Tables/TablePagination";
 import sortObject from "../../Utils/sortObject";
 import CircularProcess from "../../Components/Loading";
-import { EditTicket, View } from "../../Components/Buttons/Atividades";
+import {
+  EditTicket,
+  ViewTicket,
+  PdfTicket
+} from '../../Components/Buttons/Atividades';
 
 //* CONTEXT
 import useAtividades from "../../Context/AtividadesContext";
@@ -61,6 +65,7 @@ const headCells = [
     disablePadding: false,
     label: "Ações",
     sort: false,
+    align: 'center'
   },
 ];
 
@@ -161,10 +166,14 @@ export default () => {
                         {row.cliente}
                       </TableCell>
                       <TableCell align="center" className={classes.tablerow}>
+                        
                         {permissionEditAtividade(row.date) ? (
                           <EditTicket ticket={row.ticket} />
                         ) : (
-                          <View ticket={row.ticket} />
+                          <>
+                            <ViewTicket ticket={row.ticket} />
+                            <PdfTicket ticket={row.ticket} />
+                          </>
                         )}
                       </TableCell>
                     </TableRow>

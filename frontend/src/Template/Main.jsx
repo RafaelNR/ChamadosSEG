@@ -26,6 +26,15 @@ const useStyles = makeStyles((theme) => ({
 const Main = ({ children }) => {
   const classes = useStyles();
 
+  React.useEffect(() => {
+    const Ac = new AbortController()
+
+    return function cleanup() {
+      Ac.abort();
+    }
+
+  })
+
   return (
     <MythemeProvider>
       <SnackBarProvider>

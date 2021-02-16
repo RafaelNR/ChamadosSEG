@@ -1,11 +1,13 @@
 import React, { memo } from "react";
-import { makeStyles, Button, DialogActions } from "@material-ui/core/";
+import PropTypes from 'prop-types';
+import { makeStyles, Tooltip, Button, DialogActions } from '@material-ui/core/';
 import {
   Add,
   Save,
   Close,
   NavigateNextSharp,
-  NavigateBeforeSharp
+  NavigateBeforeSharp,
+  EditSharp
 } from '@material-ui/icons/';
 import useDialog from '../../Context/DialogContext';
 
@@ -17,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: '8px',
     '&:hover': {
       transition: '',
-      backgroundColor: theme.palette.button.newHover
+      backgroundColor: theme.palette.button.hover.new
     }
   },
   cancel: {
@@ -50,13 +52,10 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.dark
     }
   },
-  icon: {
-    fontSize: '20px'
-  }
 }));
 
 
-const NewButton = memo(() => {
+const NewButton = memo(({ name }) => {
   const classes = useStyles();
   const { openDialog } = useDialog();
   return (
@@ -66,11 +65,11 @@ const NewButton = memo(() => {
       className={classes.new}
       startIcon={<Add className={classes.icon} />}
     >
-      Novo
+      {name}
     </Button>
   );
 });
-const SaveButton = React.memo(({ disabled }) => {
+const SaveButton = memo(({ disabled, name="SALVAR" }) => {
   const classes = useStyles();
   return (
     <Button
@@ -79,12 +78,12 @@ const SaveButton = React.memo(({ disabled }) => {
       startIcon={<Save className={classes.icon} />}
       disabled={disabled}
     >
-      SALVAR
+      {name}
     </Button>
   );
 });
 
-const NavigatorButton = React.memo(({ clickAction, icon }) => {
+const NavigatorButton = memo(({ clickAction, icon, }) => {
   const classes = useStyles();
   return (
     <Button
@@ -103,7 +102,7 @@ const NavigatorButton = React.memo(({ clickAction, icon }) => {
   );
 });
 
-const CancelButton = React.memo(({ clickClose }) => {
+const CancelButton = memo(({ clickClose, name="CANCELAR" }) => {
   const classes = useStyles();
   return (
     <DialogActions>
@@ -112,10 +111,10 @@ const CancelButton = React.memo(({ clickClose }) => {
         startIcon={<Close className={classes.icon} />}
         onClick={clickClose}
       >
-        CANCELAR
+        {name}
       </Button>
     </DialogActions>
   );
 });
 
-export { NewButton, SaveButton, CancelButton, NavigatorButton };
+export { NewButton, SaveButton, CancelButton, NavigatorButton};

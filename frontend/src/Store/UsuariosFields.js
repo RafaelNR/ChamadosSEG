@@ -16,7 +16,7 @@ const Insert = [
     margin: "normal",
     type: "password",
     option: "input",
-    value: "*******",
+    value: "******",
   },
   {
     id: "email",

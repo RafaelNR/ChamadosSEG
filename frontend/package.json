@@ -27,7 +27,7 @@
     "yup": "^0.29.3"
   },
   "scripts": {
-    "start": "set PORT=80 && react-scripts start",
+    "start": "set PORT=81 && react-scripts start",
     "build": "react-scripts build",
     "build-no-mapper": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
