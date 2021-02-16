@@ -27,9 +27,13 @@ const insert = async (Dados) => await knex.insert(Dados).into("categorias_has_su
 const deleteByCategoria_id = async (categoria_id) => await knex("categorias_has_subcategorias").del().where("categoria_id", "=", categoria_id);
 
 
+const countCategoriasBySubCategoria_id = async (subcategoria_id) =>
+	await knex.count("id as id").from("categorias_has_subcategorias").where('subcategoria_id','',subcategoria_id)
+
 module.exports = {
-  findSubCategoriasByCategoriaID,
-  findCategoriaBySubCategoriaID,
-  insert,
-  deleteByCategoria_id
-}
+	findSubCategoriasByCategoriaID,
+	findCategoriaBySubCategoriaID,
+	insert,
+	deleteByCategoria_id,
+	countCategoriasBySubCategoria_id,
+};

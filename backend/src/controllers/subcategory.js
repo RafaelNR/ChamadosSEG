@@ -1,4 +1,5 @@
 const Model = require("../models/subcategory");
+const CategoriaHasSub = require('../models/categorias_has_subcategorias')
 const Validate = require("../tools/validation/schemas");
 const Result =  require('../tools/result');
 
@@ -74,8 +75,8 @@ const deletar = async (req, res) => {
 
 		const id = Validate.ID(req.params.id);
 
-		await tools.isExist(ID);
-		await Model.deletar(id);
+		await tools.handleDelete(id);
+		//await Model.deletar(id);
 
 		Result.ok(200);
 	} catch (error) {
@@ -101,6 +102,16 @@ const tools = {
 		return newDados;
 	},
 
+	async handleDelete(ID) {
+		await tools.isExist(ID);
+
+		const Dados = await CategoriaHasSub.findCategoriaBySubCategoriaID(ID)
+
+		if (Dados.length > 0)
+			throw 'Sub-Categoria ainda vinculada a um categoria.'
+
+	},
+
 	/**
 	 * & Verifica se já existe sub-categoria para categoria_id
 	 * @param {Object} Dados
@@ -118,7 +129,7 @@ const tools = {
 	isExist: async (ID) => {
 		const dbDados = await Model.countByID(ID);
 		if (!dbDados || dbDados.id <= 0) {
-			throw "SubCategoria não existe.";
+			throw "Sub-Categoria não existe.";
 		}
 		return;
 	},

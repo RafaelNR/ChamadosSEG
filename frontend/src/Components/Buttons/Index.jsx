@@ -1,13 +1,12 @@
 import React, { memo } from "react";
 import PropTypes from 'prop-types';
-import { makeStyles, Tooltip, Button, DialogActions } from '@material-ui/core/';
+import { makeStyles, Button, DialogActions } from '@material-ui/core/';
 import {
   Add,
   Save,
   Close,
   NavigateNextSharp,
   NavigateBeforeSharp,
-  EditSharp
 } from '@material-ui/icons/';
 import useDialog from '../../Context/DialogContext';
 
@@ -69,6 +68,7 @@ const NewButton = memo(({ name }) => {
     </Button>
   );
 });
+
 const SaveButton = memo(({ disabled, name="SALVAR" }) => {
   const classes = useStyles();
   return (

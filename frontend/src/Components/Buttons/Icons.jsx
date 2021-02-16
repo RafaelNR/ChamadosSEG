@@ -1,9 +1,8 @@
-import React, { createFactory, memo } from "react";
+import React, { memo } from "react";
 import clsx from 'clsx';
 import PropTypes from "prop-types";
-import { IconButton, Tooltip, Button, makeStyles } from "@material-ui/core";
+import { Tooltip, Button, makeStyles } from "@material-ui/core";
 import {
-  AddBox,
   EditSharp,
   VisibilityOffSharp,
   VisibilitySharp,
@@ -56,18 +55,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '20px'
   }
 }));
-
-const AddIconButton = memo(() => {
-  const classes = useStyles();
-  const { openDialog } = useDialog();
-  return (
-    <IconButton onClick={() => openDialog("insert")}>
-      <Tooltip title="Novo">
-        <AddBox className={classes.add} />
-      </Tooltip>
-    </IconButton>
-  );
-});
 
 const DeleteButton = memo(({ id, getID, border = true }) => {
   const props = !border && {
@@ -181,7 +168,6 @@ ActivedButton.propTypes = {
 
 export {
   EditButton,
-  AddIconButton,
   DeleteButton,
   DisabledButton,
   ActivedButton,

@@ -85,24 +85,24 @@ const SubCategoriasProvider = ({ children }) => {
       try {
         const data = await InsertSchema(subcategoria);
         if (data.error) throw data;
-        const resp = await Api.insert("subcategorias", data);
+        const resp = await Api.insert('subcategorias', data);
         if (!resp.data.success) throw resp.data;
         console.log(resp.data.data);
         setSubCategorias((values) => values.concat(resp.data.data));
         handleSnackBar({
-          type: "success",
-          message: "SubCategoria Inserida!",
+          type: 'success',
+          message: 'SubCategoria Inserida!'
         });
         return true;
       } catch (error) {
         console.log(error);
         if (error && error.errors) setErrors(error.errors);
         handleSnackBar({
-          type: "error",
+          type: 'error',
           message:
             error && error.message
               ? error.message
-              : "Erro em inserir a subcategoria.",
+              : 'Erro em inserir a subcategoria.'
         });
       }
     },
@@ -110,52 +110,58 @@ const SubCategoriasProvider = ({ children }) => {
       try {
         const data = await UpdateSchema(subcategoria);
         if (data.error) throw data;
-        const resp = await Api.update("subcategorias", data);
-        if (!resp.data.success) throw resp.data.error;
+        const resp = await Api.update('subcategorias', data);
+        if (!resp.data.success) throw resp.data;
         const newData = resp.data.data;
         setSubCategorias((subs) =>
           subs.map((s) => (newData.id === s.id ? newData : s))
         );
         handleSnackBar({
-          type: "success",
-          message: "Informações da subcategorias alteradas!",
+          type: 'success',
+          message: 'Informações da subcategorias alteradas!'
         });
         return true;
       } catch (error) {
         console.log(error);
         if (error && error.errors) setErrors(error.errors);
         handleSnackBar({
-          type: "error",
+          type: 'error',
           message:
             error && error.message
               ? error.message
-              : "Erro em alterar a subcategoria.",
+              : 'Erro em alterar a subcategoria.'
         });
       }
     },
-    // async delete(Categoria) {
-    // 	try {
-    // 		const resp = await Api.deletar("Categorias", Categoria.id)
-    // 		if (!resp.data.success) throw resp.data.error;
-    // 		setCategorias(Categorias => Categorias.filter(c => Categoria.id != c.id));
-    // 		handleSnackBar({
-    // 			type: "success",
-    // 			message: `Sucesso em deletar categoria`,
-    // 		});
-    // 	} catch (error) {
-    // 		console.log(error);
-    // 		handleSnackBar({
-    // 			type: "error",
-    // 			message: `Erro em deletar categoria.`,
-    // 		});
-    // 	}
-    // },
+    async delete(subCategoria) {
+      try {
+        const resp = await Api.deletar('subcategorias', subCategoria.id);
+        console.log(resp)
+        if (!resp.data.success) throw resp.data;
+        setSubCategorias((subCategorias) =>
+          subCategorias.filter((c) => subCategoria.id != c.id)
+        );
+        handleSnackBar({
+          type: 'success',
+          message: `Sucesso em deletar a Sub-Categoria`
+        });
+      } catch (error) {
+        console.log(error);
+        handleSnackBar({
+          type: 'error',
+          message:
+            error && error.message
+              ? error.message
+              : 'Erro em deletar a Sub-Categoria.'
+        });
+      }
+    }
   };
 
-  const handleActions = (type, categoria) => {
+  const handleActions = (type, subCategoria) => {
       const fn = Actions[type];
       setApiLoading(true);
-      return fn(categoria);
+      return fn(subCategoria);
   }
 
   return (
