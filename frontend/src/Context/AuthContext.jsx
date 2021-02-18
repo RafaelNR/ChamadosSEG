@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import React, {
   createContext,
   useState,
@@ -6,8 +5,10 @@ import React, {
   useContext,
   useCallback,
 } from "react";
+import PropTypes from "prop-types";
 import { Auth, removeToken }  from "../Service/auth.service";
 import { Login } from '../Service/login.service'
+import * as Crud from '../Api/Crud';
 
 import useLocalStore from "../Hooks/useLocalStore";
 
@@ -22,16 +23,17 @@ const AuthProvider = ({ children }) => {
   const [success, setSuccess] = useState(false);
 
   const handleLogout = useCallback(() => {
+    console.log('exec handleLogout')
     setUser(null);
     setToken(null);
     removeData("token");
     removeData("user");
     removeToken();
-  }, [removeData]);
+  }, []);
 
   useEffect(() => {
 
-    return async () => {
+    const init = async () => {
 
       if (!token || token === "undefined") {
         console.log("token não encontrado");
@@ -48,9 +50,15 @@ const AuthProvider = ({ children }) => {
 
     }
 
-  },[handleLogout, token, user]);
+    init();
 
-  const handleLogin = useCallback((user, passwd) => {
+    return function cleanup() {
+      Crud.default.cancel("AuthContext unmonted");
+    };
+
+  },[]);
+
+  const handleLogin = useCallback((user, passwd,lembrar) => {
 
     setLoading(true);
     Login(user, passwd).then((Dados) => {
@@ -61,6 +69,7 @@ const AuthProvider = ({ children }) => {
       if(Dados.auth && Dados.token){
         setData("token", Dados.token);
         setData("user", Dados.user);
+        lembrar && setData("lembrar", { lembrar: true, user: Dados.user.user });
         setSuccess(true);
         return window.location.replace("/");
       }
@@ -90,7 +99,7 @@ const AuthProvider = ({ children }) => {
     [setData]
   );
 
-  const handleAuth = useCallback(async () => {
+  const handleAuth = useCallback(() => {
     
     const storageToken = getData("token")
     const storageUser = getData("user")
@@ -111,16 +120,17 @@ const AuthProvider = ({ children }) => {
       return handleLogout();
     }
 
-    const resp = await Auth();
-    if (!resp.data.auth) {
-      setErrors({
-        success: false,
-        message: 'Autenticação expirou, você foi deslogado!'
-      });
-      return handleLogout();
-    }
+    Auth().then(resp => {
+      if (!resp.data.auth) {
+        setErrors({
+          success: false,
+          message: 'Autenticação expirou, você foi deslogado!'
+        });
+        return handleLogout();
+      }
+    })
 
-  },[handleLogout, getData  ])
+  },[])
 
   return (
     <AuthContext.Provider
@@ -130,6 +140,7 @@ const AuthProvider = ({ children }) => {
         success,
         errors,
         loading,
+        setErrors,
         handleLogin,
         handleLogout,
         handleAuth,

@@ -5,7 +5,6 @@ import React, {
   useContext,
 } from "react";
 import PropTypes from "prop-types";
-//import * as Api from "../Api/Crud";
 import Service from '../Service/log.service'
 
 

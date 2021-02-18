@@ -73,17 +73,16 @@ const ViewTicket = React.memo(({ ticket }) => {
   );
 });
 
-const PdfTicket = React.memo(({ ticket }) => {
+const PdfTicket = React.memo(({ ticket, handleClick }) => {
   const classes = useStyles();
   return (
-    <NavLink to={`/atividades/view/${ticket}`}>
-      <Tooltip title="Pdf">
-        <Button
-          className={clsx(classes.root, classes.pdf)}
-          startIcon={<PictureAsPdfSharp style={{ fontSize: 15 }} />}
-        />
-      </Tooltip>
-    </NavLink>
+    <Tooltip title="Pdf">
+      <Button
+        onClick={() => handleClick(ticket)}
+        className={clsx(classes.root, classes.pdf)}
+        startIcon={<PictureAsPdfSharp style={{ fontSize: 15 }} />}
+      />
+    </Tooltip>
   );
 });
 

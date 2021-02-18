@@ -16,6 +16,7 @@ import { SelectCommon } from '../../Components/FormControl/Selects';
 
 
 //* SERVICE
+import * as Service from '../../Api/Service';
 import * as Dashboard from '../../Service/dashboard.service'
 import { getMyClientes } from '../../Service/user.service'
 
@@ -39,6 +40,7 @@ const Select = React.memo(({ changeCliente , clienteCurr}) => {
   const [clientes, setClientes] = React.useState([]);
 
   React.useEffect(() => {
+
     getMyClientes()
       .then((Clientes) => {
         if (Clientes.data.length > 1) {
@@ -52,6 +54,10 @@ const Select = React.memo(({ changeCliente , clienteCurr}) => {
       .catch((e) => {
         console.log(e);
       });
+    
+    return function cleanup() {
+      Service.default.cancel('MyAtividades unmonted');
+    };
   }, []);
 
   return (
@@ -79,15 +85,21 @@ export default () => {
   React.useEffect(() => {
     setLoading(true);
     Dashboard.MyClientesAtividades().then((Dados) => {
-      setLoading(false);
       setOpen(Dados.data.open);
       setHalf(Dados.data.half);
       setLast(Dados.data.last);
       setClose(Dados.data.close);
     }).catch((e) => {
-      setLoading(false);
       console.log(e);
-    });
+    }).finally(() => {
+       setLoading(false);
+    })
+
+    return function cleanup() {
+      setLoading(false);
+      Service.default.cancel('MyAtividades unmonted');
+    };
+
 
   }, []);
 

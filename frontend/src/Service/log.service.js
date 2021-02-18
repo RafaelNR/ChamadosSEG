@@ -2,11 +2,6 @@ import Service from "../Api/Service";
 
 class Log{
 
-  constructor() {
-    this.Cancel = Service.source();
-  }
-
-
   async index() {
     try {
         const Dados = await Service.exec('get', '/log');

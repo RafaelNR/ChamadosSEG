@@ -79,8 +79,7 @@ export default () => {
       })
 
     return function cleanup() {
-      console.log('ummont atividade')
-      return Service.source();
+      return Service.cancel('EditAtividade umont');
     };
     
   }, [history, ticket]);

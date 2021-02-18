@@ -8,6 +8,7 @@ import React, {
 
 
 //* SERVICE
+import * as Crud from '../Api/Crud';
 import { getClientes } from '../Service/clientes.service';
 import { getUsers } from '../Service/user.service';
 
@@ -49,8 +50,13 @@ const ReportAtividadesProvider = ({ children }) => {
         })
         .catch((error) => {
           console.log(error);
-        });
+        })
     }
+
+    return function cleanup() {
+      Crud.default.cancel('AuthContext unmonted');
+    };
+    
   }, [type.info]);
 
   const handleDataChange = useCallback(

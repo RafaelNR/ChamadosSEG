@@ -17,3 +17,24 @@ export const AtividadesPDF = async (Dados) => {
   }
 
 } 
+
+
+export const AtividadePDF = async (Ticket) => {
+
+    try {
+      const URL = `/pdf/atividade/${Ticket}`;
+      const resp = await Service.exec('get', URL);
+
+      console.log(resp)
+
+      if (!resp.data.success)
+        throw new Error(
+          resp.data.message ? resp.data.message : 'Erro em gerar PDF.'
+        );
+
+      return resp.data.data;
+    } catch (error) {
+      throw new Error(error);
+    }
+  
+}

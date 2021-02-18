@@ -15,6 +15,7 @@ import BoxHome from '../../Components/Box/Home'
 
 //* SERVICE
 import * as Dashboard from '../../Service/dashboard.service'
+import * as Service from '../../Api/Service'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,15 +38,20 @@ export default () => {
   React.useEffect(() => {
     setLoading(true);
     Dashboard.MyAtividades().then(Dados => {
-      setLoading(false);
       setOpen(Dados.data.open);
       setHalf(Dados.data.half)
       setLast(Dados.data.last);
       setClose(Dados.data.close);
-    }).catch(e => {
+    }).catch(error => {
+      console.log(error)
+    }).finally(() => {
       setLoading(false);
-      console.log(e)
     })
+
+    return function cleanup() {
+      setLoading(false);
+      Service.default.cancel('MyAtividades unmonted');
+    };
 
   }, []);
 

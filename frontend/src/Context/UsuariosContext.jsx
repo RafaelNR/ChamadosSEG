@@ -6,7 +6,7 @@ import React, {
   useCallback,
 } from "react";
 import PropTypes from "prop-types";
-import * as Api from "../Api/Crud";
+import * as Crud from "../Api/Crud";
 import { InsertSchema, UpdateSchema } from "../Schemas/UserSchema";
 
 import useSnackBar from "./SnackBarContext";
@@ -23,7 +23,7 @@ const UsuariosProvider = ({ children }) => {
   const [apiLoading, setApiLoading] = useState(false);
 
   useEffect(() => {
-    Api.get("usuarios")
+    Crud.get("usuarios")
       .then((resp) => {
         const { success, data } = resp.data;
         setLoading(false);
@@ -40,8 +40,7 @@ const UsuariosProvider = ({ children }) => {
       });
 
     return function cleanup() {
-      console.log("unmounted component");
-      Api.default.source();
+      Crud.default.cancel('AuthContext unmonted');
     };
   }, [setUsuarios, handleSnackBar, setLoading]);
 
@@ -50,7 +49,7 @@ const UsuariosProvider = ({ children }) => {
       try {
         setApiLoading(true);
         setErrors({});
-        return Api.getByID("usuarios", parseInt(ID)).then((resp) => {
+        return Crud.getByID("usuarios", parseInt(ID)).then((resp) => {
           const { success, data } = resp.data;
           if (!success) throw resp.data;
 
@@ -74,7 +73,7 @@ const UsuariosProvider = ({ children }) => {
       try {
         const data = await InsertSchema(usuario);
         if (data.error) throw data;
-        const resp = await Api.insert("usuarios", data);
+        const resp = await Crud.insert("usuarios", data);
         if (!resp.data.success) throw resp.data;
         setUsuarios((usuarios) =>
           usuarios.concat({ ...usuario, id: resp.data.data.id })
@@ -100,7 +99,7 @@ const UsuariosProvider = ({ children }) => {
       try {
         const data = await UpdateSchema(usuario);
         if (data.error) throw data;
-        const resp = await Api.update("usuarios", data);
+        const resp = await Crud.update("usuarios", data);
         if (!resp.data.success) throw resp.data.error;
         const newUser = resp.data.data;
         setUsuarios((usuarios) =>
@@ -125,7 +124,7 @@ const UsuariosProvider = ({ children }) => {
     },
     async disabled(usuario) {
       try {
-        const resp = await Api.disabled("usuarios", usuario.id);
+        const resp = await Crud.disabled("usuarios", usuario.id);
         if (!resp.data.success) throw resp.data.error;
         const newUser = { ...usuario, actived: 0 };
         setUsuarios((usuarios) =>
@@ -147,7 +146,7 @@ const UsuariosProvider = ({ children }) => {
     },
     async actived(usuario) {
       try {
-        const resp = await Api.actived("usuarios", usuario.id);
+        const resp = await Crud.actived("usuarios", usuario.id);
         if (!resp.data.success) throw resp.data.error;
         const newUser = { ...usuario, actived: 1 };
         setUsuarios((usuarios) =>

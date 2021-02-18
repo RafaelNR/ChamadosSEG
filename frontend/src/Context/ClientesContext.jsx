@@ -6,7 +6,7 @@ import React, {
   useEffect,
 } from "react";
 import PropTypes from "prop-types";
-import * as Api from "../Api/Crud";
+import * as Crud from "../Api/Crud";
 import { InsertSchema, UpdateSchema } from "../Schemas/ClienteSchema";
 
 import useSnackBar from "./SnackBarContext";
@@ -23,7 +23,7 @@ const ClientesProvider = ({ children }) => {
   const [apiLoading, setApiLoading] = useState(false);
 
   useEffect(() => {
-    Api.get("clientes")
+    Crud.get("clientes")
       .then((resp) => {
         const { success, data } = resp.data;
         setLoading(false);
@@ -40,9 +40,9 @@ const ClientesProvider = ({ children }) => {
       });
 
     return function cleanup() {
-      console.log("unmounted component");
-      Api.default.source();
+      Crud.default.cancel('AtividadeContext unmounted');
     };
+
   }, [setClientes, handleSnackBar, setLoading]);
 
   /**
@@ -53,7 +53,7 @@ const ClientesProvider = ({ children }) => {
       try {
         setApiLoading(true);
         setErrors({});
-        return Api.getByID("clientes", parseInt(ID)).then((resp) => {
+        return Crud.getByID("clientes", parseInt(ID)).then((resp) => {
           console.log(resp);
           const { success, data } = resp.data;
           if (!success) throw resp.data;
@@ -80,7 +80,7 @@ const ClientesProvider = ({ children }) => {
       try {
         const data = await InsertSchema(cliente);
         if (data.error) throw data;
-        const resp = await Api.insert("clientes", data);
+        const resp = await Crud.insert("clientes", data);
         if (!resp.data.success) throw resp.data.error;
         setClientes((clientes) =>
           clientes.concat({ ...cliente, id: resp.data.data.id })
@@ -106,7 +106,7 @@ const ClientesProvider = ({ children }) => {
       try {
         const data = await UpdateSchema(cliente);
         if (data.error) throw data;
-        const resp = await Api.update("clientes", data);
+        const resp = await Crud.update("clientes", data);
         if (!resp.data.success) throw resp.data.error;
         const newCliente = resp.data.data;
         setClientes((clientes) =>
@@ -131,7 +131,7 @@ const ClientesProvider = ({ children }) => {
     },
     async disabled(cliente) {
       try {
-        const resp = await Api.disabled("clientes", cliente.id);
+        const resp = await Crud.disabled("clientes", cliente.id);
         if (!resp.data.success) throw resp.data;
         const value = { ...cliente, actived: 0 };
         setClientes((clientes) =>
@@ -153,7 +153,7 @@ const ClientesProvider = ({ children }) => {
     },
     async actived(cliente) {
       try {
-        const resp = await Api.actived("clientes", cliente.id);
+        const resp = await Crud.actived("clientes", cliente.id);
         if (!resp.data.success) throw resp.data.error;
         const value = { ...cliente, actived: 1 };
         setClientes((clientes) =>

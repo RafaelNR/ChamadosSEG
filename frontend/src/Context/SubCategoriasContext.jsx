@@ -6,7 +6,7 @@ import React, {
   useCallback,
 } from "react";
 import PropTypes from "prop-types";
-import * as Api from "../Api/Crud";
+import * as Crud from "../Api/Crud";
 import { InsertSchema, UpdateSchema } from "../Schemas/SubCategorias.Schema";
 
 import useSnackBar from "./SnackBarContext";
@@ -28,7 +28,7 @@ const SubCategoriasProvider = ({ children }) => {
   useEffect(
     () => {
       async function init() {
-        await Api.get("subcategorias")
+        await Crud.get("subcategorias")
           .then((resp) => {
             const { success, data } = resp.data;
             if (success) return setSubCategorias(data);
@@ -49,8 +49,7 @@ const SubCategoriasProvider = ({ children }) => {
       init();
 
       return function cleanup() {
-        console.log("unmounted component");
-        return Api.default.source();
+        Crud.default.cancel('AuthContext unmonted');
       };
     },
     [handleSnackBar,setLoading]
@@ -61,7 +60,7 @@ const SubCategoriasProvider = ({ children }) => {
       try {
         setApiLoading(true);
         setErrors({});
-        return Api.getByID("subcategorias", parseInt(ID)).then((resp) => {
+        return Crud.getByID("subcategorias", parseInt(ID)).then((resp) => {
           const { success, data } = resp.data;
           if (!success) throw resp.data;
           setApiLoading(false);
@@ -85,7 +84,7 @@ const SubCategoriasProvider = ({ children }) => {
       try {
         const data = await InsertSchema(subcategoria);
         if (data.error) throw data;
-        const resp = await Api.insert('subcategorias', data);
+        const resp = await Crud.insert('subcategorias', data);
         if (!resp.data.success) throw resp.data;
         console.log(resp.data.data);
         setSubCategorias((values) => values.concat(resp.data.data));
@@ -110,7 +109,7 @@ const SubCategoriasProvider = ({ children }) => {
       try {
         const data = await UpdateSchema(subcategoria);
         if (data.error) throw data;
-        const resp = await Api.update('subcategorias', data);
+        const resp = await Crud.update('subcategorias', data);
         if (!resp.data.success) throw resp.data;
         const newData = resp.data.data;
         setSubCategorias((subs) =>
@@ -135,7 +134,7 @@ const SubCategoriasProvider = ({ children }) => {
     },
     async delete(subCategoria) {
       try {
-        const resp = await Api.deletar('subcategorias', subCategoria.id);
+        const resp = await Crud.deletar('subcategorias', subCategoria.id);
         console.log(resp)
         if (!resp.data.success) throw resp.data;
         setSubCategorias((subCategorias) =>

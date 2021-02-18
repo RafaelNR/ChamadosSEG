@@ -85,6 +85,7 @@ const LoginSchema = (data) => {
   const schema = yup.object().shape({
     user: yup
       .string()
+      .nullable()
       .min(3, 'No mínimo 3 Caracteres')
       .max(30, 'No máximo 30 caracteres')
       .required('Usuário é obrigatório'),

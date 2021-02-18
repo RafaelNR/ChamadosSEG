@@ -30,6 +30,9 @@ import useSearch from "../../Context/SearchContext";
 //* UTILS
 import { handleDate, permissionEditAtividade } from "../../Utils/dates";
 
+//* SERVICE
+import { AtividadePDF } from '../../Service/pdf.service'
+
 const headCells = [
   {
     id: "ticket",
@@ -129,6 +132,14 @@ export default () => {
   }, [search, setSearchResults, atividades]);
 
 
+  const clickPDF = (ticket) => {
+
+    AtividadePDF(ticket).then(Dados => {
+      console.log(Dados)
+    })
+    
+  }
+
   return (
     <React.Fragment>
       <Toolbar title="Lista de Atividades"/>
@@ -172,7 +183,7 @@ export default () => {
                         ) : (
                           <>
                             <ViewTicket ticket={row.ticket} />
-                            <PdfTicket ticket={row.ticket} />
+                            <PdfTicket ticket={row.ticket} handleClick={clickPDF}/>
                           </>
                         )}
                       </TableCell>

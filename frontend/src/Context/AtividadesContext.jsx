@@ -5,7 +5,7 @@ import React, {
   useContext,
 } from "react";
 import PropTypes from "prop-types";
-import * as Api from "../Api/Crud";
+import * as Crud from "../Api/Crud";
 
 import useSnackBar from "./SnackBarContext";
 import useLoading from "./LoadingContext";
@@ -24,7 +24,7 @@ const AtividadesProvider = ({ children }) => {
       if (roleID) {
         try {
           const URL = roleID <= 2 ? 'atividades' : 'atividades/clientes';
-          const resp = await Api.get(URL);
+          const resp = await Crud.get(URL);
           const { success, data } = resp.data;
           if (!success) throw resp.data;
           setLoading(false);
@@ -45,7 +45,7 @@ const AtividadesProvider = ({ children }) => {
     init();
 
     return function cleanup() {
-      Api.default.source();
+      Crud.default.cancel("AtividadeContext unmounted")
     };
   }, [handleSnackBar, setLoading, roleID]);
 

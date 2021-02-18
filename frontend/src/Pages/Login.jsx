@@ -3,6 +3,7 @@ import React, { useState, useCallback } from "react";
 import {
   CssBaseline,
   TextField,
+  Input,
   FormControlLabel,
   Checkbox,
   Link,
@@ -11,9 +12,13 @@ import {
 } from "@material-ui/core";
 import Alert from '../Components/Alert/index'
 import { ProgressSubmit } from '../Components/Buttons/Progress';
+import InputPasswd from '../Components/FormControl/Passwd';
 
 //* CONTEXT
 import useAuth from "../Context/AuthContext";
+import useLocalStore from '../Hooks/useLocalStore'
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    width: '65%'
   },
   avatar: {
     width: 100,
@@ -59,27 +65,54 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignInSide() {
   const classes = useStyles();
-  const { handleLogin, errors, success, loading } = useAuth();
-  const [user, setUser] = useState(null);
-  const [passwd, setPasswd] = useState(null);
+  const { getData,removeData } = useLocalStore();
+  const { handleLogin, errors, setErrors, success, loading } = useAuth();
+  const [user, setUser] = useState('');
+  const [passwd, setPasswd] = useState('');
+  const [lembrar, setLembrar] = useState(false);
+  const [showPasswd, setShowPasswd] = useState(false);
 
   React.useEffect(() => {
     document.title = `Login - OS Técnicos`;
+    const dados = getData('lembrar');
+    if (dados && dados.lembrar) {
+      setLembrar(dados.lembrar)
+      setUser(dados.user)
+    }
+
   },[])
 
   const handleChange = useCallback((e) => {
     const el = e.target.name;
     if (el === "user") setUser(e.target.value);
-    if (el === "passwd") setPasswd(e.target.value);
+    else if (el === "passwd") setPasswd(e.target.value);
   }, []);
 
   const handleSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      handleLogin(user, passwd);
+      handleLogin(user, passwd, lembrar);
     },
-    [user, passwd, handleLogin]
+    [user, passwd, lembrar, handleLogin]
   );
+
+  const removeErrors = (e) => {
+
+    if (errors[e.target.name] && errors.hasOwnProperty(e.target.name)) {
+      setErrors(errors => {
+        delete errors[e.target.name];
+        return errors
+      });
+    }
+
+  }
+
+  const changeRemember = (e) => {
+    setLembrar(e.target.checked);
+    if (!e.target.checked) {
+      removeData('lembrar');
+    }
+  }
   
   return (
     <Grid container component="main" className={classes.root}>
@@ -100,7 +133,7 @@ export default function SignInSide() {
             title="Logo"
             alt="logo"
           />
-          {errors.message && !errors.success && (
+          {errors && errors.message && !errors.success && (
             <Alert type="error" title="Erro!" message={errors.message} />
           )}
           <form
@@ -114,34 +147,38 @@ export default function SignInSide() {
               id="username"
               label="Username"
               name="user"
-              autoComplete="user"
+              autoComplete="username"
+              value={user}
               fullWidth
               required
-              autoFocus
-              error={errors['user'] ? true : false}
-              helperText={errors['user']}
+              error={errors && errors['user'] ? true : false}
+              helperText={errors && errors['user']}
               onChange={(e) => handleChange(e)}
+              onKeyDownCapture={(e) => removeErrors(e)}
             />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              id="password"
-              label="Senha"
-              type="password"
-              name="passwd"
-              autoComplete="current-password"
+            <InputPasswd
+              value={passwd}
+              error={errors && errors['passwd'] ? true : false}
+              helperText={errors && errors['passwd']}
+              onChange={(e) => handleChange(e)}
+              onKeyDownCapture={(e) => removeErrors(e)}
+              autoComplete="senha"
               fullWidth
               required
-              error={errors['passwd'] ? true : false}
-              helperText={errors['passwd']}
-              onChange={(e) => handleChange(e)}
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={
+                <Checkbox
+                  checked={lembrar}
+                  name="lembrar"
+                  color="primary"
+                  onChange={(e) => changeRemember(e)}
+                />
+              }
               label="Lembrar-me"
             />
-            <ProgressSubmit  success={success} loading={loading}>
-                Entrar
+            <ProgressSubmit success={success} loading={loading}>
+              Entrar
             </ProgressSubmit>
             <Grid container>
               <Grid item xs>

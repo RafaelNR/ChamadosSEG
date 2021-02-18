@@ -6,7 +6,7 @@ import React, {
   useCallback,
 } from "react";
 import PropTypes from "prop-types";
-import * as Api from "../Api/Crud";
+import * as Crud from "../Api/Crud";
 import { InsertSchema, UpdateSchema } from "../Schemas/CategoriaSchema";
 
 import useSnackBar from "./SnackBarContext";
@@ -26,7 +26,7 @@ const CategoriasProvider = ({ children }) => {
     () => {
       async function init() {
         setLoading(true);
-        await Api.get("categorias")
+        await Crud.get("categorias")
           .then((resp) => {
             const { success, data } = resp.data;
             if (success) return setCategorias(data);
@@ -47,8 +47,7 @@ const CategoriasProvider = ({ children }) => {
       init();
 
       return function cleanup() {
-        console.log("unmounted Categoria");
-        Api.default.source();
+        Crud.default.cancel('CategoriaContext unmounted');
       };
     },
     [handleSnackBar,setLoading]
@@ -59,7 +58,7 @@ const CategoriasProvider = ({ children }) => {
       try {
         setApiLoading(true);
         setErrors({});
-        return Api.getByID("categorias", parseInt(ID)).then((resp) => {
+        return Crud.getByID("categorias", parseInt(ID)).then((resp) => {
           const { success, data } = resp.data;
           if (!success) throw resp.data;
           setApiLoading(false);
@@ -82,7 +81,7 @@ const CategoriasProvider = ({ children }) => {
       try {
         const data = await InsertSchema(categoria);
         if (data.error) throw data;
-        const resp = await Api.insert("categorias", data);
+        const resp = await Crud.insert("categorias", data);
         if (!resp.data.success) throw resp.data;
         console.log(resp.data.data);
         setCategorias((values) => values.concat(resp.data.data));
@@ -107,7 +106,7 @@ const CategoriasProvider = ({ children }) => {
       try {
         const data = await UpdateSchema(Categoria);
         if (data.error) throw data;
-        const resp = await Api.update("categorias", data);
+        const resp = await Crud.update("categorias", data);
         if (!resp.data.success) throw resp.data.error;
         const newData = resp.data.data;
         console.log(newData);
@@ -133,7 +132,7 @@ const CategoriasProvider = ({ children }) => {
     },
     async delete(Categoria) {
       try {
-        const resp = await Api.deletar("Categorias", Categoria.id);
+        const resp = await Crud.deletar("Categorias", Categoria.id);
         if (!resp.data.success) throw resp.data.error;
         setCategorias((Categorias) =>
           Categorias.filter((c) => Categoria.id !== c.id)

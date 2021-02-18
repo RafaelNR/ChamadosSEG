@@ -9,6 +9,8 @@ class Service {
         return status < 500;
       }
     });
+    this.CancelToken = axios.CancelToken
+    this.source = this.CancelToken.source()
   }
 
   getToken() {
@@ -26,8 +28,8 @@ class Service {
   /**
    * Cancela a requisição a api, quando ainda está sendo processada.
    */
-  source() {
-    this.axios.CancelToken.source().cancel("Operação cancelada pelo usuário!");
+  cancel(msg) {
+    this.axios.CancelToken.source().cancel(msg)
   }
 
   /**
@@ -56,11 +58,10 @@ class Service {
     this.setToken();
     if (data) {
       return process.env.REACT_APP_NODE === 'dev'
-        ? this.promise(fn(url, data, { cancelToken: this.source() }))
-        : fn(url, data, { cancelToken: this.source() });
+        ? this.promise(fn(url, data, { cancelToken: this.source.token }))
+        : fn(url, data, { cancelToken: this.source.token });
     }
-
-    return fn(url, { cancelToken: this.source() });
+    return fn(url, { cancelToken: this.source.token });
   }
 }
 
