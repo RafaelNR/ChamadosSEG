@@ -22,7 +22,8 @@ class Atividade {
 			.from("atividades")
 			.join("users", "users.id", "=", "atividades.user_id")
 			.where("atividades.ticket", "=", ticket)
-      .then((Atividade) => {
+			.then((Atividade) => {
+	
         
 				if (Atividade.length <= 0) return Atividade;
 
@@ -61,7 +62,6 @@ class Atividade {
 						'telefone',
 						'representante',
 						'n_contrato',
-						'imagem',
 					)
 					.from('clientes')
 					.where('clientes.id', '=', Dados.cliente_id)
@@ -72,7 +72,7 @@ class Atividade {
 							cliente: cliente[0],
 						}
 					})
-			})	
+			})
   }
 
 	async countAtividadeByTicket(ticket){

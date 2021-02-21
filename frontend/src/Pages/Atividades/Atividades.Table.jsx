@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 //* COMPONENTES
 import {
@@ -29,9 +29,6 @@ import useSearch from "../../Context/SearchContext";
 
 //* UTILS
 import { handleDate, permissionEditAtividade } from "../../Utils/dates";
-
-//* SERVICE
-import { AtividadePDF } from '../../Service/pdf.service'
 
 const headCells = [
   {
@@ -98,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-  const { atividades } = useAtividades();
+  const { atividades,downloadPDF,loadingPDF } = useAtividades();
   const { loading } = useLoading();
   const { search, searchResults, setSearchResults } = useSearch();
   const { order, orderBy, setOrderBy, setOrder } = useOrderTable();
@@ -130,15 +127,6 @@ export default () => {
     }
     return setSearchResults(atividades);
   }, [search, setSearchResults, atividades]);
-
-
-  const clickPDF = (ticket) => {
-
-    AtividadePDF(ticket).then(Dados => {
-      console.log(Dados)
-    })
-    
-  }
 
   return (
     <React.Fragment>
@@ -177,13 +165,16 @@ export default () => {
                         {row.cliente}
                       </TableCell>
                       <TableCell align="center" className={classes.tablerow}>
-                        
                         {permissionEditAtividade(row.date) ? (
                           <EditTicket ticket={row.ticket} />
                         ) : (
                           <>
                             <ViewTicket ticket={row.ticket} />
-                            <PdfTicket ticket={row.ticket} handleClick={clickPDF}/>
+                            <PdfTicket
+                              ticket={row.ticket}
+                              handleClick={downloadPDF}
+                              loading={loadingPDF}
+                            />
                           </>
                         )}
                       </TableCell>

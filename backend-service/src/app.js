@@ -8,6 +8,7 @@ const App = Express();
 
 App.use(Helmet());
 App.use("/tmp", Express.static("tmp"));
+App.use("/static", Express.static("static"));
 
 //CORS
 const whiteList = ["http://localhost:3000", "http://localhost",process.env.URL_BACKEND, process.env.URL_FRONTEND];
@@ -32,11 +33,10 @@ App.use((req, res, next) => {
 
 // Erro genérico 
 App.use((error, req, res, next) => {
-	console.log(error)
 	res.status(404).json({
 		code: 404,
 		success: false,
-		message: error.message,
+		message: error && error.message ? error.message : error,
 		error: process.env.NODE_ENV === "dev" ? error.stack : "",
 	});
 	next();

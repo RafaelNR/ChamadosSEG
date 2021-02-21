@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const ApiErrors = require('../tools/errors/handle');
 
 module.exports = (req, res, next) => {
 	/**
@@ -7,7 +6,10 @@ module.exports = (req, res, next) => {
 	 */
 	const token = req.headers.access_token;
 
-	if (!token) return ApiErrors(res,{ message: "Precisa efetuar o login para acessar a página." }).AuthErrors();
+	if (!token) return res.status(401).json({
+		success: false,
+		message: "Sem Autenticação ou Autorização.",
+	});
 
 	jwt.verify(token, process.env.SECRET, function (err, decoded) {
 		if (err) {

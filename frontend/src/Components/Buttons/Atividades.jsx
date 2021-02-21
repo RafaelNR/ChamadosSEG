@@ -1,7 +1,11 @@
 import React from "react";
 import clsx from "clsx";
 import { NavLink } from "react-router-dom";
-import { makeStyles, IconButton, Tooltip, Button } from '@material-ui/core/';
+import {
+  makeStyles,
+  Tooltip,
+  Button,
+  CircularProgress} from '@material-ui/core/';
 import { Edit, VisibilitySharp, Add, SaveSharp, PictureAsPdfSharp } from "@material-ui/icons/";
 import Progress from "./Progress";
 
@@ -56,6 +60,11 @@ const useStyles = makeStyles((theme) => ({
       transition: '',
       backgroundColor: theme.palette.button.hover.pdf
     }
+  },
+  loading: {
+    fontSize: 12,
+    width: '20px !important',
+    height: '20px !important'
   }
 }));
 
@@ -73,14 +82,15 @@ const ViewTicket = React.memo(({ ticket }) => {
   );
 });
 
-const PdfTicket = React.memo(({ ticket, handleClick }) => {
+const PdfTicket = React.memo(({ ticket, handleClick, loading }) => {
   const classes = useStyles();
   return (
     <Tooltip title="Pdf">
       <Button
         onClick={() => handleClick(ticket)}
         className={clsx(classes.root, classes.pdf)}
-        startIcon={<PictureAsPdfSharp style={{ fontSize: 15 }} />}
+        startIcon={loading ? <CircularProgress className={classes.loading} /> : <PictureAsPdfSharp style={{ fontSize: 15 }} />}
+        disabled={loading}
       />
     </Tooltip>
   );

@@ -11,6 +11,9 @@ import useSnackBar from "./SnackBarContext";
 import useLoading from "./LoadingContext";
 import useUser from '../Hooks/useUser';
 
+//* SERVICE
+import { AtividadePDF } from '../Service/pdf.service'
+
 const AtividadesContext = createContext({});
 
 const AtividadesProvider = ({ children }) => {
@@ -18,6 +21,7 @@ const AtividadesProvider = ({ children }) => {
   const { setLoading } = useLoading();
   const { roleID } = useUser();
   const [atividades, setAtividades] = useState([]);
+  const [loadingPDF, setLoadingPDF] = useState(false);
 
   useEffect(() => {
     async function init() {
@@ -49,11 +53,32 @@ const AtividadesProvider = ({ children }) => {
     };
   }, [handleSnackBar, setLoading, roleID]);
 
+  const downloadPDF = (ticket) => {
+    setLoadingPDF(true);
+    AtividadePDF(ticket)
+      .then((Dados) => {
+        if (Dados.success) {
+          window.open(Dados.link);
+        }
+      })
+      .catch((error) => {
+        return handleSnackBar({
+          type: 'error',
+          message: error && error.message ? error.message : 'Erro gerar PDF'
+        });
+      })
+      .finally(() => {
+        setLoadingPDF(false);
+      });
+  };
+
 
   return (
     <AtividadesContext.Provider
       value={{
         atividades,
+        loadingPDF,
+        downloadPDF
       }}
     >
       {children}

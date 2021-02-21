@@ -14,8 +14,10 @@ const Atividade = async (req,res) => {
 		const ticket = req.params.ticket;
 		if (!ticket) throw new Error("ticket não existe.");
 
-		if (Model.countAtividadeByTicket(ticket) <= 0)
-			throw new Error("Ticket não existe.");
+		const Atividade = await Model.countAtividadeByTicket(ticket);
+
+		if (Atividade <= 0)
+			throw "Ticket não existe.";
 
 		const resp = await axios.get(
 			`${process.env.URL_SERVICE}/pdf/atividade/${ticket}`,
@@ -28,7 +30,7 @@ const Atividade = async (req,res) => {
 			return res.status(200).json(resp.data);
 		}
 
-		throw new Error("Erro em gerar PDF.");
+		throw "Erro em gerar PDF.";
 	} catch (error) {
 		Result.fail(400, error.response && error.response.data ? error.response.data : error);
 	}
@@ -61,7 +63,7 @@ const Atividades = async (req,res) => {
         throw resp.response.data;
 			}
 		} else {
-			throw new Error("Erro na URL do PDF.");
+			throw "Erro em gerar PDF.";
 		}
 
 		
