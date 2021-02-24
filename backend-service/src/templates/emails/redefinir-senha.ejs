@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+    <meta charset="utf-8"> <!-- utf-8 works for most cases -->
+    <meta name="viewport" content="width=device-width"> <!-- Forcing initial-scale shouldn't be necessary -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Use the latest (edge) version of IE rendering engine -->
+    <meta name="x-apple-disable-message-reformatting">  <!-- Disable auto-scale in iOS 10 Mail entirely -->
+    <meta http-equiv="Content-Security-Policy" content="img-src 'self' http://seg.eti.br;">
+    <title></title> <!-- The title tag shows in email notifications, like Android 4.4. -->
+
+
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i" rel="stylesheet">
+
+    <!-- CSS Reset : BEGIN -->
+<style>
+
+html,
+body {
+    margin: 0 auto !important;
+    padding: 0 !important;
+    height: 100% !important;
+    width: 100% !important;
+    background: #f1f1f1;
+    font-size: 17px;
+}
+
+/* What it does: Stops email clients resizing small text. */
+* {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+/* What it does: Centers email on Android 4.4 */
+div[style*="margin: 16px 0"] {
+    margin: 0 !important;
+}
+
+/* What it does: Stops Outlook from adding extra spacing to tables. */
+table,
+td {
+    mso-table-lspace: 0pt !important;
+    mso-table-rspace: 0pt !important;
+}
+
+/* What it does: Fixes webkit padding issue. */
+table {
+    border-spacing: 0 !important;
+    border-collapse: collapse !important;
+    table-layout: fixed !important;
+    margin: 0 auto !important;
+}
+
+/* What it does: Uses a better rendering method when resizing images in IE. */
+img {
+    -ms-interpolation-mode:bicubic;
+}
+
+/* What it does: Prevents Windows 10 Mail from underlining links despite inline CSS. Styles for underlined links should be inline. */
+a {
+    text-decoration: none;
+}
+
+/* What it does: A work-around for email clients meddling in triggered links. */
+*[x-apple-data-detectors],  /* iOS */
+.unstyle-auto-detected-links *,
+.aBn {
+    border-bottom: 0 !important;
+    cursor: default !important;
+    color: inherit !important;
+    text-decoration: none !important;
+    font-size: inherit !important;
+    font-family: inherit !important;
+    font-weight: inherit !important;
+    line-height: inherit !important;
+}
+
+/* What it does: Prevents Gmail from displaying a download button on large, non-linked images. */
+.a6S {
+    display: none !important;
+    opacity: 0.01 !important;
+}
+
+/* What it does: Prevents Gmail from changing the text color in conversation threads. */
+.im {
+    color: inherit !important;
+}
+
+/* If the above doesn't work, add a .g-img class to any image in question. */
+img.g-img + div {
+    display: none !important;
+}
+
+/* iPhone 4, 4S, 5, 5S, 5C, and 5SE */
+@media only screen and (min-device-width: 320px) and (max-device-width: 374px) {
+    u ~ div .email-container {
+        min-width: 320px !important;
+    }
+}
+/* iPhone 6, 6S, 7, 8, and X */
+@media only screen and (min-device-width: 375px) and (max-device-width: 413px) {
+    u ~ div .email-container {
+        min-width: 375px !important;
+    }
+}
+/* iPhone 6+, 7+, and 8+ */
+@media only screen and (min-device-width: 414px) {
+    u ~ div .email-container {
+        min-width: 414px !important;
+    }
+}
+
+</style>
+<style>
+  .header{
+    padding: 40px 0 30px 0;
+    width: 100%;
+    height: 100px;
+    background-image: url('http://seg.eti.br/site/wp-content/uploads/2020/10/MARCA-•-SEG-Tecnologia_BRANCA-1.png');
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .title{
+    text-align: center;
+  }
+  .content{
+    padding: 20px;
+    border: 1px solid #ccc;
+  }
+  .footer{
+    display: block;
+    color: #ffffff; 
+    padding: 20px;
+  }
+
+  .footer p{
+    margin: 0;
+  }
+
+  .div_button{
+    padding: 20px;
+  }
+
+  .button {
+    display: block;
+    margin: auto;
+    border: 0;
+    height: 45px;
+    width: 15%;
+    padding: 11px 16px;
+    font-size: 0.875rem;
+    min-width: 64px;
+    box-sizing: border-box;
+    font-weight: 500;
+    line-height: 1.75;
+    border-radius: 4px;
+    letter-spacing: 0.02857em;
+    text-transform: uppercase;
+    color: #fff!important;
+    background-color: #0b4672;
+  }
+
+</style>
+
+
+</head>
+
+<body width="100%" style="margin: 0; padding: 0 !important; mso-line-height-rule: exactly; background-color: #ffffff;">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tr>
+    <td>
+      <table border="0" cellpadding="0" cellspacing="0" width="80%">
+        <tr>
+          <td bgcolor="#0B4672" class="header">
+          </td>
+        </tr>
+        <tr>
+          <td bgcolor="#f1f1f1" class="content">
+            <p>
+              Para redefinir a senha o prazo é de 2hs, após esse período o link fica invalido:
+            </p>
+            <div class="div_button">
+              <a class="button" href="http://10.42.0.252/recover?token=<%= token %>" target="_blank">REDEFINIR</a>
+            </div>
+            <p>Não é permitido mais de um solicitação de mudança de senha por dia, então fique atento.</p>
+            <p class="title"><i>Não há necessidade de responder o email.</i></p>
+          </td>
+        </tr>
+        <tr>
+          <td bgcolor="#F58634" class="footer">
+            <p>Rua Tapajós, 41 A, Melo</p>
+            <p>Montes Claros / MG</p>
+            <p>Email: fred@seg.eti.br</p>
+            <p>Email: rafael.rodrigues@seg.eti.br</p>
+            <p>Telefones:
+            (38) 3218-8470 / 
+            0800-090-0700</p>
+          </td>
+        </tr>
+      </table>
+    </td>
+    </tr>
+  </table>
+</body>
+</html>

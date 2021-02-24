@@ -10,7 +10,7 @@ class View {
 
 	async render() {
 		try {
-			return await this.ejs.renderFile(`./src/templates/${this.Template}.ejs`, {
+			return await this.ejs.renderFile(`./src/templates/pdfs/${this.Template}.ejs`, {
 				Dados: this.Dados,
 			});
 		} catch (error) {

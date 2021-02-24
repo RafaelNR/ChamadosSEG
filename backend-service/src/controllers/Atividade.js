@@ -1,4 +1,5 @@
 const moment = require('moment');
+const Path = require("path");
 class Atividade {
   
   constructor() {
@@ -48,8 +49,18 @@ class Atividade {
       
       this.Atividade = await this.handleAtividade();
 
+
+      this.path = Path.join(
+				__dirname,
+				"..",
+				"..",
+				"tmp",
+				"uploads",
+				`${this.ticket}.pdf`
+			);
+
       //Cria o PDF
-      this.pdf.create(await this.View.render(this.ticket,this.Atividade),this.config).toFile(`./tmp/uploads/${this.ticket}.pdf`, (err, file) => {
+      this.pdf.create(await this.View.render(this.ticket,this.Atividade),this.config).toFile(this.path, (err, file) => {
 
         if (err) return { success: false, error: err }
 
@@ -57,7 +68,7 @@ class Atividade {
 
         return res.status(200).json({
           success: true,
-          path: `/tmp/${this.ticket}.pdf`,
+          path: `/tmp/uploads/${this.ticket}.pdf`,
           link: `${process.env.URL_SERVICE}/tmp/uploads/${this.ticket}.pdf`
         })
         
@@ -69,17 +80,11 @@ class Atividade {
 		}
 	}
 
-	submitEmailWithPDF(req, res) {
-		res.send(this.ticket);
-  }
+	// registerPDFCreated() {
+	// 	//TODO REGISTRA NO BANCO SE O PDF FOI CRIADO COM SUCESSO OU ERRO
+	// }
 
-	registerPDFCreated() {
-		//TODO REGISTRA NO BANCO SE O PDF FOI CRIADO COM SUCESSO OU ERRO
-	}
 
-	registerEmailSent() {
-		//TODO REGISTRA NO BANCO SE O ENVIO FOI ENVIADO COM SUCESSO OU ERRO
-  }
   
 }
 

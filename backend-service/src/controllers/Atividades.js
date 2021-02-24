@@ -2,6 +2,7 @@ const { handleDataInfo, dateFormat, getNomeMes } = require('../utils/handleData'
 const PDF = require('html-pdf');
 const Model = require("../models/Atividades");
 const View = require("../views/Atividades.pdf.view");
+const Path = require("path");
 
 class Atividades {
 	constructor() {
@@ -13,8 +14,6 @@ class Atividades {
 		this.Ano = null;
 		this.TypeView = null;
 		this.FileName = null;
-		this.Path = "/tmp/uploads/";
-		this.Link = `http://localhost:3001$${this.Path}`;
 		this.config = {
 			format: "A4",
 			border: {
@@ -50,24 +49,29 @@ class Atividades {
 				ano: this.Ano,
 			});
 
+			const path = Path.join(
+				__dirname,
+				"..",
+				"..",
+				"tmp",
+				"uploads",
+				`${this.FileName}.pdf`
+			);
+
 			PDF.create(
 				await view.render(),
 				this.config
 			).toFile(
-				`.${this.Path}${this.FileName}.pdf`,
+				path,
 				(err, file) => {
 					if (err) return { success: false, error: err };
 
 					console.log(file)
-
-					const fileName = `${this.Path}${this.FileName}.pdf`;
-
 					this.clear();
-
 					return res.status(200).json({
 						success: true,
-						path: `.${fileName}`,
-						link: `${process.env.URL_SERVICE}${fileName}`,
+						path: `./tmp/uploads/${this.FileName}.pdf`,
+						link: `${process.env.URL_SERVICE}/tmp/uploads/${this.FileName}.pdf`,
 					});
 				}
 
@@ -159,18 +163,9 @@ class Atividades {
 
 	}
 
-	// submitEmailWithPDF(req, res) {
-	// 	res.send("teste");
-	// }
-
 	// registerPDFCreated() {
 	// 	//TODO REGISTRA NO BANCO SE O PDF FOI CRIADO COM SUCESSO OU ERRO
 	// }
-
-	// registerEmailSent() {
-	// 	//TODO REGISTRA NO BANCO SE O ENVIO FOI ENVIADO COM SUCESSO OU ERRO
-	// }
-
 
 	clear() {
 		this.DataInicial = null;

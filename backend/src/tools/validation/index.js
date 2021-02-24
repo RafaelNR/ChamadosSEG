@@ -1,5 +1,4 @@
 const Joi = require("@hapi/joi").extend(require("@hapi/joi-date"));
-
 const moment = require('moment');
 
 const type = {

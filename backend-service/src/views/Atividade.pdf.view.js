@@ -7,7 +7,7 @@ class View{
   async render(ticket, Atividade) {
 
     try {
-      return await this.ejs.renderFile('./src/templates/Atividade.ejs', { ticket, Atividade });
+      return await this.ejs.renderFile('./src/templates/pdfs/Atividade.ejs', { ticket, Atividade });
     } catch (error) {
       throw new Error(error)
     }

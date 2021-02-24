@@ -5,8 +5,6 @@ class Access {
 	Purchase(req, res, next) {
 		
 		const Token = req.headers.authorization;
-		
-		console.log(Token)
 
 		if (Token === `Bearer ${process.env.SECRET}`) {
 			next();

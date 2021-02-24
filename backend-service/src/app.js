@@ -1,17 +1,30 @@
-const Express = require('express')
-const Cors = require('cors')
-const Helmet = require('helmet')
-const Access = require('./middlewares/access') 
-const Routes = require('./routes/index')
+const Express = require("express");
+const Cors = require("cors");
+const Helmet = require("helmet");
+const BodyParser = require("body-parser");
+const Routes = require("./routes/index");
+const Access = require("./middlewares/access");
 
 const App = Express();
-
 App.use(Helmet());
-App.use("/tmp", Express.static("tmp"));
-App.use("/static", Express.static("static"));
+App.use('/tmp', Express.static("tmp"));
+App.use('/static',Express.static("static"));
+
+App.use(function (req, res, next) {
+  res.setHeader(
+		"Content-Security-Policy-Report-Only",
+		"default-src 'self'; font-src 'self'; img-src 'self' http://seg.eti.br; script-src 'self'; style-src 'self'; frame-src 'self'"
+	);
+	next();
+});
 
 //CORS
-const whiteList = ["http://localhost:3000", "http://localhost",process.env.URL_BACKEND, process.env.URL_FRONTEND];
+const whiteList = [
+	"http://localhost:3000",
+	"http://localhost",
+	process.env.URL_BACKEND,
+	process.env.URL_FRONTEND,
+];
 App.use(
 	Cors({
 		origin: whiteList,
@@ -20,9 +33,12 @@ App.use(
 		optionsSuccessStatus: 204,
 	})
 );
+// BodyParser
+App.use(BodyParser.urlencoded({ extended: true }));
+App.use(BodyParser.json());
 App.use(Access.Purchase);
 
-App.use(Routes)
+App.use(Routes);
 
 // Ignore favicon
 App.use((req, res, next) => {
@@ -31,7 +47,7 @@ App.use((req, res, next) => {
 	}
 });
 
-// Erro genérico 
+// Erro genérico
 App.use((error, req, res, next) => {
 	res.status(404).json({
 		code: 404,
@@ -42,4 +58,4 @@ App.use((error, req, res, next) => {
 	next();
 });
 
-module.exports = App
+module.exports = App;
