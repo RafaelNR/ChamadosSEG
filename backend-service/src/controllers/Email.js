@@ -20,12 +20,13 @@ const Enviar = async (req,res,next) => {
 		} else {
       if (!req.body) throw new Error('Valores inválidos.')
         
-      const { to, subject, filename, file, type } = req.body;
+      const { to, subject, filename, file, type, dados } = req.body;
       email.to = to
       email.subject = subject
       email.filename = filename
       email.file = file
       email.type = type
+      email.dados = dados
     }
 
     const resp = await email.send()
@@ -50,16 +51,16 @@ module.exports = {
   Enviar
 }
 
-      // email.type = "Redefinição de Senha";
-			// email.dados = {
-			// 	token: "fkshfkjdshjfkhdsjkfhsdjkfs",
-			// };
+// email.type = "Redefinição de Senha";
+// email.dados = {
+// 	token: "fkshfkjdshjfkhdsjkfhsdjkfs",
+// };
 
-      // email.type = "Relatório Mensal de Atividades";
-      // email.dados = {
-      //   data_ano: 'Fevereiro/2021',
-      //   tecnicos: [
-      //     { nome: 'Jose Maria Silva' },
-      //     { nome: 'Fulano de tal '}
-      //   ]
-      // }
+// email.type = "Relatório Mensal de Atividades";
+// email.dados = {
+//   data_ano: 'Fevereiro/2021',
+//   tecnicos: [
+//     { nome: 'Jose Maria Silva' },
+//     { nome: 'Fulano de tal '}
+//   ]
+// }

@@ -33,7 +33,7 @@ module.exports = class Email {
 
 			if (Data.response.includes("OK")) {
 				await this.registerLog({ status: "success" });
-				return true;
+				return {sucesso: true, message: "Email Enviado para: "+this.message.to};
 			} else {
 				await this.registerLog({ status: "error", error: Data });
 				throw error.message ? error.message : error;
@@ -61,24 +61,24 @@ module.exports = class Email {
 	}
 
 	handleAttachments() {
-		if (this.file) {
-			this.path = Path.join(__dirname, "..", "..", "tmp", "uploads", this.file);
-			if (fs.existsSync(this.path)) {
-				return (this.message = {
-					...this.message,
-					attachments: [
-						{
-							filename: this.filename,
-							content: fs.readFileSync(this.path),
-							type: "application/pdf",
-							contentType: "application/pdf",
-						},
-					],
-				});
-			}
+		if(!this.file) throw "Nome do arquivo não informado."
 
-			throw "Arquivo em anexo não existe.";
+		this.path = Path.join(__dirname, "..", "..", "tmp", "uploads", `${this.file}.pdf`);
+		if (fs.existsSync(this.path)) {
+			return (this.message = {
+				...this.message,
+				attachments: [
+					{
+						filename: this.filename,
+						content: fs.readFileSync(this.path),
+						type: "application/pdf",
+						contentType: "application/pdf",
+					},
+				],
+			});
 		}
+
+		throw "Arquivo em anexo não existe.";
 	}
 
 	async viewTemplate() {
@@ -103,9 +103,4 @@ module.exports = class Email {
 		this.message.html = text;
 	}
 
-	// msgTest() {
-	// 	console.log(this.info);
-	// 	console.log("Message", this.info.messageId);
-	// 	console.log("Preview URL: %s", nodemailer.getTestMessageUrl(this.info));
-	// }
 };

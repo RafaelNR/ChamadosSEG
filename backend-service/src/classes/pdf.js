@@ -1,11 +1,11 @@
 const { handleDataInfo, dateFormat, getNomeMes } = require('../utils/handleData');
-const PDF = require('html-pdf');
+const htmlPDF = require('html-pdf');
 const Model = require("../models/Atividades");
 const View = require("../views/Atividades.pdf.view");
 const Path = require("path");
 const LogPdf = require("../classes/logs_pdf");
 
-class Atividades {
+module.exports = class PDF {
 
 	constructor() {
 		this.DataInicial = null;
@@ -35,10 +35,12 @@ class Atividades {
 		};
 	}
 
-	async createPDF(req, res) {
+	async create(mes,ano,cliente_id){
 		try {
-			this.userId = req.query.user_id;
-			this.handleErrors(req.query);
+			this.userId = null;
+			this.Mes = mes;
+			this.Ano = ano;
+			this.Cliente = cliente_id;
 			
 			let Dados = await this.handleDados();
 
@@ -63,85 +65,22 @@ class Atividades {
 				`${this.FileName}.pdf`
 			);
 
-			PDF.create(
+			this.linkRelativo = `/tmp/uploads/${this.FileName}.pdf`;
+
+			htmlPDF.create(
 				await view.render(),
 				this.config
 			).toFile(
 				this.path,
 				(err, file) => {
 					if (err) return { success: false, error: err };
-
 					console.log(file)
-
-					this.linkRelativo = `/tmp/uploads/${this.FileName}.pdf`;
-					this.linkAbsoluto = `${process.env.URL_SERVICE}/tmp/uploads/${this.FileName}.pdf`;
-
 					this.Log('success')
 					this.clear();
-					return res.status(200).json({
-						success: true,
-						path: this.linkRelativo,
-						link: this.linkAbsoluto
-					});
 				}
-
 			);
-		} catch (error) {
-			this.Log("error", error.message ? error.message : error);
-			return res.status(404).send(error.message ? error.message : error);
-		}
-	}
 
-	async create(mes,ano,cliente_id){
-		try {
-			this.userId = null;
-			this.Mes = mes;
-			this.Ano = ano;
-			this.Cliente = cliente_id;
-
-			console.log('->> CLIENTE', cliente_id);
-			
-			//let Dados = await this.handleDados();
-
-			//console.log('->> Dados', Dados);
-
-			// if (!Dados || Dados.Infos.length <= 0) throw new Error("Sem informações de atividades.");
-
-			// Dados.Infos = handleDataInfo(Dados.Infos);
-
-			// const view = new View(this.TypeView, {
-			// 	...Dados,
-			// 	data_inicial: dateFormat(this.DataInicial),
-			// 	data_final: dateFormat(this.DataFinal),
-			// 	mes: getNomeMes(this.Mes).toUpperCase(),
-			// 	ano: this.Ano,
-			// });
-
-			// this.path = Path.join(
-			// 	__dirname,
-			// 	"..",
-			// 	"..",
-			// 	"tmp",
-			// 	"uploads",
-			// 	`${this.FileName}.pdf`
-			// );
-
-			// this.linkRelativo = `/tmp/uploads/${this.FileName}.pdf`;
-
-			// PDF.create(
-			// 	await view.render(),
-			// 	this.config
-			// ).toFile(
-			// 	this.path,
-			// 	(err, file) => {
-			// 		if (err) return { success: false, error: err };
-			// 		console.log(file)
-			// 		this.Log('success')
-			// 		this.clear();
-			// 	}
-			// );
-
-			// return this.FileName;
+			return this.FileName;
 
 		} catch (error) {
 			this.Log("error", error.message ? error.message : error);
@@ -261,4 +200,3 @@ class Atividades {
 	}
 }
 
-module.exports = new Atividades();

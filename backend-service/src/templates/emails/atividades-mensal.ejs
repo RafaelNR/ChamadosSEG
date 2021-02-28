@@ -152,10 +152,13 @@ img.g-img + div {
         <tr>
           <td bgcolor="#f1f1f1" class="content">
             <h2 class="title">Relatório de Atividades Técnicas - <%= data_ano %> </h2>
-            <p><strong>Segue em anexo o relatório,</strong> dos técnicos relacionados:</p>
+            <p><strong>Segue em anexo o relatório de atividades</strong> do(s) técnico(s) relacionado(s):</p>
             <ul>
-              <li><%= tecnicos[0].nome %></li>
-              <li><%= tecnicos[1].nome %></li>
+              <% tecnicos.map(tecnico => { %>
+                 
+                <li><%= tecnico && tecnico.nome %></li>
+                
+              <% }) %>
             </ul>
             <p>Todas as informações são baseadas nos registros feitos por eles durando o mês e compiladas no primeiro dia mês
               em caso de duvida, entre em contato com Fred Guedes. </p>

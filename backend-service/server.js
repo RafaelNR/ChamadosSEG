@@ -1,6 +1,7 @@
 require("dotenv/config");
 const App = require('./src/app')
 const knex = require("./src/database");
+const ManagerCron = require('./src/manager-cron');
 
 App.listen(process.env.BACK_PORT, (err) => {
 	if (err) console.log("> [Server] - Down -> , erro: " + err);
@@ -12,6 +13,8 @@ App.listen(process.env.BACK_PORT, (err) => {
 	console.log("> [BACKEND SERVICE] - DB NAME: ", process.env.DB_NAME);
 	console.log("> [BACKEND SERVICE] - DB USER: ", process.env.DB_USER);
 	console.log("> [BACKEND SERVICE] - DB PASSWD: ", process.env.DB_PASSWD);
+	console.log("> [BACKEND SERVICE] - MANAGER-CRON INICIADO");
+	ManagerCron.run();
 });
 
 // Quando finalizar o express, finaliza todas os processos e fecha o banco de dados.

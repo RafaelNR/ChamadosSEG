@@ -2,7 +2,7 @@ const knex = require("../database");
 
 
 const registerEmail = (Dados) => {
-  return knex('send_emails').insert(Dados)
+  return knex('logs_emails').insert(Dados)
 }
 
 module.exports = {
