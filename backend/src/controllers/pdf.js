@@ -20,7 +20,7 @@ const Atividade = async (req,res) => {
 			throw "Ticket não existe.";
 
 		const resp = await axios.get(
-			`${process.env.URL_SERVICE}/pdf/atividade/${ticket}`,
+			`${process.env.URL_SERVICE}/pdf/atividade/${ticket}?user_id=${req.userId}`,
 			{
 				headers: { Authorization: `Bearer ${process.env.ACCESS_SERVICE}` },
 			}
@@ -53,7 +53,7 @@ const Atividades = async (req,res) => {
     const URL = tools.getUrl(Query);
 
 		if (URL) {
-			const resp = await axios.get(URL, {
+			const resp = await axios.get(`${URL}&user_id=${req.userId}`, {
 				headers: { Authorization: `Bearer ${process.env.ACCESS_SERVICE}` },
 			});
 
