@@ -37,7 +37,7 @@ export default () => {
 
   React.useEffect(() => {
     setLoading(true);
-    Dashboard.MyAtividades().then(Dados => {
+    Dashboard.MyUserAtividades().then(Dados => {
       setOpen(Dados.data.open);
       setHalf(Dados.data.half)
       setLast(Dados.data.last);

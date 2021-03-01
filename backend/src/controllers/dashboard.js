@@ -63,9 +63,28 @@ const CountAtividadesCliente = async (req, res) => {
 	return res.status(Result.status).json(Result.res);
 };
 
+const CountAtividadesAll = async (req, res) => {
+	
+		try {
+
+			const Dados = {
+				open: (await Atividades.findAll("open")).length,
+				half: (await Atividades.findAll("half")).length,
+				last: (await Atividades.findAll("last")).length,
+				close: (await Atividades.findAll("close")).length,
+			};
+
+			Result.ok(200, Dados);
+		} catch (error) {
+			Result.fail(400, error);
+		}
+
+		return res.status(Result.status).json(Result.res);
+}
 
 module.exports = {
 	CountAtividades,
 	CountAtividadesMyClientes,
 	CountAtividadesCliente,
+	CountAtividadesAll
 };

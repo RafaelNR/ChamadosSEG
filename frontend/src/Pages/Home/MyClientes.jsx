@@ -47,8 +47,6 @@ const Select = React.memo(({ changeCliente , clienteCurr}) => {
 
     const { role_id } = getData('user');
 
-    console.log(role_id)
-    
     if (role_id === 3) {
       getMyClientes()
         .then((Clientes) => {
@@ -100,47 +98,61 @@ const Select = React.memo(({ changeCliente , clienteCurr}) => {
        
 export default () => {
   const classes = useStyles();
+  const { getData } = useLocalStore();
   const [open, setOpen] = React.useState(null);
   const [half, setHalf] = React.useState(null);
   const [last, setLast] = React.useState(null);
   const [close, setClose] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
   const [clienteCurr, setClienteCurr] = React.useState('todos');
+  const [roleID, _] = React.useState(getData('user').role_id);
 
   React.useEffect(() => {
     setLoading(true);
-    Dashboard.MyClientesAtividades().then((Dados) => {
-      setOpen(Dados.data.open);
-      setHalf(Dados.data.half);
-      setLast(Dados.data.last);
-      setClose(Dados.data.close);
-    }).catch((e) => {
-      console.log(e);
-    }).finally(() => {
-       setLoading(false);
-    })
+
+    if (roleID === 3) {
+      Dashboard.MyClientesAtividades().then((Dados) => {
+        setOpen(Dados.data.open);
+        setHalf(Dados.data.half);
+        setLast(Dados.data.last);
+        setClose(Dados.data.close);
+      }).catch((e) => {
+        console.log(e);
+      }).finally(() => {
+        setLoading(false);
+      })
+    } else {
+      Dashboard.AtividadesAll().then((Dados) => {
+        setOpen(Dados.data.open);
+        setHalf(Dados.data.half);
+        setLast(Dados.data.last);
+        setClose(Dados.data.close);
+      }).catch((e) => {
+        console.log(e);
+      }).finally(() => {
+        setLoading(false);
+      })
+    }
 
     return function cleanup() {
       setLoading(false);
       Service.default.cancel('MyAtividades unmonted');
     };
 
-
   }, []);
 
   const changeCliente = React.useCallback( async (event) => {
     setClienteCurr(event.target.value);
     setLoading(true);
-
-    console.log(event.target.value);
-
     try {
       setLoading(false);
       let Dados = '';
-      if (event.target.value === 'todos') {
+      if (event.target.value === 'todos' && roleID === 3) {
         Dados = await Dashboard.MyClientesAtividades();
-      } else {
-        Dados = await Dashboard.ClienteAtividades(event.target.value);
+      } else if (event.target.value === 'todos' && roleID < 3) {
+        Dados = await Dashboard.AtividadesAll();
+      }else {
+        Dados = await Dashboard.MyClienteAtividades(event.target.value);
       }
 
       const { open, half, last, close } = Dados.data;

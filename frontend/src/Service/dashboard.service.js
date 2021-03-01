@@ -1,9 +1,9 @@
 import Service from "../Api/Service";
 
 
-export const MyAtividades = async () => {
+export const MyUserAtividades = async () => {
   try {
-    const Dados = await Service.exec('get', '/dashboard/my/atividades');
+    const Dados = await Service.exec('get', '/dashboard/atividades/my_user');
 
     if (Dados.data.success) 
       return Dados.data;
@@ -18,7 +18,10 @@ export const MyAtividades = async () => {
 
 export const MyClientesAtividades = async () => {
   try {
-    const Dados = await Service.exec('get', '/dashboard/my/clientes');
+    const Dados = await Service.exec(
+      'get',
+      '/dashboard/atividades/my_clientes'
+    );
 
     if (Dados.data.success) return Dados.data;
 
@@ -28,12 +31,24 @@ export const MyClientesAtividades = async () => {
   }
 }
 
+export const AtividadesAll = async () => {
+  try {
+    const Dados = await Service.exec('get', '/dashboard/atividades/all');
 
-export const ClienteAtividades = async (cliente_id) => {
+    if (Dados.data.success) return Dados.data;
+
+    throw Dados.data;
+  } catch (error) {
+    throw error.data;
+  }
+};
+
+
+export const MyClienteAtividades = async (cliente_id) => {
   try {
     const Dados = await Service.exec(
       'get',
-      `/dashboard/my/cliente/${cliente_id}`
+      `/dashboard/atividades/my_cliente/${cliente_id}`
     );
 
     if (Dados.data.success) return Dados.data;
