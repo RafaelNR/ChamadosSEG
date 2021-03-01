@@ -46,11 +46,12 @@ const Select = React.memo(({ changeCliente , clienteCurr}) => {
   React.useEffect(() => {
 
     const { role_id } = getData('user');
+
+    console.log(role_id)
     
-    if (role_id > 1) {
-      getClientes()
+    if (role_id === 3) {
+      getMyClientes()
         .then((Clientes) => {
-          console.log(Clientes);
           if (Clientes.data.length > 1) {
             setClientes(Clientes.data);
           } else if (Clientes.data.length === 1) {
@@ -63,9 +64,8 @@ const Select = React.memo(({ changeCliente , clienteCurr}) => {
           console.log(e);
         });     
     } else {
-      getMyClientes()
+      getClientes()
         .then((Clientes) => {
-          console.log(Clientes);
           if (Clientes.data.length > 1) {
             setClientes(Clientes.data);
           } else if (Clientes.data.length === 1) {

@@ -1,3 +1,5 @@
+const moment = require('moment')
+
 const compareDateMaxDays = (date, maxDays) => {
 
   const currDate = new Date().toISOString().split('T')[0];
@@ -14,14 +16,10 @@ const compareDateMaxDays = (date, maxDays) => {
 
 }
 
-const compareDateMonth = (month) => {
-
-  const currMonth = new Date(month).getMonth();
-
-  const Month = new Date().getMonth();
-
-  console.log(currMonth,Month)
-
+const compareDateMonth = (date) => {
+  moment().locale("pt-br");
+  const currMonth = moment(date).month() + 1;
+  const Month = moment().month() + 1;
   if (currMonth === Month) {
     return true;
   } else {

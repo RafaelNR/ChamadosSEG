@@ -17,5 +17,9 @@ jspm_packages/
 tmp/
 
 
+.env
+.env.production
+
+
 ### vscode ###
 .vscode/*

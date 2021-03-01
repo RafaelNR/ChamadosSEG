@@ -9,8 +9,8 @@ class CronSendMailAtividades{
 
   constructor(){
     this.config = {
-      //cronTime: '0 0 0 1 * *',
-      cronTime: '0 40 21 28 * *',
+      cronTime: '0 0 0 1 * *',
+      //cronTime: '0 40 21 28 * *',
       start: true,
       onTick: () => {
         this.onTick()
@@ -24,8 +24,8 @@ class CronSendMailAtividades{
   start(){
     this.Job = new Cron({...this.config});
     if(this.Job.running){
-      console.log('->> CRON - Tarefas agendadas corretamente.')
-      console.log("->> CRON - Próxima execução: ", this.Job.nextDate().format('DD/MM/YY HH:mm:ss'))
+      console.log('->> CRON - SendMailAtividades - Tarefa agendada corretamente.')
+      console.log("->> CRON - SendMailAtividades - Próxima execução: ", this.Job.nextDate().format('DD/MM/YY HH:mm:ss'))
     }else{
       console.log('->> CRON - Erro em agendar tarefas.')
     }
