@@ -91,34 +91,6 @@ class Atividades {
 	// 		.orderBy("atividades.date");
   // }
 
-  async getCliente(cliente_id) {
-    return await this.db.select('*').from('clientes').where('id','=',cliente_id).then(e => e[0])
-  }
-
-  async getTecnico(tecnico) {
-    return await this.db
-			.select("nome","email","telefone","imagem")
-			.from("users")
-			.where("id", "=", tecnico)
-			.then((e) => e[0]);
-  }
-
-  async getTecnicosByCliente(cliente_id) {
-    return await this.db
-      .select('user.id', 'user.nome')
-      .from('cliente_has_user as cs')
-      .innerJoin('users as user', "user.id", '=', "cs.user_id")
-      .where('cs.cliente_id','=', cliente_id)
-  }
-
-  async getClientesByTecnico(tecnico) {
-    return await this.db
-			.select("nome_fantasia as nome","representante","email")
-			.from("cliente_has_user as cs")
-			.innerJoin("clientes as cliente", "cliente.id", "=", "cs.cliente_id")
-			.where("cs.user_id", "=", tecnico);
-	}
-	
 
 	async getDados(Dados) {
 

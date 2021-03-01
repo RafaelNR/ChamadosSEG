@@ -9,7 +9,8 @@ class CronSendMailAtividades{
 
   constructor(){
     this.config = {
-      cronTime: '0 0 0 1 * *',
+      //cronTime: '0 0 0 1 * *',
+      cronTime: '0 40 21 28 * *',
       start: true,
       onTick: () => {
         this.onTick()

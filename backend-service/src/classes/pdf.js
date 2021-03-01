@@ -1,6 +1,8 @@
 const { handleDataInfo, dateFormat, getNomeMes } = require('../utils/handleData');
 const htmlPDF = require('html-pdf');
 const Model = require("../models/Atividades");
+const Clientes = require("../models/Clientes");
+const Tecnicos = require("../models/Tecnicos");
 const View = require("../views/Atividades.pdf.view");
 const Path = require("path");
 const LogPdf = require("../classes/logs_pdf");
@@ -108,8 +110,8 @@ module.exports = class PDF {
 
 			return {
 				Infos,
-				Tecnico: await Model.getTecnico(this.Tecnico),
-				Clientes: await Model.getClientesByTecnico(this.Tecnico),
+				Tecnico: await Tecnicos.getTecnico(this.Tecnico),
+				Clientes: await Clientes.getClientesByTecnico(this.Tecnico),
 			}
 
 			
@@ -118,8 +120,8 @@ module.exports = class PDF {
 			this.FileName = `${this.DataInicial}-${this.DataFinal}-${this.Cliente}`;
 			return {
 				Infos,
-				Cliente: await Model.getCliente(this.Cliente),
-				Tecnicos: await Model.getTecnicosByCliente(this.Cliente)
+				Cliente: await Clientes.getCliente(this.Cliente),
+				Tecnicos: await Tecnicos.getTecnicosByCliente(this.Cliente)
 			};
 			
 		} else if (this.Mes && this.Ano && this.Tecnico) {
@@ -127,8 +129,8 @@ module.exports = class PDF {
 			this.FileName = `${this.Mes}-${this.Ano}-${this.Tecnico}`;
 			return {
 				Infos,
-				Tecnico: await Model.getTecnico(this.Tecnico),
-				Clientes: await Model.getClientesByTecnico(this.Tecnico),
+				Tecnico: await Tecnicos.getTecnico(this.Tecnico),
+				Clientes: await Clientes.getClientesByTecnico(this.Tecnico),
 			};
 			
 		} else if (this.Mes && this.Ano && this.Cliente) {
@@ -136,8 +138,8 @@ module.exports = class PDF {
 			this.FileName = `${this.Mes}-${this.Ano}-${this.Cliente}`;
 			return {
 				Infos,
-				Cliente: await Model.getCliente(this.Cliente),
-				Tecnicos: await Model.getTecnicosByCliente(this.Cliente),
+				Cliente: await Clientes.getCliente(this.Cliente),
+				Tecnicos: await Tecnicos.getTecnicosByCliente(this.Cliente),
 			};
 			
 		} else {

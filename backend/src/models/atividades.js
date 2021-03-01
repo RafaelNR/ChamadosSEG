@@ -14,7 +14,7 @@ const findOneByData = async (Params) => {
 		)
 		.from("atividades")
 		.join("clientes", "clientes.id", "=", "atividades.cliente_id")
-		.join("users", "users.id", "=", "atividades.user_id");
+		.join("users", "users.id", "=", "atividades.user_id")
 
 	if (Params.id) {
 		Dados = await knex.raw(query + " where ?? = ?", [
@@ -84,7 +84,6 @@ module.exports = {
 			.from("atividades")
 			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
 			.join("users", "users.id", "=", "atividades.user_id")
-			.orderBy("atividades.id", "desc")
 			.orderBy("atividades.date", "desc")
 			.limit(60);
 	},
@@ -108,7 +107,6 @@ module.exports = {
 					.from("cliente_has_user as chu")
 					.where("chu.user_id", "=", user_id);
 			})
-			.orderBy("a.id", "desc")
 			.orderBy("a.date", "desc")
 
 			if (type === 'open') {
@@ -194,7 +192,6 @@ module.exports = {
 			}
 		
 		return await query
-									.orderBy("atividades.id", "desc")
 									.orderBy("atividades.date", "desc")
 									.limit(60);
 	},

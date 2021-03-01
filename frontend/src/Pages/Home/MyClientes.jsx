@@ -14,11 +14,14 @@ import {
 import BoxHome from '../../Components/Box/Home'
 import { SelectCommon } from '../../Components/FormControl/Selects';
 
-
 //* SERVICE
 import * as Service from '../../Api/Service';
 import * as Dashboard from '../../Service/dashboard.service'
 import { getMyClientes } from '../../Service/user.service'
+import { getClientes } from '../../Service/clientes.service'
+
+// HOOK
+import useLocalStore from '../../Hooks/useLocalStore'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,22 +41,44 @@ const useStyles = makeStyles((theme) => ({
 
 const Select = React.memo(({ changeCliente , clienteCurr}) => {
   const [clientes, setClientes] = React.useState([]);
+  const { getData } = useLocalStore();
 
   React.useEffect(() => {
 
-    getMyClientes()
-      .then((Clientes) => {
-        if (Clientes.data.length > 1) {
-          setClientes(Clientes.data);
-        } else if (Clientes.data.length === 1) {
-          setClientes(Clientes.data[0]);
-        } else {
-          setClientes([]);
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    const { role_id } = getData('user');
+    
+    if (role_id > 1) {
+      getClientes()
+        .then((Clientes) => {
+          console.log(Clientes);
+          if (Clientes.data.length > 1) {
+            setClientes(Clientes.data);
+          } else if (Clientes.data.length === 1) {
+            setClientes(Clientes.data[0]);
+          } else {
+            setClientes([]);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });     
+    } else {
+      getMyClientes()
+        .then((Clientes) => {
+          console.log(Clientes);
+          if (Clientes.data.length > 1) {
+            setClientes(Clientes.data);
+          } else if (Clientes.data.length === 1) {
+            setClientes(Clientes.data[0]);
+          } else {
+            setClientes([]);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        }); 
+    }
+
     
     return function cleanup() {
       Service.default.cancel('MyAtividades unmonted');

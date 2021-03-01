@@ -1,48 +1,48 @@
-## TODO DB
+## TODO
 
-- [ ] Criar tabela de anexos, e vincular ela a atividades e chamados.
-- [ ] ALTER TABLE `segchamados`.`acm_tasks` ADD COLUMN `info` MEDIUMTEXT NOT NULL AFTER `type`;
-- [x] na tabela log, Error deve ser null;
-- [x] Tabela de chamados nome deve ser unico.
-- [x] Mudar na tabela sub_categorias a coluna, categorias_id para categoria_id
+- [ ] Banco de dados de Chamados devem ter, nome chamados:
+- id
+- ticket
+- categoria_id
+- sub_categoria_id
+- tecnico_requerente
+- tecnico_atribuido
+- cliente_atribuido
+- status -> (Novo, Atribuído, Pendente, Realizado, Fechado)
+* Novo -> Assim que é aberto e sem técnico atribuído;
+* Atribuído -> Técnico já notificado;
+* Pendente -> Técnico já atribuído, notificado, porém sem andamento;
+* Realizado -> Técnico atribuído já fez;
+* Fechando -> Técnico requerente fechou o chamado;
+* Cancelado -> Técnico Requerente cancelou o chamado;
+- prioridade -> (Baixo, Média, Alta, Crítica)
+- titulo
+- descrição inicial
+- user_id
+- created_at
+- update_at
 
-## TODO SISTEMA
+- [ ] Banco de dados de acompanhamentos, nome acm_chamados:
+- id
+- chamado_id
+- tipo - (nota, tarefa, solução, fechamento)
+- Descrição
+- user_id
+- Created_at
+- Update_at
 
-# v0.0.2
+- [ ] Arquivos, arq_chamados:
+- id
+- filename
+- path
+- chamado_id
+- user_id
+- created_at
+- updated_at
 
-- [ ] Fazendo parte da subcategoria
-- [ ] Nome da sub-categoria deve ser unico por categoria.
+- [ ] Regra de négocio:
+- Ticket deve ser único por chamado;
+- Adm pode ver todos os chamados;
+- Técnicos só podem atribuir chamado para técnicos dos seus cliente ou analista e adm gerais;
+- Adm pode atribuir chamados para todos os técnicos ou clientes;
 
-TODO
-
-- [ ] Corrigir Clientes; Imagem
-- [ ] Corrigir Users; Imagem
-- [ ] Corrigir Atividades; com seperação das atividades.
-
-# v0.0.1
-
-- [x] Razão social tb deve ser unico no clients;
-- [x] Na tabela users, deve mudar login por user;
-- [x] Tarefa deve ser do tipo texto;
-- [x] Criar index no created_at na tabela de tarefas;
-- [x] Tabela tarefa deve ser atividades;
-- [x] id tabela atividades deve ser auto-increment;
-
-* [x] Login deve ser uniqui;
-* [x] Date last_acess deve ser data atual, e sem valor default;
-* [x] Corrigir users_id de clients;
-* [x] Colocar CNPJ/CPF e razão social e nome fantasia.
-* [x] Auto-incremento de clients.
-
-## RULES OF NWORKING
-
-- Usuários podem ter mais de um cliente;
-
-## API ENDPOINTS
-
-- Usuarios
-  - Todos -> GET -> /usuarios/
-  - Único -> GET -> /usuarios/{id}
-  - Insert -> POST -> /usuarios/
-  - Delete -> PUT -> /usuarios/{id}
-  - Update -> DELETE -> /usuarios/{id}
