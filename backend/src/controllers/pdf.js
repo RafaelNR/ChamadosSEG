@@ -1,4 +1,4 @@
-const axios = require("axios").default;
+const axios = require("../tools/axios")
 const Moment = require("moment");
 const Model = require("../models/atividades");
 const Validate = require("../tools/validation/schemas");
@@ -19,12 +19,7 @@ const Atividade = async (req,res) => {
 		if (Atividade <= 0)
 			throw "Ticket não existe.";
 
-		const resp = await axios.get(
-			`${process.env.URL_SERVICE}/pdf/atividade/${ticket}?user_id=${req.userId}`,
-			{
-				headers: { Authorization: `Bearer ${process.env.ACCESS_SERVICE}` },
-			}
-		);
+		const resp = await axios.get(`/pdf/atividade/${ticket}?user_id=${req.userId}`);
 
 		if (resp.data.success) {
 			return res.status(200).json(resp.data);
@@ -53,10 +48,7 @@ const Atividades = async (req,res) => {
 		
 		
 		if (URL) {
-			const resp = await axios.get(`${URL}&user_id=${req.userId}`, {
-				headers: { Authorization: `Bearer ${process.env.ACCESS_SERVICE}` },
-			});
-
+			const resp = await axios.get(`${URL}&user_id=${req.userId}`);
 
 			if (resp.data.success) {
 				Result.ok(200, resp.data);
@@ -118,7 +110,7 @@ const tools = {
 
   getUrl: (Query) => {
 		if (Query.data_inicial && Query.data_final && (Query.cliente || Query.tecnico)) {
-			return `${process.env.URL_SERVICE}/pdf/atividades?data_inicial=${Moment(
+			return `/pdf/atividades?data_inicial=${Moment(
 				Query.data_inicial
 			).format("YYYY-MM-DD")}&data_final=${Moment(Query.data_final).format(
 				"YYYY-MM-DD"
@@ -126,7 +118,7 @@ const tools = {
 				Query.cliente ? "cliente=" + Query.cliente : "tecnico=" + Query.tecnico
 			}`;
 		} else if (Query.mes && Query.ano && (Query.cliente || Query.tecnico)) {
-			return `${process.env.URL_SERVICE}/pdf/atividades?mes=${Query.mes}&ano=${
+			return `/pdf/atividades?mes=${Query.mes}&ano=${
 				Query.ano
 			}&${
 				Query.cliente ? "cliente=" + Query.cliente : "tecnico=" + Query.tecnico
