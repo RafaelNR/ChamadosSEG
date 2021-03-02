@@ -155,6 +155,15 @@
     <h3>Relatório de Serviços Técnico </h3>
     <h5>Data Inicial: <%- Dados.data_inicial %> - Data Final: <%- Dados.data_final %>  </h5>
 
+    <%- include('Cliente', {
+      nome_fantasia: Dados.Cliente.nome_fantasia,
+      cnpj_cpf: Dados.Cliente.cnpj_cpf,
+      n_contrato: Dados.Cliente.n_contrato,
+      representante: Dados.Cliente.representante,
+      telefone: Dados.Cliente.telefone, 
+      email: Dados.Cliente.email,
+    }) %>
+
     <div class="cliente">
 
       <div class="title">

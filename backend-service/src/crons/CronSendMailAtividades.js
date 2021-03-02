@@ -1,6 +1,6 @@
 const Cron = require('cron').CronJob
-const Email = require('./email')
-const PDF = require('./pdf');
+const Email = require('../classes/email')
+const PDF = require('../classes/pdf');
 const { getClientes } = require('../models/Clientes')
 const { getTecnicosByCliente } = require('../models/Tecnicos');
 
@@ -9,8 +9,8 @@ class CronSendMailAtividades{
 
   constructor(){
     this.config = {
-      cronTime: '0 0 0 1 * *',
-      //cronTime: '0 40 21 28 * *',
+      //cronTime: '0 0 0 1 * *',
+      cronTime: '0 13 22 1 * *',
       start: true,
       onTick: () => {
         this.onTick()

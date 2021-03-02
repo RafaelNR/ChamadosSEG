@@ -1,4 +1,4 @@
-const CronSendMailAtividades = require('./classes/CronSendMailAtividades')
+const CronSendMailAtividades = require('./crons/CronSendMailAtividades')
 
 
 class ManagerCron{

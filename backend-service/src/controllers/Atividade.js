@@ -29,13 +29,10 @@ class Atividade {
       throw "Atividade não existe";
     
     
-    const imagem = Atividade.cliente.nome_fantasia.split('/')[0].toLowerCase();
-    
     return {
       new_date: moment(Atividade.date).locale('pt-br').format("DD/MM/YYYY"),
       new_created_at: moment(Atividade.created_at).locale('pt-br').format('DD/MM/YYYY HH:mm'),
       new_updated_at: moment(Atividade.updated_at).locale('pt-br').format('DD/MM/YYYY HH:mm'),
-      imagem: `http://localhost:3001/static/${imagem}.png`,
       ...Atividade
     }
 
