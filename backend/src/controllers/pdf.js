@@ -43,19 +43,20 @@ const Atividades = async (req,res) => {
 
 	try {
 
-
 		if (!req.query) new Error('Sem dados para consulta.');
-
+		
     const Query = Validate.PDFAtividades(req.query);
-
+		
     await tools.validate(req.userId, Query);
-
+		
     const URL = tools.getUrl(Query);
-
+		
+		
 		if (URL) {
 			const resp = await axios.get(`${URL}&user_id=${req.userId}`, {
 				headers: { Authorization: `Bearer ${process.env.ACCESS_SERVICE}` },
 			});
+
 
 			if (resp.data.success) {
 				Result.ok(200, resp.data);
@@ -67,7 +68,7 @@ const Atividades = async (req,res) => {
 		}
 
 		
-  } catch (error) {
+	} catch (error) {
 		Result.fail(
 			400,
 			error.response && error.response.data ? error.response.data : error

@@ -213,7 +213,7 @@ export default () => {
                 startIcon={<SendSharp />}
                 onClick={handleSubmit}
               >
-                Enviar
+                GERAR PDF
               </Button>
             </>
           )}
