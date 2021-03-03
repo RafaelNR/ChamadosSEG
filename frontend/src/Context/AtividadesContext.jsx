@@ -13,18 +13,23 @@ import useUser from '../Hooks/useUser';
 
 //* SERVICE
 import { AtividadePDF } from '../Service/pdf.service'
+import { getAtividades } from '../Service/atividade.service'
+
+//* SHEMAS
+import { FilterAtividadesSchema} from '../Schemas/Atividades.Schema'
 
 const AtividadesContext = createContext({});
 
 const AtividadesProvider = ({ children }) => {
   const { handleSnackBar } = useSnackBar();
-  const { setLoading } = useLoading();
+  const { loading, setLoading } = useLoading();
   const { roleID } = useUser();
   const [atividades, setAtividades] = useState([]);
   const [loadingPDF, setLoadingPDF] = useState(false);
 
   useEffect(() => {
-    async function init() {
+
+    (async () => {
       if (roleID) {
         try {
           const URL = roleID <= 2 ? 'atividades' : 'atividades/clientes';
@@ -44,9 +49,7 @@ const AtividadesProvider = ({ children }) => {
           });
         }
       }
-    }
-
-    init();
+    })();
 
     return function cleanup() {
       Crud.default.cancel("AtividadeContext unmounted")
@@ -72,13 +75,39 @@ const AtividadesProvider = ({ children }) => {
       });
   };
 
+  const filterAtividades = async (Dados) => {
+    try {
+
+      if (Object.keys(Dados).length === 0) {
+        const error = await FilterAtividadesSchema(Dados);
+        throw error.errors;
+      }
+
+      if (Boolean(Dados.data_inicial) && !Boolean(Dados.data_final)) {
+          throw 'Data final precisa estar preenchida.';
+      }
+
+      if (!Boolean(Dados.data_inicial) && Boolean(Dados.data_final)) {
+          throw 'Data inicial precisa estar preenchida.'
+      }
+      
+      setAtividades(await getAtividades(Dados));
+
+    } catch (error) {
+      console.log(error)
+    }
+
+  };
 
   return (
     <AtividadesContext.Provider
       value={{
         atividades,
+        setAtividades,
+        loading,
         loadingPDF,
-        downloadPDF
+        downloadPDF,
+        filterAtividades
       }}
     >
       {children}

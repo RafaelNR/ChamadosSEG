@@ -39,4 +39,22 @@ const UpdateInfoSchema = (data) => {
   return Val.exec();
 };
 
-export { InsertSchema, InsertInfoSchema, UpdateInfoSchema };
+
+const FilterAtividadesSchema = (data) => {
+  const schema = yup.object().shape({
+    data_inicial: yup.string(),
+    data_final: yup.string(),
+    cliente: yup.number(),
+    tecnico: yup.number().required('Técnico é necessário.')
+  });
+
+  const Val = new Validate(schema, data);
+  return Val.exec();
+};
+
+export {
+  InsertSchema,
+  InsertInfoSchema,
+  UpdateInfoSchema,
+  FilterAtividadesSchema
+};

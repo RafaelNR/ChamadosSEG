@@ -13,8 +13,13 @@ const Ticket = require("../classes/ticket.class");
  */
 const index = async (req, res) => {
 	try {
-		Result.ok(200,await Model.index());
+		const Dados = Object.keys(req.query).length >= 1
+			? await Model.filter(tools.handleFilter(req.query))
+			: await Model.index();
+
+		Result.ok(200, Dados);
 	} catch (error) {
+		console.log(error)
 		Result.fail(400,error);
 	}
 
@@ -267,6 +272,15 @@ const tools = {
 
 		return client_id;
 	},
+
+	handleFilter(Dados) {
+		return {
+			data_inicial: Dados.data_inicial ? Dados.data_inicial : null,
+			data_final: Dados.data_final ? Dados.data_final : null,
+			cliente: Dados.cliente ? Dados.cliente : null,
+			tecnico: Dados.tecnico ? Dados.tecnico : null,
+		}
+	}
 
 };
 

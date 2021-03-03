@@ -6,6 +6,27 @@ import {
 } from "../Schemas/Atividades.Schema";
 import { handleDate } from "../Utils/dates";
 
+
+export const getAtividades = async (Dados) => {
+  try {
+    const { data_inicial, data_final, cliente, tecnico } = Dados;
+    let query = '';
+    if (data_inicial && data_final)
+      query += `data_inicial=${data_inicial}&data_final=${data_final}&`;
+    if (cliente) query += `cliente=${cliente}&`;
+    if (tecnico) query += `tecnico=${tecnico}&`;
+
+    const resp = await Service.exec('get', '/atividades?' + query);
+
+    if (resp.data.success) return resp.data.data;
+
+    throw resp.data;
+  } catch (error) {
+    throw error.data;
+  }
+
+}
+
 export const getAtividade = async (ticket) => {
   try {
     const Url = `/atividades/ticket/${ticket}`;

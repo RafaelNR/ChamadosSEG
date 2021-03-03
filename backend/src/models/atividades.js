@@ -85,10 +85,10 @@ module.exports = {
 			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
 			.join("users", "users.id", "=", "atividades.user_id")
 			.orderBy("atividades.date", "desc")
-			.limit(60);
+			.limit(100);
 	},
 
-	findAll: async (type=null) => {
+	filter: ({ data_inicial, data_final, cliente, tecnico }) => {
 		let query = knex
 			.select(
 				"atividades.id",
@@ -102,6 +102,50 @@ module.exports = {
 			.from("atividades")
 			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
 			.join("users", "users.id", "=", "atividades.user_id")
+
+			if (
+				data_inicial &&
+				data_final &&
+				cliente &&
+				tecnico
+			) {
+				query
+					.whereBetween("atividades.date", [data_inicial, data_final])
+					.andWhere("users.id", "=", tecnico)
+					.andWhere("clientes.id", "=", cliente);
+			} else if (data_inicial && data_final && cliente) {
+				query
+					.whereBetween("date", [data_inicial, data_final])
+					.andWhere("cliente.id", "=", cliente);
+			} else if (data_inicial && data_final && tecnico) {
+				query
+					.whereBetween("date", [data_inicial, data_final])
+					.andWhere("users.id", "=", tecnico)
+			} else if (data_inicial && data_final){
+				query.whereBetween("atividades.date", [data_inicial, data_final])
+			}else if (cliente) {
+				query.where("clientes.id", "=", cliente);
+			} else if (tecnico) {
+				query.where("users.id", "=", tecnico);
+			}
+
+			return query.orderBy("atividades.date", "desc")
+	},
+
+	findAll: async (type = null) => {
+		let query = knex
+			.select(
+				"atividades.id",
+				"atividades.ticket",
+				"atividades.date",
+				"clientes.nome_fantasia as cliente",
+				"users.nome as técnico",
+				"atividades.created_at",
+				"atividades.updated_at"
+			)
+			.from("atividades")
+			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
+			.join("users", "users.id", "=", "atividades.user_id");
 
 		if (type === "open") {
 			query
@@ -123,12 +167,10 @@ module.exports = {
 				)
 				.andWhereRaw("MONTH(NOW()) = MONTH(date)");
 		}
-		
-		return await query
-			.orderBy("atividades.date", "desc")
-			.limit(60);
+
+		return await query.orderBy("atividades.date", "desc").limit(100);
 	},
-		
+
 	findAllByClientes: async (user_id, type = null) => {
 		let query = knex
 			.select(
@@ -147,7 +189,7 @@ module.exports = {
 				this.select("cliente_id")
 					.from("cliente_has_user as chu")
 					.where("chu.user_id", "=", user_id);
-			})
+			});
 
 		if (type === "open") {
 			query
@@ -170,7 +212,7 @@ module.exports = {
 				.andWhereRaw("MONTH(NOW()) = MONTH(date)");
 		}
 
-		return await query.orderBy("a.date", "desc").limit(60);
+		return await query.orderBy("a.date", "desc").limit(100);
 	},
 
 	findByUser_id: async (user_id, type) => {
@@ -212,7 +254,7 @@ module.exports = {
 		return await query
 			.orderBy("atividades.id", "desc")
 			.orderBy("atividades.date", "desc")
-			.limit(60);
+			.limit(100);
 	},
 
 	findByClient_id: async (client_id, type = null) => {
@@ -252,7 +294,7 @@ module.exports = {
 				.andWhereRaw("MONTH(NOW()) = MONTH(date)");
 		}
 
-		return await query.orderBy("atividades.date", "desc").limit(60);
+		return await query.orderBy("atividades.date", "desc").limit(100);
 	},
 
 	findOne: async (ID) => {

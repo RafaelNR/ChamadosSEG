@@ -36,14 +36,14 @@ const headCells = [
     numeric: false,
     disablePadding: false,
     label: "# Ticket",
-    sort: false,
+    sort: true,
   },
   {
     id: "date",
     numeric: false,
     disablePadding: false,
     label: "Data",
-    sort: false,
+    sort: true,
   },
   {
     id: "técnico",
@@ -95,8 +95,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-  const { atividades,downloadPDF,loadingPDF } = useAtividades();
-  const { loading } = useLoading();
+  const { atividades,loading,downloadPDF,loadingPDF } = useAtividades();
   const { search, searchResults, setSearchResults } = useSearch();
   const { order, orderBy, setOrderBy, setOrder } = useOrderTable();
   const { page, rows, setRows, rowsPerPage, emptyRows } = usePageTable();
