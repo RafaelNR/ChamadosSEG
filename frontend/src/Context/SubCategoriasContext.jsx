@@ -16,19 +16,15 @@ const SubCategoriasContext = createContext({});
 
 const SubCategoriasProvider = ({ children }) => {
   const { handleSnackBar } = useSnackBar();
-  const {setLoading } = useLoading();
+  const { setLoading } = useLoading();
   const [subcategorias, setSubCategorias] = useState([]);
   const [subcategoria, setSubCategoria] = useState({});
   const [errors, setErrors] = useState({});
   const [apiLoading, setApiLoading] = useState();
 
-  /**
-   ** Inicia os dados da subcategorias
-   */
+
   useEffect(() => {
     let render = true;
-    setLoading(true)
-
 
     (async () => {
       
@@ -56,7 +52,7 @@ const SubCategoriasProvider = ({ children }) => {
     };
     
     },
-    [handleSnackBar,setLoading]
+    []
   );
 
   const getSubCategoria = useCallback(
@@ -81,7 +77,6 @@ const SubCategoriasProvider = ({ children }) => {
     },
     [handleSnackBar]
   );
-
 
   const Actions = {
     async insert(subcategoria) {

@@ -22,35 +22,39 @@ const CategoriasProvider = ({ children }) => {
   const [errors, setErrors] = useState({});
   const [apiLoading, setApiLoading] = useState();
 
-  useEffect(
-    () => {
-      async function init() {
-        setLoading(true);
-        await Crud.get("categorias")
-          .then((resp) => {
-            const { success, data } = resp.data;
-            if (success) return setCategorias(data);
-            setLoading(false);
-            throw { success: false, message: resp.data.message};
-          })
-          .catch((error) => {
-            console.log(error);
-            setLoading(false);
-            handleSnackBar({
-              type: "error",
-              message: error && error.message ? error.message :
-                "Erro em carregar categorias, Por favor tente mais tarde.",
-            });
-          });
-      }
+  useEffect(() => {
+      let render = true;
+      setLoading(true);
 
-      init();
+      (async () => {
+
+        try {
+          const Dados = await Crud.get('categorias');
+          const { success, data } = Dados.data;
+          if (!success)
+            throw { success: false, message: data.message };
+          if (success && render) return setCategorias(data);
+          setLoading(false);
+        } catch (error) {
+          console.log(error);
+          setLoading(false);
+          handleSnackBar({
+            type: 'error',
+            message:
+              error && error.message
+                ? error.message
+                : 'Erro em carregar categorias, Por favor tente mais tarde.'
+          });
+        }
+
+      })()
 
       return function cleanup() {
+        render = false;
         Crud.default.cancel('CategoriaContext unmounted');
       };
     },
-    [handleSnackBar,setLoading]
+    []
   );
 
   const getCategoria = useCallback(
