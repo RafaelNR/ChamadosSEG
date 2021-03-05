@@ -10,7 +10,7 @@ const useAuth = () => {
     removeData('token');
     removeData('user');
     history.replace('/login');
-  }, [removeData]);
+  }, [removeData,history]);
 
   return {
     Logout

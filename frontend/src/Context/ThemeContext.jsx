@@ -54,7 +54,6 @@ const MythemeProvider = ({ children }) => {
       button: {
         downloadpdf: '#0B4672',
         viewpdf: '#3949ab',
-        hover: '#7986cb',
         new: darkMode ? 'rgba(223, 223, 223, 0.15)' : '#0d47a1',
         edit: darkMode ? '#757575' : green[800],
         create: darkMode ? blue[700] : blue[800],

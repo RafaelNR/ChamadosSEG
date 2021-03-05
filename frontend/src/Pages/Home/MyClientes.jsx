@@ -44,43 +44,36 @@ const Select = React.memo(({ changeCliente , clienteCurr}) => {
   const { getData } = useLocalStore();
 
   React.useEffect(() => {
-
+    let render = true;
     const { role_id } = getData('user');
 
-    if (role_id === 3) {
-      getMyClientes()
-        .then((Clientes) => {
-          if (Clientes.data.length > 1) {
-            setClientes(Clientes.data);
-          } else if (Clientes.data.length === 1) {
-            setClientes(Clientes.data[0]);
-          } else {
-            setClientes([]);
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });     
-    } else {
-      getClientes()
-        .then((Clientes) => {
-          if (Clientes.data.length > 1) {
-            setClientes(Clientes.data);
-          } else if (Clientes.data.length === 1) {
-            setClientes(Clientes.data[0]);
-          } else {
-            setClientes([]);
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        }); 
-    }
 
-    
+    (async () => {
+
+      try {
+        const Dados =
+          role_id === 3 ? await getMyClientes() : await getClientes();
+
+        if (render) {
+          if (Dados.data.length > 1) {
+            setClientes(Dados.data);
+          } else if (Dados.data.length === 1) {
+            setClientes(Dados.data[0]);
+          } else {
+            setClientes([]);
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+
+    })();
+
     return function cleanup() {
+      render = false;
       Service.default.cancel('MyAtividades unmonted');
     };
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -103,45 +96,41 @@ export default () => {
   const [half, setHalf] = React.useState(null);
   const [last, setLast] = React.useState(null);
   const [close, setClose] = React.useState(null);
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
   const [clienteCurr, setClienteCurr] = React.useState('todos');
-  const [roleID, _] = React.useState(getData('user').role_id);
+  const [roleID] = React.useState(getData('user').role_id);
 
   React.useEffect(() => {
+    let render = true;
     setLoading(true);
 
-    if (roleID === 3) {
-      Dashboard.MyClientesAtividades().then((Dados) => {
-        setOpen(Dados.data.open);
-        setHalf(Dados.data.half);
-        setLast(Dados.data.last);
-        setClose(Dados.data.close);
-      }).catch((e) => {
-        console.log(e);
-      }).finally(() => {
+    (async () => {
+      try {
+        const Dados =
+          roleID === 3
+            ? await Dashboard.MyClientesAtividades()
+            : await Dashboard.AtividadesAll();
+
+        if (Dados.success && render) {
+          setOpen(Dados.data.open);
+          setHalf(Dados.data.half);
+          setLast(Dados.data.last);
+          setClose(Dados.data.close);
+        }
+      } catch (error) {
+        console.log(error);
         setLoading(false);
-      })
-    } else {
-      Dashboard.AtividadesAll().then((Dados) => {
-        setOpen(Dados.data.open);
-        setHalf(Dados.data.half);
-        setLast(Dados.data.last);
-        setClose(Dados.data.close);
-      }).catch((e) => {
-        console.log(e);
-      }).finally(() => {
-        setLoading(false);
-      })
-    }
+      }
+    })();
 
     return function cleanup() {
-      setLoading(false);
+      render = false;
       Service.default.cancel('MyAtividades unmonted');
     };
-
+    // eslint-disable-next-line
   }, []);
 
-  const changeCliente = React.useCallback( async (event) => {
+  const changeCliente = React.useCallback(async (event) => {
     setClienteCurr(event.target.value);
     setLoading(true);
     try {
@@ -151,7 +140,7 @@ export default () => {
         Dados = await Dashboard.MyClientesAtividades();
       } else if (event.target.value === 'todos' && roleID < 3) {
         Dados = await Dashboard.AtividadesAll();
-      }else {
+      } else {
         Dados = await Dashboard.MyClienteAtividades(event.target.value);
       }
 
@@ -166,9 +155,8 @@ export default () => {
       setLoading(false);
       console.log(error);
     }
-    
+    // eslint-disable-next-line
   }, []);
-
 
   return (
     <Paper className={classes.root}>
@@ -179,7 +167,7 @@ export default () => {
           </Typography>
         </Grid>
         <Grid item xs={6} className={classes.gridselect}>
-          <Select clienteCurr={clienteCurr} changeCliente={changeCliente}/>
+          <Select clienteCurr={clienteCurr} changeCliente={changeCliente} />
         </Grid>
       </Grid>
 

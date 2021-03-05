@@ -3,7 +3,6 @@ import React, { useState, useCallback } from "react";
 import {
   CssBaseline,
   TextField,
-  Input,
   FormControlLabel,
   Checkbox,
   Link,
@@ -17,7 +16,6 @@ import InputPasswd from '../Components/FormControl/Passwd';
 //* CONTEXT
 import useAuth from "../Context/AuthContext";
 import useLocalStore from '../Hooks/useLocalStore'
-
 
 
 const useStyles = makeStyles((theme) => ({
@@ -70,7 +68,6 @@ export default function SignInSide() {
   const [user, setUser] = useState('');
   const [passwd, setPasswd] = useState('');
   const [lembrar, setLembrar] = useState(false);
-  const [showPasswd, setShowPasswd] = useState(false);
 
   React.useEffect(() => {
     document.title = `Login - OS Técnicos`;
@@ -82,6 +79,7 @@ export default function SignInSide() {
 
   },[])
 
+  //react-hooks/exhaustive-deps
   const handleChange = useCallback((e) => {
     const el = e.target.name;
     if (el === "user") setUser(e.target.value);
@@ -152,14 +150,14 @@ export default function SignInSide() {
               fullWidth
               required
               error={errors && errors['user'] ? true : false}
-              helperText={errors && errors['user']}
+              helperText={errors && errors['user'] ? errors['user'] : null }
               onChange={(e) => handleChange(e)}
               onKeyDownCapture={(e) => removeErrors(e)}
             />
             <InputPasswd
               value={passwd}
               error={errors && errors['passwd'] ? true : false}
-              helperText={errors && errors['passwd']}
+              helperText={errors && errors['passwd'] ? errors['passwd'] : null}
               onChange={(e) => handleChange(e)}
               onKeyDownCapture={(e) => removeErrors(e)}
               autoComplete="senha"

@@ -37,11 +37,11 @@ const defaultMenu = [
 ];
 
 const tecnicoMenu = [
-  {
-    nome: "Relatórios",
-    icon: <InsertChartSharp />,
-    path: "/relatorios/atividades/my",
-  },
+  // {
+  //   nome: "Relatórios",
+  //   icon: <InsertChartSharp />,
+  //   path: "/relatorios/atividades/my",
+  // },
 ];
 
 const analistaMenu = [

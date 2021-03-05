@@ -33,31 +33,44 @@ export default () => {
   const [half, setHalf] = React.useState(null);
   const [last, setLast] = React.useState(null);
   const [close, setClose] = React.useState(null);
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
+    let render = true;
     setLoading(true);
-    Dashboard.MyUserAtividades().then(Dados => {
-      setOpen(Dados.data.open);
-      setHalf(Dados.data.half)
-      setLast(Dados.data.last);
-      setClose(Dados.data.close);
-    }).catch(error => {
-      console.log(error)
-    }).finally(() => {
-      setLoading(false);
-    })
+
+    (async () => {
+
+      try {
+
+        const Dados = await Dashboard.MyUserAtividades();
+
+        if (Dados.success && render) {
+          setOpen(Dados.data.open);
+          setHalf(Dados.data.half)
+          setLast(Dados.data.last);
+          setClose(Dados.data.close);
+        }
+
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+
+    })();
+
 
     return function cleanup() {
-      setLoading(false);
+      render = false;
       Service.default.cancel('MyAtividades unmonted');
     };
 
   }, []);
 
-  function handleLink(event){
-    console.log(event)
-  }
+  // function handleLink(event){
+  //   console.log(event)
+  // }
 
   return (
     <Paper className={classes.root}>

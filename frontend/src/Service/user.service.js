@@ -7,6 +7,7 @@ export const getUsers = async () => {
     const Dados = await Service.exec('get', Url);
 
     if (!Dados.data.success)
+      // eslint-disable-next-line
       throw {
         success: false,
         message: Dados.data.message
@@ -29,7 +30,10 @@ export const getMyClientes = async (ID) => {
     const Url = `/usuarios/clientes/${ID}`;
     const Dados = await Service.exec("get", Url);
 
-    if(!Dados.data.success) throw ({ success: false, message: Dados.data.message ? Dados.data.message : 'Error em buscas os clientes do seu usuário.'});
+    if (!Dados.data.success) {
+      // eslint-disable-next-line
+      throw ({ success: false, message: Dados.data.message ? Dados.data.message : 'Error em buscas os clientes do seu usuário.' });
+    }
 
     return {
       success: true,
@@ -48,7 +52,10 @@ export const getPerfil = async () => {
     const Url = "/perfil";
     const Dados = await Service.exec("get", Url);
 
-    if(!Dados.data.success) throw ({ success: false, message: Dados.data.message ? Dados.data.message : "Error em buscas os meus dados."});
+    if (!Dados.data.success) {
+      // eslint-disable-next-line
+      throw ({ success: false, message: Dados.data.message ? Dados.data.message : "Error em buscas os meus dados." });
+    }
 
     return {
       success: true,
@@ -69,7 +76,10 @@ export const update = async (data) => {
 
     console.log(Dados)
 
-    if(!Dados.data.success) throw ({ success: false, message: Dados.data.message ? Dados.data.message : "Error em buscas os meus dados."});
+    if (!Dados.data.success) {
+      // eslint-disable-next-line
+      throw ({ success: false, message: Dados.data.message ? Dados.data.message : "Error em buscas os meus dados." });
+    }
 
     return {
       success: true,

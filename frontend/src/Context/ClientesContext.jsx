@@ -23,23 +23,32 @@ const ClientesProvider = ({ children }) => {
   const [apiLoading, setApiLoading] = useState(false);
 
   useEffect(() => {
-    Crud.get("clientes")
-      .then((resp) => {
-        const { success, data } = resp.data;
-        setLoading(false);
-        if (success) return setClientes(data);
-        throw { success: false, message: resp.data.message};
-      })
-      .catch((error) => {
+    let render = true;
+    setLoading(true);
+
+    (async () => {
+
+      try {
+        const Dados = await Crud.get('clientes');
+        const { success, data } = Dados.data;
+        if (!success) throw { success: false, message: data.message };
+        if (success && render) setClientes(data);
+        return setLoading(false);
+      } catch (error) {
         console.log(error);
         setLoading(false);
         handleSnackBar({
-          type: "error",
-          message: error.message ? error.message : "Erro em carregar clientes, Por favor tente mais tarde.",
+          type: 'error',
+          message: error.message
+            ? error.message
+            : 'Erro em carregar clientes, Por favor tente mais tarde.'
         });
-      });
+      }
+
+    })();
 
     return function cleanup() {
+      render = false;
       Crud.default.cancel('AtividadeContext unmounted');
     };
 

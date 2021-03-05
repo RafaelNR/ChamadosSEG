@@ -23,40 +23,41 @@ const AuthProvider = ({ children }) => {
   const [success, setSuccess] = useState(false);
 
   const handleLogout = useCallback(() => {
-    console.log('exec handleLogout')
     setUser(null);
     setToken(null);
-    removeData("token");
-    removeData("user");
+    removeData('token');
+    removeData('user');
     removeToken();
+  // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
+    let render = true;
 
-    const init = async () => {
-
-      if (!token || token === "undefined") {
-        console.log("token não encontrado");
+    (async () => {
+      if (!token || token === 'undefined') {
+        process.env.REACT_APP_NODE === 'dev' &&
+          console.log('token não encontrado');
         return handleLogout();
       }
 
-      if (!user || user === "undefined" || !user.nome) {
-        console.log("user não encontrado");
+      if (!user || user === 'undefined' || !user.nome) {
+        process.env.REACT_APP_NODE === 'dev' &&
+          console.log('user não encontrado');
         return handleLogout();
       }
 
-      const resp = await Auth();
-      if (!resp.data.auth) return handleLogout();
-
-    }
-
-    init();
+      if (render) {
+        const resp = await Auth();
+        if (!resp.data.auth) return handleLogout();
+      }
+    })();
 
     return function cleanup() {
-      Crud.default.cancel("AuthContext unmonted");
+      render = false;
+      Crud.default.cancel('AuthContext unmonted');
     };
-
-  },[]);
+  },[handleLogout]);
 
   const handleLogin = useCallback((user, passwd,lembrar) => {
 
@@ -100,19 +101,19 @@ const AuthProvider = ({ children }) => {
   );
 
   const handleAuth = useCallback(() => {
-    
-    const storageToken = getData("token")
-    const storageUser = getData("user")
+    const storageToken = getData('token');
+    const storageUser = getData('user');
 
-    if (!storageToken || storageToken === "undefined") {
+    if (!storageToken || storageToken === 'undefined') {
       setErrors({
         success: false,
-        message: 'Erro, token de autenticação não encontrado, você foi deslogado!!'
+        message:
+          'Erro, token de autenticação não encontrado, você foi deslogado!!'
       });
       return handleLogout();
     }
 
-    if (!storageUser || storageUser === "undefined" || !storageUser.nome) {
+    if (!storageUser || storageUser === 'undefined' || !storageUser.nome) {
       setErrors({
         success: false,
         message: 'Erro, usuário não encontrado, você foi deslogado!'
@@ -120,7 +121,7 @@ const AuthProvider = ({ children }) => {
       return handleLogout();
     }
 
-    Auth().then(resp => {
+    Auth().then((resp) => {
       if (!resp.data.auth) {
         setErrors({
           success: false,
@@ -128,9 +129,9 @@ const AuthProvider = ({ children }) => {
         });
         return handleLogout();
       }
-    })
-
-  },[])
+    });
+  // eslint-disable-next-line
+  },[handleLogout])
 
   return (
     <AuthContext.Provider

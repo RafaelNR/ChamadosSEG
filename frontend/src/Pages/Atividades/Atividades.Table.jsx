@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 //* COMPONENTES
 import {
@@ -24,7 +24,6 @@ import {
 import useAtividades from "../../Context/AtividadesContext";
 import useOrderTable from "../../Context/OrderTableContext";
 import usePageTable from "../../Context/PageTableContext";
-import useLoading from "../../Context/LoadingContext";
 import useSearch from "../../Context/SearchContext";
 
 //* UTILS

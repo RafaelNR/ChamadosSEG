@@ -100,12 +100,12 @@ export default function () {
 
   useEffect(() => {
     setOrderBy("nome");
-    setRows(search && search.length > 3 ? searchResults : usuarios);
+    return setRows(search && search.length > 3 ? searchResults : usuarios);
   }, [usuarios, searchResults, search, setOrderBy, setRows]);
 
   useEffect(() => {
+    
     const results = usuarios.filter((usuario) => {
-      //array-callback-return
       const nome = usuario.nome.toLowerCase();
       const user = usuario.user.toLowerCase();
 
@@ -114,10 +114,12 @@ export default function () {
         user.includes(search.toLowerCase())
       ) {
         return usuario;
+      } else {
+        return;
       }
     });
-    setSearchResults(results);
-    return;
+
+    return setSearchResults(results);
   }, [search, setSearchResults, usuarios]);
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   makeStyles,
   Table,
@@ -90,39 +90,41 @@ export default function () {
   const { search, searchResults, setSearchResults } = useSearch();
   const { order, orderBy, setOrderBy, setOrder } = useOrderTable();
   const { page, rows, setRows, rowsPerPage, emptyRows } = usePageTable();
-  
+
+  // eslint-disable-next-line
   useEffect(() => {
     if (logs) {
-      setOrderBy("id");
+      setOrderBy('id');
       setOrder('desc');
       setRows(search && search.length > 3 ? searchResults : logs);
     }
-  }, [logs, searchResults, search, setOrderBy, setRows]);
+  }, [logs, searchResults, search, setOrder, setOrderBy, setRows]);
 
+  // eslint-disable-next-line
   useEffect(() => {
-    const results = logs && logs.filter((log) => {
-      const nome = log.nome.toLowerCase();
-      const type = log.type.toLowerCase();
-      const category = log.category.toLowerCase();
+    const results =
+      logs &&
+      logs.filter((log) => {
+        const nome = log.nome.toLowerCase();
+        const type = log.type.toLowerCase();
+        const category = log.category.toLowerCase();
 
-      if (
-        nome.includes(search.toLowerCase()) ||
-        type.includes(search.toLowerCase()) ||
-        category.includes(search.toLowerCase())
-      ) {
-        return log;
-      }
-    });
+        if (
+          nome.includes(search.toLowerCase()) ||
+          type.includes(search.toLowerCase()) ||
+          category.includes(search.toLowerCase())
+        ) {
+          return log;
+        }
+        return;
+      });
     setSearchResults(results);
     return;
   }, [search, setSearchResults, logs]);
 
   return (
     <React.Fragment>
-      <EnhancedTableToolbar
-        title="Log"
-        data={false}
-      />
+      <EnhancedTableToolbar title="Log" data={false} />
       <TableContainer>
         <Table
           className={classes.table}
@@ -135,31 +137,29 @@ export default function () {
             {!logs || logs.length === 0 ? (
               <CircularProcess type="Table" />
             ) : (
-              sortObject(rows, order, orderBy, page, rowsPerPage).map(
-                (row) => {
-                  return (
-                    <TableRow hover tabIndex={-1} key={row.id}>
-                      <TableCell
-                        component="th"
-                        className={classes.tablerow}
-                        scope="row"
-                        padding="default"
-                      >
-                        {handleDateTimeFull(row.created_at)}
-                      </TableCell>
-                      <TableCell align="left" className={classes.tablerow}>
-                        {row.nome}
-                      </TableCell>
-                      <TableCell align="left" className={classes.tablerow}>
-                        {row.type}
-                      </TableCell>
-                      <TableCell align="left" className={classes.tablerow}>
-                        {LogMessage(row.category)}
-                      </TableCell>
-                    </TableRow>
-                  );
-                }
-              )
+              sortObject(rows, order, orderBy, page, rowsPerPage).map((row) => {
+                return (
+                  <TableRow hover tabIndex={-1} key={row.id}>
+                    <TableCell
+                      component="th"
+                      className={classes.tablerow}
+                      scope="row"
+                      padding="default"
+                    >
+                      {handleDateTimeFull(row.created_at)}
+                    </TableCell>
+                    <TableCell align="left" className={classes.tablerow}>
+                      {row.nome}
+                    </TableCell>
+                    <TableCell align="left" className={classes.tablerow}>
+                      {row.type}
+                    </TableCell>
+                    <TableCell align="left" className={classes.tablerow}>
+                      {LogMessage(row.category)}
+                    </TableCell>
+                  </TableRow>
+                );
+              })
             )}
             {emptyRows > 0 && (
               <TableRow style={{ height: 53 * emptyRows }}>

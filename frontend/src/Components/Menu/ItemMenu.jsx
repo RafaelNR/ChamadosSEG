@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 const MyListItem = memo(({ menu }) => {
-  const classes = useStyles();
+  // const classes = useStyles();
   const { open, handleDrawerClose } = useMenu();
   return (
     <ListItem

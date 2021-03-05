@@ -29,32 +29,40 @@ const ReportAtividadesProvider = ({ children }) => {
   const [download, setDownload] = useState(null);
 
   useEffect(() => {
-    if (type.info === 'cliente') {
-      getClientes()
-        .then((resp) => {
-          const Clientes = resp.data.map((cliente) => {
-            return {
-              id: cliente.id,
-              nome: cliente.nome_fantasia
-            };
-          });
-          setClientes(Clientes);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } else {
-      getUsers()
-        .then((resp) => {
-          setTecnicos(resp.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-    }
+    let render = true;
+    
+    (async () => {
+
+      try {
+
+        const Dados =
+          type.info === 'cliente'
+            ? await getClientes()
+            : await getUsers();
+
+        if (render) {
+          if (type.info === 'cliente') {
+            const Clientes = Dados.data.map((cliente) => {
+              return {
+                id: cliente.id,
+                nome: cliente.nome_fantasia
+              };
+            });
+            setClientes(Clientes);
+          } else {
+            setTecnicos(Dados.data);
+          }
+        }
+        
+      } catch (error) {
+        console.log(error)
+      }
+
+    })();
 
     return function cleanup() {
-      Crud.default.cancel('AuthContext unmonted');
+      render = false;
+      Crud.default.cancel('ReportContext unmonted');
     };
     
   }, [type.info]);

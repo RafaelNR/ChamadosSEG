@@ -39,6 +39,7 @@
         "import/no-unresolved": "off",
         "no-console": "off",
         "no-param-reassign": "off",
-        "no-plusplus": "off"
+        "no-plusplus": "off",
+        "no-throw-literal": "off"
     }
 }

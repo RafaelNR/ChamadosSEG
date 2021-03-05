@@ -28,33 +28,34 @@ const AtividadesProvider = ({ children }) => {
   const [loadingPDF, setLoadingPDF] = useState(false);
 
   useEffect(() => {
+    let render = true;
+    setLoading(true);
 
     (async () => {
-      if (roleID) {
-        try {
-          const URL = roleID <= 2 ? 'atividades' : 'atividades/clientes';
-          const resp = await Crud.get(URL);
-          const { success, data } = resp.data;
-          if (!success) throw resp.data;
-          setLoading(false);
-          return setAtividades(data);
-        } catch (error) {
-          console.log(error);
-          setLoading(false);
-          return handleSnackBar({
-            type: 'error',
-            message: error && error.message
+      try {
+        const URL = roleID <= 2 ? 'atividades' : 'atividades/clientes';
+        const resp = await Crud.get(URL);
+        const { success, data } = resp.data;
+        if (!success) throw resp.data;
+        if  (render) setAtividades(data);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        return handleSnackBar({
+          type: 'error',
+          message:
+            error && error.message
               ? error.message
               : 'Erro em carregar atividades. Por favor tente mais tarde.'
-          });
-        }
+        });
       }
     })();
 
     return function cleanup() {
-      Crud.default.cancel("AtividadeContext unmounted")
+      render = false;
+      Crud.default.cancel('AtividadeContext unmounted');
     };
-  }, [handleSnackBar, setLoading, roleID]);
+  }, []);
 
   const downloadPDF = (ticket) => {
     setLoadingPDF(true);
@@ -73,7 +74,7 @@ const AtividadesProvider = ({ children }) => {
       .finally(() => {
         setLoadingPDF(false);
       });
-  };
+  }
 
   const filterAtividades = async (Dados) => {
     try {

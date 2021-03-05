@@ -6,13 +6,14 @@ class Log{
     try {
         const Dados = await Service.exec('get', '/log');
 
-        if (!Dados.data.success)
-          throw {
-            success: false,
-            message: Dados.data.message
-              ? Dados.data.message
-              : 'Error em buscas os logs.'
-          };
+      if (!Dados.data.success)
+        // eslint-disable-next-line
+        throw {
+          success: false,
+          message: Dados.data.message
+            ? Dados.data.message
+            : 'Error em buscas os logs.'
+        };
 
         return {
           success: true,

@@ -51,62 +51,56 @@ export default () => {
     let render = true;
 
     (async () => {
-
       try {
+        const My = await getPerfil();
 
-        const My = await getPerfil()
-
-        if(!My || !My.success) throw new Error('Erro em carregar dados do filtro.') 
+        if (!My || !My.success)
+          throw new Error('Erro em carregar dados do filtro.');
 
         const u = My.data.role_id === 3 ? My : await getUsers();
-        const c = My.data.role_id === 3 ? await getMyClientes() : await getClientes();
+        const c =
+          My.data.role_id === 3 ? await getMyClientes() : await getClientes();
 
-        if (!c.success || !u.success) throw new Error('Em carregar técnicos ou clientes.')
+        if (!c.success || !u.success)
+          throw new Error('Em carregar técnicos ou clientes.');
 
         if (render) {
           setClientes(() => {
-            return c.data.map(cliente => {
+            return c.data.map((cliente) => {
               return {
                 id: cliente.id,
                 nome: cliente.nome_fantasia
-              }
-            })
+              };
+            });
           });
           setTecnicos(u.data.length > 2 ? u.data : [u.data]);
         }
-
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-
     })();
 
     return () => {
       render = false;
     };
+  }, []);
 
-  }, [])
-  
+  // eslint-disable-next-line
   React.useEffect(() => {
+    setValues(v => {
+      let Dados = { ...v };
 
-    setValues(() => {
-
-      let Dados = {...values}
-      
       if (clientes.length === 1) {
-        Dados = { ...values, cliente: clientes[0].id } 
+        Dados = { ...v, cliente: clientes[0].id };
       }
-      
-      
+
       if (tecnicos.length === 1) {
-        Dados = { ...values, tecnico: tecnicos[0].id }
+        Dados = { ...v, tecnico: tecnicos[0].id };
       }
 
       return Dados;
-
-    })
-
-  },[clientes,tecnicos])
+    });
+  }, [clientes, tecnicos]);
 
   const handleChange = (event) => {
     const target = event.target;
@@ -116,21 +110,17 @@ export default () => {
       ...values,
       [name]: value
     });
-  }
+  };
 
   const clearValues = () => {
-  
     setValues(() => {
-
       if (clientes.length <= 1 || tecnicos.length <= 1) {
         return { cliente: values.cliente, tecnico: values.tecnico };
       } else {
-        return {}
+        return {};
       }
-
-    })
-
-  }
+    });
+  };
 
   return (
     <div className={classes.root}>
@@ -181,7 +171,6 @@ export default () => {
                 title="Clientes"
                 name="cliente"
                 id="cliente"
-                handleChange=""
                 variant="outlined"
                 itens={clientes}
                 value={values.cliente}
@@ -194,7 +183,6 @@ export default () => {
                 title="Técnicos"
                 name="tecnico"
                 id="tecnico"
-                handleChange=""
                 variant="outlined"
                 itens={tecnicos}
                 value={values.tecnico}
@@ -205,10 +193,7 @@ export default () => {
           </Grid>
         </AccordionDetails>
         <AccordionActions>
-          <Button
-            variant="outlined"
-            onClick={() => clearValues(values)}
-          >
+          <Button variant="outlined" onClick={() => clearValues(values)}>
             Limpar
           </Button>
           <Button

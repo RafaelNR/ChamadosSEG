@@ -23,26 +23,35 @@ const UsuariosProvider = ({ children }) => {
   const [apiLoading, setApiLoading] = useState(false);
 
   useEffect(() => {
-    Crud.get("usuarios")
-      .then((resp) => {
-        const { success, data } = resp.data;
+    let render = true;
+    setLoading(true);
+
+    (async () => {
+
+      try {
+        const Dados = await Crud.get('usuarios');
+        const { success, data } = Dados.data;
+        if(!success) throw new Error(data.message);
+        if (render) setUsuarios(data);
         setLoading(false);
-        if (success) return setUsuarios(data);
-        throw { success: false, message: resp.data.message};
-      })
-      .catch((error) => {
+      } catch (error) {
         console.log(error)
         setLoading(false);
         handleSnackBar({
-          type: "error",
-          message: error.message ? error.message : "Erro em carregar usuários, por favor tente mais tarde.",
+          type: 'error',
+          message: error.message
+            ? error.message
+            : 'Erro em carregar usuários, por favor tente mais tarde.'
         });
-      });
+      }
+
+    })();
 
     return function cleanup() {
+      render = false;
       Crud.default.cancel('AuthContext unmonted');
     };
-  }, [setUsuarios, handleSnackBar, setLoading]);
+  }, []);
 
   const getUsuario = useCallback(
     async (ID) => {

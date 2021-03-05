@@ -91,7 +91,6 @@ export function initialsName(FullName) {
 
 
 export function handleHeaderName(Path, Headers) {
-  
   const paths = Path.split('/');
 
   const Acc = Headers.reduce((acc, valorAtual, index, array) => {

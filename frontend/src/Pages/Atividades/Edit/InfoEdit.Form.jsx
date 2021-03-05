@@ -121,10 +121,6 @@ export default ({ Info, ticket }) => {
     setSuccess(false);
   }, [setSuccess]);
 
-  const checkUser = () => {
-
-  }
-
   return (
     <Accordion info={success ? info : null}>
       <form onSubmit={handleSubmit} autoComplete="off">

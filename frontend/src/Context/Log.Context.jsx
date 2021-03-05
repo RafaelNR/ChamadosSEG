@@ -17,29 +17,38 @@ const LogProvider = ({ children }) => {
   const { handleSnackBar } = useSnackBar();
   const { setLoading } = useLoading();
   const [logs, setLogs] = useState();
-  const [apiLoading, setApiLoading] = useState(false);
 
   useEffect(() => {
-
+    let render = true;
     setLoading(true);
 
-    Service.index()
-      .then(Dados => {
-        setLoading(false)
+
+    (async () => {
+
+      try {
+
+        const Dados = await Service.index();
         const { success, data } = Dados;
-        if (success) return setLogs(data);
-        throw { message: data.message};
-      }).catch(error => {
+        if (!success) throw { message: data.message };
+        if (success && render) setLogs(data);
+        return setLoading(false);
+      } catch (error) {
+
         console.log(error);
         setLoading(false);
         handleSnackBar({
-          type: "error",
-          message: error.message ? error.message : "Erro em carregar log, por favor tente mais tarde.",
+          type: 'error',
+          message: error.message
+            ? error.message
+            : 'Erro em carregar log, por favor tente mais tarde.'
         });
-      })
+      }
+
+    })();
 
     return function cleanup() {
       console.log("unmounted Log");
+      render = false;
       return Service.Cancel;
     };
   }, [setLogs, handleSnackBar, setLoading]);
