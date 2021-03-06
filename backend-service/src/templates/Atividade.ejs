@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <title> <%= ticket %> </title>
+</head>
+<style>
+  :root {
+    --cor-primaria: #2B5077;
+    --cor-secundaria: #929297;
+    --cor-teciaria: #FF7F00;
+    --cor-boder: #8CA0B6;
+  }
+
+  body {
+    font-size: 12px;
+    background-color: rgb(82, 86, 89);
+  }
+
+  .container {
+  }
+
+  h3{
+    color: #2B5077 !important;
+    text-align: center;
+    margin-bottom: 20px !important;
+  }
+
+  .cliente {
+    height: 180px;
+  }
+
+  .cliente .border{
+    border: 1px solid #8CA0B6;
+    height: 140px;
+    border-radius: 0 0 5px 5px;
+  }
+
+  .cliente .title{
+    font-size: 20px;
+    color: white !important;
+    background: #2B5077 !important;
+    padding: 5px;
+    border-radius: 5px 5px 0 0;
+  }
+
+  .cliente .imagem{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+  }
+
+  .cliente .imagem img {
+    width: 115px;    
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cliente .dados {
+    display: grid;
+    padding: 10px 20px;
+    margin-top: 10px;
+  }
+
+  .cliente .dados>span {
+    display: block;
+  }
+
+  .atividade {
+    height: 150px;
+    margin-top: 25px;
+    border-radius: 5px;
+  }
+
+  .atividade .title {
+    font-size: 20px;
+    color: white !important;
+    background: #2B5077 !important;
+    padding: 5px;
+    border-radius: 5px 5px 0 0;
+  }
+
+  .atividade .dados {
+    padding: 10px 20px;
+    border: 1px solid #8CA0B6;
+    border-radius: 0 0 5px 5px;
+  }
+
+  .atividade .dados>span {
+    display: block;
+  }
+
+  .infos {
+    margin-top: 25px;
+  }
+  .infos > .title {
+    font-size: 20px;
+    padding: 5px;
+    color: #2B5077 !important;
+    text-align: center;
+  }
+
+  .infos .info {
+    min-height: 92px;
+    padding: 10px;
+    border: 1px solid #8CA0B6;
+    margin-top: 10px;
+    border-radius: 5px;
+  }
+
+  .infos .info .dados>span {
+    display: block;
+  }
+
+  .infos .info .dados .dado {}
+
+  .infos .info .descricao .title {
+    font-size: 15px;
+    color: #FF7F00 !important;
+    font-weight: bold;
+  }
+
+</style>
+
+<body>
+  <div id="pageHeader"><img src="http://cisru.esy.es/include/img/header.jpg" /></div>
+
+  <div class="container">
+
+    <h3>Relatório de Serviço Técnico </h3>
+
+    <div class="cliente">
+
+      <div class="title">
+        Dados do Cliente
+      </div>
+
+      <div class="border">
+        <div class="col-xs-3 imagem">
+          <img
+          src="<%= Atividade.imagem %>" />
+        </div>
+        <div class="col-xs-9 dados">
+          <span><strong>Nome Fantasia:</strong> <%= Atividade.cliente.nome_fantasia %></span>
+          <span><strong>CNPJ/CPF:</strong> <%= Atividade.cliente.cnpj_cpf %></span>
+          <span><strong>Nº Contrato:</strong> <%= Atividade.cliente.n_contrato %></span>
+          <span><strong>Representante:</strong> <%= Atividade.cliente.representante %></span>
+          <span><strong>Telefone:</strong> <%= Atividade.cliente.telefone %></span>
+          <span><strong>Email:</strong> <%= Atividade.cliente.email %></span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="atividade">
+
+      <div class="title">
+        Dados da Atividade
+      </div>
+
+      <div class="dados">
+        <span><strong>Data:</strong> <%= Atividade.new_date %> </span>
+        <span><strong>Ticket:</strong> <%= Atividade.ticket %> </span>
+        <span><strong>Criado por:</strong> <%= Atividade['técnico'] %></span>
+        <span><strong>Data de abertura:</strong> <%= Atividade.new_created_at %></span>
+        <span><strong>Ultima alteração:</strong> <%= Atividade.new_updated_at %></span>
+      </div>
+
+    </div>
+
+    <div class="box infos">
+      <div class="title">
+        Descrição das Atividades
+      </div>
+
+
+      <% Atividade.infos.map( info => {%>
+
+
+      <div class="info">
+        <div class="col-xs-4 dados">
+          <span class="dado"><strong>Ticket:</strong> <%= info.info_ticket %></span>
+          <span class="dado"><strong>Categoria:</strong> <%= info.categoria %></span>
+          <span class="dado"><strong>Registrado por:</strong> </span> <span class="sub-dado"><%= info['técnico'] %> </span>
+        </div>
+        <div class="col-xs-8 descricao">
+          <div class="title">Descrição:</div>
+          <span><%= info.descricao %></span>
+        </div>
+      </div>
+
+      <% }) %>
+
+
+    </div>
+  </div>
+  
+  
+  <div id="pageFooter"><img src="http://cisru.esy.es/include/img/footer.jpg" /></div>
+  <!-- <> <%= JSON.stringify(Atividade) %> </> -->
+</body>
+
+</html>
