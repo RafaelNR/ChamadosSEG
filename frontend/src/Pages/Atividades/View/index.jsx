@@ -18,6 +18,10 @@ import useSnackBar from "../../../Context/SnackBarContext";
 import { getAtividade } from "../../../Service/atividade.service";
 import { getCliente } from "../../../Service/clientes.service";
 
+import {
+  getStatusAtividade
+} from '../../../Utils/dates';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,27 +53,36 @@ export default () => {
   const [loading, setLoading] = React.useState(true);
   
   React.useEffect(() => {
+    let render = true;
+    setLoading(true);
 
-    async function init(){
+    (async () => {
 
       try {
         const Dados = await getAtividade(ticket);
-        setAtividade(Dados);
+
+        if(render) setAtividade(Dados);
         const Cliente = await getCliente(Dados.cliente_id);
-        setCliente(Cliente.data);
-        setLoading(false);
         
+        if(render) setCliente(Cliente.data);
+        setLoading(false);
       } catch (error) {
+        setLoading(false);
         handleSnackBar({
-          type: "error",
-          message: error && error.message ? error.message : `Erro em carregar a atividade.`,
+          type: 'error',
+          message:
+            error && error.message
+              ? error.message
+              : `Erro em carregar a atividade.`
         });
         return history.replace('/atividades');
       }
 
-    };
+    })()
 
-    init();
+    return () => {
+      render = false;
+    }
 
   }, [handleSnackBar, history, ticket])
   
@@ -84,7 +97,7 @@ export default () => {
             </Typography>
           </Grid>
           <Grid item md={6} className={classes.icons}>
-            <PDFIconAtividade ticket={ticket} />
+            {getStatusAtividade(atividade.date) === 'red' && <PDFIconAtividade ticket={ticket} /> }
           </Grid>
         </Grid>
         {loading ? (

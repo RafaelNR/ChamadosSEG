@@ -40,6 +40,31 @@ function dateMoreDays(date: string, Days: number): string {
   return moment(newDate).format("YYYY-MM-DD");
 }
 
+function getStatusAtividade(date: string): string{
+  
+  const currDate = moment().locale('pt-br').format('YYYY-MM-DD')
+
+  if (!moment(date).isBefore(currDate, 'month')) {
+    
+    const days = moment('2021-03-14').locale('pt-br').diff(date, 'days');
+
+    if (days <= 5)
+      return 'green'
+    else if (days <= 8)
+      return 'yellow'
+    else if (days <= 9)
+      return 'orange'
+    else 
+      return 'red'
+    
+  } else {
+
+    return 'red'
+      
+  }
+
+}
+
 export {
   TodayDate,
   handleDateTime,
@@ -47,4 +72,5 @@ export {
   handleDate,
   dateMoreDays,
   permissionEditAtividade,
+  getStatusAtividade
 };

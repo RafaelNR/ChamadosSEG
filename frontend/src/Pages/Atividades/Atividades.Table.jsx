@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-
+import clsx from 'clsx'
 //* COMPONENTES
 import {
   makeStyles,
@@ -27,69 +27,84 @@ import usePageTable from "../../Context/PageTableContext";
 import useSearch from "../../Context/SearchContext";
 
 //* UTILS
-import { handleDate, permissionEditAtividade } from "../../Utils/dates";
+import {
+  handleDate,
+  permissionEditAtividade,
+  getStatusAtividade
+} from '../../Utils/dates';
 
 const headCells = [
   {
-    id: "ticket",
+    id: 'ticket',
     numeric: false,
     disablePadding: false,
-    label: "# Ticket",
-    sort: true,
+    label: '# Ticket',
+    sort: true
   },
   {
-    id: "date",
+    id: 'date',
     numeric: false,
     disablePadding: false,
-    label: "Data",
-    sort: true,
+    label: 'Data',
+    sort: true
   },
   {
-    id: "técnico",
+    id: 'técnico',
     numeric: false,
     disablePadding: false,
-    label: "Aberto Por",
-    sort: true,
+    label: 'Aberto Por',
+    sort: true
   },
   {
-    id: "cliente",
+    id: 'cliente',
     numeric: false,
     disablePadding: false,
-    label: "Cliente",
-    sort: true,
+    label: 'Cliente',
+    sort: true
   },
   {
-    id: "actions",
+    id: 'actions',
     numeric: false,
     disablePadding: false,
-    label: "Ações",
+    label: 'Ações',
     sort: false,
     align: 'center'
-  },
+  }
 ];
 
 const useStyles = makeStyles((theme) => ({
   table: {
-    minWidth: 750,
+    minWidth: 750
   },
   visuallyHidden: {
     border: 0,
-    clip: "rect(0 0 0 0)",
+    clip: 'rect(0 0 0 0)',
     height: 1,
     margin: -1,
-    overflow: "hidden",
+    overflow: 'hidden',
     padding: 0,
-    position: "absolute",
+    position: 'absolute',
     top: 20,
-    width: 1,
+    width: 1
   },
   loading: {
-    display: "flex",
-    justifyContent: "center",
+    display: 'flex',
+    justifyContent: 'center'
   },
   tablerow: {
-    padding: "10px 15px",
+    padding: '10px 15px'
   },
+  ticket: {
+    width: 10,
+    height: 10,
+    borderRadius: 50,
+    overflow: 'hidden',
+    // background: 'green',
+    border: '1px solid #f9f9f9',
+    float: 'left',
+    marginTop: 5,
+    marginRight: 10
+  }
 }));
 
 export default () => {
@@ -97,10 +112,18 @@ export default () => {
   const { atividades,loading,downloadPDF,loadingPDF } = useAtividades();
   const { search, searchResults, setSearchResults } = useSearch();
   const { order, orderBy, setOrderBy, setOrder } = useOrderTable();
-  const { page, rows, setRows, rowsPerPage, emptyRows } = usePageTable();
+  const {
+    page,
+    rows,
+    setRows,
+    rowsPerPage,
+    emptyRows,
+    setRowsPerPage
+  } = usePageTable();
 
   //& Order e por onde será renderizado as atividades.
   useEffect(() => {
+    setRowsPerPage(25);
     setOrderBy("");
     setOrder("desc");
     setRows(search && search.length > 3 ? searchResults : atividades);
@@ -151,6 +174,12 @@ export default () => {
                         scope="row"
                         padding="default"
                       >
+                        <div
+                          className={classes.ticket}
+                          style={{
+                            backgroundColor: getStatusAtividade(row.date)
+                          }}
+                        ></div>
                         {row.ticket}
                       </TableCell>
                       <TableCell align="left" className={classes.tablerow}>
@@ -163,11 +192,13 @@ export default () => {
                         {row.cliente}
                       </TableCell>
                       <TableCell align="center" className={classes.tablerow}>
+                        <ViewTicket ticket={row.ticket} />
                         {permissionEditAtividade(row.date) ? (
-                          <EditTicket ticket={row.ticket} />
+                          <>
+                            <EditTicket ticket={row.ticket} />
+                          </>
                         ) : (
                           <>
-                            <ViewTicket ticket={row.ticket} />
                             <PdfTicket
                               ticket={row.ticket}
                               handleClick={downloadPDF}

@@ -11,10 +11,13 @@ import Progress from "./Progress";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginRight: '8px',
     color: 'white',
     '& .MuiButton-startIcon': {
       marginRight: 0
+    },
+    '& .MuiButton-label': {
+      margin: 'auto 0',
+      display: 'contents'
     }
   },
   new: {
@@ -27,8 +30,10 @@ const useStyles = makeStyles((theme) => ({
   },
   edit: {
     padding: '5px 0',
-    minWidth: 50,
-    height: 30,
+    minWidth: 36,
+    height: 36,
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
     backgroundColor: theme.palette.button.edit,
     '&:hover': {
       transition: '',
@@ -40,8 +45,9 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 0,
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
-    minWidth: 50,
-    height: 30,
+    borderRight: `0.09rem solid rgba(255, 255, 255, 0.08)`,
+    minWidth: 36,
+    height: 36,
     backgroundColor: theme.palette.button.view,
     '&:hover': {
       transition: '',
@@ -53,8 +59,8 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 0,
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,
-    minWidth: 50,
-    height: 30,
+    minWidth: 36,
+    height: 36,
     backgroundColor: theme.palette.button.pdf,
     '&:hover': {
       transition: '',
@@ -68,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ViewTicket = React.memo(({ ticket }) => {
+const ViewTicket = React.memo(({ ticket, variant }) => {
   const classes = useStyles();
   return (
     <NavLink to={`/atividades/view/${ticket}`}>
