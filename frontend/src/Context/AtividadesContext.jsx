@@ -33,8 +33,8 @@ const AtividadesProvider = ({ children }) => {
 
     (async () => {
       try {
-        const URL = roleID >= 2 ? 'atividades' : 'atividades/clientes';
-        console.log(URL)
+        const URL = roleID === 1 || roleID === 2 ? 'atividades' : 'atividades/clientes';
+        console.log(URL, roleID)
         const resp = await Crud.get(URL);
         const { success, data } = resp.data;
         if (!success) throw resp.data;
@@ -56,7 +56,7 @@ const AtividadesProvider = ({ children }) => {
       render = false;
       Crud.default.cancel('AtividadeContext unmounted');
     };
-  }, []);
+  }, [roleID]);
 
   const downloadPDF = (ticket) => {
     setLoadingPDF(true);
