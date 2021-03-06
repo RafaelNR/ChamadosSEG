@@ -121,9 +121,12 @@ module.exports = {
 				query
 					.whereBetween("date", [data_inicial, data_final])
 					.andWhere("users.id", "=", tecnico)
-			} else if (data_inicial && data_final){
+			} else if (data_inicial && data_final) {
 				query.whereBetween("atividades.date", [data_inicial, data_final])
-			}else if (cliente) {
+
+			} else if(tecnico && cliente) {
+				query.where("clientes.id", "=", cliente).andWhere('users.id','=',tecnico)
+			} else if (cliente) {
 				query.where("clientes.id", "=", cliente);
 			} else if (tecnico) {
 				query.where("users.id", "=", tecnico);

@@ -48,7 +48,7 @@ function getStatusAtividade(date: string): string{
     
     const days = moment(currDate).locale('pt-br').diff(date, 'days');
 
-    if (days <= 5)
+    if (days <= 4)
       return 'green'
     else if (days <= 8)
       return 'yellow'

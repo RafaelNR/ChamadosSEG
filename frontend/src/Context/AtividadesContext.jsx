@@ -33,7 +33,8 @@ const AtividadesProvider = ({ children }) => {
 
     (async () => {
       try {
-        const URL = roleID <= 2 ? 'atividades' : 'atividades/clientes';
+        const URL = roleID >= 2 ? 'atividades' : 'atividades/clientes';
+        console.log(URL)
         const resp = await Crud.get(URL);
         const { success, data } = resp.data;
         if (!success) throw resp.data;
@@ -91,6 +92,10 @@ const AtividadesProvider = ({ children }) => {
       if (!Boolean(Dados.data_inicial) && Boolean(Dados.data_final)) {
           throw 'Data inicial precisa estar preenchida.'
       }
+
+      const resp = await getAtividades(Dados);
+
+      console.log(resp)
       
       setAtividades(await getAtividades(Dados));
 
