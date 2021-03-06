@@ -46,7 +46,7 @@ function getStatusAtividade(date: string): string{
 
   if (!moment(date).isBefore(currDate, 'month')) {
     
-    const days = moment('2021-03-14').locale('pt-br').diff(date, 'days');
+    const days = moment(currDate).locale('pt-br').diff(date, 'days');
 
     if (days <= 5)
       return 'green'
