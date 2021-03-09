@@ -11,6 +11,7 @@ import AtividadesEdit from "../Pages/Atividades/Edit/";
 import AtividadesView from "../Pages/Atividades/View/";
 import Clientes from "../Pages/Clientes/";
 import Categorias from "../Pages/Categorias/";
+import Chamados from "../Pages/Chamados/";
 import Usuarios from "../Pages/Usuarios/";
 import Modelos from "../Pages/Modelos";
 import Perfil from "../Pages/Perfil/";
@@ -51,6 +52,8 @@ function Routes() {
 					<Route path="/atividades/create" exact component={AtividadesCreate} />
 					<Route path="/atividades/edit/:ticket" component={AtividadesEdit} />
 					<Route path="/atividades/view/:ticket" component={AtividadesView} />
+
+					<Route path="/chamados" component={Chamados} />
 
 					<TecnicoRoute path="/relatorios/atividades/my" exact component={RMyAtividades} role_id={roleID} redirect="/relatorios/atividades" />
 

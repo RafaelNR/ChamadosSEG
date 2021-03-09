@@ -2,6 +2,7 @@ const BodyParser = require("body-parser");
 const Helmet = require("helmet");
 const Cors = require("cors");
 const Morgan = require("morgan");
+const moment = require('moment')
 
 module.exports = (App) => {
 	// Helmet
@@ -42,6 +43,7 @@ module.exports = (App) => {
 					"len -",
 					tokens["response-time"](req, res),
 					"ms",
+					moment().locale('pt-br').format('HH:mm:ss')
 				].join(" ");
 			})
 		);

@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { List, Divider } from "@material-ui/core/";
 import { MyListItem as ListItem, ListItemTooltip } from "./ItemMenu";
-import { adminMenu, analistaMenu, tecnicoMenu, defaultMenu } from "../../Store/Pages";
+import { adminMenu, analistaMenu, defaultMenu } from "../../Store/Pages";
 
 import useUser from '../../Hooks/useUser';
 
@@ -24,7 +24,7 @@ const ListItemMenu = ({ open }) => {
           )
         )}
       </List>
-      <List>
+      {/* <List>
         {roleID === 3 &&
           tecnicoMenu.map((menu, index) =>
             !open ? (
@@ -37,7 +37,7 @@ const ListItemMenu = ({ open }) => {
               </Fragment>
             )
           )}
-      </List>
+      </List> */}
       {roleID <= 2 && <Divider />}
       <List>
         {roleID <= 2 &&

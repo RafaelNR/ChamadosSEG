@@ -8,7 +8,8 @@ import {
   CategorySharp,
   GroupSharp,
   ReportSharp,
-  MessageSharp
+  MessageSharp,
+  SpeakerNotesSharp
 } from '@material-ui/icons';
 
 const defaultMenu = [
@@ -23,6 +24,11 @@ const defaultMenu = [
     path: '/atividades'
   },
   {
+    nome: 'Chamados',
+    icon: <SpeakerNotesSharp />,
+    path: '/chamados'
+  },
+  {
     nome: 'Perfil',
     path: '/perfil'
   },
@@ -34,14 +40,6 @@ const defaultMenu = [
     nome: 'Editar Atividade',
     path: '/atividades/edit'
   }
-];
-
-const tecnicoMenu = [
-  // {
-  //   nome: "Relatórios",
-  //   icon: <InsertChartSharp />,
-  //   path: "/relatorios/atividades/my",
-  // },
 ];
 
 const analistaMenu = [
@@ -99,6 +97,10 @@ const Headers = [
     path: '/clientes'
   },
   {
+    nome: 'Chamados',
+    path: '/chamados'
+  },
+  {
     nome: 'Atividades',
     path: '/atividades'
   },
@@ -143,4 +145,4 @@ const Headers = [
   }
 ];
 
-export { adminMenu, analistaMenu, tecnicoMenu, defaultMenu , Headers };
+export { adminMenu, analistaMenu, defaultMenu , Headers };
