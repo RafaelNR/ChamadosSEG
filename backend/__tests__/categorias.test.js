@@ -123,7 +123,7 @@ describe("Testes Categorias", () => {
 				.then((res) => {
 					expect(res.status).toBe(400); // Deve ser;
 					expect(res.body).toHaveProperty("success", false);
-					expect(res.body).toHaveProperty("message", "\"nome\" não pode estar em branco");
+					expect(res.body).toHaveProperty("message", "\"nome\" is not allowed to be empty");
 				});
 		});
 		it("Deve receber um erro ao editar categoria, pois nome está em Branco", async () => {
@@ -138,7 +138,7 @@ describe("Testes Categorias", () => {
 				.then((res) => {
 					expect(res.status).toBe(400); // Deve ser;
 					expect(res.body).toHaveProperty("success", false);
-					expect(res.body).toHaveProperty("message", "\"nome\" não pode estar em branco");
+					expect(res.body).toHaveProperty("message", "\"nome\" is not allowed to be empty");
 				});
 		});
 		it("Deve receber um erro ao editar categoria, pois não tem categoria vinculada", async () => {

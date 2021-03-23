@@ -42,7 +42,7 @@ test("Não deve autenticar sem senha", async () => {
 		.then((res) => {
 			expect(res.status).toBe(400);
 			expect(res.body).toHaveProperty("success", false);
-			expect(res.body).toHaveProperty("message", "\"passwd\" é obrigatório");
+			expect(res.body).toHaveProperty("message", "\"passwd\" is required");
 		});
 });
 
@@ -55,6 +55,6 @@ test("Não deve autenticar sem user", async () => {
 		.then((res) => {
 			expect(res.status).toBe(400);
 			expect(res.body).toHaveProperty("success", false);
-			expect(res.body).toHaveProperty("message", "\"user\" é obrigatório");
+			expect(res.body).toHaveProperty("message", "\"user\" is required");
 		});
 });
