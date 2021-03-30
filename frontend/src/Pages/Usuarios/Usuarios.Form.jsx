@@ -16,6 +16,7 @@ import {
 } from "../../Components/Buttons/Index";
 import TransferItems from "../../Components/ListItens/TransferItens";
 import DialogActions from "../../Components/Dialog/Action"
+import UploadImage from '../../Components/Box/Upload'
 
 //* STORE
 import Fields from "../../Store/UsuariosFields";
@@ -25,6 +26,7 @@ import useClientes, { ClientesProvider } from "../../Context/ClientesContext";
 import useUsuarios from "../../Context/UsuariosContext";
 import useDialog from "../../Context/DialogContext";
 import useMasker from "../../Hooks/useMasker";
+import useUpload  from '../../Context/UploadContext';
 
 const useStyles = makeStyles(() => ({
   dialogLoader: {
@@ -35,7 +37,16 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center'
   },
   dialogContent: {
-    width: '800px'
+    width: '800px',
+    '& img': {
+      minWidth: 150,
+      maxWidth: 200,
+      minHeight: 150,
+      maxHeight: 180,
+      display: 'flex',
+      margin: 'auto',
+      objectFit: 'contain'
+    }
   }
 }));
 
@@ -227,7 +238,7 @@ const FormActivedDisabled = React.memo(({ handleSubmit, values }) => {
 });
 
 const FormClients = React.memo(
-  ({ handleSubmit, changeForm, handleClients, values }) => {
+  ({ handleSubmit, changeForm, handleClients, values, forms }) => {
     const classes = useStyles();
     const { clientes } = useClientes();
     const { loading } = useDialog();
@@ -259,7 +270,8 @@ const FormClients = React.memo(
               />
             </DialogContent>
             <DialogActions>
-              <NavigatorButton clickAction={changeForm} icon="before"/>
+              <NavigatorButton clickAction={changeForm} icon="previous"/>
+              {forms === 3 && <NavigatorButton clickAction={changeForm} icon="next" />}
               <SaveButton />
             </DialogActions>
           </>
@@ -269,10 +281,38 @@ const FormClients = React.memo(
   }
 );
 
+const FormUploadImage = ({ changeForm, values }) => {
+  const classes = useStyles();
+  const { file } = useUpload();
+
+  return (
+    <>
+      <DialogContent dividers className={classes.dialogContent}>
+        <Grid container>
+          <Grid item xs={6}>
+            {
+              values.imagem
+                ? <img src={process.env.REACT_APP_ENDPOINT_IMAGES_USER+values.imagem} title="" />
+                : <img src={file && file.preview ? file.preview : '/static/logo.png'} title="" />
+            }
+          </Grid>
+          <Grid item xs={6}>
+            <UploadImage id={values && values.id}/>
+          </Grid>
+        </Grid>
+      </DialogContent>
+      <DialogActions>
+        <NavigatorButton clickAction={changeForm} icon="previous" />
+      </DialogActions>
+    </>
+  );
+
+}
+
 const FactorForm = (props) => {
-  const [ currForm, setCurrForm ] = useState(props.currForm);
-  const [ nextForm, setNextForm ] = useState("clients");
-  const [ values, setValues ] = useState({});
+  const [currForm, setCurrForm] = useState('');
+  const [forms, setForms] = useState([]);
+  const [values, setValues] = useState({});
   const { usuario, setErrors, handleActions } = useUsuarios();
   const { type, setLoading, setOpen } = useDialog();
   const { Masker } = useMasker();
@@ -280,12 +320,23 @@ const FactorForm = (props) => {
   React.useEffect(() => {
     if (type !== "insert") {
       const newClients =
-        usuario && usuario.clients
+      usuario && usuario.clients
           ? usuario.clients.map((client) => client.id)
           : [];
-      setValues({ ...usuario, clients: newClients });
+          setValues({ ...usuario, clients: newClients });
     }
-  }, [setValues, usuario, type]);
+  }, [usuario]);
+  
+  React.useEffect(() => {
+    if (type !== 'insert') {
+      setCurrForm('update')
+      setForms([props.currForm, 'clientes', 'imagem'])
+    } else {
+      setCurrForm('insert')
+      setForms([props.currForm, 'clientes'])
+    }
+  },[type])
+
 
   const handleSubmit = React.useCallback(
     (event) => {
@@ -293,7 +344,6 @@ const FactorForm = (props) => {
       setLoading(true);
       setErrors(false);
       handleActions(type, values).then((resp) => {
-        console.log(resp)
         if (resp) {
           setOpen(false);
         } else {
@@ -303,12 +353,6 @@ const FactorForm = (props) => {
     },
     [setLoading, handleActions, setOpen, setErrors, type, values]
   );
-
-  const changeForm = React.useCallback(() => {
-    const form = currForm;
-    setCurrForm(nextForm);
-    setNextForm(form);
-  }, [currForm, nextForm]);
 
   const handleClients = React.useCallback(
     (action, ID) => {
@@ -337,7 +381,19 @@ const FactorForm = (props) => {
       });
     },
     [values, Masker],
-  )
+  );
+
+
+  const changeForm = React.useCallback((type=null) => {
+    if (type === 'next') {
+      const index = forms.indexOf(currForm)
+      setCurrForm(forms[index+1])
+    } else {
+      const index = forms.indexOf(currForm);
+      setCurrForm(forms[index-1]);
+    }
+  },[currForm])
+
 
   switch (currForm) {
     case "insert":
@@ -360,17 +416,19 @@ const FactorForm = (props) => {
       );
 
     case "activeddisabled":
-      return (
-        <FormActivedDisabled handleSubmit={handleSubmit} values={values} />
-      );
+      return (<FormActivedDisabled handleSubmit={handleSubmit} values={values} />);
+        
+    case "imagem":
+      return (<FormUploadImage changeForm={changeForm} values={values}/>);
 
-    case "clients":
+    case "clientes":
       return (
         <ClientesProvider>
           <FormClients
             changeForm={changeForm}
             handleSubmit={handleSubmit}
             handleClients={handleClients}
+            forms={forms.length}
             values={values}
           />
         </ClientesProvider>
@@ -378,7 +436,8 @@ const FactorForm = (props) => {
 
     default:
       break;
-  }
-};
+
+  };
+}
 
 export default React.memo(FactorForm);

@@ -39,6 +39,7 @@ Router.use("/perfil", verifyToken, Perfil);
 Router.use("/subcategorias", verifyToken, require("./subcategory"));
 Router.use(["/tasks", "/tarefas"], verifyToken, require("./tasks"));
 Router.use("/usuarios", verifyToken, require("./user"));
+Router.use("/uploads", verifyToken, require("./uploads"));
 
 
 

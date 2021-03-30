@@ -87,7 +87,7 @@ const NavigatorButton = memo(({ clickAction, icon, }) => {
   const classes = useStyles();
   return (
     <Button
-      onClick={() => clickAction()}
+      onClick={() => clickAction(icon)}
       startIcon={
         icon === 'next' ? (
           <NavigateNextSharp className={classes.icon} />

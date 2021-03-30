@@ -88,6 +88,13 @@ const useStyles = makeStyles((theme) => ({
   tablerow: {
     padding: "10px 15px",
   },
+  image: {
+    width: 40,
+    height: 40,
+    backgroundColor: '#999',
+    borderRadius: '50%',
+    objectFit: 'contain'
+  }
 }));
 
 export default function () {
@@ -149,10 +156,13 @@ export default function () {
                         className={classes.tablerow}
                         scope="row"
                         padding="default"
-                      >
-                        <Gravatar alt={row.nome} className={classes.orange} email={row.email}>
-                          {initialsName(row.nome)}
-                        </Gravatar>
+                      > 
+                        {
+                          row.imagem
+                            ? <img className={classes.image}src={process.env.REACT_APP_ENDPOINT_IMAGES_USER+row.imagem} alt={row.imagem} />
+                            : <Gravatar alt={row.nome} className={classes.image} email={row.email} />
+                        }
+                        
                       </TableCell>
                       <TableCell
                         component="th"

@@ -160,7 +160,7 @@ export default function SignInSide() {
               helperText={errors && errors['passwd'] ? errors['passwd'] : null}
               onChange={(e) => handleChange(e)}
               onKeyDownCapture={(e) => removeErrors(e)}
-              autoComplete="senha"
+              label="Senha"
               fullWidth
               required
             />

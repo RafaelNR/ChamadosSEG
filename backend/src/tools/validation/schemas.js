@@ -272,5 +272,21 @@ module.exports = {
 				cliente: Joi.number().integer().positive().min(1).max(99),
 			})
 		);
+	},
+	UploadImage: (Dados) => {
+		return validate(
+			Dados,
+			Joi.object({
+				id: type.number.id,
+				originalname: type.string.nome,
+				encoding: type.string.telefone,
+				mimetype: type.string.telefone,
+				destination: type.string.nome,
+				fieldname: type.string.nome,
+				filename: type.string.nome,
+				path: type.string.nome,
+				size:	type.number.id
+			})
+		);
 	}
 };

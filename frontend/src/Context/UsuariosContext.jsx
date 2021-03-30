@@ -39,7 +39,7 @@ const UsuariosProvider = ({ children }) => {
         setLoading(false);
         handleSnackBar({
           type: 'error',
-          message: error.message
+          message: error && error.message
             ? error.message
             : 'Erro em carregar usuários, por favor tente mais tarde.'
         });
@@ -177,11 +177,36 @@ const UsuariosProvider = ({ children }) => {
     },
   };
 
-  const handleActions =  (type, usuario) => {
-      const fn = Actions[type];
-      setApiLoading(true);
-      return fn(usuario);
-  }
+  const handleActions = useCallback((type, usuario) => {
+    const fn = Actions[type];
+    setApiLoading(true);
+    return fn(usuario);
+  }, []);
+
+
+  const setUserImage = useCallback((Imagem) => {
+    
+    const newUsuarios = usuarios.map((usuario) => {
+      if (usuario.id === Imagem.id) {
+        return {
+          ...usuario,
+          imagem: Imagem.filename,
+        }
+      } else {
+        return usuario;
+      }
+    })
+
+    setUsuarios(newUsuarios);
+    setUsuario(usuario => {
+      return {
+        ...usuario,
+        imagem: Imagem.filename
+      }
+    })
+
+    
+  },[usuarios])
 
   return (
     <UsuariosContext.Provider
@@ -195,6 +220,7 @@ const UsuariosProvider = ({ children }) => {
         apiLoading,
         getUsuario,
         handleActions,
+        setUserImage
       }}
     >
       {children}

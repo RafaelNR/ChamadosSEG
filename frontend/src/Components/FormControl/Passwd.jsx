@@ -35,6 +35,7 @@ export default ({ helperText, ...rest }) => {
       <InputLabel htmlFor="passwd">Senha</InputLabel>
       <OutlinedInput
         id="passwd"
+        label="Senha"
         type={showPasswd ? 'text' : 'password'}
         name="passwd"
         {...rest}
