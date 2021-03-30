@@ -11,15 +11,20 @@ import {
   makeStyles
 } from '@material-ui/core';
 
-import Gravatar from '../../Components/Box/Gravatar';
 import useUser from "../../Hooks/useUser";
+import { UploadImage } from '../../Components/Box/Upload'
+import Gravatar from '../../Components/Box/Gravatar';
 
 const useStyles = makeStyles(() => ({
   root: {},
   avatar: {
-    height: 80,
-    width: 80
-  }
+    width: 'auto',
+    height: 100,
+  },
+  user: {
+    marginTop: '0.8em',
+    marginBottom: 0,
+  },
 }));
 
 const Roles = [
@@ -46,6 +51,7 @@ const Profile = ({values}) => {
     return Role[0].nome;
   }
 
+
   return (
     <Card
       className={classes.root}
@@ -56,14 +62,19 @@ const Profile = ({values}) => {
           display="flex"
           flexDirection="column"
         >
-          <Gravatar
-            email={email}
-            className={classes.avatar}
-          />
+          {
+            values.imagem
+              ? <img className={classes.avatar} src={process.env.REACT_APP_ENDPOINT_IMAGES_USER+values.imagem} alt={values.nome} />
+              : <Gravatar
+                email={email}
+                className={classes.avatar}
+              />
+          }
           <Typography
             color="textPrimary"
             gutterBottom
             variant="h6"
+            className={classes.user}
           >
             {values && values.nome}
           </Typography>
@@ -83,13 +94,7 @@ const Profile = ({values}) => {
       </CardContent>
       <Divider />
       <CardActions>
-        <Button
-          color="primary"
-          fullWidth
-          variant="text"
-        >
-          Alterar Avatar
-        </Button>
+        { values && values.id && <UploadImage type="imagePerfil" id={values.id}/>}
       </CardActions>
     </Card>
   );

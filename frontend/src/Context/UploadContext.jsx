@@ -7,10 +7,14 @@ import React, {
 } from "react";
 import PropTypes from "prop-types";
 
-import * as Api from "../Api/Service";
+import * as Service from '../Service/upload.service'
 import useLoading from "./LoadingContext";
 import useUsuarios from "./UsuariosContext";
 import useSnackBar from "./SnackBarContext";
+
+
+//* HOOK
+import useUser from '../Hooks/useUser'
 
 const UploadContext = createContext({});
 
@@ -18,31 +22,16 @@ const UploadProvider = ({ children }) => {
   const { setLoading } = useLoading();
   const { handleSnackBar } = useSnackBar();
   const { setUserImage } = useUsuarios();
+  const { setNewImagem } = useUser();
   const [file, setFile] = useState({});
   const [files, setFiles] = useState([]);
   const [errors, setErrors] = React.useState(null);
   const [process, setProcess] = React.useState(null);
 
-  const uploadFile = useCallback((uploadedFile) => {
-    const formData = new FormData();
-
+  const uploadImageUser = useCallback((uploadedFile) => {
+    
     if (uploadedFile.file) {
-      formData.append("file", uploadedFile.file, uploadedFile.name, uploadedFile.id);
-      formData.append("id", uploadedFile.id);
-      
-      Api.default.Api.post("/uploads/images/user", formData, {
-        onUploadProgress: (progressEvent) => {
-          
-          let progress = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-            
-          console.log(
-            `A imagem ${uploadedFile.name} está ${progress}% carregada... `
-          );
-              
-        },
-      })
+      Service.uploadImageUser(uploadedFile)
         .then((response) => {
 
           if (response.data.success) {
@@ -71,8 +60,58 @@ const UploadProvider = ({ children }) => {
         
     }
   },[])
+
+  const uploadImagePerfil = useCallback((uploadedFile) => {
     
-  const handleFile = useCallback((File,id) => {
+    if (uploadedFile.file) {
+      Service.uploadImageUser(uploadedFile)
+        .then((response) => {
+
+          if (response.data.success) {
+            setNewImagem(response.data.data.filename)
+            handleSnackBar({
+              type: 'success',
+              message: `A imagem "${uploadedFile.name}" já foi enviada para o servidor!`
+            });
+
+            return response.data.data;
+            
+          }
+        
+          throw `Houve um problema para fazer upload da imagem "${uploadedFile.name}" no servidor`;
+        
+        })
+        .catch((error) => {
+
+          handleSnackBar({
+            type: 'error',
+            message: error 
+              ? error
+              : `Houve um problema para fazer upload da imagem "${uploadedFile.name}" no servidor;`
+            });
+          
+        })
+        
+    }
+  },[])
+
+  const factorUpload = useCallback((type, newFile) => {
+
+    switch (type.toLowerCase()) {
+      case 'imageUser'.toLowerCase():
+        uploadImageUser(newFile)
+        break;
+      case 'imagePerfil'.toLowerCase():
+        uploadImagePerfil(newFile)
+        break;
+    
+      default:
+        break;
+    }
+  
+  },[])
+    
+  const handleFile = useCallback((type,{File,id}) => {
 
     if (File) {
       const reader = new FileReader();
@@ -96,9 +135,8 @@ const UploadProvider = ({ children }) => {
           error: false,
           url: ""
         }
-
         setFile(newFile)
-        uploadFile(newFile)
+        factorUpload(type, newFile);
         // console.log('file setado: ',reader.result);
       };
 
@@ -106,11 +144,11 @@ const UploadProvider = ({ children }) => {
     } else {
       handleSnackBar({
         type: 'error',
-        message: `Erro em carregar a imagem, verifique o tamanho e tamanho da imagem.`
+        message: `Erro em carregar a imagem, verifique o tamanho da imagem.`
       });
     }
 
-  },[uploadFile])
+  },[])
 
   return (
     <UploadContext.Provider
@@ -118,7 +156,6 @@ const UploadProvider = ({ children }) => {
         file,
         errors,
         handleFile,
-        uploadFile,
       }}
     >
       {children}

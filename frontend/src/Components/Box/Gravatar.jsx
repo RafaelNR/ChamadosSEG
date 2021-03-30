@@ -13,12 +13,11 @@ const MyGravatar = (props) => {
       const gravatar = new Gravatar(props.email)
       setSrc(gravatar.getImage())
     }
-  },[props.email, setSrc])
+  },[])
 
   return (
     <Avatar
       src={src}
-      sizes={props.size}
       {...props}
     >
       {src && props.children}

@@ -20,6 +20,7 @@ const useStyles = makeStyles(() => ({
   },
   avatar: {
     cursor: 'pointer',
+    height: 50
   }
 }));
 
@@ -28,20 +29,22 @@ const Perfil = () => {
   const usuario = useUser();
 
   return (
-    <>
+    <RouterLink to="/perfil">
       <Box
         alignItems="center"
         display="flex"
         flexDirection="column"
         p={2}
       >
-        <Gravatar
-          email={usuario.email}
-          className={classes.avatar}
-          component={RouterLink}
-          sizes={40}
-          to="/perfil"
-        />
+        {
+          usuario.imagem
+            ? <img className={classes.avatar} src={process.env.REACT_APP_ENDPOINT_IMAGES_USER+usuario.imagem} alt={usuario.name} />
+            : <Gravatar
+                email={usuario.email}
+                className={classes.avatar}
+              />
+        }
+        
         <Typography
           className={classes.name}
           color="textPrimary"
@@ -57,7 +60,7 @@ const Perfil = () => {
         </Typography> 
       </Box>
       <Divider />
-    </>
+    </RouterLink>
   );
 };
 

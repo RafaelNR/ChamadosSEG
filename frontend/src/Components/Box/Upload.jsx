@@ -12,6 +12,7 @@ import useUpload  from '../../Context/UploadContext';
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%',
+    width: '100%',
     border: '2px dotted #aaa',
     borderRadius: 10,
     display: 'flex',
@@ -35,13 +36,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default ({ id }) => {
+export const UploadImage = ({ type,id }) => {
   const classes = useStyles();
   const { handleFile } = useUpload();
 
   const onDrop = React.useCallback(
     (uploadFile) => {
-      handleFile(uploadFile[0],id)
+      handleFile(type,{File:uploadFile[0],id:id})
     },
     []
   );

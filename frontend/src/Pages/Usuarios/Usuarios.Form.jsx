@@ -16,7 +16,7 @@ import {
 } from "../../Components/Buttons/Index";
 import TransferItems from "../../Components/ListItens/TransferItens";
 import DialogActions from "../../Components/Dialog/Action"
-import UploadImage from '../../Components/Box/Upload'
+import { UploadImage } from '../../Components/Box/Upload'
 
 //* STORE
 import Fields from "../../Store/UsuariosFields";
@@ -297,7 +297,7 @@ const FormUploadImage = ({ changeForm, values }) => {
             }
           </Grid>
           <Grid item xs={6}>
-            <UploadImage id={values && values.id}/>
+            <UploadImage type="ImageUser" id={values && values.id}/>
           </Grid>
         </Grid>
       </DialogContent>

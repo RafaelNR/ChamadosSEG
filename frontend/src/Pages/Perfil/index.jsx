@@ -10,6 +10,9 @@ import ProfileClientes from './ProfileClientes'
 
 import { getPerfil } from '../../Service/user.service';
 
+//* PROVIDER
+import { UploadProvider } from '../../Context/UploadContext'
+
 //* CONTEXT
 import useSnackBar from "../../Context/SnackBarContext";
 import useMenu from '../../Context/MenuContext'
@@ -59,7 +62,7 @@ export default () => {
   },[handleSnackBar,handleDrawerClose])
 
   return (
-    <Container maxWidth="lg" class={classes.root}>
+    <Container maxWidth="lg" className={classes.root}>
       <Grid
         container
         spacing={3}
@@ -70,7 +73,9 @@ export default () => {
           md={6}
           xs={12}
         >
-          <Profile values={values}/>
+          <UploadProvider>
+            <Profile values={values}/>
+          </UploadProvider>
           <ProfileClientes Clientes={values.clients} />
         </Grid>
         <Grid

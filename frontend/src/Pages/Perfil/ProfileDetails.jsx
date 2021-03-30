@@ -86,7 +86,6 @@ export default ({ Dados }) => {
                     name="nome"
                     id="nome"
                     onChange={handleChange}
-                    defaultValue={values.nome}
                     value={values.nome}
                     variant="outlined"
                     error={errors["nome"] ? true : false}
