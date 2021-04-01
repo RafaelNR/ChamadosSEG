@@ -3,14 +3,14 @@ const Email = require('../classes/email')
 const PDF = require('../classes/pdf');
 const { getClientes } = require('../models/Clientes')
 const { getTecnicosByCliente } = require('../models/Tecnicos');
-
+const moment = require('moment')
 
 class CronSendMailAtividades{
 
   constructor(){
     this.config = {
-      //cronTime: '0 0 0 1 * *',
-      cronTime: '0 13 22 1 * *',
+      //cronTime: '0 0 1 1 * *',
+      cronTime: '0 23 11 1 * *',
       start: true,
       onTick: () => {
         this.onTick()
@@ -19,6 +19,9 @@ class CronSendMailAtividades{
       timeZone: 'America/Sao_Paulo',
       runOnInit: false
     }
+    this.currMes = moment(moment().subtract(1, 'month')).format('M');
+    this.currAno = moment().year();
+    this.nameMes = moment(this.currMes).format('MMMM')
   }
 
   start(){
@@ -41,13 +44,14 @@ class CronSendMailAtividades{
       Clientes.map(async Cliente => {
 
         const Tecnicos = await getTecnicosByCliente(Cliente.id);
-        const filename = await this.createdPdf('2','2021', Cliente.id);
+        const filename = await this.createdPdf(this.currMes,this.currAno, Cliente.id);
         
         if(!filename.message){
           this.sendEmail(Cliente.email, Cliente.nome_fantasia, filename,{
-            data_ano: 'Fevereiro/2021',
+            data_ano: `${this.nameMes}/${this.currAno}`,
             tecnicos: Tecnicos,
           })
+          console.log('Email Enviado!')
         }
         
       })
@@ -64,7 +68,7 @@ class CronSendMailAtividades{
   }
 
   sendEmail(clienteEmail,clienteName,filename, dados){
-    const email = new Email();
+    const email = new Email('SEG - Atividades Técnicos');
 
     email.to = clienteEmail
     email.subject = `Relatório Mensal de Atividade - ${clienteName}`;

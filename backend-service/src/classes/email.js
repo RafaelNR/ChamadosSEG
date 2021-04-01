@@ -5,9 +5,9 @@ const Path = require('path');
 const fs = require("fs");
 
 module.exports = class Email {
-	constructor() {
+	constructor(textFrom) {
 		this.message = {
-			from: "rafael.neto.rodrigues@gmail.com", // REMETENTE
+			from: `${textFrom} < ${process.env.EMAIL_USER} >`, // REMETENTE
 			bbc: "rafael.rodrigues@seg.eti.br", // COPIA OCULTA
 		};
 		this.dados = null;

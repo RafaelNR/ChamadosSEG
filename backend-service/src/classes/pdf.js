@@ -75,9 +75,12 @@ module.exports = class PDF {
 			).toFile(
 				this.path,
 				(err, file) => {
-					if (err) return { success: false, error: err };
-					console.log(file)
-					this.Log('success')
+					if (err) {
+						console.log(err)
+						throw new Error(err);
+					}
+					console.log('Sucesso PDF CRIADO', file);
+					this.Log('success');
 					this.clear();
 				}
 			);
@@ -85,6 +88,7 @@ module.exports = class PDF {
 			return this.FileName;
 
 		} catch (error) {
+			console.log('Erro em criar PDF');
 			this.Log("error", error.message ? error.message : error);
 			return error;
 		}

@@ -71,7 +71,10 @@ class Atividades {
 			).toFile(
 				this.path,
 				(err, file) => {
-					if (err) return { success: false, error: err };
+					if (err) {
+						console.log(err)
+						throw new Error(err)
+					}
 
 					console.log(file)
 

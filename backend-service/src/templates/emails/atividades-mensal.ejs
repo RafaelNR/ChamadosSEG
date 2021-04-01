@@ -120,6 +120,12 @@ img.g-img + div {
   }
   .title{
     text-align: center;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
   }
   .content{
     padding: 20px;
@@ -151,7 +157,10 @@ img.g-img + div {
         </tr>
         <tr>
           <td bgcolor="#f1f1f1" class="content">
-            <h2 class="title">Relatório de Atividades Técnicas - <%= data_ano %> </h2>
+            <div class="title">
+              <span>Relatório de Atividades Técnicas - </span>
+              <span style="text-transform: capitalize;"><%= data_ano %></span>
+            </div>
             <p><strong>Segue em anexo o relatório de atividades</strong> do(s) técnico(s) relacionado(s):</p>
             <ul>
               <% tecnicos.map(tecnico => { %>
