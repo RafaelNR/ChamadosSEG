@@ -5,22 +5,45 @@ import {
 
 import Gravatar from '../../Service/gravatar.service';
 
-const MyGravatar = (props) => {
-  const [src, setSrc] = React.useState();
+import { FileIsExist } from '../../Utils/functions'
+
+const MyGravatar = ({ preview=null, imagem=null, email, children,...rest}) => {
+  const [src, setSrc] = React.useState('/static/logo.png');
 
   React.useEffect(() => {
-    if (props.email) {
-      const gravatar = new Gravatar(props.email)
-      setSrc(gravatar.getImage())
+    let render = true;
+   
+    if (preview) {
+      return setSrc(preview)
     }
-  },[])
+
+    (async () => {
+
+      if (imagem && await FileIsExist(imagem)) {
+        return setSrc(process.env.REACT_APP_ENDPOINT_IMAGES_USER+imagem)
+      } else if (email) {
+        const gravatar = new Gravatar(email)
+        const urlImagem = await gravatar.getImage()
+        if (render && urlImagem) return setSrc(urlImagem);
+      }
+
+    })(); 
+
+
+
+
+    return function cleanup() {
+      render = false;
+    };
+
+  },[preview,imagem,email])
 
   return (
     <Avatar
       src={src}
-      {...props}
+      {...rest}
     >
-      {src && props.children}
+      {children}
     </Avatar>
   );
 };

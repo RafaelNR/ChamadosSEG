@@ -18,7 +18,7 @@ import Gravatar from '../../Components/Box/Gravatar';
 const useStyles = makeStyles(() => ({
   root: {},
   avatar: {
-    width: 'auto',
+    width: 100,
     height: 100,
   },
   user: {
@@ -51,52 +51,52 @@ const Profile = ({values}) => {
     return Role[0].nome;
   }
 
-
   return (
-    <Card
-      className={classes.root}
-    >
-      <CardContent>
-        <Box
-          alignItems="center"
-          display="flex"
-          flexDirection="column"
+    <>
+      { values && values.nome &&
+        <Card
+          className={classes.root}
         >
-          {
-            values.imagem
-              ? <img className={classes.avatar} src={process.env.REACT_APP_ENDPOINT_IMAGES_USER+values.imagem} alt={values.nome} />
-              : <Gravatar
+          <CardContent>
+            <Box
+              alignItems="center"
+              display="flex"
+              flexDirection="column"
+            >
+              <Gravatar
+                imagem={values.imagem}
                 email={email}
                 className={classes.avatar}
               />
-          }
-          <Typography
-            color="textPrimary"
-            gutterBottom
-            variant="h6"
-            className={classes.user}
-          >
-            {values && values.nome}
-          </Typography>
-          <Typography
-            color="textSecondary"
-            variant="body1"
-          >
-            { values && values.role_id && getRole() }
-          </Typography>
-          <Typography
-            className={classes.dateText}
-            color="textSecondary"
-            variant="body1"
-          >
-          </Typography>
-        </Box>
-      </CardContent>
-      <Divider />
-      <CardActions>
-        { values && values.id && <UploadImage type="imagePerfil" id={values.id}/>}
-      </CardActions>
-    </Card>
+              <Typography
+                color="textPrimary"
+                gutterBottom
+                variant="h6"
+                className={classes.user}
+              >
+                {values.nome}
+              </Typography>
+              <Typography
+                color="textSecondary"
+                variant="body1"
+              >
+                {values && values.role_id && getRole()}
+              </Typography>
+              <Typography
+                className={classes.dateText}
+                color="textSecondary"
+                variant="body1"
+              >
+              </Typography>
+            </Box>
+          </CardContent>
+          <Divider />
+          <CardActions>
+            {<UploadImage type="imagePerfil" id={values.id} />}
+          </CardActions>
+        </Card>
+      }
+    </>
   );
 };
 

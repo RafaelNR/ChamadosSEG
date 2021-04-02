@@ -89,7 +89,6 @@ export function initialsName(FullName) {
 
 }
 
-
 export function handleHeaderName(Path, Headers) {
   const paths = Path.split('/');
 
@@ -117,8 +116,23 @@ export function handleHeaderName(Path, Headers) {
 
   return Acc[Acc.length - 1];
 
-
-
-
-
 }
+
+
+export const FileIsExist = async (Imagem) => {
+
+  try {
+    const myRequest = new Request(process.env.REACT_APP_ENDPOINT_IMAGES_USER+Imagem);
+    const response = await fetch(myRequest);
+
+    if (response.status === 200 && response.ok) {
+      return response.url
+    }else{
+      return false;
+    }
+
+  } catch (error) {
+    return false;
+  }
+
+}     

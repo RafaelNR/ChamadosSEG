@@ -17,6 +17,7 @@ import {
 import TransferItems from "../../Components/ListItens/TransferItens";
 import DialogActions from "../../Components/Dialog/Action"
 import { UploadImage } from '../../Components/Box/Upload'
+import Gravatar from '../../Components/Box/Gravatar';
 
 //* STORE
 import Fields from "../../Store/UsuariosFields";
@@ -38,15 +39,15 @@ const useStyles = makeStyles(() => ({
   },
   dialogContent: {
     width: '800px',
-    '& img': {
-      minWidth: 150,
-      maxWidth: 200,
-      minHeight: 150,
-      maxHeight: 180,
-      display: 'flex',
-      margin: 'auto',
-      objectFit: 'contain'
-    }
+  },
+  avatar: {
+    minWidth: 150,
+    maxWidth: 200,
+    minHeight: 150,
+    maxHeight: 180,
+    display: 'flex',
+    margin: 'auto',
+    objectFit: 'contain'
   }
 }));
 
@@ -287,23 +288,28 @@ const FormUploadImage = ({ changeForm, values }) => {
 
   return (
     <>
-      <DialogContent dividers className={classes.dialogContent}>
-        <Grid container>
-          <Grid item xs={6}>
-            {
-              values.imagem
-                ? <img src={process.env.REACT_APP_ENDPOINT_IMAGES_USER+values.imagem} title="" />
-                : <img src={file && file.preview ? file.preview : '/static/logo.png'} title="" />
-            }
+      { values &&
+        <>
+        <DialogContent dividers className={classes.dialogContent}>
+          <Grid container>
+            <Grid item xs={6}>
+              <Gravatar
+                preview={file && file.preview}
+                imagem={values.imagem}
+                email={values.email}
+                className={classes.avatar}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <UploadImage type="ImageUser" id={values && values.id}/>
+            </Grid>
           </Grid>
-          <Grid item xs={6}>
-            <UploadImage type="ImageUser" id={values && values.id}/>
-          </Grid>
-        </Grid>
-      </DialogContent>
-      <DialogActions>
-        <NavigatorButton clickAction={changeForm} icon="previous" />
-      </DialogActions>
+        </DialogContent>
+        <DialogActions>
+          <NavigatorButton clickAction={changeForm} icon="previous" />
+        </DialogActions>
+        </>
+      }
     </>
   );
 

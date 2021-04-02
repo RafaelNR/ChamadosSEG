@@ -19,10 +19,6 @@ const Header = () => {
   return (
     <Grid container> 
       <Grid item md={3} className={classes.gridImg}>
-        <img
-          alt="Logo"
-          src="/static/logo.png"
-        />
       </Grid>
     </Grid>
   )

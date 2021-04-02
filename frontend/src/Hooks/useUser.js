@@ -28,6 +28,11 @@ const useUser = () => {
     })
 
   },[])
+
+  const getRoleName = useCallback(() => {
+    const roles = ['', 'Administrador', 'Analistá', 'Técnico',]
+    return roles[roleID];
+  },[roleID])
   
 
   return {
@@ -39,6 +44,7 @@ const useUser = () => {
     imagem,
     setPermission,
     setNewImagem,
+    getRoleName
   };
 };
 

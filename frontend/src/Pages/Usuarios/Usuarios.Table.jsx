@@ -157,12 +157,7 @@ export default function () {
                         scope="row"
                         padding="default"
                       > 
-                        {
-                          row.imagem
-                            ? <img className={classes.image}src={process.env.REACT_APP_ENDPOINT_IMAGES_USER+row.imagem} alt={row.imagem} />
-                            : <Gravatar alt={row.nome} className={classes.image} email={row.email} />
-                        }
-                        
+                        <Gravatar imagem={row.imagem}alt={row.nome} className={classes.image} email={row.email} />
                       </TableCell>
                       <TableCell
                         component="th"
