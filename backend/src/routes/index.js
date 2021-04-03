@@ -24,9 +24,6 @@ Router.get("/logout", (req, res) => {
 	});
 });
 
-
-
-
 // Essas rotas requerem token;
 Router.use("/atividades", verifyToken, require("./atividades"));
 Router.use("/categorias", verifyToken, require("./category"));

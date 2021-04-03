@@ -1,0 +1,25 @@
+<div class="box infos">
+  <div class="title">
+    Descrição das Atividades
+  </div>
+
+
+  <% Infos.map( info => {%>
+
+
+  <div class="row info">
+    <div class="col-4 dados">
+      <span class="dado"><strong>Ticket:</strong> <%= info.info_ticket %></span>
+      <span class="dado"><strong>Categoria:</strong> <%= info.categoria %></span>
+      <span class="dado"><strong>Registrado por:</strong> </span> <span class="sub-dado"><%= info['técnico'] %> </span>
+    </div>
+    <div class="col-8 descricao">
+      <div class="title">Descrição:</div>
+      <span><%= info.descricao %></span>
+    </div>
+  </div>
+
+  <% }) %>
+
+
+</div>

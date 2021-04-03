@@ -8,7 +8,7 @@ const Access = require("./middlewares/access");
 const App = Express();
 App.use(Helmet());
 App.use('/tmp', Express.static("tmp"));
-App.use('/static',Express.static("static"));
+App.use('/static', Express.static("static"));
 
 App.use(function (req, res, next) {
   res.setHeader(
@@ -25,6 +25,7 @@ const whiteList = [
 	process.env.URL_BACKEND,
 	process.env.URL_FRONTEND,
 ];
+
 App.use(
 	Cors({
 		origin: whiteList,
@@ -33,10 +34,11 @@ App.use(
 		optionsSuccessStatus: 204,
 	})
 );
+
 // BodyParser
 App.use(BodyParser.urlencoded({ extended: true }));
 App.use(BodyParser.json());
-App.use(Access.Purchase);
+//App.use(Access.Purchase);
 
 
 App.use(Routes);

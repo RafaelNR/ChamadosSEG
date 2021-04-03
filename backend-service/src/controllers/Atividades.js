@@ -1,10 +1,8 @@
 const { handleDataInfo, dateFormat, getNomeMes } = require('../utils/handleData');
-const PDF = require('html-pdf');
 const Model = require("../models/Atividades");
 const Clientes = require("../models/Clientes");
 const Tecnicos = require("../models/Tecnicos");
 const View = require("../views/Atividades.pdf.view");
-const Path = require("path");
 const LogPdf = require("../classes/logs_pdf");
 
 class Atividades {
@@ -20,24 +18,9 @@ class Atividades {
 		this.FileName = null;
 		this.linkRelativo = null;
 		this.linkAbsoluto = null;
-		this.config = {
-			format: "A4",
-			border: {
-				// top: "20px",
-				// right: "20px",
-				// bottom: "20px",
-				// left: "20px",
-			},
-			header: {
-				height: "30mm",
-			},
-			footer: {
-				height: "30mm",
-			},
-		};
 	}
 
-	async createPDF(req, res) {
+	async render(req, res, next) {
 		try {
 			this.userId = req.query.user_id;
 			this.handleErrors(req.query);
@@ -56,44 +39,11 @@ class Atividades {
 				ano: this.Ano,
 			});
 
-			this.path = Path.join(
-				__dirname,
-				"..",
-				"..",
-				"tmp",
-				"uploads",
-				`${this.FileName}.pdf`
-			);
+			return res.send(await view.render());
 
-			PDF.create(
-				await view.render(),
-				this.config
-			).toFile(
-				this.path,
-				(err, file) => {
-					if (err) {
-						console.log(err)
-						throw new Error(err)
-					}
-
-					console.log(file)
-
-					this.linkRelativo = `/tmp/uploads/${this.FileName}.pdf`;
-					this.linkAbsoluto = `${process.env.URL_SERVICE}/tmp/uploads/${this.FileName}.pdf`;
-
-					this.Log('success')
-					this.clear();
-					return res.status(200).json({
-						success: true,
-						path: this.linkRelativo,
-						link: this.linkAbsoluto
-					});
-				}
-
-			);
 		} catch (error) {
-			this.Log("error", error.message ? error.message : error);
-			return res.status(404).send(error.message ? error.message : error);
+			console.log(error)
+			next(error);
 		}
 	}
 
@@ -156,7 +106,6 @@ class Atividades {
 	}
 
 	handleErrors(Query) {
-		console.log(Query)
 		this.DataInicial = Query.data_inicial;
 		this.DataFinal = Query.data_final;
 		this.Mes = Query.mes;
