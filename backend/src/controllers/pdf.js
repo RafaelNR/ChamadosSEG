@@ -53,7 +53,7 @@ const Atividades = async (req,res) => {
 			if (resp.data.success) {
 				Result.ok(200, resp.data);
 			} else {
-        throw resp.response.data;
+        throw resp.data;
 			}
 		} else {
 			throw "Erro em gerar PDF.";

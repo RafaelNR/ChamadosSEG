@@ -19,26 +19,27 @@ App.use(function (req, res, next) {
 });
 
 //CORS
-const whiteList = [
-	"http://localhost:3000",
-	"http://localhost",
-	process.env.URL_BACKEND,
-	process.env.URL_FRONTEND,
-];
+App.use(Cors());
+// const whiteList = [
+// 	"http://localhost:3000",
+// 	"http://localhost",
+// 	process.env.URL_BACKEND,
+// 	process.env.URL_FRONTEND,
+// ];
 
-App.use(
-	Cors({
-		origin: whiteList,
-		methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-		preflightContinue: false,
-		optionsSuccessStatus: 204,
-	})
-);
+// App.use(
+// 	Cors({
+// 		origin: whiteList,
+// 		methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+// 		preflightContinue: false,
+// 		optionsSuccessStatus: 204,
+// 	})
+// );
 
 // BodyParser
 App.use(BodyParser.urlencoded({ extended: true }));
 App.use(BodyParser.json());
-//App.use(Access.Purchase);
+App.use(Access.Purchase);
 
 
 App.use(Routes);
