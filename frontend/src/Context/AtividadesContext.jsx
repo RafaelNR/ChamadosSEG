@@ -2,6 +2,7 @@ import React, {
   createContext,
   useState,
   useEffect,
+  useCallback,
   useContext,
 } from "react";
 import PropTypes from "prop-types";
@@ -34,7 +35,6 @@ const AtividadesProvider = ({ children }) => {
     (async () => {
       try {
         const URL = roleID === 1 || roleID === 2 ? 'atividades' : 'atividades/clientes';
-        console.log(URL, roleID)
         const resp = await Crud.get(URL);
         const { success, data } = resp.data;
         if (!success) throw resp.data;
@@ -58,12 +58,14 @@ const AtividadesProvider = ({ children }) => {
     };
   }, [roleID]);
 
-  const downloadPDF = (ticket) => {
+  const downloadPDF = useCallback((ticket) => {
+    console.log(ticket)
     setLoadingPDF(true);
     AtividadePDF(ticket)
       .then((Dados) => {
+        console.log(Dados)
         if (Dados.success) {
-          window.open(Dados.link);
+          window.open(Dados.data.link);
         }
       })
       .catch((error) => {
@@ -75,9 +77,9 @@ const AtividadesProvider = ({ children }) => {
       .finally(() => {
         setLoadingPDF(false);
       });
-  }
+  },[])
 
-  const filterAtividades = async (Dados) => {
+  const filterAtividades = useCallback(async (Dados) => {
     try {
 
       if (Object.keys(Dados).length === 0) {
@@ -103,7 +105,7 @@ const AtividadesProvider = ({ children }) => {
       console.log(error)
     }
 
-  };
+  },[])
 
   return (
     <AtividadesContext.Provider

@@ -21,11 +21,13 @@ const Atividade = async (req,res) => {
 
 		const resp = await axios.get(`/pdf/atividade/${ticket}?user_id=${req.userId}`);
 
-		if (resp.data.success) {
-			return res.status(200).json(resp.data);
+		if (resp.status === 200 && resp.data.success) {
+			console.log("PDF Gerado: ", resp.data);
+			Result.ok(200, resp.data);
+		} else {
+			throw "Erro em gerar o PDF.";	
 		}
 
-		throw "Erro em gerar PDF.";
 	} catch (error) {
 		Result.fail(400, error.response && error.response.data ? error.response.data : error);
 	}
@@ -48,15 +50,18 @@ const Atividades = async (req,res) => {
 		
 		
 		if (URL) {
+
 			const resp = await axios.get(`${URL}&user_id=${req.userId}`);
 
-			if (resp.data.success) {
+			if (resp.status === 200 && resp.data.success) {
+				console.log("PDF Gerado: ", resp.data);
 				Result.ok(200, resp.data);
 			} else {
-        throw resp.data;
+				throw "Erro em gerar o PDF.";
 			}
+
 		} else {
-			throw "Erro em gerar PDF.";
+			throw "URL não encontrada, pdf não foi gerado.";
 		}
 
 		
@@ -71,7 +76,6 @@ const Atividades = async (req,res) => {
 	return res.status(Result.status).json(Result.res);
 
 }
-
 
 const tools = {
 
