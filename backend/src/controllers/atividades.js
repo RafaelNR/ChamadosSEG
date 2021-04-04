@@ -28,8 +28,8 @@ const index = async (req, res) => {
 };
 
 const findAllByMy = async (req, res) => {
+	const user_id = req.userId;
 	try {
-		const user_id = Validate.UserID(req.userId);
 		const Dados = await Model.findByUser_id(user_id);
 		Result.ok(200,Dados);
 	} catch (error) {
@@ -206,7 +206,9 @@ const tools = {
 		// if(Atividade.user_id !== UserID) 
 		// 	throw "Você ";
 
-		if(!Data.compareDateMaxDays(Atividade.created_at, 7)){
+		console.log(Data.compareDateMaxDays(Atividade.date, 10))
+
+		if(!Data.compareDateMaxDays(Atividade.date, 10)){
 			throw "Período para editar atividade ultrapassado.";
 		}
 

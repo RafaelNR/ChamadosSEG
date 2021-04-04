@@ -39,7 +39,7 @@ const defaultMenu = [
   {
     nome: 'Editar Atividade',
     path: '/atividades/edit'
-  }
+  },
 ];
 
 const analistaMenu = [
@@ -58,11 +58,6 @@ const analistaMenu = [
     icon: <GroupSharp />,
     path: '/usuarios'
   },
-  {
-    nome: 'Log de Usuários',
-    icon: <ReportSharp />,
-    path: '/logs'
-  }
 ];
 
 const adminMenu = [
@@ -75,6 +70,11 @@ const adminMenu = [
     nome: 'Modelos',
     icon: <MessageSharp />,
     path: '/modelos'
+  },
+  {
+    nome: 'Log de Usuários',
+    icon: <ReportSharp />,
+    path: '/logs'
   }
   // {
   // 	nome: "Configurações",

@@ -36,7 +36,7 @@ export default ({ Clientes }) => {
       {
         Clientes && Clientes.map(Cliente => {
           return (
-            <Accordion expanded={expanded === `${Cliente.nome_fantasia}`} onChange={handleChange(`${Cliente.nome_fantasia}`)}>
+            <Accordion key={Cliente.id} expanded={expanded === `${Cliente.nome_fantasia}`} onChange={handleChange(`${Cliente.nome_fantasia}`)}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1bh-content"

@@ -17,9 +17,10 @@ const findOne = async (ID) => {
 			"telefone",
 			"actived",
 			"last_acess",
+			"imagem",
 			"role_id",
 			"created_at",
-			"updated_at"
+			"updated_at",
 		)
 		.from("users")
 		.where("id", "=", ID)
@@ -46,11 +47,13 @@ module.exports = {
 				"telefone",
 				"actived",
 				"last_acess",
+				"imagem",
 				"role_id",
 				"created_at",
 				"updated_at"
 			)
-			.from("users").orderBy('nome')
+			.from("users")
+			.orderBy("nome");
 	},
 
 	/**
@@ -146,5 +149,12 @@ module.exports = {
 						.from("users")
 						.where("id", "=", ID)
 						.then((e) => e[0].id);
+	},
+
+	updateImage: async (Dados) => {
+		return await knex("users")
+			.where({ id: Dados.id })
+			.update({ imagem: Dados.filename})
 	}
+
 };

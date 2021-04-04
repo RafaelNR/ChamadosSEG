@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const Model = require("../models/login");
+const User = require("../models/user");
 const Validation = require("../tools/validation/schemas");
 const { Compare } = require("../tools/bcryp");
 const Result =  require('../tools/result');
@@ -52,10 +53,10 @@ module.exports = async (req, res) => {
 			}
 		);
 
-		Result.ok(200,{
+		Result.ok(200, {
 			auth: true,
 			token: newToken,
-			user: await Model.getDataAfterLogin(req.userId ? req.userId : dbUser.id)
+			user: await User.findOne(req.userId ? req.userId : dbUser.id),
 		});
 	} catch (error) {
 		console.log(error)

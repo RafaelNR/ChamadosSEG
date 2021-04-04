@@ -23,6 +23,7 @@ const AuthProvider = ({ children }) => {
   const [success, setSuccess] = useState(false);
 
   const handleLogout = useCallback(() => {
+    console.log('aqui')
     setUser(null);
     setToken(null);
     removeData('token');

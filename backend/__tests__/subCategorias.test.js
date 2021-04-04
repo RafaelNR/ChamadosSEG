@@ -85,7 +85,7 @@ describe("Testes Sub-Categorias", () => {
 				.then((res) => {
 					expect(res.status).toBe(400);
 					expect(res.body).toHaveProperty("success", false);
-					expect(res.body).toHaveProperty("message", "SubCategoria não existe.");
+					expect(res.body).toHaveProperty("message", "Sub-Categoria não existe.");
 				});
 		});
 		
@@ -100,7 +100,7 @@ describe("Testes Sub-Categorias", () => {
 				.then((res) => {
 					expect(res.status).toBe(400); // Deve ser;
 					expect(res.body).toHaveProperty("success", false);
-					expect(res.body).toHaveProperty("message", "SubCategoria não existe.");
+					expect(res.body).toHaveProperty("message", "Sub-Categoria não existe.");
 				});
 		});
 
@@ -115,7 +115,7 @@ describe("Testes Sub-Categorias", () => {
 					console.log(res.body)
 					expect(res.status).toBe(400); // Deve ser;
 					expect(res.body).toHaveProperty("success", false);
-					expect(res.body).toHaveProperty("message","\"nome\" não pode estar em branco")
+					expect(res.body).toHaveProperty("message","\"nome\" is not allowed to be empty")
 				});
 		});
 	})

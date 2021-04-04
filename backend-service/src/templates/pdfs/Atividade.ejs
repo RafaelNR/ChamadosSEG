@@ -4,140 +4,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="/static/bootstrap.css">
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto">
 
   <title> <%= ticket %> </title>
 </head>
-<style>
-  :root {
-    --cor-primaria: #2B5077;
-    --cor-secundaria: #929297;
-    --cor-teciaria: #FF7F00;
-    --cor-boder: #8CA0B6;
-  }
-
-  body {
-    font-size: 12px;
-    background-color: rgb(82, 86, 89);
-  }
-
-  .container {
-  }
-
-  h3{
-    color: #2B5077 !important;
-    text-align: center;
-    margin-bottom: 20px !important;
-  }
-
-  .cliente {
-    height: 180px;
-  }
-
-  .cliente .border{
-    border: 1px solid #8CA0B6;
-    height: 140px;
-    border-radius: 0 0 5px 5px;
-  }
-
-  .cliente .title{
-    font-size: 20px;
-    color: white !important;
-    background: #2B5077 !important;
-    padding: 5px;
-    border-radius: 5px 5px 0 0;
-  }
-
-  .cliente .imagem{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 10px;
-  }
-
-  .cliente .imagem img {
-    width: 115px;    
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .cliente .dados {
-    display: grid;
-    padding: 10px 20px;
-    margin-top: 10px;
-  }
-
-  .cliente .dados>span {
-    display: block;
-  }
-
-  .atividade {
-    height: 150px;
-    margin-top: 25px;
-    border-radius: 5px;
-  }
-
-  .atividade .title {
-    font-size: 20px;
-    color: white !important;
-    background: #2B5077 !important;
-    padding: 5px;
-    border-radius: 5px 5px 0 0;
-  }
-
-  .atividade .dados {
-    padding: 10px 20px;
-    border: 1px solid #8CA0B6;
-    border-radius: 0 0 5px 5px;
-  }
-
-  .atividade .dados>span {
-    display: block;
-  }
-
-  .infos {
-    margin-top: 25px;
-  }
-  .infos > .title {
-    font-size: 20px;
-    padding: 5px;
-    color: #2B5077 !important;
-    text-align: center;
-  }
-
-  .infos .info {
-    min-height: 92px;
-    padding: 10px;
-    border: 1px solid #8CA0B6;
-    margin-top: 10px;
-    border-radius: 5px;
-  }
-
-  .infos .info .dados>span {
-    display: block;
-  }
-
-  .infos .info .dados .dado {}
-
-  .infos .info .descricao .title {
-    font-size: 15px;
-    color: #FF7F00 !important;
-    font-weight: bold;
-  }
-
-</style>
-
 
 <body>
-  <div id="pageHeader"><img src="http://cisru.esy.es/include/img/header.jpg" /></div>
 
-  <div class="container">
+  <div id="header">
+    <img src="/static/header.jpg">
+  </div>
 
-    <h3>Relatório de Serviço Técnico </h3>
+  <div class="container-xl">
 
-    <%- include('Cliente', {
+    <div class="title">Relatório de Serviço Técnico ffgdfgd</div>
+
+    <%- include('../components/Cliente', {
       nome_fantasia: Atividade.cliente.nome_fantasia,
       cnpj_cpf: Atividade.cliente.cnpj_cpf,
       n_contrato: Atividade.cliente.n_contrato,
@@ -146,51 +31,24 @@
       email: Atividade.cliente.email,
     }) %>
 
-    <div class="atividade">
+    <%- include('../components/Atividade', {
+      data: Atividade.new_date,
+      ticket: Atividade.ticket,
+      tecnico: Atividade['técnico'],
+      created_at: Atividade.new_created_at,
+      updated_at: Atividade.new_updated_at,
+    }) %>
 
-      <div class="title">
-        Dados da Atividade
-      </div>
+    <%- include('../components/Infos', {
+      Infos: Atividade.infos
+    }) %>
 
-      <div class="dados">
-        <span><strong>Data:</strong> <%= Atividade.new_date %> </span>
-        <span><strong>Ticket:</strong> <%= Atividade.ticket %> </span>
-        <span><strong>Criado por:</strong> <%= Atividade['técnico'] %></span>
-        <span><strong>Data de abertura:</strong> <%= Atividade.new_created_at %></span>
-        <span><strong>Ultima alteração:</strong> <%= Atividade.new_updated_at %></span>
-      </div>
+  </div>
 
-    </div>
-
-    <div class="box infos">
-      <div class="title">
-        Descrição das Atividades
-      </div>
-
-
-      <% Atividade.infos.map( info => {%>
-
-
-      <div class="info">
-        <div class="col-xs-4 dados">
-          <span class="dado"><strong>Ticket:</strong> <%= info.info_ticket %></span>
-          <span class="dado"><strong>Categoria:</strong> <%= info.categoria %></span>
-          <span class="dado"><strong>Registrado por:</strong> </span> <span class="sub-dado"><%= info['técnico'] %> </span>
-        </div>
-        <div class="col-xs-8 descricao">
-          <div class="title">Descrição:</div>
-          <span><%= info.descricao %></span>
-        </div>
-      </div>
-
-      <% }) %>
-
-
-    </div>
+  <div id="footer">
+    <img src="/static/footer.jpg">
   </div>
   
-  
-  <div id="pageFooter"><img src="http://cisru.esy.es/include/img/footer.jpg" /></div>
   <!-- <> <%= JSON.stringify(Atividade) %> </> -->
 </body>
 

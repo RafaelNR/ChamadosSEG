@@ -11,7 +11,6 @@ import {
 } from "@material-ui/core";
 import ListItensMenu from "../Components/Menu/ItensMenu";
 import HeaderMenu from '../Components/Header/Drawer';
-import Perfil from './Perfil'
 import ChevronRightIcon from "@material-ui/icons/ChevronRightSharp";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeftSharp";
 
@@ -110,9 +109,6 @@ const MiniDrawer = () => {
         </IconButton>
       </div>
       <Divider />
-      {
-        open && <Perfil />
-      }
       <ListItensMenu open={open} />
     </Drawer>
   );

@@ -1,0 +1,32 @@
+<div class="infos">
+
+  <div class="title">
+    Atividades Realizadas
+  </div>
+
+  <div class="border">
+    <table class="table table-striped table-bordered">
+      <thead style="background-color: #8CA0B6 !important;">
+        <tr>
+          <th scope="col">Data</th>
+          <th scope="col">Técnico</th>
+          <th scope="col">Categoria</th>
+          <th scope="col">Descrição</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <% Infos.map(info => {%>
+
+          <tr>
+            <th scope="row"><%- info.date_format %></th>
+            <td><%- info.tecnico %></td>
+            <td><%- info.categoria %></td>
+            <td><%- info.descricao %></td>
+          </tr>
+
+        <% }) %>
+
+      </tbody>
+    </table>
+  </div>

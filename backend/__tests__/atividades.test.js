@@ -99,15 +99,17 @@ describe("itens de Atividades", () => {
 					}
 				});
 		});
-		it("Deve inserir uma nova atividade", async () => {
+		it("Deve inserir uma nova atividade, pode acontecer de dar erro.", async () => {
+			const date = moment().subtract(Math.floor(Math.random() * (10 - 1 + 1)) + 1, 'days').format('YYYY-MM-DD');
 			return await request
 				.post("/atividades")
 				.send({
 					cliente_id: 1,
-					date: moment(new Date()).format('YYYY-MM-DD') // Data de hoje
+					date
 				})
 				.set("access_token", Token())
 				.then((res) => {
+					console.log(res.body)
 					expect(res.status).toBe(201);
 					expect(res.body).toHaveProperty("success", true);
 					expect(res.body).toHaveProperty("success", true);
@@ -134,7 +136,7 @@ describe("itens de Atividades", () => {
 				})
 				.set("access_token", Token())
 				.then((res) => {
-					expect(res.status).toBe(204);
+					expect(res.status).toBe(200);
 				});
 		})
 	});
@@ -169,7 +171,7 @@ describe("itens de Atividades", () => {
 					expect(res.body).toHaveProperty("message", "Cliente não existe!");
 				});
 		});
-		it("Deve deve receber um erros, pois está inserindo atividade fora do período de 15 dias.", async () => {
+		it("Deve deve receber um erros, pois está inserindo atividade fora do período de 10 dias.", async () => {
 			return await request
 				.post("/atividades")
 				.send({

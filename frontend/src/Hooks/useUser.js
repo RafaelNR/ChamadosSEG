@@ -1,21 +1,38 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import useLocalStore from "./useLocalStore";
 
 const useUser = () => {
   const [nome, setNome] = useState("");
   const [user, setUser] = useState("");
-  const [email, SetEmail] = useState("");
+  const [email, setEmail] = useState("");
+  const [imagem, setImagem] = useState("");
   const [roleID, setRoleID] = useState(null)
   const [permission, setPermission] = useState(null);
-  const { getData } = useLocalStore();
+  const { getData,setData } = useLocalStore();
 
   useEffect(() => {
     const Dados = getData("user");
     setNome(Dados.nome);
     setUser(Dados.user);
     setRoleID(Dados.role_id);
-    SetEmail(Dados.email);
+    setEmail(Dados.email);
+    setImagem(Dados.imagem);
   }, [setNome, setUser, getData]);
+
+  const setNewImagem = useCallback((imagem) => {
+    const User = getData("user");
+    console.log(User,imagem)
+    setData('user', {
+      ...User,
+      imagem,
+    })
+
+  },[])
+
+  const getRoleName = useCallback(() => {
+    const roles = ['', 'Administrador', 'Analistá', 'Técnico',]
+    return roles[roleID];
+  },[roleID])
   
 
   return {
@@ -24,7 +41,10 @@ const useUser = () => {
     email,
     permission,
     roleID,
+    imagem,
     setPermission,
+    setNewImagem,
+    getRoleName
   };
 };
 

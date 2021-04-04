@@ -4,19 +4,17 @@ const Helmet = require("helmet");
 const BodyParser = require("body-parser");
 const Routes = require("./routes/index");
 const Access = require("./middlewares/access");
+const FilesStatics = require("./middlewares/files");
+
 
 const App = Express();
-App.use(Helmet());
-App.use('/tmp', Express.static("tmp"));
-App.use('/static',Express.static("static"));
 
-App.use(function (req, res, next) {
-  res.setHeader(
-		"Content-Security-Policy-Report-Only",
-		"default-src 'self'; font-src 'self'; img-src 'self' http://seg.eti.br; script-src 'self'; style-src 'self'; frame-src 'self'"
-	);
-	next();
-});
+// Desabilitado politica de contéudo;
+App.use(
+  Helmet({
+    contentSecurityPolicy: false,
+  })
+);
 
 //CORS
 const whiteList = [
@@ -25,6 +23,7 @@ const whiteList = [
 	process.env.URL_BACKEND,
 	process.env.URL_FRONTEND,
 ];
+
 App.use(
 	Cors({
 		origin: whiteList,
@@ -33,9 +32,11 @@ App.use(
 		optionsSuccessStatus: 204,
 	})
 );
+
 // BodyParser
 App.use(BodyParser.urlencoded({ extended: true }));
 App.use(BodyParser.json());
+FilesStatics(App, Express);
 App.use(Access.Purchase);
 
 

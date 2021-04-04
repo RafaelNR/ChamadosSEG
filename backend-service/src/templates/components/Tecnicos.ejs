@@ -1,0 +1,19 @@
+<div class="tecnicos">
+
+  <div class="title">
+    Técnicos 
+  </div>
+
+  <div class="row border">
+
+    <% Tecnicos.map( tecnico => {%>
+
+      <div class="col-6">
+        <span><strong>Técnico:</strong> <%- tecnico.nome %></span>
+      </div>
+
+    <% }) %>
+
+  </div>
+
+</div>

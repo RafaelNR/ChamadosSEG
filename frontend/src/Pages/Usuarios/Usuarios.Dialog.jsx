@@ -3,6 +3,7 @@ import { Dialog as MyDialog } from "@material-ui/core/";
 import DialogTitle from "../../Components/Dialog/HeadDialog";
 import FactorForm from "./Usuarios.Form";
 import useDialog from "../../Context/DialogContext";
+import { UploadProvider }  from '../../Context/UploadContext';
 
 const Dialog = () => {
   const { type, open, closeDialog } = useDialog();
@@ -44,9 +45,11 @@ const Dialog = () => {
   }, [type]);
 
   return open && type ? (
-    <MyDialog onClose={closeDialog} open={open} maxWidth="md" scroll="body">
-      {dialogFactory()}
-    </MyDialog>
+    <UploadProvider>
+      <MyDialog onClose={closeDialog} open={open} maxWidth="md" scroll="body">
+        {dialogFactory()}
+      </MyDialog>
+    </UploadProvider>
   ) : null;
 };
 

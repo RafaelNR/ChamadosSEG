@@ -4,11 +4,11 @@
     Dados do Cliente
   </div>
 
-  <div class="border">
-    <div class="col-xs-3 imagem">
-      <img src="http://localhost:3001/static/<%= nome_fantasia.toLowerCase().replace('/samu','') %>.png" />
+  <div class="row border">
+    <div class="col imagem">
+      <img src="/static/<%= nome_fantasia.toLowerCase().replace('/samu','') %>.png" />
     </div>
-    <div class="col-xs-9 dados">
+    <div class="col-9 dados">
       <span><strong>Nome Fantasia:</strong> <%= nome_fantasia %></span>
       <span><strong>CNPJ/CPF:</strong> <%= cnpj_cpf %></span>
       <span><strong>Nº Contrato:</strong> <%= n_contrato %></span>

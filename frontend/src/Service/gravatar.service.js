@@ -16,10 +16,21 @@ class Gravatar {
     this.hash = md5(this.email);
   }
 
-  getImage() {
+  async getImage() {
     this.parserEmail()
     this.parserMd5();
-    return this.url + this.hash;
+    return await this.fetchImage(this.url + this.hash + '?d=404');
+  }
+
+  async fetchImage(Imagem) {
+    const myRequest = new Request(Imagem);
+    const response = await fetch(myRequest);
+
+    if (response.status === 200) {
+      return response.url
+    }else{
+      return false;
+    }
   }
 
 }
