@@ -7,14 +7,14 @@ module.exports = (App, Express) => {
 	App.use(
 		"/static",
 		Express.static(
-			pahtImages
+			pahtStatic
 		)
 	);
 
   App.use(
 		"/tmp/uploads",
 		Express.static(
-			pahtImages,
+			pathUploads,
 			{
 				extensions: ["pdf"],
 			}

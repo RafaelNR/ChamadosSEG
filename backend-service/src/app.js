@@ -4,12 +4,12 @@ const Helmet = require("helmet");
 const BodyParser = require("body-parser");
 const Routes = require("./routes/index");
 const Access = require("./middlewares/access");
-const FilesStatics = require("../middlewares/files");
+const FilesStatics = require("./middlewares/files");
 
 
 const App = Express();
 App.use(Helmet());
-FilesStatics(App, express);
+FilesStatics(App, Express);
 
 App.use(function (req, res, next) {
   res.setHeader(
