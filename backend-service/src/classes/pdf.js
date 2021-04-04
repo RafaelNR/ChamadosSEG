@@ -28,6 +28,7 @@ module.exports = class PDF {
 				"--disable-setuid-sandbox",
 				"--disable-dev-shm-usage",
 			],
+			ignoreDefaultArgs: ["--disable-extensions"],
 			headless: true,
 		});
 

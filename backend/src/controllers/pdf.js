@@ -25,11 +25,11 @@ const Atividade = async (req,res) => {
 			console.log("PDF Gerado: ", resp.data);
 			Result.ok(200, resp.data);
 		} else {
-			throw "Erro em gerar o PDF.";	
+			throw resp.data.message ? resp.data.message : "Erro em gerar o PDF.";	
 		}
 
 	} catch (error) {
-		Result.fail(400, error.response && error.response.data ? error.response.data : error);
+		Result.fail(404, error);
 	}
 
 	Result.registerLog(req.userId, "PDF", "Atividade");
@@ -57,7 +57,7 @@ const Atividades = async (req,res) => {
 				console.log("PDF Gerado: ", resp.data);
 				Result.ok(200, resp.data);
 			} else {
-				throw "Erro em gerar o PDF.";
+				throw resp.data.message ? resp.data.message : "Erro em gerar o PDF.";	
 			}
 
 		} else {
@@ -66,10 +66,7 @@ const Atividades = async (req,res) => {
 
 		
 	} catch (error) {
-		Result.fail(
-			400,
-			error.response && error.response.data ? error.response.data : error
-		);
+		Result.fail(404,error);
 	}
 
 	Result.registerLog(req.userId, "PDF", "Atividade");

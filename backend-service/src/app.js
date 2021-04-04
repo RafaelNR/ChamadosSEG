@@ -4,11 +4,12 @@ const Helmet = require("helmet");
 const BodyParser = require("body-parser");
 const Routes = require("./routes/index");
 const Access = require("./middlewares/access");
+const FilesStatics = require("../middlewares/files");
+
 
 const App = Express();
 App.use(Helmet());
-App.use('/tmp', Express.static("tmp"));
-App.use('/static', Express.static("static"));
+FilesStatics(App, express);
 
 App.use(function (req, res, next) {
   res.setHeader(
@@ -19,22 +20,21 @@ App.use(function (req, res, next) {
 });
 
 //CORS
-App.use(Cors());
-// const whiteList = [
-// 	"http://localhost:3000",
-// 	"http://localhost",
-// 	process.env.URL_BACKEND,
-// 	process.env.URL_FRONTEND,
-// ];
+const whiteList = [
+	"http://localhost:3000",
+	"http://localhost",
+	process.env.URL_BACKEND,
+	process.env.URL_FRONTEND,
+];
 
-// App.use(
-// 	Cors({
-// 		origin: whiteList,
-// 		methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-// 		preflightContinue: false,
-// 		optionsSuccessStatus: 204,
-// 	})
-// );
+App.use(
+	Cors({
+		origin: whiteList,
+		methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+		preflightContinue: false,
+		optionsSuccessStatus: 204,
+	})
+);
 
 // BodyParser
 App.use(BodyParser.urlencoded({ extended: true }));
