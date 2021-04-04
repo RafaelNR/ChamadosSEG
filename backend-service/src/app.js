@@ -8,17 +8,13 @@ const FilesStatics = require("./middlewares/files");
 
 
 const App = Express();
-App.use(Helmet());
-FilesStatics(App, Express);
 
-App.use(function (req, res, next) {
-  res.setHeader(
-		"Content-Security-Policy-Report-Only",
-		"default-src 'self'; font-src 'self'; img-src 'self' http://seg.eti.br; script-src 'self'; style-src 'self'; frame-src 'self'"
-	);
-	next();
-});
-
+// Desabilitado politica de contéudo;
+App.use(
+  Helmet({
+    contentSecurityPolicy: false,
+  })
+);
 
 //CORS
 const whiteList = [
@@ -40,6 +36,7 @@ App.use(
 // BodyParser
 App.use(BodyParser.urlencoded({ extended: true }));
 App.use(BodyParser.json());
+FilesStatics(App, Express);
 App.use(Access.Purchase);
 
 

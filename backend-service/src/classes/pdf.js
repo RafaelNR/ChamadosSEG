@@ -27,6 +27,7 @@ module.exports = class PDF {
 				"--no-sandbox",
 				"--disable-setuid-sandbox",
 				"--disable-dev-shm-usage",
+				"--allow-http-background-page", //Permite URL não https para background_page para aplicativos hospedados.
 			],
 			ignoreDefaultArgs: ["--disable-extensions"],
 			headless: true,
