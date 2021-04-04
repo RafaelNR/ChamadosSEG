@@ -19,6 +19,7 @@ App.use(function (req, res, next) {
 	next();
 });
 
+
 //CORS
 const whiteList = [
 	"http://localhost:3000",
