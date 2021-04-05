@@ -9,12 +9,12 @@ import { ArrowIconTooltips } from '../../Components/ToolTip/index'
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: theme.palette.background.boxhome
   },
   cell: {
     position: 'relative',
     border: '1px solid #c4d3da',
-    background: 'white',
+    background: theme.palette.background.boxhome,
     marginTop: 10
   },
   body: {
@@ -79,38 +79,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Chamados = [
-{
-    id: 1,
-    ticket: '0001-2021',
-    title: 'Cadastro de dispositivo no firewall',
-    cliente: 'CISRU/SAMU',
-    categoria: 'Firewall',
-    subCategoria: 'Cadastro',
-    requerente: 'José Maria',
-    atribuido: 'Rafael Rodrigues',
-    prioridade: 0,
-    anexo: 0,
-    interacao: 0,
-    fechado: 0
-  },
-  {
-    id: 2,
-    ticket: '0002-2021',
-    title: 'Alteração de dados do elemento no firewall',
-    cliente: 'CISRU/SAMU',
-    categoria: 'Firewall',
-    subCategoria: 'Alteração',
-    requerente: 'José Maria',
-    atribuido: 'Rafael Rodrigues',
-    prioridade: 1,
-    anexo: 0,
-    interacao: 0,
-    fechado: 0
-  }
-]
-
-export default () => {
+export default ({ Chamados }) => {
   const classes = useStyles();
   return (
     Chamados.map(chamado => {

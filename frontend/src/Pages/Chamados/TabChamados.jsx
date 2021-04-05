@@ -3,6 +3,13 @@ import PropTypes from 'prop-types';
 import { makeStyles , AppBar, Tabs, Tab, Typography, Box} from '@material-ui/core';
 import BoxChamado from '../../Components/Box/Chamado';
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper
+  }
+}));
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -36,16 +43,40 @@ function a11yProps(index) {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper
-  }
-}));
-
-export default function SimpleTabs() {
+export default () => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+
+  const Chamados = [
+    {
+      id: 1,
+      ticket: '0001-2021',
+      title: 'Cadastro de dispositivo no firewall',
+      cliente: 'CISRU/SAMU',
+      categoria: 'Firewall',
+      subCategoria: 'Cadastro',
+      requerente: 'José Maria',
+      atribuido: 'Rafael Rodrigues',
+      prioridade: 0,
+      anexo: 0,
+      interacao: 0,
+      fechado: 0
+    },
+    {
+      id: 2,
+      ticket: '0002-2021',
+      title: 'Alteração de dados do elemento no firewall',
+      cliente: 'CISRU/SAMU',
+      categoria: 'Firewall',
+      subCategoria: 'Alteração',
+      requerente: 'José Maria',
+      atribuido: 'Rafael Rodrigues',
+      prioridade: 1,
+      anexo: 0,
+      interacao: 0,
+      fechado: 0
+    }
+  ];
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -65,7 +96,7 @@ export default function SimpleTabs() {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <BoxChamado />
+        <BoxChamado Chamados={Chamados} />
       </TabPanel>
       <TabPanel value={value} index={1}>
         Chamados pra mim
