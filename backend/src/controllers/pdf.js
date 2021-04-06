@@ -22,7 +22,6 @@ const Atividade = async (req,res) => {
 		const resp = await axios.get(`/pdf/atividade/${ticket}?user_id=${req.userId}`);
 
 		if (resp.status === 200 && resp.data.success) {
-			console.log("PDF Gerado: ", resp.data);
 			Result.ok(200, resp.data);
 		} else {
 			throw resp.data.message ? resp.data.message : "Erro em gerar o PDF.";	
@@ -54,7 +53,6 @@ const Atividades = async (req,res) => {
 			const resp = await axios.get(`${URL}&user_id=${req.userId}`);
 
 			if (resp.status === 200 && resp.data.success) {
-				console.log("PDF Gerado: ", resp.data);
 				Result.ok(200, resp.data);
 			} else {
 				throw resp.data.message ? resp.data.message : "Erro em gerar o PDF.";	

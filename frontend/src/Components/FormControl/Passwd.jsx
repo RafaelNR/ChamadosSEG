@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
+import {
+  makeStyles,
+  FormControl,
+  IconButton,
+  OutlinedInput,
+  InputLabel,
+  InputAdornment,
+  FormHelperText
+} from '@material-ui/core';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
@@ -18,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default ({ helperText, ...rest }) => {
+export default ({ helperText, label, ...rest }) => {
   const classes = useStyles();
   const [showPasswd, setShowPasswd] = useState(false);
 
@@ -32,10 +34,10 @@ export default ({ helperText, ...rest }) => {
 
   return (
     <FormControl className={classes.input} variant="outlined">
-      <InputLabel htmlFor="passwd">Senha</InputLabel>
+      <InputLabel htmlFor="passwd">{label}</InputLabel>
       <OutlinedInput
         id="passwd"
-        label="Senha"
+        label={label}
         type={showPasswd ? 'text' : 'password'}
         name="passwd"
         {...rest}

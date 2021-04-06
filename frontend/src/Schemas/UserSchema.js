@@ -94,7 +94,8 @@ const LoginSchema = (data) => {
       .nullable()
       .min(3, 'No mínimo 3 caracteres')
       .max(15, 'No máximo 15 caracteres')
-      .required('Senha é obrigatório')
+      .required('Senha é obrigatório'),
+    permanecer: yup.bool(),
   });
 
   const Val = new Validate(schema, data);

@@ -23,7 +23,6 @@ const AuthProvider = ({ children }) => {
   const [success, setSuccess] = useState(false);
 
   const handleLogout = useCallback(() => {
-    console.log('aqui')
     setUser(null);
     setToken(null);
     removeData('token');
@@ -60,26 +59,27 @@ const AuthProvider = ({ children }) => {
     };
   },[handleLogout]);
 
-  const handleLogin = useCallback((user, passwd,lembrar) => {
+  const handleLogin = useCallback(({ user, passwd, lembrar, permanecer }) => {
 
     setLoading(true);
-    Login(user, passwd).then((Dados) => {
+    Login(user, passwd, permanecer).then((Dados) => {
 
       setErrors([])
       setLoading(false);
 
       if(Dados.auth && Dados.token){
-        setData("token", Dados.token);
-        setData("user", Dados.user);
-        lembrar && setData("lembrar", { lembrar: true, user: Dados.user.user });
+        setData('token', Dados.token); // Seta no local store;
+        setData('user', Dados.user); // Seta no local store;
+        lembrar && setData('lembrar', Dados.user.user); // Seta no localstore;
         setSuccess(true);
-        return window.location.replace("/");
+        return window.location.replace('/');
       }
 
-      if(Dados.auth && Dados.user){
-        setData("user", Dados.user);
+      if (Dados.auth && Dados.user) {
+        setData('user', Dados.user);
+        lembrar && setData('lembrar', Dados.user.user); // Seta no localstore;
         setSuccess(true);
-        return window.location.replace("/");
+        return window.location.replace('/');
       }
 
       throw new Error('Erro em logar no sistema');

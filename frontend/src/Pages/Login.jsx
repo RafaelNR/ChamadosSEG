@@ -8,6 +8,7 @@ import {
   Link,
   Grid,
   makeStyles,
+  Tooltip
 } from "@material-ui/core";
 import Alert from '../Components/Alert/index'
 import { ProgressSubmit } from '../Components/Buttons/Progress';
@@ -59,42 +60,98 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
     backgroundColor: '#2896ff',
   },
+  permanecer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    '& .MuiFormControlLabel-root': {
+      marginRight: 0
+    }
+  }
 }));
 
-export default function SignInSide() {
+const MyCheckBox = ({ login, changeCheckBox}) => {
+  const classes = useStyles();
+  return (
+    <Grid container>
+      <Grid item xs={6}>
+        <Tooltip title="Seu username se auto-completa, sempre.">
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={login.lembrar}
+              name="lembrar"
+              color="primary"
+              onChange={(e) => changeCheckBox(e)}
+              />
+            }
+            label="Lembrar-me"
+            />
+        </Tooltip>
+      </Grid>
+      <Grid item xs={6} className={classes.permanecer}>
+        <Tooltip title="Seu usuário ficará autenticado por 12hs.">
+          <FormControlLabel
+            control={
+              <Checkbox
+              checked={login.permanecer}
+              name="permanecer"
+              color="primary"
+              onChange={(e) => changeCheckBox(e)}
+              />
+            }
+            label="Permanecer"
+            />
+        </Tooltip>
+      </Grid>
+
+    </Grid>
+  );
+}
+
+export default () => {
   const classes = useStyles();
   const { getData,removeData } = useLocalStore();
   const { handleLogin, errors, setErrors, success, loading } = useAuth();
-  const [user, setUser] = useState('');
-  const [passwd, setPasswd] = useState('');
-  const [lembrar, setLembrar] = useState(false);
+  const [login, setLogin] = useState({
+    user: '',
+    passwd: '',
+    lembrar: false,
+    permanecer: false
+  });
 
   React.useEffect(() => {
     document.title = `Login - OS Técnicos`;
-    const dados = getData('lembrar');
-    if (dados && dados.lembrar) {
-      setLembrar(dados.lembrar)
-      setUser(dados.user)
+    const lembrarUser = getData('lembrar');
+    if (lembrarUser) {
+      setLogin({
+        user: lembrarUser,
+        lembrar: true,
+      })
     }
 
   },[])
 
   //react-hooks/exhaustive-deps
   const handleChange = useCallback((e) => {
-    const el = e.target.name;
-    if (el === "user") setUser(e.target.value);
-    else if (el === "passwd") setPasswd(e.target.value);
+    const name = e.target.name;
+    const value = e.target.value;
+    setLogin(login => {
+      return {
+        ...login,
+        [name]: value
+      }
+    })
   }, []);
 
   const handleSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      handleLogin(user, passwd, lembrar);
+      handleLogin(login);
     },
-    [user, passwd, lembrar, handleLogin]
+    [login]
   );
 
-  const removeErrors = (e) => {
+  const removeErrors = useCallback((e) => {
 
     if (errors[e.target.name] && errors.hasOwnProperty(e.target.name)) {
       setErrors(errors => {
@@ -102,15 +159,22 @@ export default function SignInSide() {
         return errors
       });
     }
+  },[])
 
-  }
+  const changeCheckBox = useCallback((e) => {
+    const name = e.target.name;
+    const checked = e.target.checked;
 
-  const changeRemember = (e) => {
-    setLembrar(e.target.checked);
-    if (!e.target.checked) {
+    if (name === 'lembrar' && !checked) {
       removeData('lembrar');
     }
-  }
+    setLogin(login => {
+      return {
+        ...login,
+        [name]: checked
+      }
+    })
+  }, []);
   
   return (
     <Grid container component="main" className={classes.root}>
@@ -146,7 +210,7 @@ export default function SignInSide() {
               label="Username"
               name="user"
               autoComplete="username"
-              value={user}
+              value={login.user}
               fullWidth
               required
               error={errors && errors['user'] ? true : false}
@@ -155,26 +219,16 @@ export default function SignInSide() {
               onKeyDownCapture={(e) => removeErrors(e)}
             />
             <InputPasswd
-              value={passwd}
+              value={login.passwd}
               error={errors && errors['passwd'] ? true : false}
               helperText={errors && errors['passwd'] ? errors['passwd'] : null}
               onChange={(e) => handleChange(e)}
               onKeyDownCapture={(e) => removeErrors(e)}
-              label="Senha"
+              label="Senha *"
               fullWidth
               required
             />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={lembrar}
-                  name="lembrar"
-                  color="primary"
-                  onChange={(e) => changeRemember(e)}
-                />
-              }
-              label="Lembrar-me"
-            />
+            <MyCheckBox login={login} changeCheckBox={changeCheckBox}/>
             <ProgressSubmit success={success} loading={loading}>
               Entrar
             </ProgressSubmit>

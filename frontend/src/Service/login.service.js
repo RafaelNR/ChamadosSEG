@@ -3,13 +3,14 @@ import {
   LoginSchema
 } from "../Schemas/UserSchema";
 
-export async function Login(user, passwd) {
+export async function Login(user, passwd, permanecer) {
 
   try {
 
     const Dados = await LoginSchema({
-      user: user,
-      passwd: passwd,
+      user,
+      passwd,
+      permanecer
     })
 
     if (Dados.error) throw Dados;
