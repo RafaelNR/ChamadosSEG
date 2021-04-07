@@ -13,9 +13,10 @@ const Ticket = require("../classes/ticket.class");
  */
 const index = async (req, res) => {
 	try {
-		const Dados = Object.keys(req.query).length >= 1
-			? await Model.filter(tools.handleFilter(req.query))
-			: await Model.index();
+		const Dados =
+			Object.keys(req.query).length > 1
+				? await Model.filter(tools.handleFilter(req.query))
+				: await Model.index(req.query.period);
 
 		Result.ok(200, Dados);
 	} catch (error) {
@@ -30,7 +31,7 @@ const index = async (req, res) => {
 const findAllByMy = async (req, res) => {
 	const user_id = req.userId;
 	try {
-		const Dados = await Model.findByUser_id(user_id);
+		const Dados = await Model.findByUser_id(user_id, req.query.period);
 		Result.ok(200,Dados);
 	} catch (error) {
 		Result.fail(400,error);
@@ -59,7 +60,7 @@ const findAllByUser = async (req, res) => {
 const findAllByMyClientes = async (req,res) => {
 	try {
 		const user_id = Validate.UserID(req.userId);
-		const Dados = await Model.findAllByClientes(user_id);
+		const Dados = await Model.findAllByClientes(user_id, req.query.period);
 		Result.ok(200, Dados);
 	} catch (error) {
 		Result.fail(400, error);

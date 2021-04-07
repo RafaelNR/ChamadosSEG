@@ -178,7 +178,7 @@ export default () => {
             value={open}
             text="Abertas"
             color="green"
-            to="/atividades?type=open"
+            to="/atividades?type=cliente&period=open"
           />
         </Grid>
         <Grid item xs={3}>
@@ -188,7 +188,7 @@ export default () => {
             loading={loading}
             text="Fecha em 5 dias"
             color="yellow"
-            to="/atividades?type=half"
+            to="/atividades?type=cliente&period=half"
           />
         </Grid>
         <Grid item xs={3}>
@@ -198,7 +198,7 @@ export default () => {
             loading={loading}
             text="Último dia"
             color="orange"
-            to="/atividades?type=last"
+            to="/atividades?type=cliente&period=last"
           />
         </Grid>
         <Grid item xs={3}>
@@ -208,7 +208,7 @@ export default () => {
             loading={loading}
             text="Finalizadas"
             color="red"
-            to="/atividades?type=close"
+            to="/atividades?type=cliente&period=close"
           />
         </Grid>
       </Grid>

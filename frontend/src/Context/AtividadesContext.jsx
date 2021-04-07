@@ -31,20 +31,28 @@ const AtividadesProvider = ({ children }) => {
   const [loadingPDF, setLoadingPDF] = useState(false);
 
   const getURL = useCallback(() => {
-    const query = getQuery('type');
-    const types = ['close', 'last', 'half', 'open'];
-    let URL =
-      roleID === 1 || roleID === 2 ? 'atividades' : 'atividades/myclientes';
+    const type = getQuery('type');
+    const period = getQuery('period');
+    const periods = ['close', 'last', 'half', 'open'];
+    const types = ['my', 'cliente'];
 
-    if (types.includes(query)) {
-      URL =
-        roleID === 1 || roleID === 2
-          ? `atividades?type=${query}`
-          : `atividades/myclientes?type=${query}`;
-    }
+    // Acesso sem query de period or type
+    if (!type || !period)
+      return roleID !== 3 ? 'atividades' : 'atividades/myclientes';
 
-    return URL;
-  }, []);
+    // Access gestor com type and period
+    if (roleID !== 3 && types.includes(type) && periods.includes(period))
+      return type === 'my'
+        ? `atividades/myuser?period=${period}`
+        : `atividades?period=${period}`;
+    
+    // Access técnico com period and type
+    if (periods.includes(period) && types.includes(type))
+      return type === 'my'
+        ? `atividades/myuser?period=${period}`
+        : `atividades/myclientes?period=${period}`;
+    
+  }, [roleID]);
 
   useEffect(() => {
     let render = true;
