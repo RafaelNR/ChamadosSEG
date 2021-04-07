@@ -56,7 +56,7 @@ const findAllByUser = async (req, res) => {
 	return res.status(Result.status).json(Result.res);
 };
 
-const findAllByClientes = async (req,res) => {
+const findAllByMyClientes = async (req,res) => {
 	try {
 		const user_id = Validate.UserID(req.userId);
 		const Dados = await Model.findAllByClientes(user_id);
@@ -65,7 +65,7 @@ const findAllByClientes = async (req,res) => {
 		Result.fail(400, error);
 	}
 
-	Result.registerLog(req.userId, "atividades", "findAllByClientes");
+	Result.registerLog(req.userId, "atividades", "findAllByMyClientes");
 	return res.status(Result.status).json(Result.res);
 };
 
@@ -290,8 +290,8 @@ module.exports = {
 	index,
 	findAllByMy,
 	findAllByUser,
+	findAllByMyClientes,
 	findAllByCliente,
-	findAllByClientes,
 	findOne,
 	findOneByTicket,
 	update,

@@ -70,14 +70,14 @@ const AuthProvider = ({ children }) => {
       if(Dados.auth && Dados.token){
         setData('token', Dados.token); // Seta no local store;
         setData('user', Dados.user); // Seta no local store;
-        lembrar && setData('lembrar', Dados.user.user); // Seta no localstore;
+        lembrar ? setData('lembrar', Dados.user.user) : removeData('lembrar');// Seta no localstore;
         setSuccess(true);
         return window.location.replace('/');
       }
 
       if (Dados.auth && Dados.user) {
         setData('user', Dados.user);
-        lembrar && setData('lembrar', Dados.user.user); // Seta no localstore;
+        lembrar ? setData('lembrar', Dados.user.user) : removeData('lembrar'); // Seta no localstore;
         setSuccess(true);
         return window.location.replace('/');
       }

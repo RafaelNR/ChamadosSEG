@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import PropTypes from "prop-types";
 import * as Crud from "../Api/Crud";
+import useRouter from '../Hooks/useRouter';
 
 import useSnackBar from "./SnackBarContext";
 import useLoading from "./LoadingContext";
@@ -22,41 +23,60 @@ import { FilterAtividadesSchema} from '../Schemas/Atividades.Schema'
 const AtividadesContext = createContext({});
 
 const AtividadesProvider = ({ children }) => {
+  const { getQuery } = useRouter();
   const { handleSnackBar } = useSnackBar();
   const { loading, setLoading } = useLoading();
   const { roleID } = useUser();
   const [atividades, setAtividades] = useState([]);
   const [loadingPDF, setLoadingPDF] = useState(false);
 
+  const getURL = useCallback(() => {
+    const query = getQuery('type');
+    const types = ['close', 'last', 'half', 'open'];
+    let URL =
+      roleID === 1 || roleID === 2 ? 'atividades' : 'atividades/myclientes';
+
+    if (types.includes(query)) {
+      URL =
+        roleID === 1 || roleID === 2
+          ? `atividades?type=${query}`
+          : `atividades/myclientes?type=${query}`;
+    }
+
+    return URL;
+  }, []);
+
   useEffect(() => {
     let render = true;
     setLoading(true);
 
-    (async () => {
-      try {
-        const URL = roleID === 1 || roleID === 2 ? 'atividades' : 'atividades/clientes';
-        const resp = await Crud.get(URL);
-        const { success, data } = resp.data;
-        if (!success) throw resp.data;
-        if  (render) setAtividades(data);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-        return handleSnackBar({
-          type: 'error',
-          message:
-            error && error.message
-              ? error.message
-              : 'Erro em carregar atividades. Por favor tente mais tarde.'
-        });
-      }
-    })();
+    if (roleID) {
+      (async () => {
+        try {
+          const resp = await Crud.get(getURL());
+          const { success, data } = resp.data;
+          if (!success) throw resp.data;
+          if (render) setAtividades(data);
+          setLoading(false);
+        } catch (error) {
+          console.log(error);
+          return handleSnackBar({
+            type: 'error',
+            message:
+              error && error.message
+                ? error.message
+                : 'Erro em carregar atividades. Por favor tente mais tarde.'
+          });
+        }
+      })();
+    }
 
     return function cleanup() {
       render = false;
       Crud.default.cancel('AtividadeContext unmounted');
     };
   }, [roleID]);
+
 
   const downloadPDF = useCallback((ticket) => {
     console.log(ticket)

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback } from 'react';
 //* COMPONENTES
 import {
   CssBaseline,
@@ -9,56 +9,55 @@ import {
   Grid,
   makeStyles,
   Tooltip
-} from "@material-ui/core";
-import Alert from '../Components/Alert/index'
+} from '@material-ui/core';
+import Alert from '../Components/Alert/index';
 import { ProgressSubmit } from '../Components/Buttons/Progress';
 import InputPasswd from '../Components/FormControl/Passwd';
 
 //* CONTEXT
-import useAuth from "../Context/AuthContext";
-import useLocalStore from '../Hooks/useLocalStore'
-
+import useAuth from '../Context/AuthContext';
+import useLocalStore from '../Hooks/useLocalStore';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh",
+    height: '100vh'
   },
   image: {
     // backgroundImage: "url(https://source.unsplash.com/random)",
-    backgroundImage: "url(/static/banner.jpg)",
-    backgroundRepeat: "no-repeat",
+    backgroundImage: 'url(/static/banner.jpg)',
+    backgroundRepeat: 'no-repeat',
     backgroundColor:
-      theme.palette.type === "light"
+      theme.palette.type === 'light'
         ? theme.palette.grey[50]
         : theme.palette.grey[900],
-    backgroundSize: "cover",
-    backgroundPosition: "center",
+    backgroundSize: 'cover',
+    backgroundPosition: 'center'
   },
-  gridLogin:{
+  gridLogin: {
     backgroundColor: '#f5f5f5',
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   paper: {
     margin: theme.spacing(8, 4),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     width: '65%'
   },
   avatar: {
     width: 100,
-    margin: theme.spacing(1),
+    margin: theme.spacing(1)
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1)
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    backgroundColor: '#2896ff',
+    backgroundColor: '#2896ff'
   },
   permanecer: {
     display: 'flex',
@@ -69,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const MyCheckBox = ({ login, changeCheckBox}) => {
+const MyCheckBox = ({ login, handleChange }) => {
   const classes = useStyles();
   return (
     <Grid container>
@@ -78,14 +77,14 @@ const MyCheckBox = ({ login, changeCheckBox}) => {
           <FormControlLabel
             control={
               <Checkbox
-                checked={login.lembrar}
-              name="lembrar"
-              color="primary"
-              onChange={(e) => changeCheckBox(e)}
+                checked={login.lembrar || false}
+                name="lembrar"
+                color="primary"
+                onChange={handleChange}
               />
             }
             label="Lembrar-me"
-            />
+          />
         </Tooltip>
       </Grid>
       <Grid item xs={6} className={classes.permanecer}>
@@ -93,55 +92,55 @@ const MyCheckBox = ({ login, changeCheckBox}) => {
           <FormControlLabel
             control={
               <Checkbox
-              checked={login.permanecer}
-              name="permanecer"
-              color="primary"
-              onChange={(e) => changeCheckBox(e)}
+                checked={login.permanecer || false}
+                name="permanecer"
+                color="primary"
+                onChange={handleChange}
               />
             }
             label="Permanecer"
-            />
+          />
         </Tooltip>
       </Grid>
-
     </Grid>
   );
-}
+};
 
 export default () => {
   const classes = useStyles();
-  const { getData,removeData } = useLocalStore();
+  const { getData } = useLocalStore();
   const { handleLogin, errors, setErrors, success, loading } = useAuth();
   const [login, setLogin] = useState({
-    user: '',
-    passwd: '',
-    lembrar: false,
-    permanecer: false
+    user: getData('lembrar')
   });
+  const [render, setRender] = useState(false);
 
   React.useEffect(() => {
     document.title = `Login - OS Técnicos`;
-    const lembrarUser = getData('lembrar');
-    if (lembrarUser) {
-      setLogin({
-        user: lembrarUser,
-        lembrar: true,
-      })
-    }
-
-  },[])
+    setRender(true);
+    setLogin(values => {
+      return {
+        ...values,
+        lembrar: Boolean(getData('lembrar'))
+      };
+    });
+  }, [setLogin]);
 
   //react-hooks/exhaustive-deps
   const handleChange = useCallback((e) => {
     const name = e.target.name;
-    const value = e.target.value;
-    setLogin(login => {
-      return {
-        ...login,
-        [name]: value
-      }
-    })
-  }, []);
+    const value =
+      e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    if (!render) {
+      setLogin((values) => {
+        return {
+          ...values,
+          [name]: value
+        };
+      }); 
+    }
+    setRender(false)
+  }, [render]);
 
   const handleSubmit = useCallback(
     (e) => {
@@ -152,30 +151,15 @@ export default () => {
   );
 
   const removeErrors = useCallback((e) => {
-
     if (errors[e.target.name] && errors.hasOwnProperty(e.target.name)) {
-      setErrors(errors => {
+      setErrors((errors) => {
         delete errors[e.target.name];
-        return errors
+        return errors;
       });
     }
-  },[])
-
-  const changeCheckBox = useCallback((e) => {
-    const name = e.target.name;
-    const checked = e.target.checked;
-
-    if (name === 'lembrar' && !checked) {
-      removeData('lembrar');
-    }
-    setLogin(login => {
-      return {
-        ...login,
-        [name]: checked
-      }
-    })
   }, []);
-  
+
+
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -198,37 +182,34 @@ export default () => {
           {errors && errors.message && !errors.success && (
             <Alert type="error" title="Erro!" message={errors.message} />
           )}
-          <form
-            className={classes.form}
-            onSubmit={(e) => handleSubmit(e)}
-            noValidate
-          >
+          <form className={classes.form} onSubmit={handleSubmit} noValidate>
             <TextField
+              type="text"
               variant="outlined"
               margin="normal"
               id="username"
               label="Username"
               name="user"
-              autoComplete="username"
               value={login.user}
-              fullWidth
-              required
-              error={errors && errors['user'] ? true : false}
-              helperText={errors && errors['user'] ? errors['user'] : null }
-              onChange={(e) => handleChange(e)}
+              autoComplete="username"
+              onChange={handleChange}
               onKeyDownCapture={(e) => removeErrors(e)}
+              required
+              fullWidth
+              error={Boolean(errors['user'])}
+              helperText={errors && errors['user'] ? errors['user'] : null}
             />
             <InputPasswd
-              value={login.passwd}
+              value={login.passwd || ''}
               error={errors && errors['passwd'] ? true : false}
               helperText={errors && errors['passwd'] ? errors['passwd'] : null}
-              onChange={(e) => handleChange(e)}
+              handleChange={handleChange}
               onKeyDownCapture={(e) => removeErrors(e)}
               label="Senha *"
               fullWidth
               required
             />
-            <MyCheckBox login={login} changeCheckBox={changeCheckBox}/>
+            <MyCheckBox login={login} handleChange={handleChange} />
             <ProgressSubmit success={success} loading={loading}>
               Entrar
             </ProgressSubmit>
@@ -244,4 +225,4 @@ export default () => {
       </Grid>
     </Grid>
   );
-}
+};

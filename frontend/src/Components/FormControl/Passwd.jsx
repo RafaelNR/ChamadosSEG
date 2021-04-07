@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default ({ helperText, label, ...rest }) => {
+export default ({ helperText, label, handleChange, value, ...rest }) => {
   const classes = useStyles();
   const [showPasswd, setShowPasswd] = useState(false);
 
@@ -40,7 +40,8 @@ export default ({ helperText, label, ...rest }) => {
         label={label}
         type={showPasswd ? 'text' : 'password'}
         name="passwd"
-        {...rest}
+        onChange={handleChange}
+        value={value}
         endAdornment={
           <InputAdornment position="end">
             <IconButton
@@ -53,6 +54,7 @@ export default ({ helperText, label, ...rest }) => {
             </IconButton>
           </InputAdornment>
         }
+        {...rest}
         labelWidth={70}
       />
       <FormHelperText className={classes.error}>{helperText}</FormHelperText>
