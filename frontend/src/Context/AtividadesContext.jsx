@@ -6,14 +6,17 @@ import React, {
   useContext,
 } from "react";
 import PropTypes from "prop-types";
-import * as Crud from "../Api/Crud";
-import useRouter from '../Hooks/useRouter';
 
+//* CONTEXT
 import useSnackBar from "./SnackBarContext";
 import useLoading from "./LoadingContext";
+
+//* HOOKS
+import useRouter from '../Hooks/useRouter';
 import useUser from '../Hooks/useUser';
 
 //* SERVICE
+import * as Crud from "../Api/Crud";
 import { AtividadePDF } from '../Service/pdf.service'
 import { getAtividades } from '../Service/atividade.service'
 
@@ -91,15 +94,16 @@ const AtividadesProvider = ({ children }) => {
     setLoadingPDF(true);
     AtividadePDF(ticket)
       .then((Dados) => {
-        console.log(Dados)
         if (Dados.success) {
-          window.open(Dados.data.link);
+          return window.open(Dados.data.link);
         }
+
+        throw new Error('Error em gerar PDF.')
       })
       .catch((error) => {
         return handleSnackBar({
           type: 'error',
-          message: error && error.message ? error.message : 'Erro gerar PDF'
+          message: error && error.message ? error.message : 'Erro em gerar PDF'
         });
       })
       .finally(() => {

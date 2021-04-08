@@ -4,12 +4,11 @@ import {
   makeStyles,
   Paper,
   Grid,
-  Typography,
 } from "@material-ui/core/";
 import InfosView from "./Infos";
 import { Atividade, AtividadeCliente } from "../../../Components/Box/Atividade";
 import Loading from '../../../Components/Loading'
-import { PDFIconAtividade } from '../../../Components/Buttons/pdf'
+import { PDFIconAtividade } from '../../../Components/Buttons/pdf';
 
 //* CONTEXT
 import useSnackBar from "../../../Context/SnackBarContext";
@@ -26,22 +25,33 @@ import {
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    marginTop: "-6rem",
-    height: 300,
+    marginTop: '-6rem',
+    height: 300
   },
   header: {
-    paddingTop: 5,
+    paddingTop: 5
   },
   title: {
-    fontSize: "20px",
-    padding: "15px",
-    color: theme.palette.text.title,
+    fontSize: '20px',
+    padding: '15px',
+    color: theme.palette.text.title
   },
   icons: {
     display: 'flex',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    height: 50,
+    padding: '5px 10px',
+    '& .buttonPDF': {
+      ' & .MuiButton-startIcon': {
+        marginRight: -3,
+        '& svg': {
+          fontSize: '22px !important',
+        }
+      }
+    }
   }
 }));
+
 
 export default () => {
   const classes = useStyles();
@@ -85,19 +95,20 @@ export default () => {
     }
 
   }, [handleSnackBar, history, ticket])
-  
+
   
   return (
     <>
       <Paper className={classes.root}>
         <Grid container className={classes.header}>
-          <Grid item md={6}>
-            <Typography className={classes.title}>
-              Dados da Atividade
-            </Typography>
-          </Grid>
+          <Grid item md={6}></Grid>
           <Grid item md={6} className={classes.icons}>
-            {getStatusAtividade(atividade.date) === 'red' && <PDFIconAtividade ticket={ticket} /> }
+            {getStatusAtividade(atividade.date) === 'red' && (
+              <PDFIconAtividade
+                propsClass="buttonPDF"
+                ticket={ticket}
+              />
+            )}
           </Grid>
         </Grid>
         {loading ? (

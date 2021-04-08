@@ -14,7 +14,6 @@ import { AtividadePDF } from "../../Service/atividade.service";
 const useStyles = makeStyles((theme) => ({
   pdf: {
     fontSize: '18px',
-    color: theme.palette.button.pdf,
     marginRight: 20,
     width: 50,
     height: 50
@@ -23,66 +22,80 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const PDFIconAtividade = ({ ticket }) => {
+const PDFIconAtividade = ({ ticket, propsClass }) => {
   const classes = useStyles();
   const { handleSnackBar } = useSnackBar();
   const [link, setLink] = React.useState();
   const [loading, setLoading] = React.useState(false);
 
-  const handleClick = async (e) => {
+  const handleClick = () => {
     setLoading(true);
-    await AtividadePDF(ticket).then(resp => {
-      window.open(resp.link, '_blank');
-      setLink(resp.link);
-      setLoading(false);
-      handleSnackBar({
-        type: "success",
-        message: 'PDF gerado.'
-      });
-    }).catch((error) => {
-      console.log(error)
-      setLoading(false);
-      handleSnackBar({
-        type: "error",
-        message: error && error.message ? error.message : `Erro em gerar o PDF`,
-      });
-    })
+
+    if (link) {
+      return OpenLink();
+    }
+
+    AtividadePDF(ticket)
+      .then((resp) => {
+        if (resp.success) {
+          setLink(resp.data.link);
+          OpenLink(resp.data.link);
+          return handleSnackBar({
+            type: 'success',
+            message: 'PDF gerado.'
+          });
+        }
+
+        throw new Error('Error em gerar PDF.');
+      })
+      .catch((error) => {
+        console.log(error);
+        handleSnackBar({
+          type: 'error',
+          message:
+          error && error.message ? error.message : `Erro em gerar o PDF.`
+        });
+      }).finally(() => {  
+        setLoading(false);
+      })
   }
 
-  const OpenLink = () => {
-    console.log(link)
-    return window.open(link, '_blank');
+  const OpenLink = (Link) => {
+    return window.open(Link, '_blank');
   }
 
   return (
     <>
-      { link ?
-        (
-          <IconButton className={classes.pdf} onClick={OpenLink}>
-            <Tooltip title="PDF">
-              <PictureAsPdfSharp className={classes.actived} />
-            </Tooltip>
-          </IconButton>
-        )
-        :
-        (
-          <IconButton className={classes.pdf} onClick={handleClick}>
-            <Tooltip title="PDF">
-              {
-                loading ? <CircularProgress size={24} /> : <PictureAsPdfSharp className={classes.actived} />
-              }
-            </Tooltip>
-          </IconButton>
-        )
-      }
+      {link ? (
+        <IconButton
+          className={propsClass ? propsClass : classes.pdf}
+          onClick={OpenLink}
+        >
+          <Tooltip title="Gerar PDF">
+            <PictureAsPdfSharp />
+          </Tooltip>
+        </IconButton>
+      ) : (
+        <IconButton
+          className={propsClass ? propsClass : classes.pdf}
+          onClick={handleClick}
+        >
+          <Tooltip title="Gerar PDF">
+            {loading ? (
+              <CircularProgress size={24} />
+            ) : (
+              <PictureAsPdfSharp/>
+            )}
+          </Tooltip>
+        </IconButton>
+      )}
     </>
-  )
+  );
 };
-
-
 
 PDFIconAtividade.propTypes = {
   ticket: PropTypes.string.isRequired,
+  propsClass: PropTypes.string,
 };
 
 export { 
