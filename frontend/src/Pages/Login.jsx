@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 //* COMPONENTES
 import {
   CssBaseline,
@@ -88,7 +88,7 @@ const MyCheckBox = ({ login, handleChange }) => {
         </Tooltip>
       </Grid>
       <Grid item xs={6} className={classes.permanecer}>
-        <Tooltip title="Seu usuário ficará autenticado por 12hs.">
+        <Tooltip title="Seu usuário permanecerá logado.">
           <FormControlLabel
             control={
               <Checkbox
@@ -111,13 +111,12 @@ export default () => {
   const { getData } = useLocalStore();
   const { handleLogin, errors, setErrors, success, loading } = useAuth();
   const [login, setLogin] = useState({
-    user: getData('lembrar')
+    user: getData('lembrar'),
+    passwd: ''
   });
-  const [render, setRender] = useState(false);
 
   React.useEffect(() => {
     document.title = `Login - OS Técnicos`;
-    setRender(true);
     setLogin(values => {
       return {
         ...values,
@@ -131,16 +130,15 @@ export default () => {
     const name = e.target.name;
     const value =
       e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-    if (!render) {
-      setLogin((values) => {
-        return {
-          ...values,
-          [name]: value
-        };
-      }); 
-    }
-    setRender(false)
-  }, [render]);
+    
+    setLogin((values) => {
+      return {
+        ...values,
+        [name]: value
+      };
+    }); 
+  
+  }, [setLogin]);
 
   const handleSubmit = useCallback(
     (e) => {
@@ -190,7 +188,7 @@ export default () => {
               id="username"
               label="Username"
               name="user"
-              value={login.user}
+              value={login.user || ''}
               autoComplete="username"
               onChange={handleChange}
               onKeyDownCapture={(e) => removeErrors(e)}
@@ -200,7 +198,7 @@ export default () => {
               helperText={errors && errors['user'] ? errors['user'] : null}
             />
             <InputPasswd
-              value={login.passwd || ''}
+              value={login.passwd}
               error={errors && errors['passwd'] ? true : false}
               helperText={errors && errors['passwd'] ? errors['passwd'] : null}
               handleChange={handleChange}
