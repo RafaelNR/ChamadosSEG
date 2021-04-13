@@ -12,6 +12,7 @@ import {
 import {
   Atividade,
   AtividadeClientes,
+  AtividadeTecnico
 } from "../../../Components/Box/Atividade";
 import Progress from "../../../Components/Buttons/Progress";
 
@@ -77,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default ({ setTicket, setAtividadeID, newInfo, clientes }) => {
+export default ({ setTicket, setAtividadeID, newInfo, clientes, tecnico }) => {
   const classes = useStyles();
   const { handleSnackBar } = useSnackBar();
   const [atividade, setAtividade] = React.useState({});
@@ -232,6 +233,7 @@ export default ({ setTicket, setAtividadeID, newInfo, clientes }) => {
       : (
       <Grid container md={12} spacing={2} className={classes.boxgrid}>
         <Atividade Atividade={atividade} />
+        <AtividadeTecnico Tecnico={tecnico}/>
         <AtividadeClientes Atividade={atividade} Clientes={clientes} />
       </Grid>
       )

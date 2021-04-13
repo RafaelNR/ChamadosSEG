@@ -13,6 +13,9 @@ import { getMyClientes } from '../../../Service/user.service';
 //* CONTEXT
 import useSnackBar from '../../../Context/SnackBarContext';
 
+//* HOOKS
+import useUser from '../../../Hooks/useUser';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -29,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
   const classes = useStyles();
   const { handleSnackBar } = useSnackBar();
+  const { userDados } = useUser();
   const [atividadeID, setAtividadeID] = React.useState(null);
   const [clientes, setClientes] = React.useState([]);
   const [ticket, setTicket] = React.useState(null);
@@ -79,6 +83,7 @@ export default () => {
           setTicket={setTicket}
           newInfo={incrementInfos}
           clientes={clientes}
+          tecnico={userDados}
         />
       </Paper>
 

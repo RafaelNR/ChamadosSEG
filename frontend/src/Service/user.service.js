@@ -25,6 +25,30 @@ export const getUsers = async () => {
   }
 };
 
+export const getUser = async (ID) => {
+  try {
+    const Url = `/usuarios/${ID}`;
+    const Dados = await Service.exec('get', Url);
+
+    if (!Dados.data.success)
+      // eslint-disable-next-line
+      throw {
+        success: false,
+        message: Dados.data.message
+          ? Dados.data.message
+          : 'Error em buscas os técnicos.'
+      };
+
+    return {
+      success: true,
+      data: Dados.data.data
+    };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 export const getMyClientes = async (ID) => {
   try {
     const Url = `/usuarios/clientes/${ID}`;

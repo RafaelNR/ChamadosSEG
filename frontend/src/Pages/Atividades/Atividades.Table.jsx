@@ -29,8 +29,8 @@ import useSearch from "../../Context/SearchContext";
 //* UTILS
 import {
   handleDate,
-  permissionEditAtividade,
-  getStatusAtividade
+  getStatusAtividade,
+  getColorAtividade
 } from '../../Utils/dates';
 
 const headCells = [
@@ -177,7 +177,7 @@ export default () => {
                         <div
                           className={classes.ticket}
                           style={{
-                            backgroundColor: getStatusAtividade(row.date)
+                            ...getColorAtividade(row.date)
                           }}
                         ></div>
                         {row.ticket}
@@ -186,14 +186,14 @@ export default () => {
                         {handleDate(row.date)}
                       </TableCell>
                       <TableCell align="left" className={classes.tablerow}>
-                        {row.técnico}
+                        {row.tecnico}
                       </TableCell>
                       <TableCell align="left" className={classes.tablerow}>
                         {row.cliente}
                       </TableCell>
                       <TableCell align="center" className={classes.tablerow}>
                         <ViewTicket ticket={row.ticket} />
-                        {permissionEditAtividade(row.date) ? (
+                        {getStatusAtividade(row.date) ? (
                           <>
                             <EditTicket ticket={row.ticket} />
                           </>

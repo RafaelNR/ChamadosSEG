@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import useLocalStore from "./useLocalStore";
 
 const useUser = () => {
+  const [userDados, setUserDados] = useState({});
   const [nome, setNome] = useState("");
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
@@ -12,6 +13,7 @@ const useUser = () => {
 
   useEffect(() => {
     const Dados = getData("user");
+    setUserDados(Dados);
     setNome(Dados.nome);
     setUser(Dados.user);
     setRoleID(Dados.role_id);
@@ -36,6 +38,7 @@ const useUser = () => {
   
 
   return {
+    userDados,
     nome,
     user,
     email,

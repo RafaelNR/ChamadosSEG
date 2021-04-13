@@ -2,13 +2,16 @@ import React from "react";
 import { useParams, useHistory } from "react-router-dom";
 import {
   makeStyles,
-  Paper,
   Grid,
 } from "@material-ui/core/";
 import InfosView from "./Infos";
-import { Atividade, AtividadeCliente } from "../../../Components/Box/Atividade";
-import Loading from '../../../Components/Loading'
+import {
+  Atividade,
+  AtividadeCliente,
+  AtividadeTecnico
+} from '../../../Components/Box/Atividade';
 import { PDFIconAtividade } from '../../../Components/Buttons/pdf';
+import Loading from '../../../Components/Loading';
 
 //* CONTEXT
 import useSnackBar from "../../../Context/SnackBarContext";
@@ -16,6 +19,7 @@ import useSnackBar from "../../../Context/SnackBarContext";
 //* SERVICE
 import { getAtividade } from "../../../Service/atividade.service";
 import { getCliente } from "../../../Service/clientes.service";
+import { getUser } from "../../../Service/user.service";
 
 import {
   getStatusAtividade
@@ -25,16 +29,7 @@ import {
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    marginTop: '-6rem',
-    height: 300
-  },
-  header: {
-    paddingTop: 5
-  },
-  title: {
-    fontSize: '20px',
-    padding: '15px',
-    color: theme.palette.text.title
+    marginTop: '-11rem'
   },
   icons: {
     display: 'flex',
@@ -45,10 +40,14 @@ const useStyles = makeStyles((theme) => ({
       ' & .MuiButton-startIcon': {
         marginRight: -3,
         '& svg': {
-          fontSize: '22px !important',
+          fontSize: '22px !important'
         }
       }
     }
+  },
+  boxAtividades: {
+    minHeight: 200,
+    maxHeight: 250,
   }
 }));
 
@@ -60,6 +59,7 @@ export default () => {
   const { handleSnackBar } = useSnackBar();
   const [atividade, setAtividade] = React.useState({});
   const [cliente, setCliente] = React.useState({});
+  const [tecnico, setTecnico] = React.useState({});
   const [loading, setLoading] = React.useState(true);
   
   React.useEffect(() => {
@@ -69,12 +69,13 @@ export default () => {
     (async () => {
 
       try {
-        const Dados = await getAtividade(ticket);
 
+        const Dados = await getAtividade(ticket);
         if(render) setAtividade(Dados);
         const Cliente = await getCliente(Dados.cliente_id);
-        
-        if(render) setCliente(Cliente.data);
+        if (render) setCliente(Cliente.data);
+        const Tecnico = await getUser(Dados.tecnico_id);
+        if (render) setTecnico(Tecnico.data);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -99,30 +100,31 @@ export default () => {
   
   return (
     <>
-      <Paper className={classes.root}>
-        <Grid container className={classes.header}>
-          <Grid item md={6}></Grid>
-          <Grid item md={6} className={classes.icons}>
-            {getStatusAtividade(atividade.date) === 'red' && (
-              <PDFIconAtividade
-                propsClass="buttonPDF"
-                ticket={ticket}
-              />
-            )}
-          </Grid>
-        </Grid>
+      <div className={classes.root}>
+        <div className={classes.icons}>
+          {!getStatusAtividade(atividade.date) && (
+            <PDFIconAtividade propsClass="buttonPDF" ticket={ticket} />
+          )}
+        </div>
         {loading ? (
           <Loading type="Paper" />
         ) : (
-          <Grid container spacing={2}>
+          <Grid container spacing={2} className={classes.boxAtividades}>
             <Atividade Atividade={atividade} />
+            <AtividadeTecnico Tecnico={tecnico} />
             <AtividadeCliente Cliente={cliente} />
           </Grid>
         )}
-      </Paper>
-      <>
-        <InfosView infos={atividade.infos} ticket={atividade.ticket} />
-      </>
+      </div>
+      {loading ? (
+        <Loading type="Paper" message="Carregando atividades..." />
+      ) : (
+        <InfosView
+          infos={atividade.infos}
+          ticket={atividade.ticket}
+          date={atividade.date}
+        />
+      )}
     </>
   );
 }

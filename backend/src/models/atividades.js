@@ -39,7 +39,8 @@ const findOneByData = async (Params) => {
 			"atividades.ticket",
 			"atividades.date",
 			"clientes.nome_fantasia as cliente",
-			"users.nome as técnico",
+			"users.nome as tecnico",
+			"users.id as tecnico_id",
 			"atividades.created_at",
 			"atividades.updated_at"
 		)
@@ -108,13 +109,14 @@ module.exports = {
 				"atividades.ticket",
 				"atividades.date",
 				"clientes.nome_fantasia as cliente",
-				"users.nome as técnico",
+				"users.nome as tecnico",
+				"users.id as tecnico_id",
 				"atividades.created_at",
 				"atividades.updated_at"
 			)
 			.from("atividades")
 			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
-			.join("users", "users.id", "=", "atividades.user_id")
+			.join("users", "users.id", "=", "atividades.user_id");
 
 		query = getQueryType(query,period);
 
@@ -128,13 +130,14 @@ module.exports = {
 				"atividades.ticket",
 				"atividades.date",
 				"clientes.nome_fantasia as cliente",
-				"users.nome as técnico",
+				"users.nome as tecnico",
+				"users.id as tecnico_id",
 				"atividades.created_at",
 				"atividades.updated_at"
 			)
 			.from("atividades")
 			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
-			.join("users", "users.id", "=", "atividades.user_id")
+			.join("users", "users.id", "=", "atividades.user_id");
 
 			if (
 				data_inicial &&
@@ -175,7 +178,8 @@ module.exports = {
 				"atividades.ticket",
 				"atividades.date",
 				"clientes.nome_fantasia as cliente",
-				"users.nome as técnico",
+				"users.nome as tecnico",
+				"users.id as tecnico_id",
 				"atividades.created_at",
 				"atividades.updated_at"
 			)
@@ -195,7 +199,8 @@ module.exports = {
 				"a.ticket",
 				"a.date",
 				"c.nome_fantasia as cliente",
-				"u.nome as técnico",
+				"users.nome as tecnico",
+				"users.id as tecnico_id",
 				"a.created_at",
 				"a.updated_at"
 			)
@@ -220,7 +225,8 @@ module.exports = {
 				"atividades.ticket",
 				"atividades.date",
 				"clientes.nome_fantasia as cliente",
-				"users.nome as técnico",
+				"users.nome as tecnico",
+				"users.id as tecnico_id",
 				"atividades.created_at",
 				"atividades.updated_at"
 			)
@@ -244,7 +250,8 @@ module.exports = {
 				"atividades.ticket",
 				"atividades.date",
 				"clientes.nome_fantasia as cliente",
-				"users.nome as técnico",
+				"users.nome as tecnico",
+				"users.id as tecnico_id",
 				"atividades.created_at",
 				"atividades.updated_at"
 			)
@@ -265,7 +272,8 @@ module.exports = {
 				"atividades.ticket",
 				"atividades.date",
 				"clientes.nome_fantasia as cliente",
-				"users.nome as técnico",
+				"users.nome as tecnico",
+				"users.id as tecnico_id",
 				"atividades.created_at",
 				"atividades.updated_at"
 			)
@@ -307,7 +315,8 @@ module.exports = {
 				"atividades.ticket",
 				"atividades.date",
 				"clientes.id as cliente_id",
-				"users.nome as técnico",
+				"users.nome as tecnico",
+				"users.id as tecnico_id",
 				"atividades.created_at",
 				"atividades.updated_at"
 			)
@@ -354,7 +363,8 @@ module.exports = {
 				"atividades.ticket",
 				"atividades.date",
 				"clientes.nome_fantasia as cliente",
-				"users.nome as técnico",
+				"users.nome as tecnico",
+				"users.id as tecnico_id",
 				"atividades.created_at",
 				"atividades.updated_at"
 			)
@@ -381,7 +391,8 @@ module.exports = {
 				"atividades.ticket",
 				"atividades.date",
 				"clientes.nome_fantasia as cliente",
-				"users.nome as técnico",
+				"users.nome as tecnico",
+				"users.id as tecnico_id",
 				"atividades.created_at",
 				"atividades.updated_at"
 			)

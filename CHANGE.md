@@ -1,4 +1,2 @@
-## 1.0.5
-
-## 1.0.4
-- [X] Criado sistema de filtro para atividade; 
+## 1.1.1
+- [ ] Corrigido erro na senha do login, quando atualizada a página e pressiona a primeira tela.

@@ -6,7 +6,7 @@ import {
   Grid,
   Typography,
 } from "@material-ui/core/";
-import { Atividade, AtividadeCliente } from "../../../Components/Box/Atividade";
+import { Atividade, AtividadeCliente, AtividadeTecnico } from "../../../Components/Box/Atividade";
 import InfoCreate from "../Create/InfoCreate.Form";
 import InfoEdit from "./InfoEdit.Form";
 import Loading from '../../../Components/Loading'
@@ -21,6 +21,7 @@ import { LoadingProvider } from '../../../Context/LoadingContext';
 //* SERVICE
 import { getAtividade } from "../../../Service/atividade.service";
 import { getCliente } from "../../../Service/clientes.service";
+import { getUser } from '../../../Service/user.service';
 import Service from '../../../Api/Service';
 
 //*UTILS 
@@ -45,24 +46,28 @@ export default () => {
   const history = useHistory();
   const { handleSnackBar } = useSnackBar();
   const [atividade, setAtividade] = React.useState({});
+  const [tecnico, setTecnico] = React.useState({});
   const [cliente, setCliente] = React.useState({});
   const [atividadeInfos, setAtividadeInfos] = React.useState([]);
   const [infos, setInfos] = React.useState(1);
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
+    
 
     getAtividade(ticket)
       .then( async (Dados) => {
 
-        if (!Data.permissionEditAtividade(Dados.date)) {
-          throw ({ message: 'Você não pode mais editar essa atividade.'});
+        if (!Data.getStatusAtividade(Dados.date)) {
+          throw ({ message: 'Tempo limite para edição ultrapassado.'});
         }
   
         setAtividade(Dados);
         setAtividadeInfos(Dados.infos);
         const Cliente = await getCliente(Dados.cliente_id);
         setCliente(Cliente.data);
+        const Tecnico = await getUser(Dados.tecnico_id);
+        setTecnico(Tecnico.data);
 
         return setLoading(false);
 
@@ -113,11 +118,12 @@ export default () => {
         ) : (
           <Grid container spacing={2}>
             <Atividade Atividade={atividade} />
+            <AtividadeTecnico Tecnico={tecnico} />
             <AtividadeCliente Cliente={cliente} />
           </Grid>
         )}
       </Paper>
-      { !loading &&
+      {!loading && (
         <LoadingProvider>
           <CategoriasProvider>
             {!loading &&
@@ -143,7 +149,7 @@ export default () => {
               })}
           </CategoriasProvider>
         </LoadingProvider>
-      }
+      )}
     </>
   );
 };

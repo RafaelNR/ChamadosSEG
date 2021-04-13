@@ -4,6 +4,7 @@ import {
 } from '@material-ui/core';
 
 import Gravatar from '../../Service/gravatar.service';
+import * as Api from '../../Api/Crud'
 
 import { FileIsExist } from '../../Utils/functions'
 
@@ -19,12 +20,21 @@ const MyGravatar = ({ preview=null, imagem=null, email, children,...rest}) => {
 
     (async () => {
 
-      if (imagem && await FileIsExist(imagem)) {
-        return setSrc(process.env.REACT_APP_ENDPOINT_IMAGES_USER+imagem)
-      } else if (email) {
-        const gravatar = new Gravatar(email)
-        const urlImagem = await gravatar.getImage()
-        if (render && urlImagem) return setSrc(urlImagem);
+      try {
+        // Verifica se o arquivo existe;
+        if (imagem && (await FileIsExist(imagem))) {
+          return setSrc(
+            process.env.REACT_APP_ENDPOINT_IMAGES_USER + imagem
+          );
+        } else if (email) {
+          // Busca no gravatar;
+          const gravatar = new Gravatar(email);
+          const urlImagem = await gravatar.getImage();
+          if (render && urlImagem) return setSrc(urlImagem);
+        }
+        
+      } catch (error) {
+        console.log(error)
       }
 
     })(); 
@@ -34,6 +44,7 @@ const MyGravatar = ({ preview=null, imagem=null, email, children,...rest}) => {
 
     return function cleanup() {
       render = false;
+      Api.default.cancel('Gravatar unmounted');
     };
 
   },[preview,imagem,email])

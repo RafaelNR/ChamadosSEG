@@ -1,6 +1,5 @@
 import moment from "moment";
-moment.locale('pt-br');
-
+import 'moment/locale/pt-br';
 
 function TodayDate() {
   return moment(new Date()).format("YYYY-MM-DD");
@@ -40,27 +39,63 @@ function dateMoreDays(date: string, Days: number): string {
   return moment(newDate).format("YYYY-MM-DD");
 }
 
-function getStatusAtividade(date: string): string{
-  
-  const currDate = moment().locale('pt-br').format('YYYY-MM-DD')
 
+function getStatusAtividade(date: string): boolean{
+  return moment().diff(date, 'days') <= 9 ? true : false
+}
+
+function getColorAtividade(date: string): object{
+  
+  const currDate = moment().format('YYYY-MM-DD')
+
+  // Se date é do proximo mês, já retorna red.
   if (!moment(date).isBefore(currDate, 'month')) {
     
-    const days = moment(currDate).locale('pt-br').diff(date, 'days');
+    const days = moment(currDate).diff(date, 'days');
 
+    if (days <= 2)
+      return {
+        backgroundColor: '#4b9609',
+        color: 'white',
+      }
     if (days <= 4)
-      return 'green'
+      return {
+        backgroundColor: '#fce83a',
+        color: 'black',
+      }
     else if (days <= 8)
-      return 'yellow'
+      return {
+        backgroundColor: '#f2930c',
+        color: 'white',
+      }
     else if (days <= 9)
-      return 'orange'
+      return {
+        backgroundColor: '#e2580b',
+        color: 'white',
+      }
     else 
-      return 'red'
+      return {
+        backgroundColor: '#cc060c',
+        color: 'white',
+      }
     
   } else {
 
-    return 'red'
+    return {
+      backgroundColor: '#cc060c',
+      color: 'white',
+    }
       
+  }
+}
+
+function dateEndOfAtividade(date: string): string{
+
+  if (getStatusAtividade(date)) {
+    const maxDateForEdit = moment(date).add(9, 'days').format('YYYY-MM-DD') + ' 23:59:59';
+    return moment(maxDateForEdit).startOf('seconds').fromNow();
+  } else {
+    return 'close';
   }
 
 }
@@ -72,5 +107,7 @@ export {
   handleDate,
   dateMoreDays,
   permissionEditAtividade,
-  getStatusAtividade
+  getColorAtividade,
+  getStatusAtividade,
+  dateEndOfAtividade
 };

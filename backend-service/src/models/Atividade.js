@@ -15,7 +15,7 @@ class Atividade {
 				"atividades.ticket",
 				"atividades.date",
 				"atividades.cliente_id",
-				"users.nome as técnico",
+				"users.nome as tecnico",
 				"atividades.created_at",
 				"atividades.updated_at"
 			)
