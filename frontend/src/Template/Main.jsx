@@ -35,7 +35,6 @@ const Main = ({ children }) => {
           <HeaderPage />
             <main className={classes.content}>{children}</main>
           <SnackBar />
-          <Footer />
         </MenuProvider>
       </SnackBarProvider>
     </MythemeProvider>

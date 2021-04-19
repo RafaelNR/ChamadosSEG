@@ -43,6 +43,10 @@ export default () => {
 
 	}, [pathname, nome]);
 
+	
+
+
+
 	return (
 		<>
 			<div className={classes.box_header}>
