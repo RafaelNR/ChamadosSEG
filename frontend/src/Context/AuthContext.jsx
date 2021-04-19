@@ -7,20 +7,16 @@ import React, {
 } from "react";
 import PropTypes from "prop-types";
 import { Auth, removeToken }  from "../Service/auth.service";
-import { Login } from '../Service/login.service'
-import * as Crud from '../Api/Crud';
 
 import useLocalStore from "../Hooks/useLocalStore";
 
 const AuthContext = createContext({});
 
 const AuthProvider = ({ children }) => {
-  const { getData, setData, removeData } = useLocalStore();
+  const { getData, removeData } = useLocalStore();
   const [token, setToken] = useState(getData("token"));
   const [user, setUser] = useState(getData("user"));
   const [errors, setErrors] = useState([]);
-  const [loading, setLoading] = useState(false); // TODO Loading
-  const [success, setSuccess] = useState(false);
 
   const handleLogout = useCallback(() => {
     setUser(null);
@@ -28,7 +24,6 @@ const AuthProvider = ({ children }) => {
     removeData('token');
     removeData('user');
     removeToken();
-  // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -37,13 +32,13 @@ const AuthProvider = ({ children }) => {
     (async () => {
       if (!token || token === 'undefined') {
         process.env.REACT_APP_NODE === 'dev' &&
-          console.log('token não encontrado');
+        console.log('token não encontrado');
         return handleLogout();
       }
 
       if (!user || user === 'undefined' || !user.nome) {
         process.env.REACT_APP_NODE === 'dev' &&
-          console.log('user não encontrado');
+        console.log('user não encontrado');
         return handleLogout();
       }
 
@@ -55,51 +50,8 @@ const AuthProvider = ({ children }) => {
 
     return function cleanup() {
       render = false;
-      Crud.default.cancel('AuthContext unmonted');
     };
-  },[handleLogout]);
-
-  const handleLogin = useCallback(({ user, passwd, lembrar, permanecer }) => {
-
-    setLoading(true);
-    Login(user, passwd, permanecer).then((Dados) => {
-
-      setErrors([])
-      setLoading(false);
-
-      if(Dados.auth && Dados.token){
-        setData('token', Dados.token); // Seta no local store;
-        setData('user', Dados.user); // Seta no local store;
-        lembrar ? setData('lembrar', Dados.user.user) : removeData('lembrar');// Seta no localstore;
-        setSuccess(true);
-        return window.location.replace('/');
-      }
-
-      if (Dados.auth && Dados.user) {
-        setData('user', Dados.user);
-        lembrar ? setData('lembrar', Dados.user.user) : removeData('lembrar'); // Seta no localstore;
-        setSuccess(true);
-        return window.location.replace('/');
-      }
-
-      throw new Error('Erro em logar no sistema');
-
-    }).catch((error) => {
-      setLoading(false);
-      
-      if (error.errors)
-        return setErrors(error.errors);
-      
-      setErrors({
-        success: false,
-        message: error && error.message ? error.message : 'Erro em logar no sistema.'
-      })
-
-    })
-
-    },
-    [setData]
-  );
+  },[]);
 
   const handleAuth = useCallback(() => {
     const storageToken = getData('token');
@@ -132,18 +84,15 @@ const AuthProvider = ({ children }) => {
       }
     });
   // eslint-disable-next-line
-  },[handleLogout])
+  },[])
 
   return (
     <AuthContext.Provider
       value={{
         logado: Boolean(user),
         user,
-        success,
         errors,
-        loading,
         setErrors,
-        handleLogin,
         handleLogout,
         handleAuth,
       }}

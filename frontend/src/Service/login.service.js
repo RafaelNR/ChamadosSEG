@@ -3,7 +3,7 @@ import {
   LoginSchema
 } from "../Schemas/UserSchema";
 
-export async function Login(user, passwd, permanecer) {
+export async function Login({user, passwd, permanecer}) {
 
   try {
 

@@ -3,9 +3,10 @@ const Router = require('express').Router()
 // Controllers
 const Atividade = require('../controllers/Atividade')
 const Atividades = require('../controllers/Atividades')
-const Email = require('../controllers/Email')
+
 
 Router.use('/pdf', require('./pdfs'));
+Router.use('/send', require('./emails'));
 
 Router.get("/atividade/:ticket", (req, res, next) =>
 	Atividade.render(req, res, next)
@@ -13,13 +14,6 @@ Router.get("/atividade/:ticket", (req, res, next) =>
 Router.get("/atividades", (req, res, next) => {
 	Atividades.render(req, res, next);
 });
-
-Router.get('/send/email', (req, res, next) => {
-	Email.Enviar(req, res, next);
-})
-Router.post('/send/email', (req, res, next) => {
-	Email.Enviar(req, res, next);
-})
 
 
 // Página não existe
