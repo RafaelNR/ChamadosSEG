@@ -64,7 +64,9 @@ const AtividadesProvider = ({ children }) => {
     if (roleID) {
       (async () => {
         try {
+          console.log(getURL());
           const resp = await Crud.get(getURL());
+          console.log(resp)
           const { success, data } = resp.data;
           if (!success) throw resp.data;
           if (render) setAtividades(data);
@@ -73,10 +75,7 @@ const AtividadesProvider = ({ children }) => {
           console.log(error);
           return handleSnackBar({
             type: 'error',
-            message:
-              error && error.message
-                ? error.message
-                : 'Erro em carregar atividades. Por favor tente mais tarde.'
+            message: 'Erro em carregar atividades. Por favor tente mais tarde.'
           });
         }
       })();

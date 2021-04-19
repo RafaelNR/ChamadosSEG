@@ -199,8 +199,8 @@ module.exports = {
 				"a.ticket",
 				"a.date",
 				"c.nome_fantasia as cliente",
-				"users.nome as tecnico",
-				"users.id as tecnico_id",
+				"u.nome as tecnico",
+				"u.id as tecnico_id",
 				"a.created_at",
 				"a.updated_at"
 			)
