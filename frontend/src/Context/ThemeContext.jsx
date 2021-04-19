@@ -16,8 +16,7 @@ const MythemeProvider = ({ children }) => {
         '@global': {
           '#root': {
             flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
+            display: 'block',
             height: '100vh'
           },
           a: {
