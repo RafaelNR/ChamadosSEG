@@ -30,8 +30,31 @@ const findOne = async (ID) => {
 	return { ...user, clients: await ClientsHasUser.findClients(ID) };
 };
 
+const findOneByEmail = async (email) => {
+	return await knex
+		.select(
+			"id",
+			"nome",
+			"user",
+			"email",
+			"telefone",
+			"actived",
+			"last_acess",
+			"imagem",
+			"role_id",
+			"created_at",
+			"updated_at"
+		)
+		.from("users")
+		.where("email", "=", email)
+		.limit(1)
+		.then((user) => user[0]);
+};
+
+
 module.exports = {
 	findOne,
+	findOneByEmail,
 
 	/**
 	 * Retorna dados de todos os usuários.
