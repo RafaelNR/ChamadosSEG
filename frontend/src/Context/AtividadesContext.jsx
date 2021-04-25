@@ -18,10 +18,7 @@ import useUser from '../Hooks/useUser';
 //* SERVICE
 import * as Crud from "../Api/Crud";
 import { AtividadePDF } from '../Service/pdf.service'
-import { getAtividades } from '../Service/atividade.service'
 
-//* SHEMAS
-import { FilterAtividadesSchema} from '../Schemas/Atividades.Schema'
 
 const AtividadesContext = createContext({});
 
@@ -112,32 +109,6 @@ const AtividadesProvider = ({ children }) => {
     //eslint-disable-next-line
   },[])
 
-  const filterAtividades = useCallback(async (Dados) => {
-    try {
-      if (Object.keys(Dados).length === 0) {
-        const error = await FilterAtividadesSchema(Dados);
-        throw error.errors;
-      }
-
-      if (Boolean(Dados.data_inicial) && !Boolean(Dados.data_final)) {
-        throw 'Data final precisa estar preenchida.';
-      }
-
-      if (!Boolean(Dados.data_inicial) && Boolean(Dados.data_final)) {
-        throw 'Data inicial precisa estar preenchida.';
-      }
-
-      const resp = await getAtividades(Dados);
-
-      console.log(resp);
-
-      setAtividades(await getAtividades(Dados));
-    } catch (error) {
-      console.log(error);
-    }
-    //eslint-disable-next-line
-  },[])
-
   return (
     <AtividadesContext.Provider
       value={{
@@ -146,7 +117,6 @@ const AtividadesProvider = ({ children }) => {
         loading,
         loadingPDF,
         downloadPDF,
-        filterAtividades
       }}
     >
       {children}

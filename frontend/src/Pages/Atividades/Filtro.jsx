@@ -1,15 +1,21 @@
-import React from 'react';
+import React,{useCallback} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Button, Accordion, AccordionDetails, AccordionActions, AccordionSummary, Grid, Typography } from '@material-ui/core/';
 import { ExpandLessSharp, FilterListSharp } from '@material-ui/icons/';
 import Select from '../../Components/FormControl/Selects'
+import ProcessButton from '../../Components/Buttons/Progress'
 
 //* CONTEXT
 import useAtividades from "../../Context/AtividadesContext";
+import useSnackBar from '../../Context/SnackBarContext';
 
 //* SERVICE
 import { getUsers, getMyClientes, getPerfil } from '../../Service/user.service'
 import { getClientes } from '../../Service/clientes.service'
+import { getAtividades } from '../../Service/atividade.service';
+
+//* SHEMAS
+import { FilterAtividadesSchema} from '../../Schemas/Atividades.Schema'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,10 +48,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-  const { filterAtividades } = useAtividades();
+  const { setAtividades } = useAtividades();
+  const { handleSnackBar } = useSnackBar();
   const [clientes, setClientes] = React.useState([]);
   const [tecnicos, setTecnicos] = React.useState([]);
   const [values, setValues] = React.useState({});
+  const [errors, setErrors] = React.useState({});
+  const [loading, setLoading] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
 
   React.useEffect(() => {
     let render = true;
@@ -55,7 +65,7 @@ export default () => {
         const My = await getPerfil();
 
         if (!My || !My.success)
-          throw new Error('Erro em carregar dados do filtro.');
+          throw new Error('Erro em carregar values do filtro.');
 
         const u = My.data.role_id === 3 ? My : await getUsers();
         const c =
@@ -85,20 +95,19 @@ export default () => {
     };
   }, []);
 
-  // eslint-disable-next-line
   React.useEffect(() => {
     setValues(v => {
-      let Dados = { ...v };
+      let values = { ...v };
 
       if (clientes.length === 1) {
-        Dados = { ...v, cliente: clientes[0].id };
+        values = { ...v, cliente: clientes[0].id };
       }
 
       if (tecnicos.length === 1) {
-        Dados = { ...v, tecnico: tecnicos[0].id };
+        values = { ...v, tecnico: tecnicos[0].id };
       }
 
-      return Dados;
+      return values;
     });
   }, [clientes, tecnicos]);
 
@@ -110,9 +119,10 @@ export default () => {
       ...values,
       [name]: value
     });
+    setErrors({})
   };
 
-  const clearValues = () => {
+  const clearValues = useCallback(() => {
     setValues(() => {
       if (clientes.length <= 1 || tecnicos.length <= 1) {
         return { cliente: values.cliente, tecnico: values.tecnico };
@@ -120,7 +130,45 @@ export default () => {
         return {};
       }
     });
-  };
+    setErrors({});
+  }, []);
+
+  const filterAtividades = useCallback(async () => {
+    try {
+      setLoading(true);
+      setSuccess(true);
+
+      if (Object.keys(values).length === 0) {
+        const error = await FilterAtividadesSchema(values);
+        return setErrors(error.errors);
+      }
+
+      if (Boolean(values.data_inicial) && !Boolean(values.data_final)) {
+        throw new Error('Data final precisa estar preenchida.');
+      }
+
+      if (!Boolean(values.data_inicial) && Boolean(values.data_final)) {
+        throw new Error('Data inicial precisa estar preenchida.');
+      }
+
+      getAtividades(values)
+        .then((resp) => {
+          setAtividades(resp)
+        })
+        .catch((err) => {
+          throw err;
+        });
+    } catch (error) {
+      return handleSnackBar({
+        type: 'error',
+        message: error && error.message ? error.message : 'Erro em carregar atividades filtradas.'
+      });
+    } finally {
+      setLoading(false);
+      setSuccess(false);
+    }
+    //eslint-disable-next-line
+  }, [values]);
 
   return (
     <div className={classes.root}>
@@ -175,6 +223,8 @@ export default () => {
                 itens={clientes}
                 value={values.cliente}
                 handleChange={handleChange}
+                errorText={errors['cliente']}
+                error={errors['cliente'] ? true : false}
                 disabled={clientes.length <= 1 ? true : false}
               />
             </Grid>
@@ -187,22 +237,20 @@ export default () => {
                 itens={tecnicos}
                 value={values.tecnico}
                 handleChange={handleChange}
+                errorText={errors['tecnico']}
+                error={errors['tecnico'] ? true : false}
                 disabled={tecnicos.length <= 1 ? true : false}
               />
             </Grid>
           </Grid>
         </AccordionDetails>
         <AccordionActions>
-          <Button variant="outlined" onClick={() => clearValues(values)}>
+          <Button variant="outlined" onClick={() => clearValues()}>
             Limpar
           </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => filterAtividades(values)}
-          >
+          <ProcessButton handleSubmit={filterAtividades} loading={loading} success={success}>
             Filtrar
-          </Button>
+          </ProcessButton>
         </AccordionActions>
       </Accordion>
     </div>
