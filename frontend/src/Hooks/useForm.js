@@ -13,13 +13,16 @@ const useForm = (currValues = {}) => {
     (event) => {
       const key = event.target.name;
       const value = Masker(event.target.value, key);
-      console.log(values);
-      setValues({
-        ...values,
-        [key]: value,
+
+      setValues((props) => {
+        return {
+          ...props,
+          [key]: value
+        };
       });
     },
-    [values, Masker]
+    // eslint-disable-next-line
+    []
   );
 
   return {

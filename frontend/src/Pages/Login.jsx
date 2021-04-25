@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback } from 'react';
 //* COMPONENTES
 import {
   CssBaseline,
@@ -133,6 +133,7 @@ const Login = () => {
 
   React.useEffect(() => {
     document.title = `Login - OS Técnicos`;
+<<<<<<< HEAD
   }, []);
 
   return (
@@ -181,9 +182,43 @@ const Login = () => {
         </Grid>
       </Grid>
     </>
+=======
+    setLogin((values) => {
+      return {
+        ...values,
+        lembrar: Boolean(getData('lembrar'))
+      };
+    });
+    // eslint-disable-next-line
+  }, [setLogin]);
+
+  //react-hooks/exhaustive-deps
+  const handleChange = useCallback((e) => {
+    const name = e.target.name;
+    const value =
+      e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+
+    setLogin((values) => {
+      return {
+        ...values,
+        [name]: value
+      };
+    });
+    // eslint-disable-next-line
+  }, [setLogin]);
+
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      handleLogin(login);
+    },
+    // eslint-disable-next-line
+    [login]
+>>>>>>> 26b96147ba2120b3735221b6c0c42dd2ec192710
   );
 };
 
+<<<<<<< HEAD
 const Recuperar = () => {
   const classes = useStyles();
   const [value, setValue] = useState('');
@@ -191,6 +226,16 @@ const Recuperar = () => {
 
   React.useEffect(() => {
     document.title = `Recuperar senha - OS Técnicos`;
+=======
+  const removeErrors = useCallback((e) => {
+    if (errors[e.target.name] && errors.hasOwnProperty(e.target.name)) {
+      setErrors((errors) => {
+        delete errors[e.target.name];
+        return errors;
+      });
+    }
+    // eslint-disable-next-line
+>>>>>>> 26b96147ba2120b3735221b6c0c42dd2ec192710
   }, []);
 
   const handleChange = useCallback((e) => {

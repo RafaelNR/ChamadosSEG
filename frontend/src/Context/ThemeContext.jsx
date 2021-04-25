@@ -15,9 +15,9 @@ const MythemeProvider = ({ children }) => {
       MuiCssBaseline: {
         '@global': {
           '#root': {
-            flex: 1,
-            display: 'block',
-            height: '100vh'
+            display: 'flex',
+            flexDirection: 'column', 
+            height: '100vh',
           },
           a: {
             textDecoration: 'none'
@@ -90,7 +90,7 @@ const MythemeProvider = ({ children }) => {
       <ThemeContext.Provider
         value={{
           darkMode,
-          setdarkMode
+          setdarkMode,
         }}
       >
         {children}

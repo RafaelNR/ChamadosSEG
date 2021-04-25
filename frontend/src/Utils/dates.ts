@@ -33,10 +33,13 @@ function permissionEditAtividade(atividade_date: any): boolean {
   return t2 >= t1 - 86400000 * 10 ? true : false;
 }
 
-function dateMoreDays(date: string, Days: number): string {
-  const t1 = moment(date).format("x");
-  const newDate = parseInt(t1) - 86400000 * Days;
-  return moment(newDate).format("YYYY-MM-DD");
+/**
+ * @param date data atual
+ * @param Days dia que no max podem abrir atividade;
+ * @return Retorna a data maxima para abrir a atividade.
+ */
+function dateMaxOpenAtividade(date: string, Days: number): string {
+  return moment(date).subtract(Days,'days').format("YYYY-MM-DD");
 }
 
 
@@ -105,7 +108,7 @@ export {
   handleDateTime,
   handleDateTimeFull,
   handleDate,
-  dateMoreDays,
+  dateMaxOpenAtividade,
   permissionEditAtividade,
   getColorAtividade,
   getStatusAtividade,

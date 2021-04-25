@@ -29,6 +29,7 @@ export const getAtividades = async (Dados) => {
 
 export const getAtividade = async (ticket) => {
   try {
+    console.log(ticket);
     const Url = `/atividades/ticket/${ticket}`;
     const Dados = await Service.exec("get", Url);
 
@@ -38,7 +39,7 @@ export const getAtividade = async (ticket) => {
     throw Dados.data;
     
   } catch (error) {
-    throw error.data;
+    throw error;
   }
 };
 
@@ -121,3 +122,4 @@ export const AtividadePDF = async (ticket) => {
     throw error;
   }
 };
+

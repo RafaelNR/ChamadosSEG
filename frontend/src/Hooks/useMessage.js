@@ -19,20 +19,22 @@ const useMessage = () => {
 
   const handleError = useCallback(
     (msg) => {
-      if (
-        msg === 'Network Error' ||
-        msg === 'Autenticação expirou.'
-        ) {
-        return Logout();
-      } else if (msg.code && msg.code === 'ECONNREFUSED') {
-        return Logout();
-      } else if (msg.message) {
-        return setMessage(msg.message);
+
+      switch (msg) {
+        case 'Network Error':
+        case 'Autenticação expirou.':
+        case msg.code && msg.code === 'ECONNREFUSED':
+          return Logout();
+        
+        case msg.message:
+          return setMessage(msg.message);
+        default:
+          return setMessage(msg);
       }
 
-      return setMessage(msg);
     },
-    [setMessage, history, Logout]
+    // eslint-disable-next-line
+    [history]
   );
 
 

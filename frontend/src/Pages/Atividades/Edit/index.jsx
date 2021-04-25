@@ -2,9 +2,7 @@ import React from "react";
 import { useParams, useHistory } from "react-router-dom";
 import {
   makeStyles,
-  Paper,
   Grid,
-  Typography,
 } from "@material-ui/core/";
 import { Atividade, AtividadeCliente, AtividadeTecnico } from "../../../Components/Box/Atividade";
 import InfoCreate from "../Create/InfoCreate.Form";
@@ -30,8 +28,12 @@ import * as Data from '../../../Utils/dates'
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    marginTop: "-6rem",
-    height: 300,
+    marginTop: "-8rem",
+    height: 'auto',
+  },
+    boxAtividades: {
+    minHeight: 200,
+    maxHeight: 250,
   },
   title: {
     fontSize: "20px",
@@ -53,15 +55,12 @@ export default () => {
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    
-
     getAtividade(ticket)
-      .then( async (Dados) => {
-
+      .then(async (Dados) => {
         if (!Data.getStatusAtividade(Dados.date)) {
-          throw ({ message: 'Tempo limite para edição ultrapassado.'});
+          throw new Error('Tempo limite para edição da atividade ultrapassado.');
         }
-  
+
         setAtividade(Dados);
         setAtividadeInfos(Dados.infos);
         const Cliente = await getCliente(Dados.cliente_id);
@@ -70,8 +69,8 @@ export default () => {
         setTecnico(Tecnico.data);
 
         return setLoading(false);
-
-      }).catch(error => {
+      })
+      .catch((error) => {
         console.log(error);
         handleSnackBar({
           type: 'error',
@@ -81,13 +80,12 @@ export default () => {
               : `Erro em carregar a atividade.`
         });
         return history.replace('/atividades');
-      })
+      });
 
     return function cleanup() {
       return Service.cancel('EditAtividade umont');
     };
-    
-  }, [history, ticket]);
+  }, [history, ticket, handleSnackBar]);
 
 
   const scroll = () => {
@@ -110,19 +108,16 @@ export default () => {
   }
 
   return (
-    <>
-      <Paper className={classes.root}>
-        <Typography className={classes.title}>Dados da Atividade</Typography>
-        {loading ? (
-          <Loading type="Paper" />
-        ) : (
-          <Grid container spacing={2}>
-            <Atividade Atividade={atividade} />
-            <AtividadeTecnico Tecnico={tecnico} />
-            <AtividadeCliente Cliente={cliente} />
-          </Grid>
-        )}
-      </Paper>
+    <div className={classes.root}>
+      {loading ? (
+        <Loading type="Paper" />
+      ) : (
+        <Grid container spacing={2} className={classes.boxAtividades}>
+          <Atividade Atividade={atividade} />
+          <AtividadeTecnico Tecnico={tecnico} />
+          <AtividadeCliente Cliente={cliente} />
+        </Grid>
+      )}
       {!loading && (
         <LoadingProvider>
           <CategoriasProvider>
@@ -130,9 +125,7 @@ export default () => {
               atividadeInfos &&
               atividadeInfos.map((info, index) => {
                 return (
-                  <div key={index}>
-                    <InfoEdit Info={info} ticket={atividade.ticket} />
-                  </div>
+                  <InfoEdit Info={info} ticket={atividade.ticket} key={index}/>
                 );
               })}
 
@@ -150,6 +143,6 @@ export default () => {
           </CategoriasProvider>
         </LoadingProvider>
       )}
-    </>
+    </div>
   );
 };

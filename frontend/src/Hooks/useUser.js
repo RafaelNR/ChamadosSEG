@@ -22,13 +22,13 @@ const useUser = () => {
   }, [setNome, setUser, getData]);
 
   const setNewImagem = useCallback((imagem) => {
-    const User = getData("user");
-    console.log(User,imagem)
+    const User = getData('user');
+    console.log(User, imagem);
     setData('user', {
       ...User,
-      imagem,
-    })
-
+      imagem
+    });
+    // eslint-disable-next-line
   },[])
 
   const getRoleName = useCallback(() => {

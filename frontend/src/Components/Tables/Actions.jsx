@@ -41,7 +41,7 @@ const Actions = (props) => {
           );
 
         default:
-          return;
+          break;
       }
     });
   };

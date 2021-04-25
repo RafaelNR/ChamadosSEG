@@ -14,7 +14,7 @@ const Ticket = require("../classes/ticket.class");
 const index = async (req, res) => {
 	try {
 		const Dados =
-			Object.keys(req.query).length > 1
+			Object.keys(req.query).length >= 1
 				? await Model.filter(tools.handleFilter(req.query))
 				: await Model.index(req.query.period);
 
@@ -207,9 +207,7 @@ const tools = {
 		// if(Atividade.user_id !== UserID) 
 		// 	throw "Você ";
 
-		console.log(Data.compareDateMaxDays(Atividade.date, 10))
-
-		if(!Data.compareDateMaxDays(Atividade.date, 10)){
+		if(!Data.dateMaxFromInsertOrUpdate(Atividade.date)){
 			throw "Período para editar atividade ultrapassado.";
 		}
 
@@ -254,13 +252,13 @@ const tools = {
 		if (count > 0)
 			throw "Já existe atividades do seu usuário para esse cliente na data informada.";
 
-		if (!Data.compareDateLargerToday(Dados.date))
+		if (!Data.dateMoreFromNow(Dados.date))
 			throw "Não é permitido criar um atividade com data maior que hoje.";
 
-		if (!Data.compareDateMaxDays(Dados.date, 10))
-			throw "Não é permitido criar um atividade com mais de 10 dias da data de hoje.";
+		if (!Data.dateMaxFromInsertOrUpdate(Dados.date))
+			throw "Não é permitido criar um atividade com mais de 10 dias de hoje.";
 			
-		if (!Data.compareDateMonth(Dados.date))
+		if (!Data.dateOtherMonth(Dados.date))
 			throw "Não é permitido criar uma atividade fora do mês atual.";		
 		
 	},
@@ -270,7 +268,7 @@ const tools = {
 	 */
 	verifyClient: (user_id, client_id) => {
 		if (countClientByUser(user_id, client_id) <= 0) {
-			throw "Você não está vinculado a esse cliente";
+			throw "Você não está vinculado a esse cliente.";
 		}
 
 		return client_id;

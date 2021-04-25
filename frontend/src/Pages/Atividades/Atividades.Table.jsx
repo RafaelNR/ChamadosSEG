@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import clsx from 'clsx'
 //* COMPONENTES
 import {
   makeStyles,
@@ -124,9 +123,10 @@ export default () => {
   //& Order e por onde será renderizado as atividades.
   useEffect(() => {
     setRowsPerPage(25);
-    setOrderBy("");
-    setOrder("desc");
+    setOrderBy('');
+    setOrder('desc');
     setRows(search && search.length > 3 ? searchResults : atividades);
+    // eslint-disable-next-line
   }, [atividades, searchResults, search, setOrderBy, setRows, setOrder]);
 
   //& Renderiza a pesquisa;

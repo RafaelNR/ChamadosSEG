@@ -84,9 +84,6 @@ export function initialsName(FullName) {
 
   return FullName.substr(0, 2).toUpperCase();
 
-
-
-
 }
 
 export function handleHeaderName(Path, Headers) {
@@ -96,6 +93,7 @@ export function handleHeaderName(Path, Headers) {
 
     if (acc.length === 0) {
       if (paths[index] && paths[index] !== "") {
+        // eslint-disable-next-line
         return array.filter(({ nome, path }) => {
           if (path.includes(paths[index])) {
             return { nome, path };
@@ -105,11 +103,12 @@ export function handleHeaderName(Path, Headers) {
         return []
       }
     } else {
+      // eslint-disable-next-line
       return acc.filter(({ nome, path }) => {
         if (Path.includes(path)) {
           return { nome, path };
         }
-      })
+      });
     }
 
   },[])

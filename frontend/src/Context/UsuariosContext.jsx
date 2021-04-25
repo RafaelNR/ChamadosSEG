@@ -27,30 +27,30 @@ const UsuariosProvider = ({ children }) => {
     setLoading(true);
 
     (async () => {
-
       try {
         const Dados = await Crud.get('usuarios');
         const { success, data } = Dados.data;
-        if(!success) throw new Error(data.message);
+        if (!success) throw new Error(data.message);
         if (render) setUsuarios(data);
         setLoading(false);
       } catch (error) {
-        console.log(error)
+        console.log(error);
         setLoading(false);
         handleSnackBar({
           type: 'error',
-          message: error && error.message
-            ? error.message
-            : 'Erro em carregar usuários, por favor tente mais tarde.'
+          message:
+            error && error.message
+              ? error.message
+              : 'Erro em carregar usuários, por favor tente mais tarde.'
         });
       }
-
     })();
 
     return function cleanup() {
       render = false;
       Crud.default.cancel('AuthContext unmonted');
     };
+    //eslint-disable-next-line
   }, []);
 
   const getUsuario = useCallback(
@@ -181,6 +181,7 @@ const UsuariosProvider = ({ children }) => {
     const fn = Actions[type];
     setApiLoading(true);
     return fn(usuario);
+    //eslint-disable-next-line
   }, []);
 
 

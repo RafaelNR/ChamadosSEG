@@ -22,36 +22,31 @@ const LogProvider = ({ children }) => {
     let render = true;
     setLoading(true);
 
-
     (async () => {
-
       try {
-
         const Dados = await Service.index();
         const { success, data } = Dados;
-        if (!success) throw { message: data.message };
-        if (success && render) setLogs(data);
-        return setLoading(false);
+        if (success && render) return setLogs(data);
+        throw new Error(data.message);
       } catch (error) {
-
         console.log(error);
-        setLoading(false);
         handleSnackBar({
           type: 'error',
           message: error.message
             ? error.message
             : 'Erro em carregar log, por favor tente mais tarde.'
         });
+      } finally {
+        setLoading(false);
       }
-
     })();
 
     return function cleanup() {
-      console.log("unmounted Log");
       render = false;
-      return Service.Cancel;
+      return Service.Cancel('LogContext unmount');
     };
-  }, [setLogs, handleSnackBar, setLoading]);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <LogContext.Provider

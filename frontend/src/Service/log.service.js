@@ -25,6 +25,11 @@ class Log{
   }
 
 
+  Cancel(msg) {
+    Service.cancel(msg)
+  }
+
+
 }
 
 export default new Log();
