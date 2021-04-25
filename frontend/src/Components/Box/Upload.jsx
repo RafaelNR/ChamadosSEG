@@ -2,7 +2,6 @@ import React from 'react'
 import {
   makeStyles,
   Typography,
-  CircularProgress
 } from '@material-ui/core/';
 import ImageIcon from '@material-ui/icons/Image';
 import { useDropzone } from 'react-dropzone'
@@ -44,7 +43,7 @@ export const UploadImage = ({ type,id }) => {
     (uploadFile) => {
       handleFile(type,{File:uploadFile[0],id:id})
     },
-    []
+    [handleFile,id,type]
   );
 
   const { getRootProps, getInputProps } = useDropzone(

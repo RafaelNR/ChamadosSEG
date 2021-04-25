@@ -7,6 +7,7 @@ const useRouter = () => {
   const getQuery = useCallback((key) => {
     const query = new URLSearchParams(location.search);
     return query.get(key);
+    // eslint-disable-next-line
   },[])
 
   return {

@@ -34,10 +34,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default ({ type, title, message }) => {
   const classes = useStyles();
+  console.log(type,title,message)
   return (
     <Alert severity={type} className={clsx(classes.box,classes[type])}>
       <AlertTitle className='title'>{title}</AlertTitle>
-      {message}
+      {typeof message === 'string' ? message : 'Erro em se conectar ao sistema.Tente mais tarde.'}
     </Alert>
   )
 

@@ -6,13 +6,14 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
+  Paper,
   FormHelperText,
   makeStyles
-} from "@material-ui/core/";
+} from '@material-ui/core/';
 import {
   Atividade,
-  AtividadeClientes,
-  AtividadeTecnico
+  AtividadeTecnico,
+  AtividadeCliente,
 } from "../../../Components/Box/Atividade";
 import Progress from "../../../Components/Buttons/Progress";
 
@@ -26,72 +27,55 @@ import useSnackBar from "../../../Context/SnackBarContext";
 
 const useStyles = makeStyles((theme) => ({
   boxgrid: {
-    margin: theme.spacing(1),
-    width: "calc(100% + -16px)",
+    height: '100%',
+  },
+  title: {
+    fontSize: '25px',
+    padding: '10px',
+    color: theme.palette.text.title
   },
   input: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   formControl: {
     margin: theme.spacing(1),
-    width: 250,
+    width: '100%'
   },
   errors: {
-    marginTop: "30px",
+    marginTop: '30px'
   },
-  gridCliente: {
-    width: "600px",
-    height: "160px",
-  },
-  notCliente: {
-    height: "100px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    color: "#aaa !important",
-  },
-  paperCliente: {
-    padding: "15px 28px",
-    border: "1px solid #d9d9d9",
-    margin: "10px",
-    "& > p": {
-      fontWeight: "bold",
-      fontSize: "14px",
-      color: "#404040",
-      "& > span": {
-        fontSize: "13px",
-        fontWeight: "normal",
-      },
-    },
-    "& > .title": {
-      paddingBottom: "9px",
-      color: theme.palette.text.title,
-    },
+  paper: {
+    paddingTop: '16px !important',
   },
   button: {
-    display: "flex",
-    justifyContent: "flex-end",
-    marginTop: "20px",
-    marginBottom: "10px",
-  },
+    display: 'flex',
+    justifyContent: 'flex-end',
+    marginTop: '20px',
+    marginBottom: '10px'
+  }
 }));
 
 export default ({ setTicket, setAtividadeID, newInfo, clientes, tecnico }) => {
   const classes = useStyles();
   const { handleSnackBar } = useSnackBar();
-  const [atividade, setAtividade] = React.useState({});
+  const [atividade, setAtividade] = React.useState({
+    date: TodayDate(),
+    cliente_id: ''
+  });
   const [errors, setErrors] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
 
   React.useEffect(() => {
-    setAtividade({
-      date: TodayDate(),
-      cliente_id: clientes.length === 1 ? clientes[0].id : "",
-    });
-  }, [clientes]);
+    setAtividade(props => {
+      return {
+        ...props,
+        cliente_id: clientes.length === 1 ? clientes[0].id : ''
+      }
+    })
+  },[clientes])
 
   const handleAtividade = React.useCallback(
     (e) => {
@@ -106,7 +90,7 @@ export default ({ setTicket, setAtividadeID, newInfo, clientes, tecnico }) => {
         [key]: null,
       });
     },
-    [atividade, setAtividade, setErrors, errors]
+    [atividade, errors]
   );
 
   const handleSubmit = React.useCallback(
@@ -119,15 +103,12 @@ export default ({ setTicket, setAtividadeID, newInfo, clientes, tecnico }) => {
 
         Insert(atividade)
           .then((Dados) => {
-            setLoading(false);
-
             if (Dados.error) return setErrors(Dados.errors);
 
             setSuccess(true);
-            setLoading(false);
             setAtividade({
               ...Dados,
-              ...atividade,
+              ...atividade
             });
             setTicket(Dados.ticket);
             setAtividadeID(Dados.id);
@@ -135,110 +116,130 @@ export default ({ setTicket, setAtividadeID, newInfo, clientes, tecnico }) => {
             return setErrors([]);
           })
           .catch((error) => {
-            console.log(error)
             setSuccess(false);
-            setLoading(false);
             handleSnackBar({
-              type: "error",
-              message: error && error.message
-                ? error.message
-                : "Erro em inserir atividade.",
+              type: 'error',
+              message:
+                error && error.message
+                  ? error.message
+                  : 'Erro em inserir atividade.'
             });
+          })
+          .finally(() => {
+            setLoading(false);
           });
       }
     },
-    [atividade,handleSnackBar, loading, setAtividadeID, setTicket, newInfo]
+    // eslint-disable-next-line
+    [atividade, setAtividadeID, setTicket, newInfo]
   );
 
   return (
     <>
-    {
-      !success 
-      ? (
-        <form onSubmit={handleSubmit} autoComplete="off">
-          <Grid container spacing={2} className={classes.boxgrid}>
-            <Grid item className={classes.input}>
-              <FormControl
-                variant="outlined"
-                disabled={success}
-                className={classes.formControl}
-              >
-                <TextField
-                  id="date"
-                  name="date"
-                  label="Data da atividade"
-                  type="date"
-                  value={atividade.date}
-                  onChange={handleAtividade}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  variant="outlined"
-                  error={errors["date"] ? true : false}
-                  helperText={errors["date"]}
-                  disabled={success}
-                  required
-                />
-              </FormControl>
-            </Grid>
-            <Grid item className={classes.input}>
-              <FormControl
-                variant="outlined"
-                className={classes.formControl}
-                disabled={success}
-                error={errors["cliente_id"] ? true : false}
-              >
-                <InputLabel id="cliente">
-                  {clientes.length === 1
-                    ? clientes[0].nome_fantasia
-                    : "Clientes *"}
-                </InputLabel>
-                <Select
-                  labelId="cliente"
-                  id="cliente_id"
-                  name="cliente_id"
-                  onChange={handleAtividade}
-                  label="Clientes *"
-                  required
-                  disabled={clientes.length === 1 || success ? true : false}
-                >
-                  {clientes &&
-                    clientes.length > 0 &&
-                    clientes.map((cliente) => {
-                      return (
-                        <MenuItem key={cliente.id} value={cliente.id}>
-                          {cliente.nome_fantasia}
-                        </MenuItem>
-                      );
-                    })}
-                </Select>
-                <FormHelperText>{errors["cliente_id"]}</FormHelperText>
-              </FormControl>
-            </Grid>
-          </Grid>
-        
-          <Grid container spacing={2} className={classes.boxgrid}>
-            <Grid item md={12} className={classes.button}>
-              <Progress
-                handleSubmit={handleSubmit}
-                loading={loading}
-                success={success}
-              >
-                Iniciar registros
-              </Progress>
-            </Grid>
-          </Grid>
-        </form>
-      )
-      : (
-      <Grid container md={12} spacing={2} className={classes.boxgrid}>
-        <Atividade Atividade={atividade} />
-        <AtividadeTecnico Tecnico={tecnico}/>
-        <AtividadeClientes Atividade={atividade} Clientes={clientes} />
-      </Grid>
-      )
-    }
-    </>
+      {!success ? (
+        <Grid container spacing={2}>
+          <Grid item xs={6} className={classes.paper}>
+            <Paper>
+              <form onSubmit={handleSubmit} autoComplete="off">
+                <Grid container spacing={2} className={classes.boxgrid}>
+                  <Grid item md={6} className={classes.input}>
+                    <FormControl
+                      variant="outlined"
+                      disabled={success}
+                      className={classes.formControl}
+                    >
+                      <TextField
+                        id="date"
+                        name="date"
+                        label="Data da atividade"
+                        type="date"
+                        value={atividade.date}
+                        onChange={handleAtividade}
+                        InputLabelProps={{
+                          shrink: true
+                        }}
+                        variant="outlined"
+                        error={errors['date'] ? true : false}
+                        helperText={errors['date']}
+                        disabled={success}
+                        required
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item md={6} className={classes.input}>
+                    <FormControl
+                      variant="outlined"
+                      className={classes.formControl}
+                      disabled={success}
+                      error={errors['cliente_id'] ? true : false}
+                    >
+                      <InputLabel id="cliente">
+                        {clientes.length === 1
+                          ? clientes[0].nome_fantasia
+                          : 'Clientes *'}
+                      </InputLabel>
+                      <Select
+                        labelId="cliente"
+                        id="cliente_id"
+                        name="cliente_id"
+                        value={atividade.cliente_id}
+                        onChange={handleAtividade}
+                        label="Clientes *"
+                        required
+                        disabled={
+                          clientes.length === 1 || success ? true : false
+                        }
+                      >
+                        {clientes &&
+                          clientes.length > 0 &&
+                          clientes.map((cliente) => {
+                            return (
+                              <MenuItem key={cliente.id} value={cliente.id}>
+                                {cliente.nome_fantasia}
+                              </MenuItem>
+                            );
+                          })}
+                      </Select>
+                      <FormHelperText>{errors['cliente_id']}</FormHelperText>
+                    </FormControl>
+                  </Grid>
+                </Grid>
 
+                <Grid container spacing={2} className={classes.boxgrid}>
+                  <Grid item md={12} className={classes.button}>
+                    <Progress
+                      handleSubmit={handleSubmit}
+                      loading={loading}
+                      success={success}
+                    >
+                      Iniciar registros
+                    </Progress>
+                  </Grid>
+                </Grid>
+              </form>
+            </Paper>
+          </Grid>
+          <AtividadeCliente
+            Cliente={
+              clientes.filter(
+                (cliente) => atividade.cliente_id === cliente.id
+              )[0]
+            }
+          />
+        </Grid>
+      ) : (
+        <Grid container spacing={2} className={classes.boxgrid}>
+          <Atividade Atividade={atividade} />
+          <AtividadeTecnico Tecnico={tecnico} />
+          <AtividadeCliente
+            Cliente={
+              clientes.filter(
+                (cliente) => atividade.cliente_id === cliente.id
+              )[0]
+            }
+          />
+        </Grid>
+      )}
+    </>
   );
 };

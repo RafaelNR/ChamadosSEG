@@ -11,7 +11,7 @@ import AtividadesEdit from "../Pages/Atividades/Edit/";
 import AtividadesView from "../Pages/Atividades/View/";
 import Clientes from "../Pages/Clientes/";
 import Categorias from "../Pages/Categorias/";
-import Usuarios from "../Pages/Usuarios/";
+import Usuarios from "../Pages/Usuarios";
 import Modelos from "../Pages/Modelos";
 import Perfil from "../Pages/Perfil/";
 import Logs from "../Pages/Logs/";

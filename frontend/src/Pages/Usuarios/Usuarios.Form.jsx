@@ -335,13 +335,13 @@ const FactorForm = (props) => {
   
   React.useEffect(() => {
     if (type !== 'insert') {
-      setCurrForm('update')
-      setForms([props.currForm, 'clientes', 'imagem'])
+      setCurrForm(props.currForm);
+      setForms([props.currForm, 'clientes', 'imagem']);
     } else {
-      setCurrForm('insert')
-      setForms([props.currForm, 'clientes'])
+      setCurrForm('insert');
+      setForms([props.currForm, 'clientes']);
     }
-  },[type])
+  }, [type]);
 
 
   const handleSubmit = React.useCallback(
@@ -399,7 +399,6 @@ const FactorForm = (props) => {
       setCurrForm(forms[index-1]);
     }
   },[currForm])
-
 
   switch (currForm) {
     case "insert":

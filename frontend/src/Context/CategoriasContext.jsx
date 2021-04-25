@@ -22,22 +22,19 @@ const CategoriasProvider = ({ children }) => {
   const [errors, setErrors] = useState({});
   const [apiLoading, setApiLoading] = useState();
 
-  useEffect(() => {
+  useEffect(
+    () => {
       let render = true;
       setLoading(true);
 
       (async () => {
-
         try {
           const Dados = await Crud.get('categorias');
           const { success, data } = Dados.data;
-          if (!success)
-            throw { success: false, message: data.message };
           if (success && render) return setCategorias(data);
-          setLoading(false);
+          throw new Error(data.message);
         } catch (error) {
           console.log(error);
-          setLoading(false);
           handleSnackBar({
             type: 'error',
             message:
@@ -45,15 +42,17 @@ const CategoriasProvider = ({ children }) => {
                 ? error.message
                 : 'Erro em carregar categorias, Por favor tente mais tarde.'
           });
+        } finally {
+          setLoading(false);
         }
-
-      })()
+      })();
 
       return function cleanup() {
         render = false;
         Crud.default.cancel('CategoriaContext unmounted');
       };
     },
+    // eslint-disable-next-line
     []
   );
 
@@ -65,9 +64,7 @@ const CategoriasProvider = ({ children }) => {
         return Crud.getByID("categorias", parseInt(ID)).then((resp) => {
           const { success, data } = resp.data;
           if (!success) throw resp.data;
-          setApiLoading(false);
           setCategoria(data);
-          return;
         });
       } catch (error) {
         console.log(error);
@@ -75,6 +72,8 @@ const CategoriasProvider = ({ children }) => {
           type: "error",
           message: "Erro em buscar categoria.",
         });
+      } finally {
+        setApiLoading(false);
       }
     },
     [handleSnackBar]

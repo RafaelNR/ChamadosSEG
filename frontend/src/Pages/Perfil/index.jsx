@@ -46,7 +46,7 @@ export default () => {
           })
         }
           
-        throw ({ message: Dados.message });
+        throw new Error(Dados.message);
         
       } catch (error) {
         handleSnackBar({

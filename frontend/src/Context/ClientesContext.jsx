@@ -27,32 +27,30 @@ const ClientesProvider = ({ children }) => {
     setLoading(true);
 
     (async () => {
-
       try {
         const Dados = await Crud.get('clientes');
         const { success, data } = Dados.data;
-        if (!success) throw { success: false, message: data.message };
-        if (success && render) setClientes(data);
-        return setLoading(false);
+        if (success && render) return setClientes(data);
+        throw new Error(data.message);
       } catch (error) {
         console.log(error);
-        setLoading(false);
         handleSnackBar({
           type: 'error',
           message: error.message
             ? error.message
             : 'Erro em carregar clientes, Por favor tente mais tarde.'
         });
+      } finally {
+        setLoading(false);
       }
-
     })();
 
     return function cleanup() {
       render = false;
-      Crud.default.cancel('AtividadeContext unmounted');
+      Crud.default.cancel('ClienteContext unmounted');
     };
-
-  }, [setClientes, handleSnackBar, setLoading]);
+    // eslint-disable-next-line
+  }, []);
 
   /**
    * Busca o cliente pelo ID.

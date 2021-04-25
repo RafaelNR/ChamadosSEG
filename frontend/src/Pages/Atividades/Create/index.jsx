@@ -1,7 +1,5 @@
 import React from "react";
 import {
-  Paper,
-  Typography,
   makeStyles
 } from "@material-ui/core/";
 import AtividadeCreate from "./AtividadeCreate.Form";
@@ -20,12 +18,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     marginTop: "-6rem",
-    minHeight: 300
-  },
-  title: {
-    fontSize: "25px",
-    padding: "10px",
-    color: theme.palette.text.title,
+    height: 190
   },
 }));
 
@@ -37,9 +30,11 @@ export default () => {
   const [clientes, setClientes] = React.useState([]);
   const [ticket, setTicket] = React.useState(null);
   const [infos, setInfos] = React.useState(0);
+  const [loading, setLoading] = React.useState(true);
 
   
   React.useEffect(() => {
+    setLoading(true);
     getMyClientes()
       .then((Dados) => {
         if (Dados.success) {
@@ -47,16 +42,22 @@ export default () => {
         }
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         handleSnackBar({
-          type: "error",
-          message: err && err.message ? err.message : 'Erro em carregar clientes. Por favor tentar mais tarde.',
+          type: 'error',
+          message:
+            err && err.message
+              ? err.message
+              : 'Erro em carregar clientes. Por favor tentar mais tarde.'
         });
+      })
+      .finally(() => {
+        setLoading(false);
       });
-  }, [handleSnackBar])
+  // eslint-disable-next-line
+  }, [])
 
   const scroll = () => {
-    console.log('acroll')
     window.scrollTo({
       top: document.documentElement.scrollTop + 200,
       behavior: 'smooth',
@@ -76,16 +77,17 @@ export default () => {
 
   return (
     <React.Fragment>
-      <Paper className={classes.root}>
-        <Typography className={classes.title}>Dados da Atividade</Typography>
-        <AtividadeCreate
-          setAtividadeID={setAtividadeID}
-          setTicket={setTicket}
-          newInfo={incrementInfos}
-          clientes={clientes}
-          tecnico={userDados}
-        />
-      </Paper>
+      <div className={classes.root}>
+        {!loading && clientes && (
+          <AtividadeCreate
+            setAtividadeID={setAtividadeID}
+            setTicket={setTicket}
+            newInfo={incrementInfos}
+            clientes={clientes}
+            tecnico={userDados}
+          />
+        )}
+      </div>
 
       {rows.map((id) => {
         return (

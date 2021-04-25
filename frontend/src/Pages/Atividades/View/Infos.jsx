@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
   not: {
     padding: 25,
+    marginTop: 8,
     textAlign: 'center',
     fontWeight: 'bold'
   }

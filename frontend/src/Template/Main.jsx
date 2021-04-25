@@ -1,26 +1,23 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core';
 import AppBar from './AppBar';
 import Drawer from './Drawer';
 import Footer from './Footer';
-import HeaderPage from "../Components/Header";
-import SnackBar from "../Components/SnackBar";
+import HeaderPage from '../Components/Header';
+import SnackBar from '../Components/SnackBar';
 
-import { SnackBarProvider } from "../Context/SnackBarContext";
-import { MenuProvider } from "../Context/MenuContext";
+import { SnackBarProvider } from '../Context/SnackBarContext';
+import { MenuProvider } from '../Context/MenuContext';
 import { MythemeProvider } from '../Context/ThemeContext';
-
-
 
 const useStyles = makeStyles((theme) => ({
   hide: {
-    display: "none",
+    display: 'none'
   },
   content: {
-    flexGrow: 1,
-    marginLeft: "72px",
-  },
+    marginLeft: '72px'
+  }
 }));
 
 const Main = ({ children }) => {
@@ -32,8 +29,11 @@ const Main = ({ children }) => {
         <MenuProvider>
           <AppBar />
           <Drawer />
-          <HeaderPage />
-            <main className={classes.content}>{children}</main>
+          <main className={classes.content}>
+            <HeaderPage />
+            {children}
+          </main>
+          <Footer />
           <SnackBar />
         </MenuProvider>
       </SnackBarProvider>
@@ -42,7 +42,7 @@ const Main = ({ children }) => {
 };
 
 Main.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired
 };
 
 export default React.memo(Main);

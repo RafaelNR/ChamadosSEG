@@ -10,13 +10,6 @@ const useStyles = makeStyles((theme) => ({
     width: '600px',
     height: '160px'
   },
-  notCliente: {
-    height: '100px',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    color: '#aaa !important'
-  },
   paperCliente: {
     padding: '15px 28px',
     height: 180,
@@ -48,9 +41,9 @@ const useStyles = makeStyles((theme) => ({
 const Atividade = ({ Atividade }) => {
   const classes = useStyles();
 
-  const getDate = useCallback((date) => {
+  const getDate = useCallback(() => {
     return dateEndOfAtividade(Atividade.date);
-  }, []);
+  }, [Atividade.date]);
 
   return (
     <Grid item md={3} xl={3} className={classes.gridCliente}>
@@ -91,65 +84,29 @@ const Atividade = ({ Atividade }) => {
   );
 };
 
-const AtividadeClientes = ({ Atividade, Clientes }) => {
+const AtividadeCliente = ({ Cliente }) => {
   const classes = useStyles();
   return (
     <Grid item md={6} className={classes.gridCliente}>
       <Paper className={classes.paperCliente}>
         <Typography className="title">Cliente</Typography>
-        {Atividade && Atividade.cliente_id ? (
-          Clientes.map((cliente) => {
-            return cliente.id === Atividade.cliente_id &&
-              (
-                <>
-                  <Typography display="block" className={classes.cliente}>
-                    Razão Social: <span>{cliente.razao_social}</span>
-                  </Typography>
-                  <Typography display="block" className={classes.cliente}>
-                    CNPJ/CPF: <span>{cliente.cnpj_cpf}</span>
-                  </Typography>
-                  <Typography display="block" className={classes.cliente}>
-                    Representante: <span>{cliente.representante}</span>
-                  </Typography>
-                  <Typography display="block" className={classes.cliente}>
-                    Email: <span>{cliente.email}</span>
-                  </Typography>
-                  <Typography display="block" className={classes.cliente}>
-                    Telefone: <span>{cliente.telefone}</span>
-                  </Typography>
-                </>
-              );
-          })
-        ) : (
-          <Typography display="block" className={classes.notCliente}>
-            Sem cliente vinculado!
-          </Typography>
-        )}
-      </Paper>
-    </Grid>
-  );
-};
-
-const AtividadeCliente = ({ Cliente }) => {
-  const classes = useStyles();
-  return (
-    <Grid item md={6} xl={6} className={classes.gridCliente}>
-      <Paper className={classes.paperCliente}>
-        <Typography className="title">Cliente</Typography>
         <Typography display="block" className={classes.cliente}>
-          Razão Social: <span>{Cliente.razao_social}</span>
+          Razão Social:{' '}
+          <span>
+            {Cliente && Cliente.razao_social ? Cliente.razao_social : ''}
+          </span>
         </Typography>
         <Typography display="block" className={classes.cliente}>
-          CNPJ/CPF: <span>{Cliente.cnpj_cpf}</span>
+          CNPJ/CPF: <span>{Cliente && Cliente.cnpj_cpf ? Cliente.cnpj_cpf : ''}</span>
         </Typography>
         <Typography display="block" className={classes.cliente}>
-          Representante: <span>{Cliente.representante}</span>
+          Representante: <span>{Cliente && Cliente.representante ? Cliente.representante : ''}</span>
         </Typography>
         <Typography display="block" className={classes.cliente}>
-          Email: <span>{Cliente.email}</span>
+          Email: <span>{Cliente && Cliente.email ? Cliente.email : ''}</span>
         </Typography>
         <Typography display="block" className={classes.cliente}>
-          Telefone: <span>{Cliente.telefone}</span>
+          Telefone: <span>{Cliente && Cliente.telefone ? Cliente.telefone : ''}</span>
         </Typography>
       </Paper>
     </Grid>
@@ -184,4 +141,4 @@ const AtividadeTecnico = ({ Tecnico }) => {
   );
 }
 
-export { Atividade, AtividadeCliente, AtividadeClientes, AtividadeTecnico };
+export { Atividade, AtividadeCliente, AtividadeTecnico };

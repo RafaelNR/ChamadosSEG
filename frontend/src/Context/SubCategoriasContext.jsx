@@ -27,33 +27,30 @@ const SubCategoriasProvider = ({ children }) => {
     let render = true;
 
     (async () => {
-      
       try {
-        const Dados = await Crud.get("subcategorias");
+        const Dados = await Crud.get('subcategorias');
         const { success, data } = Dados.data;
-        if (!success) throw { success: false, message: data.message };
-        if (success && render) setSubCategorias(data);
-        setLoading(false);
+        if (success && render) return setSubCategorias(data);
+        throw new Error(data.message);
       } catch (error) {
         console.log(error);
-        setLoading(false);
         handleSnackBar({
-          type: "error",
-          message: error.message ? error.message :
-            "Erro em carregar sub-categorias, Por favor tente mais tarde.",
+          type: 'error',
+          message: error.message
+            ? error.message
+            : 'Erro em carregar sub-categorias, Por favor tente mais tarde.'
         });
+      } finally {
+        setLoading(false);
       }
-    
     })();
 
     return function cleanup() {
       render = false;
-      Crud.default.cancel('AuthContext unmonted');
+      Crud.default.cancel('SubCategoriaContext unmonted');
     };
-    
-    },
-    []
-  );
+    // eslint-disable-next-line
+  },[]);
 
   const getSubCategoria = useCallback(
     async (ID) => {
@@ -137,7 +134,7 @@ const SubCategoriasProvider = ({ children }) => {
         console.log(resp)
         if (!resp.data.success) throw resp.data;
         setSubCategorias((subCategorias) =>
-          subCategorias.filter((c) => subCategoria.id != c.id)
+          subCategorias.filter((c) => subCategoria.id !== c.id)
         );
         handleSnackBar({
           type: 'success',

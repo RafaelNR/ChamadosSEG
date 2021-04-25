@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback } from 'react';
 //* COMPONENTES
 import {
   CssBaseline,
@@ -117,12 +117,13 @@ export default () => {
 
   React.useEffect(() => {
     document.title = `Login - OS Técnicos`;
-    setLogin(values => {
+    setLogin((values) => {
       return {
         ...values,
         lembrar: Boolean(getData('lembrar'))
       };
     });
+    // eslint-disable-next-line
   }, [setLogin]);
 
   //react-hooks/exhaustive-deps
@@ -130,14 +131,14 @@ export default () => {
     const name = e.target.name;
     const value =
       e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-    
+
     setLogin((values) => {
       return {
         ...values,
         [name]: value
       };
-    }); 
-  
+    });
+    // eslint-disable-next-line
   }, [setLogin]);
 
   const handleSubmit = useCallback(
@@ -145,6 +146,7 @@ export default () => {
       e.preventDefault();
       handleLogin(login);
     },
+    // eslint-disable-next-line
     [login]
   );
 
@@ -155,6 +157,7 @@ export default () => {
         return errors;
       });
     }
+    // eslint-disable-next-line
   }, []);
 
 

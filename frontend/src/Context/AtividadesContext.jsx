@@ -48,13 +48,13 @@ const AtividadesProvider = ({ children }) => {
       return type === 'my'
         ? `atividades/myuser?period=${period}`
         : `atividades?period=${period}`;
-    
+
     // Access técnico com period and type
     if (periods.includes(period) && types.includes(type))
       return type === 'my'
         ? `atividades/myuser?period=${period}`
         : `atividades/myclientes?period=${period}`;
-    
+  //eslint-disable-next-line
   }, [roleID]);
 
   useEffect(() => {
@@ -66,16 +66,18 @@ const AtividadesProvider = ({ children }) => {
         try {
           const resp = await Crud.get(getURL());
           const { success, data } = resp.data;
-          if (!success) throw resp.data;
-          if (render) setAtividades(data);
-          setLoading(false);
+          if (render && success) return setAtividades(data);
+          throw new Error(resp.data);
         } catch (error) {
           console.log(error);
           return handleSnackBar({
             type: 'error',
             message: 'Erro em carregar atividades. Por favor tente mais tarde.'
           });
+        } finally {
+          setLoading(false);
         }
+        
       })();
     }
 
@@ -83,11 +85,12 @@ const AtividadesProvider = ({ children }) => {
       render = false;
       Crud.default.cancel('AtividadeContext unmounted');
     };
+    //eslint-disable-next-line
   }, [roleID]);
 
 
   const downloadPDF = useCallback((ticket) => {
-    console.log(ticket)
+    console.log(ticket);
     setLoadingPDF(true);
     AtividadePDF(ticket)
       .then((Dados) => {
@@ -95,7 +98,7 @@ const AtividadesProvider = ({ children }) => {
           return window.open(Dados.data.link);
         }
 
-        throw new Error('Error em gerar PDF.')
+        throw new Error('Error em gerar PDF.');
       })
       .catch((error) => {
         return handleSnackBar({
@@ -106,34 +109,33 @@ const AtividadesProvider = ({ children }) => {
       .finally(() => {
         setLoadingPDF(false);
       });
+    //eslint-disable-next-line
   },[])
 
   const filterAtividades = useCallback(async (Dados) => {
     try {
-
       if (Object.keys(Dados).length === 0) {
         const error = await FilterAtividadesSchema(Dados);
         throw error.errors;
       }
 
       if (Boolean(Dados.data_inicial) && !Boolean(Dados.data_final)) {
-          throw 'Data final precisa estar preenchida.';
+        throw 'Data final precisa estar preenchida.';
       }
 
       if (!Boolean(Dados.data_inicial) && Boolean(Dados.data_final)) {
-          throw 'Data inicial precisa estar preenchida.'
+        throw 'Data inicial precisa estar preenchida.';
       }
 
       const resp = await getAtividades(Dados);
 
-      console.log(resp)
-      
+      console.log(resp);
+
       setAtividades(await getAtividades(Dados));
-
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-
+    //eslint-disable-next-line
   },[])
 
   return (
