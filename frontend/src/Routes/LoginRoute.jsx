@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 
 import { MythemeProvider } from '../Context/ThemeContext';
 import { LoginProvider } from '../Context/LoginContext';
-import Login from "../Pages/Login";
+import Login from "../Views/Login/";
 
 export default () => {
   return (
