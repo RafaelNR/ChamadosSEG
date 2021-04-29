@@ -9,6 +9,7 @@ import {
   Typography
 } from '@material-ui/core/';
 import { ProgressSubmit } from '../Components/Buttons/Progress';
+import InputPasswd from '../Components/FormControl/Passwd';
 import Alert from '../Components/Alert';
 
 //* CONTEXT
@@ -54,18 +55,21 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3)
   },
   text: {
-    width: '65%',
+    width: 350,
     fontSize: 15,
     textAlign: 'justify',
     paddingTop: 20
   },
   orientacoes: {
-    width: '65%',
+    width: 350,
     fontSize: 12,
     textAlign: 'left'
   },
+  form: {
+    marginTop: 20,
+  },
   input: {
-    width: 300
+    width: 350,
   },
   button: {
     justifyContent: 'center'
@@ -132,7 +136,7 @@ export default () => {
 
       setTimeout(() => {
         return history.push('/');
-      },3000  )
+      },2000)
 
     } catch (error) {
       console.log(error);
@@ -179,22 +183,16 @@ export default () => {
               </Typography>
             </>
           )}
-          <form onSubmit={handleSubmit} method="post">
-            <TextField
-              type="passwd"
-              variant="outlined"
-              margin="normal"
-              id="passwd"
-              label="Nova senha"
-              name="passwd"
-              value={values.passwd || ''}
-              autoComplete="passwd"
-              className={classes.input}
+          <form onSubmit={handleSubmit} method="post" className={classes.form}>
+            <InputPasswd
               onChange={handleChangeValues}
-              required
+              className={classes.input}
+              value={values.passwd || ''}
               error={Boolean(error)}
               helperText={error ? error : ''}
-              disabled={success}
+              label="Nova Senha *"
+              fullWidth
+              required
             />
             <Grid container className={classes.button}>
               <Grid item md={6}>
