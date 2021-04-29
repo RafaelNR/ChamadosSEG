@@ -8,9 +8,14 @@ import {
   Slide,
 } from '@material-ui/core';
 import { ProgressSubmit } from '../../Components/Buttons/Progress';
+import Alert from '../../Components/Alert'
 
 //* CONTEXT
 import useLogin from '../../Context/LoginContext';
+import useLoading from '../../Context/LoadingContext';
+
+//* SERVICE
+import { Recuperar } from '../../Service/login.service'
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -24,7 +29,8 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
   const classes = useStyles();
   const [email, setEmail] = useState('');
-  const { handleChangeSlide, recuperar } = useLogin();
+  const { loading, setLoading, success, setSuccess} = useLoading();
+  const { handleChangeSlide, recuperar, setErrors } = useLogin();
 
   useEffect(() => {
     document.title = `Recuperar senha - OS Técnicos`;
@@ -32,11 +38,27 @@ export default () => {
 
   const handleChange = useCallback((e) => {
     setEmail(e.target.value);
+    setErrors({});
   }, []);
   
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
-    console.log(email)
+    
+    setLoading(true);
+
+    Recuperar(email)
+      .then(resp => {
+        setSuccess(true);
+        setLoading(false);
+        setErrors([]);
+      })
+      .catch(error => {
+        console.log('Error: ', error)
+        setSuccess(false);
+        setLoading(false);
+        setErrors(error);
+      })
+    
   },[email])
 
   return (
@@ -48,10 +70,19 @@ export default () => {
       timeout={{ enter: 100 }}
     >
       <div>
+        {success && !loading && (
+          <Alert
+            type="success"
+            title="Sucesso"
+            message="Email de recuperação enviado."
+          />
+        )}
         <Typography className={classes.title} variant="h4">
           Encontre sua senha.
         </Typography>
-        <Typography className={classes.title}>Digite seu e-mail para recuperação.</Typography>
+        <Typography className={classes.title}>
+          Digite seu e-mail para recuperação.
+        </Typography>
         <form onSubmit={handleSubmit}>
           <TextField
             type="email"
@@ -65,6 +96,7 @@ export default () => {
             onChange={handleChange}
             required
             fullWidth
+            disabled={success}
           />
           <Grid container>
             <Grid item md={6}>
@@ -77,7 +109,7 @@ export default () => {
               </Typography>
             </Grid>
             <Grid item md={6}>
-              <ProgressSubmit success={false} loading={false}>
+              <ProgressSubmit success={success} loading={loading}>
                 Enviar
               </ProgressSubmit>
             </Grid>

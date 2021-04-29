@@ -13,14 +13,22 @@ export default class Validate {
       });
     } catch (error) {
       if (error instanceof yup.ValidationError) {
-        const errorMessages = {};
-        error.inner.forEach((error) => {
-          errorMessages[error.path] = error.message;
-        });
-        return {
-          error: true,
-          errors: await errorMessages,
-        };
+
+        if (typeof this.data === 'object') {
+          const errorMessages = {};
+          error.inner.forEach((error) => {
+            errorMessages[error.path] = error.message;
+          });
+          return {
+            error: true,
+            errors: await errorMessages,
+          };
+        } else {
+          return {
+            error: true,
+            errors: error.inner[0].message
+          };
+        }
       }
     }
   }

@@ -6,7 +6,7 @@ const Log = require("../controllers/log");
 const Auth = require("../controllers/auth");
 const Login = require("../controllers/login");
 const Perfil = require("../controllers/perfil");
-const RecuperarSenha = require("../controllers/recuperar");
+const RecuperarSenha = require("../controllers/recuperar_senha");
 
 Router.get("/", (req, res) =>
 	res.status(200).json({
@@ -14,8 +14,10 @@ Router.get("/", (req, res) =>
 	})
 );
 
+// Rotas sem token;
 Router.post("/recuperar-senha", RecuperarSenha.order);
 Router.get("/recuperar-senha", RecuperarSenha.access);
+Router.put("/recuperar-senha", RecuperarSenha.changePasswd);
 Router.post("/login", Login);
 Router.get("/auth", Auth);
 

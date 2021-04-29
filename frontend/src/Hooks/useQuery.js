@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const useRouter = () => {
+const useQuery = () => {
   const location = useLocation();
 
   const getQuery = useCallback((key) => {
@@ -16,4 +16,4 @@ const useRouter = () => {
   
 }
 
-export default useRouter;
+export default useQuery;

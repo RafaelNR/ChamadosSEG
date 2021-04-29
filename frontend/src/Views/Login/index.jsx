@@ -12,6 +12,7 @@ import Login from './Login'
 //* CONTEXT
 import useLogin from '../../Context/LoginContext';
 import useAuth from '../../Context/AuthContext';
+import { LoadingProvider } from '../../Context/LoadingContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,7 +79,13 @@ export default () => {
           {errorsAuth && errorsAuth.message && !errorsAuth.success && (
             <Alert type="error" title="Erro!" message={errorsAuth.message} />
           )}
-          {recuperar ? <Recuperar /> : <Login />}
+          {recuperar ? (
+            <LoadingProvider>
+              <Recuperar />
+            </LoadingProvider>
+          ) : (
+            <Login />
+          )}
         </div>
       </Grid>
     </Grid>

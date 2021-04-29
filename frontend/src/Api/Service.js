@@ -28,8 +28,8 @@ class Service {
   /**
    * Cancela a requisição a api, quando ainda está sendo processada.
    */
-  cancel(msg) {
-    this.axios.CancelToken.source().cancel(msg)
+  async cancel(msg) {
+    await this.axios.CancelToken.source().cancel(msg)
   }
 
   /**

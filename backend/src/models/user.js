@@ -155,6 +155,10 @@ module.exports = {
 		return await knex("users").where({ id }).update({ actived: 1 });
 	},
 
+	updatePasswd: async (id,passwd) => {
+		return await knex("users").where({ id }).update({ passwd });
+	},
+
 	/**
 	 * Verifica se existe o user ID do usuário.
 	 */

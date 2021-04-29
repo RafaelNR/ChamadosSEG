@@ -12,7 +12,7 @@ import useSnackBar from "./SnackBarContext";
 import useLoading from "./LoadingContext";
 
 //* HOOKS
-import useRouter from '../Hooks/useRouter';
+import useQuery from '../Hooks/useQuery';
 import useUser from '../Hooks/useUser';
 
 //* SERVICE
@@ -23,7 +23,7 @@ import { AtividadePDF } from '../Service/pdf.service'
 const AtividadesContext = createContext({});
 
 const AtividadesProvider = ({ children }) => {
-  const { getQuery } = useRouter();
+  const { getQuery } = useQuery();
   const { handleSnackBar } = useSnackBar();
   const { loading, setLoading } = useLoading();
   const { roleID } = useUser();

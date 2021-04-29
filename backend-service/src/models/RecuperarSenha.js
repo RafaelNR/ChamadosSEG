@@ -5,11 +5,11 @@ const findOneByHash = (Hash) => {
   return knex
 		.select(
 			"id",
-			"user_email",
+			"email",
 			"hash",
-			"access_code",
 			"ip_remote",
-			"send_at",
+			"sent_at",
+			"used_at",
 			"created_at",
 			"updated_at"
 		)
@@ -19,11 +19,13 @@ const findOneByHash = (Hash) => {
 		.then((e) => e[0]);
 }
 
-const insertSendAt = (ID) => {
-  knex('recover_passwd').insert({send_at: knex.fn.now()}).where('id',"=",ID)
+const emailSendAt = (ID) => {
+	return knex("recover_passwd")
+		.update({ sent_at: knex.fn.now() })
+		.where("id", "=", ID);
 }
 
 module.exports = {
 	findOneByHash,
-	insertSendAt,
+	emailSendAt,
 };
