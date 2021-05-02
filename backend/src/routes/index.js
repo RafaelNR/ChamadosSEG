@@ -2,10 +2,11 @@ const Router = require("express").Router();
 const verifyToken = require("../middlewares/jwt");
 
 // Controllers
-const Login = require("../controllers/login");
-const Auth = require("../controllers/auth");
-const Perfil = require("../controllers/perfil");
 const Log = require("../controllers/log");
+const Auth = require("../controllers/auth");
+const Login = require("../controllers/login");
+const Perfil = require("../controllers/perfil");
+const RecuperarSenha = require("../controllers/recuperar");
 
 Router.get("/", (req, res) =>
 	res.status(200).json({
@@ -13,6 +14,8 @@ Router.get("/", (req, res) =>
 	})
 );
 
+Router.post("/recuperar-senha", RecuperarSenha.order);
+Router.get("/recuperar-senha", RecuperarSenha.access);
 Router.post("/login", Login);
 Router.get("/auth", Auth);
 

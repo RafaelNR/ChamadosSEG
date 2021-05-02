@@ -3,20 +3,21 @@ import React, { useState, useCallback } from 'react';
 import {
   CssBaseline,
   TextField,
+  Typography,
   FormControlLabel,
   Checkbox,
-  Link,
   Grid,
   makeStyles,
-  Tooltip
+  Tooltip,
+  Slide,
 } from '@material-ui/core';
 import Alert from '../Components/Alert/index';
 import { ProgressSubmit } from '../Components/Buttons/Progress';
 import InputPasswd from '../Components/FormControl/Passwd';
 
 //* CONTEXT
+import useLogin from '../Context/LoginContext';
 import useAuth from '../Context/AuthContext';
-import useLocalStore from '../Hooks/useLocalStore';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,11 +66,22 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiFormControlLabel-root': {
       marginRight: 0
     }
+  },
+  title: {
+    textAlign: 'center'
+  },
+  textPointer:{
+    cursor: 'pointer'
   }
 }));
 
-const MyCheckBox = ({ login, handleChange }) => {
+const OptionsCheckBox = () => {
   const classes = useStyles();
+  const {
+    login,
+    handleChangeLogin,
+  } = useLogin();
+
   return (
     <Grid container>
       <Grid item xs={6}>
@@ -80,7 +92,7 @@ const MyCheckBox = ({ login, handleChange }) => {
                 checked={login.lembrar || false}
                 name="lembrar"
                 color="primary"
-                onChange={handleChange}
+                onChange={handleChangeLogin}
               />
             }
             label="Lembrar-me"
@@ -95,7 +107,7 @@ const MyCheckBox = ({ login, handleChange }) => {
                 checked={login.permanecer || false}
                 name="permanecer"
                 color="primary"
-                onChange={handleChange}
+                onChange={handleChangeLogin}
               />
             }
             label="Permanecer"
@@ -106,14 +118,18 @@ const MyCheckBox = ({ login, handleChange }) => {
   );
 };
 
-export default () => {
+const Login = () => {
   const classes = useStyles();
-  const { getData } = useLocalStore();
-  const { handleLogin, errors, setErrors, success, loading } = useAuth();
-  const [login, setLogin] = useState({
-    user: getData('lembrar'),
-    passwd: ''
-  });
+  const {
+    login,
+    errors,
+    success,
+    loading,
+    removeErrors,
+    handleSubmitLogin,
+    handleChangeLogin,
+    handleChangeSlide
+  } = useLogin();
 
   React.useEffect(() => {
     document.title = `Login - OS Técnicos`;
@@ -160,7 +176,64 @@ export default () => {
     // eslint-disable-next-line
   }, []);
 
+  const handleChange = useCallback((e) => {
+    setValue(e.target.value);
+  },[]);
 
+  return (
+    <Slide
+      direction="left"
+      in={recuperar}
+      mountOnEnter
+      unmountOnExit
+      timeout={{ enter: 100 }}
+    >
+      <div>
+        <Typography className={classes.title} variant="h4">
+          Encontre sua senha.
+        </Typography>
+        <Typography className={classes.title}>Digite seu usuário ou seu e-mail de recuperação</Typography>
+        <form>
+          <TextField
+            type="text"
+            variant="outlined"
+            margin="normal"
+            id="dado"
+            label="Usuário ou e-mail"
+            name="dado"
+            value={value}
+            autoComplete="username"
+            onChange={handleChange}
+            required
+            fullWidth
+          />
+          <Grid container>
+            <Grid item md={6}>
+              <Typography
+                onClick={handleChangeSlide}
+                variant="body2"
+                className={classes.textPointer}
+              >
+                Voltar
+              </Typography>
+            </Grid>
+            <Grid item md={6}>
+              <ProgressSubmit success={false} loading={false}>
+                Enviar
+              </ProgressSubmit>
+            </Grid>
+          </Grid>
+        </form>
+      </div>
+    </Slide>
+  );
+};
+
+export default () => {
+  const classes = useStyles();
+  const { errors,recuperar } = useLogin();
+  const { errors: errorsAuth } = useAuth();
+  
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -183,47 +256,17 @@ export default () => {
           {errors && errors.message && !errors.success && (
             <Alert type="error" title="Erro!" message={errors.message} />
           )}
-          <form className={classes.form} onSubmit={handleSubmit} noValidate>
-            <TextField
-              type="text"
-              variant="outlined"
-              margin="normal"
-              id="username"
-              label="Username"
-              name="user"
-              value={login.user || ''}
-              autoComplete="username"
-              onChange={handleChange}
-              onKeyDownCapture={(e) => removeErrors(e)}
-              required
-              fullWidth
-              error={Boolean(errors['user'])}
-              helperText={errors && errors['user'] ? errors['user'] : null}
-            />
-            <InputPasswd
-              value={login.passwd}
-              error={errors && errors['passwd'] ? true : false}
-              helperText={errors && errors['passwd'] ? errors['passwd'] : null}
-              handleChange={handleChange}
-              onKeyDownCapture={(e) => removeErrors(e)}
-              label="Senha *"
-              fullWidth
-              required
-            />
-            <MyCheckBox login={login} handleChange={handleChange} />
-            <ProgressSubmit success={success} loading={loading}>
-              Entrar
-            </ProgressSubmit>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Perdeu sua senha?
-                </Link>
-              </Grid>
-            </Grid>
-          </form>
+          {errorsAuth && errorsAuth.message && !errorsAuth.success && (
+            <Alert type="error" title="Erro!" message={errorsAuth.message} />
+          )}
+          {recuperar ? (
+            <Recuperar />
+          ) : (
+            <Login  />
+          )}
         </div>
       </Grid>
     </Grid>
   );
-};
+
+}

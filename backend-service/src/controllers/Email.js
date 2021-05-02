@@ -9,10 +9,8 @@ const Enviar = async (req,res,next) => {
     const email = new Email();
 
     if (req.method === 'GET') {
-			email.to = "rafael.rodrigues@seg.eti.br";
-			email.subject = "Relatório";
-			email.filename = "Relatório de Atividade - CISDESTE";
-			email.file = "41.20210209.pdf";
+			email.to = "no-replay@seg.eti.br <Recuperação de senha>";
+			email.subject = "Recuperação de senha - OS Técnicos";
 			email.type = "Redefinição de Senha";
 			email.dados = {
 				token: "fkshfkjdshjfkhdsjkfhsdjkfs",
@@ -50,17 +48,3 @@ const Enviar = async (req,res,next) => {
 module.exports = {
   Enviar
 }
-
-// email.type = "Redefinição de Senha";
-// email.dados = {
-// 	token: "fkshfkjdshjfkhdsjkfhsdjkfs",
-// };
-
-// email.type = "Relatório Mensal de Atividades";
-// email.dados = {
-//   data_ano: 'Fevereiro/2021',
-//   tecnicos: [
-//     { nome: 'Jose Maria Silva' },
-//     { nome: 'Fulano de tal '}
-//   ]
-// }
