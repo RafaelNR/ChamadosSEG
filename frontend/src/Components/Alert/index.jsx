@@ -4,37 +4,36 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Alert, AlertTitle } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
-  box:{
+  box: {
     minWidth: '350px',
-    marginTop: '20px',    
+    marginTop: '20px',
     color: 'white',
-    '& .MuiAlert-icon':{
+    '& .MuiAlert-icon': {
       color: 'white',
       alignItems: 'center',
       fontSize: 20
     },
-    '& .title':{
+    '& .title': {
       fontSize: 20,
-      fontWeight: 'bold',
+      fontWeight: 'bold'
     }
   },
-  error:{
+  error: {
     backgroundColor: '#eb2f06'
   },
-  success:{
-    backgroundColor: '#44bd32'
+  success: {
+    backgroundColor: '#123F15'
   },
-  info:{
+  info: {
     backgroundColor: '#0c2461'
   },
-  warning:{
+  warning: {
     backgroundColor: '#EE5A24'
-  },
+  }
 }));
 
 export default ({ type, title, message }) => {
   const classes = useStyles();
-  console.log(type,title,message)
   return (
     <Alert severity={type} className={clsx(classes.box,classes[type])}>
       <AlertTitle className='title'>{title}</AlertTitle>

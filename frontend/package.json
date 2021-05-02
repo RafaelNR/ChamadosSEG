@@ -1,6 +1,6 @@
 {
-  "name": "Os Técnicos - FrontEnd",
-  "version": "1.2.0",
+  "name": "OsTecnicos-FrontEnd",
+  "version": "1.4.0",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.0",

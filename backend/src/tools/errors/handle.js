@@ -3,7 +3,6 @@
 module.exports = (error) => {
 
   function sendCreateUpdateError() {
-    console.log(error.code)
     if(error.code === 'ER_DUP_ENTRY'){
       const message = handle_DUP_ENTRY(error);
       return { message };
@@ -17,7 +16,8 @@ module.exports = (error) => {
       return { message: error.error.details[0].message };
     }
 
-    return { message: error };
+
+    return { message: error instanceof Error ? error.message : error };
   }
 
   /**

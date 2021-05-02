@@ -9,6 +9,7 @@ const index = async (req, res) => {
 	try {
 		Result.ok(200,await Model.index());
 	} catch (error) {
+		console.log(error)
 		Result.fail(400,error);
 	}
 

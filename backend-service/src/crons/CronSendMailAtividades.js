@@ -2,7 +2,7 @@ const Cron = require('cron').CronJob
 const moment = require('moment');
 const Email = require('../classes/email')
 const PDF = require('../classes/pdf');
-const { getClientes } = require('../models/Clientes')
+const { getClientesComAtividade } = require("../models/Clientes");
 const { getTecnicosByCliente } = require('../models/Tecnicos');
 
 // Aumentado o limite de event de 10, padrão, para 20;
@@ -12,7 +12,7 @@ class CronSendMailAtividades {
 	constructor() {
 		this.config = {
 			cronTime: '0 0 1 1 * *',
-			//cronTime: "0 40 16 3 * *",
+			//cronTime: "0 50 18 26 * *",
 			start: true,
 			onTick: () => {
 				this.onTick();
@@ -46,7 +46,7 @@ class CronSendMailAtividades {
 		console.log("Init First:", d);
 
 		try {
-			const Clientes = await getClientes();
+			const Clientes = await getClientesComAtividade(this.currMes);
 
 			Clientes.map(async (Cliente) => {
 
@@ -111,9 +111,9 @@ class CronSendMailAtividades {
 	async createdPdf(mes, ano, clienteID) {
     const query = { mes: mes, ano:ano, cliente: clienteID };
     const FileName = this.getFileName(query);
-    const Url = `${process.env.URL_SERVICE}/atividades?ano=${ano}&mes=${mes}&cliente=${clienteID}`;
+    const view = `${process.env.URL_SERVICE}/atividades?ano=${ano}&mes=${mes}&cliente=${clienteID}`;
 
-    const pdf = new PDF(Url, FileName, query);
+    const pdf = new PDF(view, FileName, query);
 
     const Dados = await pdf.create();
 

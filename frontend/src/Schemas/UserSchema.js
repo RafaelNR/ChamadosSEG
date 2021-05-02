@@ -14,8 +14,8 @@ const InsertSchema = (data) => {
       .required("Email é obrigatório"),
     passwd: yup
       .string()
-      .min(3, "No mínimo 3 caracteres")
-      .max(15, "No máximo 15 caracteres")
+      .min(8, "No mínimo 8 caracteres")
+      .max(30, "No máximo 30 caracteres")
       .required("Senha é obrigatório"),
     user: yup
       .string()
@@ -93,7 +93,7 @@ const LoginSchema = (data) => {
       .string()
       .nullable()
       .min(3, 'No mínimo 3 caracteres')
-      .max(15, 'No máximo 15 caracteres')
+      .max(30, 'No máximo 30 caracteres')
       .required('Senha é obrigatório'),
     permanecer: yup.bool(),
   });
@@ -102,4 +102,18 @@ const LoginSchema = (data) => {
   return Val.exec();
 }
 
-export { InsertSchema, UpdateSchema, DisabledSchema, LoginSchema };
+
+const ChangePasswd = (data) => {
+
+  const schema = yup.string()
+    .nullable()
+    .min(8, 'No mínimo 8 Caracteres')
+    .max(30, 'No máximo 30 caracteres')
+    .required('é obrigatório')
+
+  const Val = new Validate(schema, data);
+  return Val.exec();
+
+}
+
+export { InsertSchema, UpdateSchema, DisabledSchema, LoginSchema, ChangePasswd};
