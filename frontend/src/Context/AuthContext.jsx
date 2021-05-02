@@ -51,58 +51,7 @@ const AuthProvider = ({ children }) => {
     return function cleanup() {
       render = false;
     };
-<<<<<<< HEAD
   }, [token, user,handleLogout]);
-
-  const handleLogin = useCallback(
-    ({ user, passwd, lembrar, permanecer }) => {
-      setLoading(true);
-      Login(user, passwd, permanecer)
-        .then((Dados) => {
-          setErrors([]);
-          setLoading(false);
-
-          if (Dados.auth && Dados.token) {
-            setData('token', Dados.token); // Seta no local store;
-            setData('user', Dados.user); // Seta no local store;
-            lembrar
-              ? setData('lembrar', Dados.user.user)
-              : removeData('lembrar'); // Seta no localstore;
-            setSuccess(true);
-            return window.location.replace('/');
-          }
-
-          if (Dados.auth && Dados.user) {
-            setData('user', Dados.user);
-            lembrar
-              ? setData('lembrar', Dados.user.user)
-              : removeData('lembrar'); // Seta no localstore;
-            setSuccess(true);
-            return window.location.replace('/');
-          }
-
-          throw new Error('Erro em logar no sistema');
-        })
-        .catch((error) => {
-          setLoading(false);
-
-          if (error.errors) return setErrors(error.errors);
-
-          setErrors({
-            success: false,
-            message:
-              error && error.message
-                ? error.message
-                : 'Erro em logar no sistema.'
-          });
-        });
-    },
-    // eslint-disable-next-line
-    [setData]
-  );
-=======
-  },[]);
->>>>>>> 5bdccc9242528815f2ed65e68143bb0f5a8f425b
 
   const handleAuth = useCallback(() => {
     const storageToken = getData('token');
