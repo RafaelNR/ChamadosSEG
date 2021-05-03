@@ -19,7 +19,6 @@ import Fields from "../../Store/CategoriasFields";
 import useSubCategorias from "../../Context/SubCategoriasContext";
 import useDialog from "../../Context/DialogContext";
 
-
 const useStyles = makeStyles((theme) => ({
   dialogLoader: {
     width: "500px",

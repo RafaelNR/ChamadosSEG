@@ -12,13 +12,12 @@ import TransferItems from "../../Components/ListItens/TransferItens";
 import { SaveButton, CancelButton } from "../../Components/Buttons/Index";
 import DialogActions from '../../Components/Dialog/Action';
 
-//* FIELDS
-import Fields from "../../Store/CategoriasFields";
-
 //* CONTEXT
 import useCategorias from "../../Context/CategoriasContext";
 import useSubCategorias from "../../Context/SubCategoriasContext";
 import useDialog from "../../Context/DialogContext";
+import Categorias from ".";
+import CategoriasTable from "./Categorias.Table";
 
 const useStyles = makeStyles(() => ({
   dialogLoader: {
@@ -99,41 +98,28 @@ const FormInsert = () => {
             className={loading ? classes.dialogLoader : null}
           >
             <Grid container spacing={2}>
-              {Fields.Insert.map((field) => {
-                return (
-                  <Grid
-                    item
-                    xs={field.media && field.media.xs ? field.media.xs : 6}
-                    lg={field.media && field.media.lg ? field.media.lg : 6}
-                    md={field.media && field.media.md ? field.media.md : 12}
-                    sm={field.media && field.media.sm ? field.media.sm : 12}
-                    key={field.id}
-                  >
-                    <TextField
-                      variant="filled"
-                      margin="normal"
-                      value={values[[field.id]] ? values[[field.id]] : ""}
-                      id={field.id}
-                      label={field.label}
-                      name={field.id}
-                      type={field.type}
-                      fullWidth
-                      required={field.required ? true : false}
-                      autoFocus={field.autofocus ? true : false}
-                      onChange={handleChange}
-                      error={errors[field.id] ? true : false}
-                      helperText={errors[field.id]}
-                    />
-                  </Grid>
-                );
-              })}
-              {
-                <TransferItems
-                  disponiveis={subcategorias}
-                  selecionados={null}
-                  setValue={handleSubCategoria}
+              <Grid item xs={12}>
+                <TextField
+                  variant="filled"
+                  margin="normal"
+                  value={values.nome || ''}
+                  id="nome"
+                  label="Nome da Categoria"
+                  name="nome"
+                  type="text"
+                  fullWidth
+                  required
+                  autoFocus={true}
+                  onChange={handleChange}
+                  error={errors['nome'] ? true : false}
+                  helperText={errors['nome']}
                 />
-              }
+              </Grid>
+              <TransferItems
+                disponiveis={subcategorias}
+                selecionados={null}
+                setValue={handleSubCategoria}
+              />
             </Grid>
           </DialogContent>
           <DialogActions>
@@ -151,9 +137,9 @@ const FormInsert = () => {
 
 const FormUpdate = () => {
   const classes = useStyles();
-  const [ values, setValues ] = React.useState({})
   const {
     categoria,
+    setCategoria,
     errors,
     setErrors,
     handleActions,
@@ -161,47 +147,34 @@ const FormUpdate = () => {
   } = useCategorias();
   const { subcategorias } = useSubCategorias();
   const { type, loading, setLoading, setOpen } = useDialog();
+  const [subIDs, setSubIDs] = React.useState([]);
 
 
   React.useEffect(() => {
-    // Trata das subCategoria no render;
-    let subCategoriasID = [];
-    if (
-      categoria &&
-      categoria.subCategorias &&
-      categoria.subCategorias.length > 0
-    ) {
-      subCategoriasID = categoria.subCategorias.map((s) => s.id);
-      setValues({ ...categoria, subCategorias: subCategoriasID });
-    } else {
-      setValues(categoria);
-    }
-
-    if (categoria && categoria.id && !apiLoading) {
+    if (categoria && categoria.subCategorias && categoria.subCategorias.length > 0) {
       setLoading(false);
     }
+  },[categoria])
 
-    return () => {
-      return false;
-    };
-  }, [setValues, categoria, apiLoading, setLoading]);
 
   const handleSubmit = React.useCallback(
     (event) => {
       event.preventDefault();
       setLoading(true);
       setErrors(false);
-      handleActions(type, values).then((resp) =>
+      handleActions(type, categoria).then((resp) =>
         resp ? setOpen(false) : setLoading(false)
       );
     },
-    [handleActions, setLoading, setErrors, setOpen, type, values]
+    [type,categoria]
   );
 
   const handleSubCategoria = React.useCallback(
     (action, ID) => {
       // Verifica se o values já tem subcategoria
-      let currSubCategorias = !values.subCategorias ? [] : values.subCategorias;
+      let currSubCategorias = !categoria.subCategorias
+        ? []
+        : categoria.subCategorias;
 
       if (action === "add") {
         currSubCategorias.push(ID);
@@ -209,36 +182,37 @@ const FormUpdate = () => {
         currSubCategorias = currSubCategorias.filter((c) => c !== ID);
       }
 
-      //& Adiciona o Valor
-      setValues({
-        ...values,
-        subCategorias: currSubCategorias,
+      // Adiciona o Valor
+      setCategoria(props => {
+        return {
+          ...props,
+          subCategorias: currSubCategorias,
+        }
       });
 
-      console.log(values);
     },
-    [values, setValues]
+    [categoria]
   );
 
   const handleChange = React.useCallback(
     (event) => {
       const key = event.target.name;
       const value = event.target.value
-      setValues({
-        ...values,
+      setCategoria({
+        ...categoria,
         [key]: value,
       });
     },
-    [values],
-  )
+    [],
+  );
 
   return (
     <form
       noValidate
       onSubmit={handleSubmit}
-      className={loading ? classes.dialogLoader : null}
+      className={apiLoading ? classes.dialogLoader : null}
     >
-      {loading ? (
+      {apiLoading || loading ? (
         <div className={classes.dialogLoader}>
           <CircularProgress />
         </div>
@@ -246,41 +220,28 @@ const FormUpdate = () => {
         <>
           <DialogContent dividers>
             <Grid container spacing={2}>
-              {Fields.Insert.map((field) => {
-                return (
-                  <Grid
-                    item
-                    xs={field.media && field.media.xs ? field.media.xs : 6}
-                    lg={field.media && field.media.lg ? field.media.lg : 6}
-                    md={field.media && field.media.md ? field.media.md : 12}
-                    sm={field.media && field.media.sm ? field.media.sm : 12}
-                    key={field.id}
-                  >
-                    <TextField
-                      variant="filled"
-                      margin="normal"
-                      value={values[[field.id]] ? values[[field.id]] : ""}
-                      id={field.id}
-                      label={field.label}
-                      name={field.id}
-                      type={field.type}
-                      fullWidth
-                      required={field.required ? true : false}
-                      autoFocus={field.autofocus ? true : false}
-                      onChange={handleChange}
-                      error={errors[field.id] ? true : false}
-                      helperText={errors[field.id]}
-                    />
-                  </Grid>
-                );
-              })}
-              {
-                <TransferItems
-                  disponiveis={subcategorias}
-                  selecionados={values.subCategorias}
-                  setValue={handleSubCategoria}
+              <Grid item xs={12}>
+                <TextField
+                  variant="filled"
+                  margin="normal"
+                  value={categoria.nome || ''}
+                  id="nome"
+                  label="Nome da Categoria"
+                  name="nome"
+                  type="text"
+                  fullWidth
+                  required
+                  autoFocus={true}
+                  onChange={handleChange}
+                  error={errors['nome'] ? true : false}
+                  helperText={errors['nome']}
                 />
-              }
+              </Grid>
+              <TransferItems
+                disponiveis={subcategorias}
+                selecionados={categoria.subCategorias}
+                setValue={handleSubCategoria}
+              />
             </Grid>
           </DialogContent>
           <DialogActions>

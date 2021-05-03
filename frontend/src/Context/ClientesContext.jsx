@@ -61,7 +61,6 @@ const ClientesProvider = ({ children }) => {
         setApiLoading(true);
         setErrors({});
         return Crud.getByID("clientes", parseInt(ID)).then((resp) => {
-          console.log(resp);
           const { success, data } = resp.data;
           if (!success) throw resp.data;
           setApiLoading(false);

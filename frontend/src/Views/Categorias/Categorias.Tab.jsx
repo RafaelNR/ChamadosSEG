@@ -42,11 +42,6 @@ const tab = [
       Delete: FormSubCategoria.FormDelete,
     },
   },
-  // {
-  // 	id: 2,
-  // 	title: 'Modelos',
-  // 	componente: null,
-  // },
 ];
 
 const useStyles = makeStyles((theme) => ({

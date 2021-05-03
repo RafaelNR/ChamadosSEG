@@ -61,11 +61,10 @@ const CategoriasProvider = ({ children }) => {
       try {
         setApiLoading(true);
         setErrors({});
-        return Crud.getByID("categorias", parseInt(ID)).then((resp) => {
-          const { success, data } = resp.data;
-          if (!success) throw resp.data;
-          setCategoria(data);
-        });
+        const resp = await Crud.getByID('categorias', parseInt(ID));
+        const { success, data } = resp.data;
+        if (!success) throw data;
+        setCategoria(data.subCategorias ? { ...data, subCategorias:data.subCategorias.map((sub) => sub.id) } : data);
       } catch (error) {
         console.log(error);
         handleSnackBar({
@@ -154,11 +153,11 @@ const CategoriasProvider = ({ children }) => {
     },
   };
 
-  const handleActions = (type, categoria) => {
+  const handleActions = useCallback((type, categoria) => {
       const fn = Actions[type];
       setApiLoading(true);
       return fn(categoria);
-  }
+  },[])
 
   return (
     <CategoriasContext.Provider
