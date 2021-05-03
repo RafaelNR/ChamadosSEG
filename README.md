@@ -2,7 +2,7 @@
 
 # TODO
 
-
-
-Um link para redefinir sua senha foi enviado para rafaelnetto_@hotmail.com
-Por favor, verifique a caixa de entrada do seu e-mail.
+- [ ] transferList subcategoria dando problema.
+- [ ] Mudar Pasta store para fields;
+- [x] Quando editar usuário desabilitado ele habilita;
+- [x] Usuário desabilitado pode ficar sem cliente;

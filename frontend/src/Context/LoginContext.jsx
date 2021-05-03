@@ -70,10 +70,6 @@ const LoginProvider = ({ children }) => {
     [login]
   );
 
-  const handleSubmitRecuperar = useCallback(() => {
-
-  }, []);
-
   const handleChangeSlide = useCallback(() => {
     setErrors([])
     setLoading(false);
@@ -86,9 +82,6 @@ const LoginProvider = ({ children }) => {
     const name = e.target.name;
     const value =
       e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-
-    console.log(name,value)
-
     setLogin((values) => {
       return {
         ...values,

@@ -22,12 +22,15 @@ import Gravatar from '../../Components/Box/Gravatar';
 //* STORE
 import Fields from "../../Store/UsuariosFields";
 
-//* CONTEXT E HOOKS
-import useClientes, { ClientesProvider } from "../../Context/ClientesContext";
+//* CONTEXT
 import useUsuarios from "../../Context/UsuariosContext";
 import useDialog from "../../Context/DialogContext";
-import useMasker from "../../Hooks/useMasker";
 import useUpload  from '../../Context/UploadContext';
+
+//* HOOKS
+import useMasker from "../../Hooks/useMasker";
+
+import { getClientes } from '../../Service/clientes.service';
 
 const useStyles = makeStyles(() => ({
   dialogLoader: {
@@ -66,16 +69,15 @@ const itensSelect = [
   },
 ];
 
-const FormInsert = React.memo(({ changeForm, handleChange, values }) => {
-  const { errors, setErrors, setUsuario } = useUsuarios();
+const FormInsert = React.memo(({ changeForm, handleChange }) => {
+  const { usuario, errors, setErrors, setUsuario } = useUsuarios();
   const { setLoading } = useDialog();
 
   React.useEffect(() => {
     setUsuario({});
     setErrors([]);
     setLoading(false);
-
-  }, [setUsuario, setLoading, setErrors]);
+  }, []);
 
   return (
     <>
@@ -94,7 +96,7 @@ const FormInsert = React.memo(({ changeForm, handleChange, values }) => {
                 <TextField
                   variant="filled"
                   margin="normal"
-                  value={values[[field.id]] ? values[[field.id]] : ''}
+                  value={usuario[[field.id]] || ''}
                   id={field.id}
                   label={field.label}
                   name={field.id}
@@ -117,7 +119,7 @@ const FormInsert = React.memo(({ changeForm, handleChange, values }) => {
               handleChange={handleChange}
               id="role_id"
               name="role_id"
-              value={values.role_id}
+              value={usuario.role_id}
               itens={itensSelect}
               errorText={errors['role_id']}
             />
@@ -132,7 +134,7 @@ const FormInsert = React.memo(({ changeForm, handleChange, values }) => {
 });
 
 const FormUpdate = React.memo(
-  ({ handleSubmit, changeForm, handleChange, values }) => {
+  ({ handleSubmit, changeForm, handleChange }) => {
     const classes = useStyles();
     const { usuario, errors, apiLoading } = useUsuarios();
     const { loading, setLoading } = useDialog();
@@ -141,7 +143,7 @@ const FormUpdate = React.memo(
       if (usuario && usuario.id && !apiLoading) {
         setLoading(false);
       }
-    }, [apiLoading, usuario, setLoading]);
+    }, [apiLoading, usuario]);
 
     return (
       <form
@@ -157,11 +159,18 @@ const FormUpdate = React.memo(
               <TextField
                 name="id"
                 id="id"
-                value={values.id}
+                value={usuario.id}
                 required
-                disabled
                 style={{ display: 'none' }}
-                onChange={handleChange}
+                disabled
+              />
+              <TextField
+                name="actived"
+                id="actived"
+                value={usuario.actived}
+                required
+                style={{ display: 'none' }}
+                disabled
               />
               <Grid container spacing={2}>
                 {Fields.Update.map((field) => {
@@ -177,9 +186,7 @@ const FormUpdate = React.memo(
                       <TextField
                         variant="filled"
                         margin="normal"
-                        value={
-                          values[[field.id]]
-                        }
+                        value={usuario[[field.id]]}
                         id={field.id}
                         label={field.label}
                         name={field.id}
@@ -201,7 +208,7 @@ const FormUpdate = React.memo(
                     handleChange={handleChange}
                     id="role_id"
                     name="role_id"
-                    value={values.role_id}
+                    value={usuario.role_id}
                     itens={itensSelect}
                     errorText={errors['role_id']}
                   />
@@ -219,15 +226,16 @@ const FormUpdate = React.memo(
   }
 );
 
-const FormActivedDisabled = React.memo(({ handleSubmit, values }) => {
+const FormActivedDisabled = React.memo(({ handleSubmit }) => {
   const { type, closeDialog } = useDialog();
+  const { usuario } = useUsuarios();
 
   return (
     <form onSubmit={handleSubmit}>
       <DialogContent dividers>
         <h4>
           Quer realmente {type === "disabled" ? "desabilitar" : "habilitar"} o
-          usuário, {values.nome} ?
+          usuário, {usuario.nome} ?
         </h4>
       </DialogContent>
       <DialogActions>
@@ -239,34 +247,60 @@ const FormActivedDisabled = React.memo(({ handleSubmit, values }) => {
 });
 
 const FormClients = React.memo(
-  ({ handleSubmit, changeForm, handleClients, values, forms }) => {
+  ({ handleSubmit, changeForm, forms }) => {
     const classes = useStyles();
-    const { clientes } = useClientes();
-    const { loading } = useDialog();
+    const { usuario, setUsuario } = useUsuarios();
+    const [clientes, setClientes] = useState([]);
 
-    const allClients = () => {
-      return clientes.map((cliente) => {
+    React.useEffect(() => {
+      getClientes()
+        .then(resp => {
+          setClientes(
+            resp.data.map((cliente) => {
+              return {
+                id: cliente.id,
+                nome: cliente.nome_fantasia
+              };
+            })
+          );
+
+        })
+      
+    },[])
+
+    const handleClients = React.useCallback((action, ID) => {
+      // Verifica se o ID já existe como cliente
+      let currClients = !usuario.clients ? [] : usuario.clients;
+      action === 'add'
+        ? currClients.push(ID)
+        : (currClients = currClients.filter((c) => c !== ID));
+
+      // Adiciona o Valor
+      setUsuario(props => {
+
         return {
-          id: cliente.id,
-          nome: cliente.nome_fantasia,
-        };
+          ...props,
+          clients: currClients
+        }
+
       });
-    };
+    }, []);
+
 
     return (
       <form
         noValidate
         onSubmit={handleSubmit}
-        className={loading ? classes.dialogLoader : null}
+        className={clientes.length <= 0 ? classes.dialogLoader : null}
       >
-        {loading ? (
+        {clientes.length <= 0 ? (
           <CircularProgress />
         ) : (
           <>
             <DialogContent dividers className={classes.dialogContent}>
               <TransferItems
-                disponiveis={allClients()}
-                selecionados={values.clients}
+                disponiveis={clientes}
+                selecionados={usuario.clients}
                 setValue={handleClients}
               />
             </DialogContent>
@@ -282,26 +316,27 @@ const FormClients = React.memo(
   }
 );
 
-const FormUploadImage = ({ changeForm, values }) => {
+const FormUploadImage = ({ changeForm }) => {
   const classes = useStyles();
+  const { usuario } = useUsuarios();
   const { file } = useUpload();
 
   return (
     <>
-      { values &&
+      { usuario &&
         <>
         <DialogContent dividers className={classes.dialogContent}>
           <Grid container>
             <Grid item xs={6}>
               <Gravatar
                 preview={file && file.preview}
-                imagem={values.imagem}
-                email={values.email}
+                imagem={usuario.imagem}
+                email={usuario.email}
                 className={classes.avatar}
               />
             </Grid>
             <Grid item xs={6}>
-              <UploadImage type="ImageUser" id={values && values.id}/>
+              <UploadImage type="ImageUser" id={usuario && usuario.id}/>
             </Grid>
           </Grid>
         </DialogContent>
@@ -318,21 +353,10 @@ const FormUploadImage = ({ changeForm, values }) => {
 const FactorForm = (props) => {
   const [currForm, setCurrForm] = useState('');
   const [forms, setForms] = useState([]);
-  const [values, setValues] = useState({});
-  const { usuario, setErrors, handleActions } = useUsuarios();
+  const { usuario, setUsuario, setErrors, handleActions } = useUsuarios();
   const { type, setLoading, setOpen } = useDialog();
   const { Masker } = useMasker();
 
-  React.useEffect(() => {
-    if (type !== "insert") {
-      const newClients =
-      usuario && usuario.clients
-          ? usuario.clients.map((client) => client.id)
-          : [];
-          setValues({ ...usuario, clients: newClients });
-    }
-  }, [usuario]);
-  
   React.useEffect(() => {
     if (type !== 'insert') {
       setCurrForm(props.currForm);
@@ -343,13 +367,12 @@ const FactorForm = (props) => {
     }
   }, [type]);
 
-
   const handleSubmit = React.useCallback(
     (event) => {
       event.preventDefault();
       setLoading(true);
       setErrors(false);
-      handleActions(type, values).then((resp) => {
+      handleActions(type,usuario).then((resp) => {
         if (resp) {
           setOpen(false);
         } else {
@@ -357,38 +380,24 @@ const FactorForm = (props) => {
         }
       });
     },
-    [setLoading, handleActions, setOpen, setErrors, type, values]
-  );
-
-  const handleClients = React.useCallback(
-    (action, ID) => {
-      // Verifica se o ID já existe como cliente
-      let currClients = !values.clients ? [] : values.clients;
-      action === "add"
-        ? currClients.push(ID)
-        : (currClients = currClients.filter((c) => c !== ID));
-
-      // Adiciona o Valor
-      setValues({
-        ...values,
-        clients: currClients,
-      });
-    },
-    [values, setValues]
+    [type,usuario]
   );
 
   const handleChange = React.useCallback(
     (event) => {
-      const key = event.target.name;
-      const value = Masker(event.target.value, key);
-      setValues({
-        ...values,
-        [key]: value,
+      const name = event.target.name;
+      const value = Masker(event.target.value, name);
+      setUsuario(props => {
+
+        return {
+          ...props,
+          [name]: value,
+        }
+
       });
     },
-    [values, Masker],
+    [],
   );
-
 
   const changeForm = React.useCallback((type=null) => {
     if (type === 'next') {
@@ -406,7 +415,6 @@ const FactorForm = (props) => {
         <FormInsert
           changeForm={changeForm}
           handleChange={handleChange}
-          values={values}
         />
       );
 
@@ -416,27 +424,22 @@ const FactorForm = (props) => {
           changeForm={changeForm}
           handleSubmit={handleSubmit}
           handleChange={handleChange}
-          values={values}
         />
       );
 
     case "activeddisabled":
-      return (<FormActivedDisabled handleSubmit={handleSubmit} values={values} />);
+      return (<FormActivedDisabled handleSubmit={handleSubmit} />);
         
     case "imagem":
-      return (<FormUploadImage changeForm={changeForm} values={values}/>);
+      return (<FormUploadImage changeForm={changeForm}/>);
 
     case "clientes":
       return (
-        <ClientesProvider>
           <FormClients
             changeForm={changeForm}
             handleSubmit={handleSubmit}
-            handleClients={handleClients}
             forms={forms.length}
-            values={values}
           />
-        </ClientesProvider>
       );
 
     default:

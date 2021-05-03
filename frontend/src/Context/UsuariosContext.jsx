@@ -58,12 +58,20 @@ const UsuariosProvider = ({ children }) => {
       try {
         setApiLoading(true);
         setErrors({});
-        return Crud.getByID("usuarios", parseInt(ID)).then((resp) => {
+        return Crud
+          .getByID("usuarios", parseInt(ID))
+          .then((resp) => {
           const { success, data } = resp.data;
           if (!success) throw resp.data;
-
+            
           setApiLoading(false);
-          setUsuario({ ...data, passwd: "******" });
+          setUsuario(() => {
+
+            const clientes = data.clients.map(cliente => cliente.id)
+
+            return { ...data, clients: clientes, passwd: "******" }
+            
+          });
           return;
         });
       } catch (error) {
@@ -120,14 +128,14 @@ const UsuariosProvider = ({ children }) => {
         });
         return true;
       } catch (error) {
-        console.log(error);
+        console.log(error.errors.clients);
         if (error && error.errors) setErrors(error.errors);
         handleSnackBar({
-          type: "error",
+          type: 'error',
           message:
-            error && error.message
-              ? error.message
-              : "Erro em alterar o usuario.",
+            (error && error.message) || error.errors.clients
+              ? error.message || error.errors.clients
+              : 'Erro em alterar o usuario.'
         });
       }
     },
@@ -177,10 +185,10 @@ const UsuariosProvider = ({ children }) => {
     },
   };
 
-  const handleActions = useCallback((type, usuario) => {
+  const handleActions = useCallback((type,newUsuario) => {
     const fn = Actions[type];
     setApiLoading(true);
-    return fn(usuario);
+    return fn(newUsuario);
     //eslint-disable-next-line
   }, []);
 

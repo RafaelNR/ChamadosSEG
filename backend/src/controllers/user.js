@@ -3,6 +3,7 @@ const Model = require("../models/user");
 const { Crypt } = require("../tools/bcryp");
 const Result =  require('../tools/result');
 const { findClients } = require("../models/clients_has_users");
+const { clientsUser } = require("../tools/validation/schemas");
 
 async function index(req, res) {
 	try {
@@ -50,7 +51,7 @@ async function insert(req, res) {
 	try {
 		if (!req.body) throw "Informações não encontradas!";
 
-		const Dados = tools.handilingInsert(req.body);
+		const Dados = tools.handleInsert(req.body);
 		const userID = await Model.insert(Dados);
 
 		// Remove o passwd
@@ -70,7 +71,7 @@ async function update(req, res) {
 		if (req.body.id !== parseInt(req.params.id)) throw "Valor são inválidos.";
 
 		await tools.checkIfExist(req.body.id);
-		const Dados = tools.handilingUpdate(req.body);
+		const Dados = tools.handleUpdate(req.body);
 		await Model.update(Dados);
 		
 		Result.ok(200, await Model.findOne(Dados.userDados.id));
@@ -117,7 +118,7 @@ async function actived(req, res) {
 }
 
 const tools = {
-	handilingInsert(Dados) {
+	handleInsert(Dados) {
 		// Sem Clients vinculado
 		if (!Dados.clients) {
 			let userDados = Validate.insertUser(Dados);
@@ -137,15 +138,19 @@ const tools = {
 		return newDados;
 	},
 
-	handilingUpdate(Dados) {
+	handleUpdate(Dados) {
 		// Sem Clients vinculado
-		if (!Dados.clients) {
+		if (!Dados.clients || Dados.clients.length === 0) {
+			
+			
+
+			Dados.clients && delete Dados.clients;
+
 			let userDados = Validate.updateUser(Dados);
 			// se a senha dor alterada.
-			if(userDados.passwd !== "******")
+			if (userDados.passwd !== "******")
 				userDados.passwd = Crypt(userDados.passwd);
-			else
-				delete userDados.passwd
+			else delete userDados.passwd;
 
 			return { userDados };
 		}
@@ -159,10 +164,9 @@ const tools = {
 		};
 
 		// Se a senha for alterada
-		if(newDados.userDados.passwd !== "******")
+		if (newDados.userDados.passwd !== "******")
 			newDados.userDados.passwd = Crypt(newDados.userDados.passwd);
-		else
-			delete newDados.userDados.passwd
+		else delete newDados.userDados.passwd;
 
 		return newDados;
 	},

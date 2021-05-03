@@ -66,7 +66,10 @@ const UpdateSchema = (data) => {
       .min(0)
       .max(99)
       .required("Perfil é obrigatório."),
-    clients: yup.array().required("Pelo menos um cliente é obrigatório."),
+    clients: data.actived
+      ? yup.array().required('Pelo menos um clientes é requerido.')
+      : yup.array(),
+    actived: yup.number().min(0).max(1).required()
   });
 
   const Val = new Validate(schema, data);

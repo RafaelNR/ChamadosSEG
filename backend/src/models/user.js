@@ -114,23 +114,21 @@ module.exports = {
 			.where({ id: userDados.id })
 			.update(userDados)
 			.then(async (Dados) => {
-				if (!clientsUser) return Dados;
 
-				// Remove clients antigos;
-				await ClientsHasUser.delete(userDados.id)
-					.then(async () => {
-						// Insere novos;
-						await clientsUser.map(async (client) => {
-							await ClientsHasUser.insert({
-								cliente_id: client,
-								user_id: userDados.id,
-							});
+				if (!clientsUser && !userDados.actived) {
+					await ClientsHasUser.delete(userDados.id);
+				} else {
+					await ClientsHasUser.delete(userDados.id);
+					await clientsUser.map(async (client) => {
+						await ClientsHasUser.insert({
+							cliente_id: client,
+							user_id: userDados.id,
 						});
-					})
-					.catch(() => {
-						throw { error: "Erro em inserir ou deletar clients" };
 					});
+				}
+
 				return Dados;
+				
 			})
 			.catch((error) => {
 				throw error;

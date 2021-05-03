@@ -38,19 +38,20 @@ export function uniquesValues(Values) {
 
 /**
  * * Compara dois array e retorno um array novo com valores diferentes entre eles.
- * @param {Array} Array
- * @param {Array} Array
+ * * Deve receber somente o item a ser comparado, id, nome....
+ * @param {Array} BigArray
+ * @param {Array} littleArray
  */
 
-export function comparaArrays(BigArray, Array) {
-  if (BigArray.length === 0 || Array.length === 0) return [];
+export function comparaArrays(BigArray, littleArray) {
+  if (BigArray.length === 0 || littleArray.length === 0) return [];
 
   let newArray = [];
   let newBigArray = [];
 
   BigArray.map((value) => {
     let duplicated =
-      Array.findIndex((redItem) => {
+      littleArray.findIndex((redItem) => {
         return value.id === redItem;
       }) > -1;
 
@@ -63,7 +64,7 @@ export function comparaArrays(BigArray, Array) {
 
   return {
     newBigArray,
-    newArray,
+    newArray
   };
 }
 
