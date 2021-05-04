@@ -24,7 +24,7 @@ const LogProvider = ({ children }) => {
 
     (async () => {
       try {
-        const Dados = await Service.index();
+        const Dados = await Service.acesso();
         const { success, data } = Dados;
         if (success && render) return setLogs(data);
         throw new Error(data.message);
@@ -43,7 +43,6 @@ const LogProvider = ({ children }) => {
 
     return function cleanup() {
       render = false;
-      return Service.Cancel('LogContext unmount');
     };
     // eslint-disable-next-line
   }, []);

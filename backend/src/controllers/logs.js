@@ -1,10 +1,10 @@
-const Model = require("../models/log");
+const Model = require("../models/logs");
 const Result = require('../tools/result')
 
 
-const index = async (req, res) => {
+const acessos = async (req, res) => {
 	try {
-			Result.ok(200, await Model.index());
+			Result.ok(200, await Model.acessos());
 		} catch (error) {
 			Result.fail(400, error);
 	}
@@ -14,5 +14,5 @@ const index = async (req, res) => {
 }
 
 module.exports = {
-	index
+	acessos
 };

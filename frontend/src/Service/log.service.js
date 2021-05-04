@@ -2,9 +2,9 @@ import Service from "../Api/Service";
 
 class Log{
 
-  async index() {
+  async acesso() {
     try {
-        const Dados = await Service.exec('get', '/log');
+        const Dados = await Service.exec('get', '/logs/acessos');
 
       if (!Dados.data.success)
         // eslint-disable-next-line
@@ -12,7 +12,7 @@ class Log{
           success: false,
           message: Dados.data.message
             ? Dados.data.message
-            : 'Error em buscas os logs.'
+            : 'Error em buscas os logs de acesso.'
         };
 
         return {
@@ -23,12 +23,6 @@ class Log{
         throw error;
       }
   }
-
-
-  Cancel(msg) {
-    Service.cancel(msg)
-  }
-
 
 }
 

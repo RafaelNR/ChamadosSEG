@@ -2,7 +2,6 @@ const Router = require("express").Router();
 const verifyToken = require("../middlewares/jwt");
 
 // Controllers
-const Log = require("../controllers/log");
 const Auth = require("../controllers/auth");
 const Login = require("../controllers/login");
 const Perfil = require("../controllers/perfil");
@@ -26,7 +25,7 @@ Router.use("/categorias", verifyToken, require("./category"));
 //Router.get("/chamados", verifyToken, require('./chamados'));
 Router.use("/clientes", verifyToken, require("./clientes"));
 Router.use("/dashboard", verifyToken, require('./dashboard.js'));
-Router.get("/log", verifyToken, Log.index);
+Router.use("/logs", verifyToken, require("./logs.js"));
 Router.use("/pdf", verifyToken, require("./pdf"));
 Router.use("/perfil", verifyToken, Perfil);
 Router.use("/subcategorias", verifyToken, require("./subcategory"));

@@ -2,7 +2,7 @@ const Model = require("../models/tasks");
 
 const { countClientByUser } = require("../models/clients_has_users");
 const Validate = require("../tools/validation/schemas");
-const Log = require("./log");
+const Log = require("./logs");
 
 let response;
 let status = 200;

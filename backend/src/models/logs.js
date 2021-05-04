@@ -1,7 +1,7 @@
 const knex = require("../database/index");
 
 module.exports = {
-	index: async () => {
+	acessos: async () => {
 		return await knex
 			.select(
 				"logs.id",
