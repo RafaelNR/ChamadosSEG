@@ -5,7 +5,7 @@ const Tecnicos = require("../models/Tecnicos");
 const View = require("../views/Atividades.pdf.view");
 const LogPdf = require("../classes/logs_pdf");
 
-class Atividades {
+module.exports = class Atividades {
 
 	constructor() {
 		this.DataInicial = null;
@@ -158,4 +158,3 @@ class Atividades {
 	}
 }
 
-module.exports = new Atividades();

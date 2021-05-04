@@ -11,8 +11,8 @@ require("events").EventEmitter.prototype._maxListeners = 20;
 class CronSendMailAtividades {
 	constructor() {
 		this.config = {
-			cronTime: '0 0 1 1 * *',
-			//cronTime: "0 50 18 26 * *",
+			cronTime: '0 0 6 1 * *',
+			//cronTime: "0 31 21 3 * *",
 			start: true,
 			onTick: () => {
 				this.onTick();
@@ -21,12 +21,17 @@ class CronSendMailAtividades {
 			timeZone: "America/Sao_Paulo",
 			runOnInit: false,
 		};
-		this.currMes = moment(moment().subtract(1, "month")).format("M");
-		this.currAno = moment().year();
-		this.nameMes = moment(this.currMes).format("MMMM");
+		this.currMes = moment(moment().locale("pt-br").subtract(1, "month"))
+			.locale("pt-br")
+			.format("M");
+		this.currAno = moment().locale("pt-br").year();
+		this.nameMes = moment(this.currMes).locale("pt-br").format("MMMM");
 	}
 
 	start() {
+		console.log("->> CRON - SendMailAtividades - currMes", this.currMes);
+		console.log("->> CRON - SendMailAtividades - currAno", this.currAno);
+		console.log("->> CRON - SendMailAtividades - nameMes", this.nameMes);
 		this.Job = new Cron({ ...this.config });
 		if (this.Job.running) {
 			console.log(
@@ -42,8 +47,7 @@ class CronSendMailAtividades {
 	}
 
 	async onTick() {
-		const d = new Date();
-		console.log("Init First:", d);
+		console.log("Iniciado o envio das atividades:", moment().locale('pt-br').format('DD/MM/YYY HH:mm:ss'));
 
 		try {
 			const Clientes = await getClientesComAtividade(this.currMes);
@@ -51,6 +55,7 @@ class CronSendMailAtividades {
 			Clientes.map(async (Cliente) => {
 
 				const Tecnicos = await getTecnicosByCliente(Cliente.id);
+
 				const filename = await this.createdPdf(
 					this.currMes,
 					this.currAno,
@@ -58,28 +63,17 @@ class CronSendMailAtividades {
 				);
 
 				if (!filename.message) {
-					this.sendEmail(
-						Cliente.email,
-						Cliente.nome_fantasia,
-						filename,
-						{
-							data_ano: `${this.nameMes}/${this.currAno}`,
-							tecnicos: Tecnicos,
-						}
-					);
+					this.sendEmail(Cliente.email, Cliente.nome_fantasia, filename, {
+						data_ano: `${this.nameMes}/${this.currAno}`,
+						tecnicos: Tecnicos,
+					});
 					console.log("Email Enviado!");
 				}
 
-
 			});
 		} catch (error) {
-			console.log('ERROR: ',error);
+			console.log("ERROR: ", error);
 		}
-	}
-
-	onComplete() {
-		console.log("JOB Complete.");
-		this.Job.stop();
 	}
 
 	sendEmail(clienteEmail, clienteName, filename, dados) {
@@ -91,6 +85,7 @@ class CronSendMailAtividades {
 		email.file = filename;
 		email.type = "Relatório Mensal de Atividades";
 		email.dados = dados;
+		email.bcc = 'rafael.r@seg.eti.br,fred@seg.eti.br';
 
 		email
 			.send()
@@ -109,25 +104,29 @@ class CronSendMailAtividades {
 	}
 
 	async createdPdf(mes, ano, clienteID) {
-    const query = { mes: mes, ano:ano, cliente: clienteID };
-    const FileName = this.getFileName(query);
-    const view = `${process.env.URL_SERVICE}/atividades?ano=${ano}&mes=${mes}&cliente=${clienteID}`;
+		const query = { mes: mes, ano: ano, cliente: clienteID };
+		const FileName = this.getFileName(query);
+		const view = `${process.env.URL_SERVICE}/atividades?ano=${ano}&mes=${mes}&cliente=${clienteID}`;
 
-    const pdf = new PDF(view, FileName, query);
+		const pdf = new PDF(view, FileName, query);
 
-    const Dados = await pdf.create();
+		const Dados = await pdf.create();
 
-    if (Dados.success) {
-			console.log(`PDF criado: ${FileName}`)
+		if (Dados.success) {
+			console.log(`PDF criado: ${FileName}`);
 			return FileName;
-    }
+		}
 
-    throw Dados;
+		throw Dados;
 	}
 
 	getFileName(query) {
 		const values = Object.values(query);
 		return values.join("-");
+	}
+
+	onComplete() {
+		this.Job.stop();
 	}
 }
 

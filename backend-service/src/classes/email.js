@@ -8,9 +8,8 @@ module.exports = class Email {
 	constructor(textFrom) {
 		this.message = {
 			from: `${textFrom} < ${process.env.EMAIL_USER} >`, // REMETENTE
-			bbc: "rafael.rodrigues@seg.eti.br", // COPIA OCULTA
 		};
-		this.dados = null
+		this.dados = null;
 		this.email = nodemailer.createTransport({
 			host: process.env.EMAIL_HOST,
 			port: process.env.EMAIL_PORT,
@@ -63,8 +62,6 @@ module.exports = class Email {
 	}
 
 	handleAttachments() {
-
-
 		if (this.file) {
 			this.path = Path.join(
 				__dirname,
@@ -88,9 +85,8 @@ module.exports = class Email {
 				});
 			}
 
-			throw "Arquivo em anexo não existe.";			
+			throw "Arquivo em anexo não existe.";
 		}
-
 	}
 
 	async viewTemplate() {
@@ -109,10 +105,13 @@ module.exports = class Email {
 		this.message.subject = subject;
 	}
 
+	set bcc(bcc='') {
+		this.message.bcc = bcc; // copia oculta
+	}
+
 	set html(text) {
 		if (!text) throw new Error("Conteúdo invalido.");
 
 		this.message.html = text;
 	}
-
 };

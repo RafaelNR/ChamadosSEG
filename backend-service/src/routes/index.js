@@ -8,11 +8,13 @@ const Atividades = require('../controllers/Atividades')
 Router.use('/pdf', require('./pdfs'));
 Router.use('/send', require('./emails'));
 
-Router.get("/atividade/:ticket", (req, res, next) =>
-	Atividade.render(req, res, next)
-);
+Router.get("/atividade/:ticket", (req, res, next) => {
+	const atividade = new Atividade;
+	atividade.render(req, res, next);
+});
 Router.get("/atividades", (req, res, next) => {
-	Atividades.render(req, res, next);
+	const atividades = new Atividades;
+	atividades.render(req, res, next);
 });
 
 
