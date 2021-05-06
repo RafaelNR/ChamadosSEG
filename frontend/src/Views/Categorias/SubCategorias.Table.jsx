@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
 export default function () {
   const classes = useStyles();
   const { subcategorias, getSubCategoria } = useSubCategorias();
-  const { search, searchResults, setSearchResults } = useSearch();
+  const { search, searchResults, handleSearch } = useSearch();
   const { order, orderBy, setOrderBy } = useOrderTable();
   const { page, rows, setRows, rowsPerPage, emptyRows } = usePageTable();
 
@@ -92,21 +92,14 @@ export default function () {
   useEffect(() => {
     setOrderBy("nome");
     setRows(search && search.length > 3 ? searchResults : subcategorias);
-  }, [subcategorias, searchResults, search, setOrderBy, setRows]);
+  }, [subcategorias, search]);
 
-  /**
-   ** Seta os usuários encontrados na pesquisa.
-   */
   useEffect(() => {
     if (subcategorias) {
-      const results = subcategorias.filter((sub) => {
-        const nome = sub.nome.toLowerCase();
-        return nome.includes(search.toLowerCase()) ? sub : null
-      });
-      return setSearchResults(results);
+      handleSearch(['nome'], subcategorias);
     }
-    return setSearchResults([]);
-  }, [search, setSearchResults, subcategorias]);
+    // eslint-disable-next-line
+  }, [search]);
 
   return (
     <React.Fragment>

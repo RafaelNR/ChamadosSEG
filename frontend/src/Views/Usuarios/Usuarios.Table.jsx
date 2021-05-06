@@ -100,35 +100,25 @@ const useStyles = makeStyles((theme) => ({
 export default function () {
   const classes = useStyles();
   const { usuarios, getUsuario } = useUsuarios();
-  const { search, searchResults, setSearchResults } = useSearch();
+  const { search, searchResults, handleSearch } = useSearch();
   const { order, orderBy, setOrderBy } = useOrderTable();
   const { page, rows, setRows, rowsPerPage, emptyRows } = usePageTable();
 
 
   useEffect(() => {
-    setOrderBy("nome");
-    return setRows(search && search.length > 3 ? searchResults : usuarios);
-  }, [usuarios, searchResults, search, setOrderBy, setRows]);
+    if (usuarios) {
+      setOrderBy("nome");
+      return setRows(search && search.length > 3 ? searchResults : usuarios);
+    }
+  }, [usuarios, search]);
 
   useEffect(() => {
-    
-    const results = usuarios.filter((usuario) => {
-      const nome = usuario.nome.toLowerCase();
-      const user = usuario.user.toLowerCase();
-
-      if (
-        nome.includes(search.toLowerCase()) ||
-        user.includes(search.toLowerCase())
-      ) {
-        return usuario;
-      } else {
-        return;
-      }
-    });
-
-    return setSearchResults(results);
-  }, [search, setSearchResults, usuarios]);
-
+    if (usuarios) {
+      handleSearch(['nome','user'], usuarios);
+    }
+    // eslint-disable-next-line
+  }, [search]);
+  
   return (
     <React.Fragment>
       <EnhancedTableToolbar

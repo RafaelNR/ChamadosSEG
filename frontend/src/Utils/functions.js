@@ -36,6 +36,10 @@ export function uniquesValues(Values) {
   return newArray;
 }
 
+export function uniquesObjects(arrayObjects) {
+  return arrayObjects.filter((elem, index, self) => index === self.indexOf(elem));
+}
+
 /**
  * * Compara dois array e retorno um array novo com valores diferentes entre eles.
  * * Deve receber somente o item a ser comparado, id, nome....

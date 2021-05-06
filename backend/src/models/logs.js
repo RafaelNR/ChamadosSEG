@@ -1,8 +1,8 @@
 const knex = require("../database/index");
 
 module.exports = {
-	acessos: async () => {
-		return await knex
+	acessos: () => {
+		return knex
 			.select(
 				"logs.id",
 				"logs.type",
@@ -14,8 +14,26 @@ module.exports = {
 				"logs.updated_at"
 			)
 			.from("logs")
-			.leftJoin("users","users.id",'=','logs.user_id')
+			.innerJoin("users","users.id",'=','logs.user_id')
 			.orderBy('logs.id','desc')
+			.limit(200)
+	},
+	emails: () => {
+		return knex
+			.select(
+				"id",
+				"status",
+				"error",
+				"type",
+				"to",
+				"subject",
+				"file",
+				"filename",
+				"created_at",
+				"updated_at"
+			)
+			.from("logs_emails")
+			.orderBy('id','desc')
 			.limit(200)
 	},
 	insert: async (Dados) => await knex.insert(Dados).into("logs"),

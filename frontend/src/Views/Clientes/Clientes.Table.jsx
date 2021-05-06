@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
 export default function () {
   const classes = useStyles();
   const { clientes, getCliente } = useClientes();
-  const { search, searchResults, setSearchResults } = useSearch();
+  const { search, searchResults, handleSearch } = useSearch();
   const { order, orderBy, setOrderBy } = useOrderTable();
   const { page, rows, setRows, rowsPerPage, emptyRows } = usePageTable();
 
@@ -93,22 +93,18 @@ export default function () {
   useEffect(() => {
     setOrderBy("nome_fantasia");
     setRows(search && search.length > 3 ? searchResults : clientes);
-  }, [clientes, searchResults, search, setOrderBy, setRows]);
+  }, [clientes, search]);
 
   /**
    * Seta os usuários encontrados na pesquisa.
    */
-  useEffect(() => {
-    const results = clientes.filter((cliente) => {
-      const nome = cliente.nome_fantasia.toLowerCase();
 
-      if (nome.includes(search.toLowerCase())) {
-        return cliente;
-      }
-      return false
-    });
-    setSearchResults(results);
-  }, [search, setSearchResults, clientes]);
+  useEffect(() => {
+    if (clientes) {
+      handleSearch(['nome_fantasia'], clientes);
+    }
+    // eslint-disable-next-line
+  }, [search]);
 
   return (
     <React.Fragment>

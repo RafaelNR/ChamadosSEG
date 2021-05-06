@@ -31,6 +31,7 @@ import {
   getStatusAtividade,
   getColorAtividade
 } from '../../Utils/dates';
+import AtividadesInfo from "../../Components/Accordion/Accordion";
 
 const headCells = [
   {
@@ -109,7 +110,7 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
   const classes = useStyles();
   const { atividades,loading,downloadPDF,loadingPDF } = useAtividades();
-  const { search, searchResults, setSearchResults } = useSearch();
+  const { search, searchResults, handleSearch } = useSearch();
   const { order, orderBy, setOrderBy, setOrder } = useOrderTable();
   const {
     page,
@@ -122,32 +123,21 @@ export default () => {
 
   //& Order e por onde será renderizado as atividades.
   useEffect(() => {
-    setRowsPerPage(25);
-    setOrderBy('');
-    setOrder('desc');
-    setRows(search && search.length > 3 ? searchResults : atividades);
-    // eslint-disable-next-line
-  }, [atividades, searchResults, search, setOrderBy, setRows, setOrder]);
-
-  //& Renderiza a pesquisa;
-  useEffect(() => {
-    if (search) {
-      const results = atividades.filter((atv) => {
-        const técnico = atv["técnico"].toLowerCase();
-        const cliente = atv.cliente.toLowerCase();
-
-        if (
-          técnico.includes(search.toLowerCase()) ||
-          cliente.includes(search.toLowerCase())
-        ) {
-          return atv;
-        }
-        return false;
-      });
-      return setSearchResults(results);
+    if (atividades) {
+      setRowsPerPage(25);
+      setOrderBy('');
+      setOrder('desc');
+      setRows(search && search.length > 3 ? searchResults : atividades);
     }
-    return setSearchResults(atividades);
-  }, [search, setSearchResults, atividades]);
+    // eslint-disable-next-line
+  }, [atividades, search]);
+
+  useEffect(() => {
+    if (atividades) {
+      handleSearch(['técnico','cliente'], atividades);
+    }
+    // eslint-disable-next-line
+  }, [search]);
 
   return (
     <React.Fragment>

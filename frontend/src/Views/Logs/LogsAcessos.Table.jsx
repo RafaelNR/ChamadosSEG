@@ -83,48 +83,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 export default function () {
   const classes = useStyles();
   const { logs } = useLogs();
-  const { search, searchResults, setSearchResults } = useSearch();
+  const { search, searchResults, handleSearch } = useSearch();
   const { order, orderBy, setOrderBy, setOrder } = useOrderTable();
   const { page, rows, setRows, rowsPerPage, emptyRows } = usePageTable();
 
-  // eslint-disable-next-line
   useEffect(() => {
     if (logs) {
       setOrderBy('id');
       setOrder('desc');
       setRows(search && search.length > 3 ? searchResults : logs);
     }
-  }, [logs, searchResults, search, setOrder, setOrderBy, setRows]);
-
-  // eslint-disable-next-line
+    // eslint-disable-next-line
+  }, [logs, searchResults]);
+  
   useEffect(() => {
-    const results =
-      logs &&
-      logs.filter((log) => {
-        const nome = log.nome.toLowerCase();
-        const type = log.type.toLowerCase();
-        const category = log.category.toLowerCase();
-
-        if (
-          nome.includes(search.toLowerCase()) ||
-          type.includes(search.toLowerCase()) ||
-          category.includes(search.toLowerCase())
-        ) {
-          return log;
-        }
-        return;
-      });
-    setSearchResults(results);
-    return;
-  }, [search, setSearchResults, logs]);
+    if (logs) {
+      handleSearch(['nome', 'type'], logs)
+    }
+    // eslint-disable-next-line
+  }, [search]);
 
   return (
     <React.Fragment>
-      <EnhancedTableToolbar title="Log" data={false} />
+      <EnhancedTableToolbar title="Acessos Usuários" data={false} />
       <TableContainer>
         <Table
           className={classes.table}

@@ -7,13 +7,7 @@ class Log{
         const Dados = await Service.exec('get', '/logs/acessos');
 
       if (!Dados.data.success)
-        // eslint-disable-next-line
-        throw {
-          success: false,
-          message: Dados.data.message
-            ? Dados.data.message
-            : 'Error em buscas os logs de acesso.'
-        };
+        throw new Error('Error em buscas os logs de acesso.');
 
         return {
           success: true,
@@ -22,6 +16,22 @@ class Log{
       } catch (error) {
         throw error;
       }
+  }
+
+  async email() {
+    try {
+      const Dados = await Service.exec('get', '/logs/emails');
+
+      if (!Dados.data.success)
+        throw new Error('Error em buscas os logs de email.');
+        
+      return {
+        success: true,
+        data: Dados.data.data
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 
 }

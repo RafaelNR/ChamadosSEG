@@ -69,7 +69,7 @@ const analistaMenu = [
 
 const adminMenu = [
   {
-    nome: 'Log de Usuários',
+    nome: 'Logs',
     icon: <ReportSharp />,
     path: '/logs'
   }
@@ -132,7 +132,7 @@ const Headers = [
     path: '/usuarios'
   },
   {
-    nome: 'Log dos Usuários',
+    nome: 'Logs',
     icon: <ReportSharp />,
     path: '/logs'
   }

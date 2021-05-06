@@ -1,18 +1,42 @@
-import React, { createContext, useState, useContext, useCallback } from "react";
-import PropTypes from "prop-types";
+import React, { createContext, useState, useContext, useCallback } from 'react';
+import PropTypes from 'prop-types';
+import { uniquesObjects } from '../Utils/functions'
 
 const SearchContext = createContext({});
 
 const SearchProvider = ({ children }) => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
 
   /**
    * Manipula o search da pesquisa, ativando o useEffect
    */
   const handleChangeSearch = useCallback((event) => {
-    if (event.target.value.length >= 3) setSearch(event.target.value);
+    if (event.target.value.length >= 3) {
+      setSearch(event.target.value);
+    } else {
+      setSearch(null);
+    }
   }, []);
+
+  const handleSearch = useCallback(
+    async (keys, Dados) => {
+      if (search) {
+        let results = [];
+        const s = search.toLowerCase();
+          keys.forEach((key) => {
+            const result = Dados.filter((Dado) => {
+              if (Dado[key]) {
+                return Dado[key].toLowerCase().includes(s) && Dado;
+              }
+            });
+            results = [...results, ...result];
+          });
+        return setSearchResults(uniquesObjects(results));
+      }
+    },
+    [search]
+  );
 
   /**
    * Provider
@@ -24,7 +48,8 @@ const SearchProvider = ({ children }) => {
         setSearch,
         searchResults,
         setSearchResults,
-        handleChangeSearch,
+        handleSearch,
+        handleChangeSearch
       }}
     >
       {children}
@@ -33,7 +58,7 @@ const SearchProvider = ({ children }) => {
 };
 
 SearchProvider.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired
 };
 
 export default function useSearch() {

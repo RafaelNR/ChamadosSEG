@@ -1,8 +1,7 @@
 import React from "react";
 
 //* COMPONENTES
-import Paper from "../../Components/Paper/PaperNoDialog";
-import TableLog from './Log.Table';
+import LogsTab from './Logs.Tab';
 
 //* PROVIDER
 import { LogProvider } from "../../Context/Log.Context";
@@ -12,7 +11,7 @@ export default () => {
   return (
     <LoadingProvider>
       <LogProvider>
-        <Paper Render={TableLog} />
+        <LogsTab />
       </LogProvider>
     </LoadingProvider>
   );
