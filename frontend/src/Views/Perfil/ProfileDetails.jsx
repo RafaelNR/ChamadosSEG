@@ -22,9 +22,9 @@ const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-export default ({ Dados }) => {
+export default ({ user }) => {
   const classes = useStyles();
-  const { handleChange, values, setValues } = useForm(Dados);
+  const { handleChange, values, setValues } = useForm(user);
   const { handleSnackBar } = useSnackBar();
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState([]);
@@ -56,6 +56,8 @@ export default ({ Dados }) => {
 
   }
 
+  console.log(values)
+
   return (
     <form
       autoComplete="off"
@@ -68,7 +70,7 @@ export default ({ Dados }) => {
           title="Meus Dados"
         />
         <Divider />
-        { !loading && values && values.id ? 
+        { values && values.nome ? 
           (
             <>
               <CardContent>

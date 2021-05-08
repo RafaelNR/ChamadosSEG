@@ -6,7 +6,9 @@ import {
   TableCell,
   TableContainer,
   TableRow,
+  Tooltip,
 } from "@material-ui/core/"
+import UpdateIcon from '@material-ui/icons/Update';
 
 //* COMPONENTES
 import EnhancedTableHead from "../../Components/Tables/TableHead";
@@ -23,18 +25,11 @@ import usePageTable from "../../Context/PageTableContext";
 import useSearch from "../../Context/SearchContext";
 
 //* UTILS
-import { handleDateTimeFull } from '../../Utils/dates'
+import { handleDateTimeFull, converterFileInData } from '../../Utils/dates';
 
 
 // Header Table
 const headCells = [
-  {
-    id: 'status',
-    numeric: false,
-    disablePadding: false,
-    label: 'Status',
-    sort: false
-  },
   {
     id: 'created_at',
     numeric: false,
@@ -43,10 +38,10 @@ const headCells = [
     sort: false
   },
   {
-    id: 'type',
+    id: 'subject',
     numeric: false,
     disablePadding: false,
-    label: 'Tipo',
+    label: 'Assunto',
     sort: false
   },
   {
@@ -54,6 +49,13 @@ const headCells = [
     numeric: false,
     disablePadding: false,
     label: 'Destinatário',
+    sort: false
+  },
+  {
+    id: 'status',
+    numeric: false,
+    disablePadding: false,
+    label: 'Status',
     sort: false
   },
   {
@@ -94,8 +96,49 @@ const useStyles = makeStyles((theme) => ({
     padding: '3px 30px',
     borderRadius: '35px',
     fontWeight: 'bold'
-  }
+  },
+  error: {
+    backgroundColor: '#ffadad',
+    color: '#d00000',
+    padding: '3px 44px',
+    borderRadius: '35px',
+    fontWeight: 'bold'
+  },
+  mes_ano: {
+    fontSize: 12,
+    textTransform: 'capitalize',
+    display: 'block'
+  },
+  date: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  icon:{
+    fontSize: 16,
+    marginBottom: 4,
+    marginLeft: 4
+  },
 }));
+
+const RowUpdateCreated = ({createdAt,updatedAt}) => {
+  const classes = useStyles();
+  return (
+    <span className={classes.date}>
+      {createdAt >= updatedAt ? (
+        handleDateTimeFull(createdAt)
+      ) : (
+        <Tooltip title="Email Reenviado">
+          <>
+            {handleDateTimeFull(updatedAt)}
+              <UpdateIcon className={classes.icon}/>
+          </>
+        </Tooltip>
+      )}
+    </span>
+  );
+}
+
 
 export default function () {
   const classes = useStyles();
@@ -138,32 +181,37 @@ export default function () {
               sortObject(rows, order, orderBy, page, rowsPerPage).map((row) => {
                 return (
                   <TableRow hover tabIndex={-1} key={row.id}>
-                    <TableCell align="left" className={classes.tablerow}>
-                      {<span className={classes.success}>Sucesso</span> || (
-                        <span className={classes.error}>Erro</span>
-                      )}
-                    </TableCell>
                     <TableCell
                       component="th"
                       className={classes.tablerow}
                       scope="row"
                       padding="default"
                     >
-                      {handleDateTimeFull(row.created_at)}
+                      <RowUpdateCreated updatedAt={row.updated_at} createdAt={row.created_at} />
                     </TableCell>
                     <TableCell align="left" className={classes.tablerow}>
-                      {row.type}
+                      <span>{row.subject}</span>
+                      <span className={classes.mes_ano}>
+                        {row.file ? converterFileInData(row.file) : ''}
+                      </span>
                     </TableCell>
                     <TableCell align="left" className={classes.tablerow}>
                       {row.to}
                     </TableCell>
                     <TableCell align="left" className={classes.tablerow}>
-                      {row.file &&
+                      {row.status === 'success' ? (
+                        <span className={classes.success}>Sucesso</span>
+                      ) : (
+                        <span className={classes.error}>Error</span>
+                      )}
+                    </TableCell>
+                    <TableCell align="left" className={classes.tablerow}>
+                      {row.file && (
                         <>
                           <ResendEmail id={row.id} />
                           <OpenPDF file={row.file} />
                         </>
-                      }
+                      )}
                     </TableCell>
                   </TableRow>
                 );

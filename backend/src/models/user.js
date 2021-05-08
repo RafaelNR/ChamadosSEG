@@ -56,6 +56,15 @@ module.exports = {
 	findOne,
 	findOneByEmail,
 
+	findTecnicosByCliente: (cliente_id) => {
+  return knex
+		.select("users.id", "users.nome")
+		.from("users")
+		.join("cliente_has_user", "cliente_has_user.user_id", "=", "users.id")
+		.where("users.role_id", "=", 3)
+		.where("cliente_has_user.cliente_id", "=", cliente_id);
+	},
+
 	/**
 	 * Retorna dados de todos os usuários.
 	 * @return {Object}

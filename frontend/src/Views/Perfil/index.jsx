@@ -64,7 +64,7 @@ export default () => {
             <ProfileClientes Clientes={values.clients} />
           </Grid>
           <Grid item lg={8} md={6} xs={12}>
-            <ProfileDetails Dados={values} />
+            <ProfileDetails user={values} />
           </Grid>
         </Grid>
       </Container>

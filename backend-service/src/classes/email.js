@@ -49,6 +49,40 @@ module.exports = class Email {
 		}
 	}
 
+	async resend(id) {
+		try {
+			await this.viewTemplate();
+			this.handleAttachments();
+			const Data = await this.email.sendMail(this.message);
+
+			if (Data.response.includes("OK")) {
+				await Model.updateResend({
+					id,
+					status: 'success',
+					error: null,
+				})
+				return {
+					sucesso: true,
+					message: "Email Enviado para: " + this.message.to,
+				};
+			} else {
+				await Model.updateResend({
+					id,
+					status: "error",
+					error: Data,
+				});
+				throw error.message ? error.message : error;
+			}
+		} catch (error) {
+			await Model.updateResend({
+				id,
+				status: "error",
+				error: error.message ? error.message : error,
+			});
+			throw error.message ? error.message : error;
+		}
+	}
+
 	async registerLog({ status, error = null }) {
 		await Model.registerEmail({
 			status,
@@ -90,6 +124,7 @@ module.exports = class Email {
 	}
 
 	async viewTemplate() {
+		console.log(this.dados);
 		this.message.html = await View.render(this.type, this.dados);
 	}
 
@@ -105,7 +140,7 @@ module.exports = class Email {
 		this.message.subject = subject;
 	}
 
-	set bcc(bcc='') {
+	set bcc(bcc = "") {
 		this.message.bcc = bcc; // copia oculta
 	}
 

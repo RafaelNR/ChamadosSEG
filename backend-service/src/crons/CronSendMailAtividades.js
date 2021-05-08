@@ -85,7 +85,7 @@ class CronSendMailAtividades {
 		email.file = filename;
 		email.type = "Relatório Mensal de Atividades";
 		email.dados = dados;
-		email.bcc = 'rafael.r@seg.eti.br,fred@seg.eti.br';
+		email.bcc = process.env.EMAIL_BBC;
 
 		email
 			.send()

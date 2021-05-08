@@ -9,7 +9,7 @@ const useForm = (initValue) => {
 
   useEffect(() => {
     typeof initValue === 'object' ? setValues(initValue) : setValue(initValue);
-  }, []);
+  }, [initValue]);
 
   const handleChangeValue = useCallback((e) => {
     setValues();

@@ -5,6 +5,7 @@ const verifyToken = require("../middlewares/jwt");
 const Auth = require("../controllers/auth");
 const Login = require("../controllers/login");
 const Perfil = require("../controllers/perfil");
+const Emails = require("../controllers/emails");
 
 
 Router.get("/", (req, res) =>
@@ -32,6 +33,7 @@ Router.use("/subcategorias", verifyToken, require("./subcategory"));
 Router.use(["/tasks", "/tarefas"], verifyToken, require("./tasks"));
 Router.use("/usuarios", verifyToken, require("./user"));
 Router.use("/uploads", verifyToken, require("./uploads"));
+Router.use("/send-email/atividades", verifyToken, Emails.resendAtividadesCliente);
 
 Router.get("/logout",verifyToken, (req, res) => {
 	return res.status(200).json({

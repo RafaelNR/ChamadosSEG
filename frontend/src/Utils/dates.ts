@@ -103,6 +103,13 @@ function dateEndOfAtividade(date: string): string{
 
 }
 
+function converterFileInData(file: string): string {
+  const [mes, ano, cliente_id] = file.split('-');
+  const currAno = moment(ano).locale("pt-br").format("Y");
+  const nameMes = moment(mes).locale("pt-br").format("MMMM");
+  return `${nameMes}/${currAno}`;
+}
+
 export {
   TodayDate,
   handleDateTime,
@@ -112,5 +119,6 @@ export {
   permissionEditAtividade,
   getColorAtividade,
   getStatusAtividade,
-  dateEndOfAtividade
+  dateEndOfAtividade,
+  converterFileInData
 };

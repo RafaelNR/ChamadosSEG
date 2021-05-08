@@ -12,9 +12,10 @@ class Atividades {
 			const userId = req.query.user_id;
 			const FileName = this.getFileName(req.query);
 			const Url = `${process.env.URL_SERVICE}/atividades${query}`;
+
+			console.log('View Page URL >>', Url)
 			
 			const pdf = new PDF(Url, FileName, query, userId);
-
 
 			const Dados = await pdf.create();
 

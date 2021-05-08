@@ -6,6 +6,14 @@ const registerEmail = (Dados) => {
 }
 
 
-module.exports = {
-  registerEmail
+const updateResend = (Dados) => {
+  return knex('logs_emails')
+    .update({ ...Dados,updated_at: knex.fn.now() })
+    .where('id', '=', Dados.id)
 }
+
+
+module.exports = {
+	registerEmail,
+	updateResend,
+};

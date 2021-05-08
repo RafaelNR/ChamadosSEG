@@ -17,6 +17,7 @@ const LogProvider = ({ children }) => {
   const { setLoading } = useLoading();
   const [logs, setLogs] = useState([]);
   const [currentTab, setCurrentTab] = React.useState(0);
+  const [loadSendMail, setLoadSendMail] = React.useState(false);
 
   useEffect(() => {
     let render = true;
@@ -66,6 +67,8 @@ const LogProvider = ({ children }) => {
       value={{
         logs,
         setLogs,
+        loadSendMail,
+        setLoadSendMail,
         currentTab,
         handleChange,
       }}

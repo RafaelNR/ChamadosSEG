@@ -36,5 +36,24 @@ module.exports = {
 			.orderBy('id','desc')
 			.limit(200)
 	},
+	findOneEmail: (id) => {
+		return knex
+			.select(
+				"id",
+				"status",
+				"error",
+				"type",
+				"to",
+				"subject",
+				"file",
+				"filename",
+				"created_at",
+				"updated_at"
+			)
+			.from("logs_emails")
+			.where("id", "=",id)
+			.limit(1)
+			.then(e => e[0])
+	},
 	insert: async (Dados) => await knex.insert(Dados).into("logs"),
 };

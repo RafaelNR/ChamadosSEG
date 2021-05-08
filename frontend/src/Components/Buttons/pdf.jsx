@@ -20,8 +20,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-
-
 const PDFIconAtividade = ({ ticket, propsClass }) => {
   const classes = useStyles();
   const { handleSnackBar } = useSnackBar();

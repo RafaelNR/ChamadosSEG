@@ -34,6 +34,18 @@ class Log{
     }
   }
 
+  async resendEmail(id) {
+    const Dados = await Service.exec('get', `/send-email/atividades?id=${id}`);
+
+    if (!Dados.data.success)
+      throw new Error(Dados.data.message);
+
+    return {
+      success: true,
+      data: Dados.data.data
+    };
+  }
+
 }
 
 export default new Log();

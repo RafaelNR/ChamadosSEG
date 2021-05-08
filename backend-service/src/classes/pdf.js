@@ -31,6 +31,8 @@ module.exports = class PDF {
 			],
 			ignoreDefaultArgs: ["--disable-extensions"],
 			headless: true,
+			// slowMo: 2500,
+			// devtools: true,
 		});
 
 		try {
@@ -40,6 +42,7 @@ module.exports = class PDF {
 			await webPage.setExtraHTTPHeaders({
 				authorization: `Bearer ${process.env.SECRET}`,
 			});
+
 
 			return await webPage
 				.goto(this.ViewUrl, {
