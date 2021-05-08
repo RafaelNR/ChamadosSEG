@@ -57,6 +57,9 @@ const useStyles = makeStyles((theme) => ({
   atividadebutton: {
     paddingLeft: 30,
     display: 'flex'
+  },
+  icon: {
+    color: '#fff'
   }
 }));
 
@@ -90,7 +93,7 @@ export default () => {
             <Link to="/atividades/create">
               <Tooltip title="Nova Atividade">
                 <IconButton>
-                  <AddOutlined />
+                  <AddOutlined className={classes.icon}/>
                 </IconButton>
               </Tooltip>
             </Link>

@@ -1,6 +1,6 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import clsx from 'clsx'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom';
 
 //* Components 
 import { SearchOutlined, SendOutlined } from '@material-ui/icons/';
@@ -35,15 +35,17 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: fade('#dfdfdf', 0.15),
     transition: theme.transitions.create('width'),
     marginLeft: 0,
-    width: '100%'
+    width: '100%',
+    color: '#fff'
   },
   margin: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(2)
   },
   searchIcon: (open) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    color: '#fff',
     '& button:hover': {
       backgroundColor: open ? 'transparent' : 'rgba(255, 255, 255, 0.08);'
     }
@@ -65,18 +67,23 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer'
   },
   iconLoading: {
-    marginRight:26
+    marginRight: 26
   }
 }));
 
 export const SearchAtividade = ({}) => {
   const [open, setOpen] = useState(false);
   const { history } = useHistory();
+  let location = useLocation();
   const { roleID, nome} = useUser();
   const { handleSnackBar } = useSnackBar();
   const [loading, setLoading] = useState(false);
   const [ticket, setTicket] = useState('');
   const classes = useStyles(open);
+
+  useEffect(() => {
+    if(open) setOpen(!open);
+  },[location])
 
   const handleChange = useCallback((e) => {
     const value = e.target.value;
@@ -131,7 +138,7 @@ export const SearchAtividade = ({}) => {
         <div className={clsx(classes.margin, open && classes.search)}>
           <div className={classes.searchIcon}>
             <IconButton onClick={close}>
-              <SearchOutlined />
+              <SearchOutlined className={classes.searchIcon}/>
             </IconButton>
           </div>
           {open && (
