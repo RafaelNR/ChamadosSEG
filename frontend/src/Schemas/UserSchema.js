@@ -95,7 +95,7 @@ const LoginSchema = (data) => {
     passwd: yup
       .string()
       .nullable()
-      .min(3, 'No mínimo 3 caracteres')
+      .min(8, 'No mínimo 8 caracteres')
       .max(30, 'No máximo 30 caracteres')
       .required('Senha é obrigatório'),
     permanecer: yup.bool(),

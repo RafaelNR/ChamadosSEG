@@ -17,6 +17,8 @@ export async function Login({user, passwd, permanecer}) {
     
     const Resp = await Service.exec("post", '/login', Dados);
 
+    console.log('>>', Resp.data);
+
     if (Resp.data.success) {
       return Resp.data.data;
     } else {

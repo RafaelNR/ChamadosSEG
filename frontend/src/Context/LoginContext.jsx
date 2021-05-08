@@ -50,6 +50,7 @@ const LoginProvider = ({ children }) => {
         throw new Error('Erro em logar no sistema');
       })
       .catch((error) => {
+        console.log(error)
         setLoading(false);
 
         if (error.errors) return setErrors(error.errors);
