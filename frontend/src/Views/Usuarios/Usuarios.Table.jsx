@@ -107,10 +107,10 @@ export default function () {
 
   useEffect(() => {
     if (usuarios) {
-      setOrderBy("nome");
+      setOrderBy('nome');
       return setRows(search && search.length > 3 ? searchResults : usuarios);
     }
-  }, [usuarios, search]);
+  }, [usuarios, searchResults]);
 
   useEffect(() => {
     if (usuarios) {

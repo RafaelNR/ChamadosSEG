@@ -130,7 +130,7 @@ export default () => {
       setRows(search && search.length > 3 ? searchResults : atividades);
     }
     // eslint-disable-next-line
-  }, [atividades, search]);
+  }, [atividades, searchResults]);
 
   useEffect(() => {
     if (atividades) {
