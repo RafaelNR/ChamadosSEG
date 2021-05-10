@@ -110,6 +110,12 @@ module.exports = {
 			});
 	},
 
+	updatePerfil: (Dados) => {
+		return knex("users")
+			.where({ id: Dados.id })
+			.update(Dados)
+	},
+
 	/**
 	 * Faz o update dos dados do novo usuário
 	 * retornando os dados atualizado desse usuário,

@@ -3,7 +3,6 @@ const Model = require("../models/user");
 const { Crypt } = require("../tools/bcryp");
 const Result =  require('../tools/result');
 const { findClients } = require("../models/clients_has_users");
-const { clientsUser } = require("../tools/validation/schemas");
 
 async function index(req, res) {
 	try {
@@ -64,6 +63,24 @@ async function insert(req, res) {
 	Result.registerLog(req.userId, "user", "insert");
 	return res.status(Result.status).json(Result.res);
 }
+
+async function updatePerfil(req, res) {
+	try {
+		if (!req.body) throw "Informações não encontradas!";
+		if (req.body.id !== parseInt(req.userId)) throw "Sem permissão.";
+
+		await tools.checkIfExist(req.body.id);
+		const newUser = tools.handleUpdatePerfil(req.body);
+		await Model.updatePerfil(newUser);
+		Result.ok(200, await Model.findOne(newUser.id));
+	} catch (error) {
+		console.log(error.error)
+		Result.fail(400, error);
+	}
+	Result.registerLog(req.userId, "perfil", "update");
+	return res.status(Result.status).json(Result.res);
+}
+
 
 async function update(req, res) {
 	try {
@@ -137,13 +154,17 @@ const tools = {
 		newDados.userDados.passwd = Crypt(newDados.userDados.passwd);
 		return newDados;
 	},
+	handleUpdatePerfil(Dados) {
+		let newUser = Validate.updateUser(Dados);
+		// se a senha dor alterada.
+		if (newUser.passwd !== "******") newUser.passwd = Crypt(newUser.passwd);
+		else delete newUser.passwd;
 
+		return newUser;
+	},
 	handleUpdate(Dados) {
 		// Sem Clients vinculado
 		if (!Dados.clients || Dados.clients.length === 0) {
-			
-			
-
 			Dados.clients && delete Dados.clients;
 
 			let userDados = Validate.updateUser(Dados);
@@ -182,6 +203,7 @@ module.exports = {
 	findMyClientes,
 	insert,
 	update,
+	updatePerfil,
 	deletar,
 	actived,
 	/** Usado somente para teste. */
