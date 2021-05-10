@@ -12,6 +12,21 @@ import useLoading from "./LoadingContext";
 
 const LogContext = createContext({});
 
+const tabs = [
+  {
+    id: 0,
+    service: Service.email,
+  },
+  {
+    id: 1,
+    service: Service.acesso,
+  },
+  {
+    id: 2,
+    service: Service.email,
+  }
+];
+
 const LogProvider = ({ children }) => {
   const { handleSnackBar } = useSnackBar();
   const { setLoading } = useLoading();
@@ -26,7 +41,7 @@ const LogProvider = ({ children }) => {
 
     (async () => {
       try {
-        const Dados = !currentTab ? await Service.acesso() : await Service.email();
+        const Dados = await tabs[currentTab].service();
         const { success, data } = Dados;
         if (success && render) return setLogs(data);
         throw new Error(data.message);

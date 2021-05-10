@@ -12,21 +12,29 @@ import useLogs from '../../Context/Log.Context';
 
 const LogsAcesso = React.lazy(() => import('./LogsAcessos.Table'));
 const LogsEmail = React.lazy(() => import('./LogsEmails.Table'));
+const LogsPDF = React.lazy(() => import('./LogsPdfs.Table'));
 const Dialog = React.lazy(() => import('../../Components/Dialog'));
 
 const tabs = [
   {
     id: 0,
-    render: LogsAcesso,
+    render: LogsEmail,
     options: {
-      title: 'Acessos',
+      title: 'Emails'
     }
   },
   {
     id: 1,
-    render: LogsEmail,
+    render: LogsAcesso,
     options: {
-      title: 'Emails',
+      title: 'Acessos'
+    }
+  },
+  {
+    id: 0,
+    render: LogsPDF,
+    options: {
+      title: "PDF's"
     }
   }
 ];
