@@ -100,9 +100,9 @@ export default function () {
    ** Ordem os dados e seta as linha a serem exibidas
    */
   useEffect(() => {
-    setOrderBy("nome");
+    setOrderBy('nome');
     setRows(search && search.length > 3 ? searchResults : categorias);
-  }, [categorias, search]);
+  }, [categorias, searchResults]);
 
   useEffect(() => {
     if (categorias) {

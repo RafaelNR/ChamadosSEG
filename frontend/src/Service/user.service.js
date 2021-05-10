@@ -92,9 +92,35 @@ export const getPerfil = async () => {
   }
 }
 
+export const updatePerfil = async (data) => {
+  try {
+    const Url = `/usuarios/perfil/${data.id}`;
+    const Dados = await Service.exec('put', Url, data);
+    
+    if (!Dados.data.success) {
+      // eslint-disable-next-line
+      throw {
+        success: false,
+        message: Dados.data.message
+          ? Dados.data.message
+          : 'Error em buscas os meus dados.'
+      };
+    }
+
+    return {
+      success: true,
+      data: Dados.data.data
+    };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 
 export const update = async (data) => {
   try {
+    console.log(data)
     const Url = `/usuarios/${data.id}`;
     const Dados = await Service.exec("put", Url, data);
 

@@ -12,15 +12,12 @@ const SearchProvider = ({ children }) => {
    * Manipula o search da pesquisa, ativando o useEffect
    */
   const handleChangeSearch = useCallback((event) => {
-    if (event.target.value.length >= 3) {
-      setSearch(event.target.value);
-    } else {
-      setSearch(null);
-    }
+    setSearch(event.target.value);
   }, []);
 
   const handleSearch = useCallback(
-    async (keys, Dados) => {
+    (keys, Dados) => {
+      console.log(search)
       if (search) {
         let results = [];
         const s = search.toLowerCase();

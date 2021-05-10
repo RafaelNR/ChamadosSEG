@@ -91,9 +91,9 @@ export default function () {
    * Ordem os dados e seta as linha a serem exibidas
    */
   useEffect(() => {
-    setOrderBy("nome_fantasia");
+    setOrderBy('nome_fantasia');
     setRows(search && search.length > 3 ? searchResults : clientes);
-  }, [clientes, search]);
+  }, [clientes, searchResults]);
 
   /**
    * Seta os usuários encontrados na pesquisa.

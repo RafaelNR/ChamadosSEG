@@ -15,7 +15,7 @@ import Loading from '../../Components/Loading'
 
 import useForm from '../../Hooks/useForm';
 import useSnackBar from "../../Context/SnackBarContext";
-import { update } from '../../Service/user.service';
+import { updatePerfil } from '../../Service/user.service';
 import PerfilSchema from '../../Schemas/Perfil.schema';
 
 const useStyles = makeStyles(() => ({
@@ -24,19 +24,18 @@ const useStyles = makeStyles(() => ({
 
 export default ({ user }) => {
   const classes = useStyles();
-  const { handleChange, values, setValues } = useForm(user);
+  const { handleChangeValues, values, setValues } = useForm(user);
   const { handleSnackBar } = useSnackBar();
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState([]);
 
   const handleSubmit = async () => {
+    setLoading(true)
+
     const Dados = await PerfilSchema(values);
     if(Dados.error) return setErrors(Dados.errors)
 
-    setLoading(true)
-
-    return update(Dados).then(Dados => {
-      setLoading(false)
+    return updatePerfil(Dados).then(Dados => {
       setValues({
         ...Dados.data,
         passwd: '******'
@@ -47,16 +46,15 @@ export default ({ user }) => {
       });
     }).catch(error => {
       console.log(error)
-      setLoading(false)
       handleSnackBar({
         type: "error",
         message: error.message ? error.message : 'Erro em carregar os dados.',
       });
+    }).finally(() => {
+      setLoading(false);
     })
 
   }
-
-  console.log(values)
 
   return (
     <form
@@ -88,7 +86,7 @@ export default ({ user }) => {
                     label="Nome Completo"
                     name="nome"
                     id="nome"
-                    onChange={handleChange}
+                    onChange={handleChangeValues}
                     value={values.nome}
                     variant="outlined"
                     error={errors["nome"] ? true : false}
@@ -105,7 +103,7 @@ export default ({ user }) => {
                     fullWidth
                     label="Usuário"
                     name="user"
-                    onChange={handleChange}
+                    onChange={handleChangeValues}
                     value={values.user}
                     variant="outlined"
                     disabled
@@ -121,7 +119,7 @@ export default ({ user }) => {
                     type="password"
                     label="Senha"
                     name="passwd"
-                    onChange={handleChange}
+                    onChange={handleChangeValues}
                     value={values.passwd}
                     variant="outlined"
                     error={errors["passwd"] ? true : false}
@@ -139,7 +137,7 @@ export default ({ user }) => {
                     label="Email"
                     name="email"
                     type="email"
-                    onChange={handleChange}
+                    onChange={handleChangeValues}
                     value={values.email}
                     variant="outlined"
                     error={errors["email"] ? true : false}
@@ -156,7 +154,7 @@ export default ({ user }) => {
                     fullWidth
                     label="Telefone"
                     name="telefone"
-                    onChange={handleChange}
+                    onChange={handleChangeValues}
                     value={values.telefone}
                     variant="outlined"
                     error={errors["telefone"] ? true : false}
