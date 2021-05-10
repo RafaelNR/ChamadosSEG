@@ -94,12 +94,9 @@ export const getPerfil = async () => {
 
 export const updatePerfil = async (data) => {
   try {
-    console.log(data);
     const Url = `/usuarios/perfil/${data.id}`;
     const Dados = await Service.exec('put', Url, data);
-
-    console.log(Dados);
-
+    
     if (!Dados.data.success) {
       // eslint-disable-next-line
       throw {
