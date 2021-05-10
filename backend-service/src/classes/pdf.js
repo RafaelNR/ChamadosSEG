@@ -60,7 +60,7 @@ module.exports = class PDF {
 							bottom: "10px",
 						},
 					});
-
+					this.Log("success");
 					return {
 						success: true,
 						path: this.linkRelativo,
@@ -88,12 +88,12 @@ module.exports = class PDF {
 			status,
 			error,
 			dados: JSON.stringify({
-				...this.query,
+				query: typeof this.query === 'object' ? { ...this.query } : this.query,
 				filename: this.FileName,
-				link: this.linkAbsoluto
+				link: this.linkAbsoluto,
 			}),
 			path: this.linkRelativo,
-			user_id: null,
+			user_id: this.userID,
 		};
 		LogPdf.Register(Dados);
 	}

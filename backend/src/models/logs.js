@@ -14,9 +14,9 @@ module.exports = {
 				"logs.updated_at"
 			)
 			.from("logs")
-			.innerJoin("users","users.id",'=','logs.user_id')
-			.orderBy('logs.id','desc')
-			.limit(200)
+			.innerJoin("users", "users.id", "=", "logs.user_id")
+			.orderBy("logs.id", "desc")
+			.limit(200);
 	},
 	emails: () => {
 		return knex
@@ -33,8 +33,25 @@ module.exports = {
 				"updated_at"
 			)
 			.from("logs_emails")
-			.orderBy('id','desc')
-			.limit(200)
+			.orderBy("id", "desc")
+			.limit(200);
+	},
+	pdfs: () => {
+		return knex
+			.select(
+				"logs_pdf.id",
+				"status",
+				"dados",
+				"path",
+				"erro",
+				"users.nome",
+				"created_at",
+				"updated_at"
+			)
+			.from("logs_pdf")
+			.innerJoin("users","logs.pdf.user_id",'=',"users.id")
+			.orderBy("logs_pdf.id", "desc")
+			.limit(200);
 	},
 	findOneEmail: (id) => {
 		return knex
@@ -51,9 +68,9 @@ module.exports = {
 				"updated_at"
 			)
 			.from("logs_emails")
-			.where("id", "=",id)
+			.where("id", "=", id)
 			.limit(1)
-			.then(e => e[0])
+			.then((e) => e[0]);
 	},
 	insert: async (Dados) => await knex.insert(Dados).into("logs"),
 };
