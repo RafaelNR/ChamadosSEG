@@ -31,7 +31,7 @@ const tabs = [
     }
   },
   {
-    id: 0,
+    id: 2,
     render: LogsPDF,
     options: {
       title: "PDF's"

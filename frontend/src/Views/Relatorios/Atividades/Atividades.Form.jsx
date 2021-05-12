@@ -41,11 +41,12 @@ const ReportData = () => {
             <TextField
               type="date"
               InputLabelProps={{ shrink: true }}
-              value={values && values.data_inicial ? values.data_inicial : null}
+              value={values.data_inicial || ''}
               id="data_inicial"
               name="data_inicial"
               label="Data Inicial"
               variant="outlined"
+              onChange={handleChange}
               error={errors && errors.data_inicial ? true : false}
               helperText={errors && errors.data_inicial}
             />
@@ -54,11 +55,12 @@ const ReportData = () => {
             <TextField
               type="date"
               InputLabelProps={{ shrink: true }}
-              value={values && values.data_final ? values.data_final : null}
+              value={values.data_final || ''}
               id="data_final"
               name="data_final"
               label="Data Final"
               variant="outlined"
+              onChange={handleChange}
               error={errors && errors.data_final ? true : false}
               helperText={errors && errors.data_final}
             />
@@ -71,12 +73,12 @@ const ReportData = () => {
               <SelectItem
                 itens={Anos}
                 title="Selecione o ano"
-                value={values && values.ano ? values.ano : null}
+                value={values.ano || ''}
                 id="ano"
                 name="ano"
                 variant="outlined"
                 handleChange={handleChange}
-                errorText={errors && errors.ano ? errors.ano : ''}
+                errorText={errors && errors.ano || ''}
               />
             )}
           </Grid>
@@ -85,12 +87,12 @@ const ReportData = () => {
               <SelectMeses
                 itens={Meses}
                 title="Selecione o mês"
-                value={values && values.mes ? values.mes : null}
+                value={values.mes || ''}
                 id="mes"
                 name="mes"
                 variant="outlined"
                 handleChange={handleChange}
-                errorText={errors && errors.mes ? errors.mes : ''}
+                errorText={errors && errors.mes || ''}
               />
             )}
           </Grid>
@@ -158,11 +160,14 @@ export default () => {
     try {
       setLoading(true);
       setErrors(null);
+
       const Dados = await ReportAtividadesSchema(values, type);
       if (Dados.error) {
         setLoading(false);
         return setErrors(Dados.errors);
       }
+
+      console.log(Dados)
 
       AtividadesPDF(values, type)
         .then(resp => {
@@ -190,7 +195,7 @@ export default () => {
           : 'Erro gerar PDF.'
       });
     }
-  }, [values,handleSnackBar,setDownload,setErrors,type]);
+  }, [values,type]);
 
 
 

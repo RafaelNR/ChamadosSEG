@@ -23,7 +23,7 @@ const tabs = [
   },
   {
     id: 2,
-    service: Service.email,
+    service: Service.pdf,
   }
 ];
 

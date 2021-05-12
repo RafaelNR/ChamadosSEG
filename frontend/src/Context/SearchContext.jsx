@@ -17,7 +17,6 @@ const SearchProvider = ({ children }) => {
 
   const handleSearch = useCallback(
     (keys, Dados) => {
-      console.log(search)
       if (search) {
         let results = [];
         const s = search.toLowerCase();

@@ -32,14 +32,20 @@ const ReportAtividadesSchema = (Dados, { data, info }) => {
   } else if (data === 'datas' && info === 'tecnico') {
     schema = yup.object().shape({
       tecnico: yup.number().positive().integer().min(1).max(99).required("Técnico é requerido."),
-      data_inicial: yup.date().required("Data inicial é requerido."),
-      data_final: yup.date().required('Data final é requerido.'),
+      data_inicial: yup.string().required("Data inicial é requerido."),
+      data_final: yup.string().required('Data final é requerido.'),
     });
   } else if (data === 'datas' && info === 'cliente') {
     schema = yup.object().shape({
-      cliente: yup.number().positive().integer().min(1).max(99).required("Cliente é requerido."),
-      data_inicial: yup.date().required('Data inicial é requerido.'),
-      data_final: yup.date().required('Data final é requerido.'),
+      cliente: yup
+        .number()
+        .positive()
+        .integer()
+        .min(1)
+        .max(99)
+        .required('Cliente é requerido.'),
+      data_inicial: yup.string().required('Data inicial é requerido.'),
+      data_final: yup.string().required('Data final é requerido.')
     });
   } else {
     throw new Error('Sem Dados vinculados');

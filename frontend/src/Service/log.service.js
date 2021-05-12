@@ -1,21 +1,20 @@
 import Service from "../Api/Service";
 
-class Log{
-
+class Log {
   async acesso() {
     try {
-        const Dados = await Service.exec('get', '/logs/acessos');
+      const Dados = await Service.exec('get', '/logs/acessos');
 
       if (!Dados.data.success)
         throw new Error('Error em buscas os logs de acesso.');
 
-        return {
-          success: true,
-          data: Dados.data.data
-        };
-      } catch (error) {
-        throw error;
-      }
+      return {
+        success: true,
+        data: Dados.data.data
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 
   async email() {
@@ -24,7 +23,23 @@ class Log{
 
       if (!Dados.data.success)
         throw new Error('Error em buscas os logs de email.');
-        
+
+      return {
+        success: true,
+        data: Dados.data.data
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async pdf() {
+    try {
+      const Dados = await Service.exec('get', '/logs/pdfs');
+
+      if (!Dados.data.success)
+        throw new Error('Error em buscas os logs de pdfs.');
+
       return {
         success: true,
         data: Dados.data.data
@@ -37,15 +52,13 @@ class Log{
   async resendEmail(id) {
     const Dados = await Service.exec('get', `/send-email/atividades?id=${id}`);
 
-    if (!Dados.data.success)
-      throw new Error(Dados.data.message);
+    if (!Dados.data.success) throw new Error(Dados.data.message);
 
     return {
       success: true,
       data: Dados.data.data
     };
   }
-
 }
 
 export default new Log();
