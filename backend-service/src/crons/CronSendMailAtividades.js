@@ -12,12 +12,12 @@ class CronSendMailAtividades {
 	constructor() {
 		this.config = {
 			cronTime: '0 0 6 1 * *',
-			//cronTime: "0 31 21 3 * *",
+			//cronTime: "0 */30 * * * *",
 			start: true,
 			onTick: () => {
 				this.onTick();
 			},
-			onComplete: null,
+			onComplete: this.onComplete,
 			timeZone: "America/Sao_Paulo",
 			runOnInit: false,
 		};
@@ -29,9 +29,9 @@ class CronSendMailAtividades {
 	}
 
 	start() {
-		console.log("->> CRON - SendMailAtividades - currMes", this.currMes);
-		console.log("->> CRON - SendMailAtividades - currAno", this.currAno);
-		console.log("->> CRON - SendMailAtividades - nameMes", this.nameMes);
+		console.log("->> CRON - SendMailAtividades - Mês:", this.currMes);
+		console.log("->> CRON - SendMailAtividades - Nome:", this.nameMes);
+		console.log("->> CRON - SendMailAtividades - Ano:", this.currAno);
 		this.Job = new Cron({ ...this.config });
 		if (this.Job.running) {
 			console.log(
@@ -47,9 +47,10 @@ class CronSendMailAtividades {
 	}
 
 	async onTick() {
-		console.log("Iniciado o envio das atividades:", moment().locale('pt-br').format('DD/MM/YYY HH:mm:ss'));
-
+		this.onComplete();
+		
 		try {
+			console.log("Iniciado o envio das atividades:", moment().locale('pt-br').format('DD/MM/YYY HH:mm:ss'));
 			const Clientes = await getClientesComAtividade(this.currMes);
 
 			Clientes.map(async (Cliente) => {
@@ -70,10 +71,11 @@ class CronSendMailAtividades {
 					console.log("Email Enviado!");
 				}
 
-			});
+			})
 		} catch (error) {
 			console.log("ERROR: ", error);
 		}
+		
 	}
 
 	sendEmail(clienteEmail, clienteName, filename, dados) {
@@ -95,12 +97,6 @@ class CronSendMailAtividades {
 			.catch((error) => {
 				console.log(error);
 			})
-			.finally(() => {
-				console.log(
-					"->> CRON - NextDates:",
-					this.Job.nextDates().format("DD/MM/YY HH:mm:ss")
-				);
-			});
 	}
 
 	async createdPdf(mes, ano, clienteID) {
@@ -108,7 +104,7 @@ class CronSendMailAtividades {
 		const FileName = this.getFileName(query);
 		const view = `${process.env.URL_SERVICE}/atividades?ano=${ano}&mes=${mes}&cliente=${clienteID}`;
 
-		const pdf = new PDF(view, FileName, query);
+		const pdf = new PDF(view, FileName, query, null, "Atividade Mensal");
 
 		const Dados = await pdf.create();
 
@@ -126,7 +122,14 @@ class CronSendMailAtividades {
 	}
 
 	onComplete() {
-		this.Job.stop();
+		const nextMes = moment().locale("pt-br").month()+1;
+		console.log("->> CRON - SendMailAtividades - Proximo Mês:", nextMes);
+		console.log("->> CRON - SendMailAtividades - Proximo Ano: ", this.currAno);		
+		console.log(
+			"->> CRON - SendMailAtividades - Proxima data de execução:",
+			this.Job.nextDates().format("DD/MM/YY HH:mm:ss")
+		);
+			
 	}
 }
 

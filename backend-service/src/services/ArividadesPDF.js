@@ -15,7 +15,13 @@ class Atividades {
 
 			console.log('View Page URL >>', Url)
 			
-			const pdf = new PDF(Url, FileName, query, userId);
+			const pdf = new PDF(
+				Url,
+				FileName,
+				query,
+				userId,
+				this.getTypePDf(req.query)
+			);
 
 			const Dados = await pdf.create();
 
@@ -33,7 +39,22 @@ class Atividades {
   getFileName(query) {
     const values = Object.values(query);
     return values.join('-');
-  }
+	}
+	
+	getTypePDf(query) {
+
+		if (query.mes && query.cliente)
+			return "Atividades Mensal Cliente";
+		else if (query.mes && query.tecnico)
+			return "Atividades Mensal Técnico";
+		else if (query.data_inicial && query.cliente)
+			return "Atividades Período Cliente";
+		else if (query.data_inicial && query.tecnico)
+			return "Atividades Período Técnico";
+		else
+			return "Atividades";
+			
+	}
 
 }
 

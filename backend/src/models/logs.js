@@ -41,15 +41,16 @@ module.exports = {
 			.select(
 				"logs_pdf.id",
 				"status",
+				"type",
 				"dados",
 				"path",
-				"erro",
-				"users.nome",
-				"created_at",
-				"updated_at"
+				"error",
+				"users.nome as nome",
+				"logs_pdf.created_at",
+				"logs_pdf.updated_at"
 			)
 			.from("logs_pdf")
-			.innerJoin("users","logs.pdf.user_id",'=',"users.id")
+			.leftJoin("users", "logs_pdf.user_id", "=", "users.id")
 			.orderBy("logs_pdf.id", "desc")
 			.limit(200);
 	},

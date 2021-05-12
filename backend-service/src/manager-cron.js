@@ -6,11 +6,14 @@ class ManagerCron{
     this.jobs = [CronSendMailAtividades];
   }
 
-  run(){
+  run() {
     if(this.jobs.length > 0){
       this.jobs.map(Job => {
         Job.start();
       })
+      console.log("->> CRON - Tarefas agendadas corretamente.");
+    } else {
+      console.log("->> CRON - Erro no agendamento das tarefas.")
     }
   }
 

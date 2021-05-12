@@ -78,7 +78,7 @@ const tools = {
 		if (Query.cliente) {
       await tools.validateCliente(userID,Query.cliente);
     } else if (userID, Query.tecnico) {
-      await tools.validateTecnico(userID,Query.cliente)
+      await tools.validateTecnico(userID,Query.tecnico)
 		}
 	},
 

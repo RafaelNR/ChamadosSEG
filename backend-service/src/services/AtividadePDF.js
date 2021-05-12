@@ -11,7 +11,7 @@ class Atividade {
 			const userId = req.query.user_id;
 			const Url = `${process.env.URL_SERVICE}/atividade/${ticket}`;
 
-			const pdf = new PDF(Url, ticket, { ticket: ticket }, userId);
+			const pdf = new PDF(Url, ticket, { ticket: ticket }, userId, 'Atividade');
 
 			const Dados = await pdf.create();
 

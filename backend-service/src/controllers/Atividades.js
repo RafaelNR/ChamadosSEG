@@ -3,8 +3,6 @@ const Model = require("../models/Atividades");
 const Clientes = require("../models/Clientes");
 const Tecnicos = require("../models/Tecnicos");
 const View = require("../views/Atividades.pdf.view");
-const LogPdf = require("../classes/logs_pdf");
-
 module.exports = class Atividades {
 
 	constructor() {
@@ -126,24 +124,6 @@ module.exports = class Atividades {
 			throw new Error("Parametros da pesquisa inválidos");
 
 
-	}
-
-	Log(status, error = null) {
-    const Dados = {
-      status,
-      error,
-			dados: JSON.stringify({
-				inicial: this.DataInicial,
-				final: this.DataFinal,
-				mes: this.Mes,
-				Ano: this.Ano,
-				tecnico: this.Tecnico,
-				cliente: this.Cliente,
-			}),
-      path: this.linkRelativo,
-      user_id: this.userId,
-    }
-    LogPdf.Register(Dados);
 	}
 
 	clear() {

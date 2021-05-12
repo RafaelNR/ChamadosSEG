@@ -1,15 +1,16 @@
 const Path = require("path");
-const LogPdf = require("../classes/logs_pdf");
+const Model = require("../models/Pdf");
 const Puppeteer = require("puppeteer");
 const report = require('puppeteer-report');
 
 module.exports = class PDF {
 
-	constructor(viewUrl, fileName, query={}, userID=null) {
+	constructor(viewUrl, fileName, query = {}, userID = null, type) {
 		this.ViewUrl = viewUrl;
 		this.FileName = fileName;
 		this.query = query;
-		this.userID = userID
+		this.userID = userID;
+		this.typePDF = type;
 		this.linkRelativo = Path.join(
 			__dirname,
 			"..",
@@ -60,7 +61,7 @@ module.exports = class PDF {
 							bottom: "10px",
 						},
 					});
-					this.Log("success");
+					await this.Log("success");
 					return {
 						success: true,
 						path: this.linkRelativo,
@@ -73,7 +74,8 @@ module.exports = class PDF {
 					throw new Error("Erro em gerar PDF.");
 				});
 		} catch (error) {
-			this.Log("error", error.message ? error.message : error);
+			console.log(error)
+			await this.Log("error", error.message ? error.message : error);
 			return {
 				success: false,
 				error: error.message ? error.message : error,
@@ -83,7 +85,7 @@ module.exports = class PDF {
 		}
 	}
 
-	Log(status, error = null) {
+	async Log(status, error = null) {
 		const Dados = {
 			status,
 			error,
@@ -94,8 +96,9 @@ module.exports = class PDF {
 			}),
 			path: this.linkRelativo,
 			user_id: this.userID,
+			type: this.typePDF
 		};
-		LogPdf.Register(Dados);
+		await Model.RegisterLog(Dados);
 	}
 
 };
