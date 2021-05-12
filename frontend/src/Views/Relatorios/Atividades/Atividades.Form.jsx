@@ -78,7 +78,7 @@ const ReportData = () => {
                 name="ano"
                 variant="outlined"
                 handleChange={handleChange}
-                errorText={errors && errors.ano || ''}
+                errorText={errors.ano || ''}
               />
             )}
           </Grid>
@@ -92,7 +92,7 @@ const ReportData = () => {
                 name="mes"
                 variant="outlined"
                 handleChange={handleChange}
-                errorText={errors && errors.mes || ''}
+                errorText={errors.mes || ''}
               />
             )}
           </Grid>

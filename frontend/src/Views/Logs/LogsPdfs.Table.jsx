@@ -40,6 +40,13 @@ const headCells = [
     sort: false
   },
   {
+    id: 'type',
+    numeric: false,
+    disablePadding: false,
+    label: 'Tipo PDF',
+    sort: false
+  },
+  {
     id: 'user',
     numeric: false,
     disablePadding: false,
@@ -76,12 +83,26 @@ const useStyles = makeStyles((theme) => ({
   },
   tablerow: {
     padding: '10px 15px'
+  },
+  success: {
+    backgroundColor: '#d8f3dc',
+    color: '#2b9348',
+    padding: '3px 30px',
+    borderRadius: '35px',
+    fontWeight: 'bold'
+  },
+  error: {
+    backgroundColor: '#ffadad',
+    color: '#d00000',
+    padding: '3px 44px',
+    borderRadius: '35px',
+    fontWeight: 'bold'
   }
 }));
 
 export default function () {
   const classes = useStyles();
-  const { logs, setLogs } = useLogs();
+  const { logs } = useLogs();
   const { order, orderBy, setOrderBy, setOrder } = useOrderTable();
   const { page, rows, setRows, rowsPerPage, emptyRows } = usePageTable();
 
@@ -97,8 +118,7 @@ export default function () {
   }
 
   useEffect(() => {
-    if (logs) {
-      // console.log(handleLogs());
+    if (logs && logs.length > 0 && logs[0].dados) {
       setOrderBy('id');
       setOrder('desc');
       setRows(handleLogs());
@@ -133,14 +153,22 @@ export default function () {
                       {handleDateTimeFull(row.created_at)}
                     </TableCell>
                     <TableCell align="left" className={classes.tablerow}>
-                      {row.status}
+                      {row.status === 'success' ? (
+                        <span className={classes.success}>Sucesso</span>
+                      ) : (
+                        <span className={classes.error}>Error</span>
+                      )}
+                    </TableCell>
+                    <TableCell align="left" className={classes.tablerow}>
+                      {row.type || '-'}
                     </TableCell>
                     <TableCell align="left" className={classes.tablerow}>
                       {row.nome || '-'}
                     </TableCell>
-                    <TableCell align="left" className={classes.tablerow}>
-                      
-                    </TableCell>
+                    <TableCell
+                      align="left"
+                      className={classes.tablerow}
+                    ></TableCell>
                   </TableRow>
                 );
               })

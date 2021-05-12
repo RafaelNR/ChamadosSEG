@@ -25,16 +25,16 @@ const tabs = [
   },
   {
     id: 1,
-    render: LogsAcesso,
+    render: LogsPDF,
     options: {
-      title: 'Acessos'
+      title: "PDF's"
     }
   },
   {
     id: 2,
-    render: LogsPDF,
+    render: LogsAcesso,
     options: {
-      title: "PDF's"
+      title: 'Acessos'
     }
   }
 ];

@@ -15,15 +15,15 @@ const LogContext = createContext({});
 const tabs = [
   {
     id: 0,
-    service: Service.email,
+    service: Service.email
   },
   {
     id: 1,
-    service: Service.acesso,
+    service: Service.pdf
   },
   {
     id: 2,
-    service: Service.pdf,
+    service: Service.acesso
   }
 ];
 
