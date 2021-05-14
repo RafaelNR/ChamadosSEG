@@ -4,13 +4,16 @@ import PropTypes from "prop-types";
 const LoadingContext = createContext({});
 
 const LoadingProvider = ({ children }) => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   return (
     <LoadingContext.Provider
       value={{
         loading,
+        success,
         setLoading,
+        setSuccess
       }}
     >
       {children}

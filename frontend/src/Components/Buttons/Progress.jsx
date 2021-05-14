@@ -47,9 +47,10 @@ export default ({ children, handleSubmit, loading, success }) => {
 
   React.useEffect(() => {
     return () => {
+      // eslint-disable-next-line
       clearTimeout(timer.current);
-    };
-  }, [timer.current]);
+    }; 
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -84,9 +85,10 @@ export const ProgressSubmit = ({ children, loading, success }) => {
 
   React.useEffect(() => {
     return () => {
+      // eslint-disable-next-line
       clearTimeout(timer.current);
     };
-  }, [timer.current]);
+  }, []);
 
   return (
     <div className={classes.root}>

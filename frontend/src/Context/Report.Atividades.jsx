@@ -97,6 +97,7 @@ const ReportAtividadesProvider = ({ children }) => {
     (event) => {
       const key = event.target.name;
       const value = event.target.value;
+      console.log(key,value)
       setValues({
         ...values,
         [key]: value

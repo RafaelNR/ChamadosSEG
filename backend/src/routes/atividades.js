@@ -5,11 +5,12 @@ const InfosController =  require("../controllers/info_atividades")
 const verifyToken = require("../middlewares/jwt");
 
 Router.get("/", verifyToken, Controller.index);
-Router.get("/user", verifyToken, Controller.findAllByMy);
+Router.get(["/user","/myuser"], verifyToken, Controller.findAllByMy);
 Router.get("/user/:user_id", Controller.findAllByUser);
 
-Router.get("/clientes", Controller.findAllByClientes);
+Router.get("/myclientes", Controller.findAllByMyClientes);
 Router.get("/cliente/:cliente_id", Controller.findAllByCliente);
+
 
 Router.get("/:id", verifyToken, Controller.findOne);
 

@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
 		}
 
 		// Acesso sem token usuário e senha
-		const { user, passwd } = req.body;
+		const { user, passwd, permanecer } = req.body;
 
 		// Valida User
 		const bodyUser = Validation.login({ user, passwd });
@@ -48,8 +48,9 @@ module.exports = async (req, res) => {
 			{ id: dbUser.id /* Playload */ },
 			process.env.SECRET,
 			{
-				expiresIn: process.env.NODE_ENV === 'dev' ? 3600 : 10800,
-				//expiresIn: 60,
+				//expiresIn: process.env.NODE_ENV === 'dev' ? 3600 : 10800,
+				//expiresIn: permanecer ? 300 : 30,
+				expiresIn: permanecer ? 3600*24*30 : 3600*8,
 			}
 		);
 

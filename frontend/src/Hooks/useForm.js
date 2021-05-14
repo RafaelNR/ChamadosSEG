@@ -1,31 +1,50 @@
+import { type } from "os";
 import { useState, useEffect, useCallback } from "react";
 import useMasker from "./useMasker";
 
-const useForm = (currValues = {}) => {
-  const [values, setValues] = useState(currValues);
+const useForm = (initValue) => {
+  const [values, setValues] = useState({});
+  const [value, setValue] = useState('');
   const { Masker } = useMasker();
 
   useEffect(() => {
-    setValues(currValues);
-  },[currValues])
+    typeof initValue === 'object' ? setValues(initValue) : setValue(initValue);
+  }, [initValue]);
 
-  const handleChange = useCallback(
+  const handleChangeValue = useCallback((e) => {
+    setValues();
+  }, []);
+
+  const handleChangeValues = useCallback(
     (event) => {
-      const key = event.target.name;
-      const value = Masker(event.target.value, key);
-      console.log(values);
-      setValues({
-        ...values,
-        [key]: value,
+      const name = event.target.name;
+      const value = Masker(event.target.value, name);
+      console.log(name, value);
+
+      setValues((props) => {
+        return {
+          ...props,
+          [name]: value
+        };
       });
     },
-    [values, Masker]
+    // eslint-disable-next-line
+    []
   );
 
+  const handleSubmit = useCallback((event, cb) => {
+    event.preventDefault();
+    return cb();
+  }, []);
+
   return {
+    value,
+    setValues,
     values,
     setValues,
-    handleChange,
+    handleChangeValue,
+    handleChangeValues,
+    handleSubmit
   };
 };
 

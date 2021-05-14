@@ -16,7 +16,7 @@ const type = {
 		nome_fantasia: Joi.string().min(3).max(150).required(),
 		cpnj_cpf: Joi.string().min(14).max(18).required(),
 		user: Joi.string().lowercase().min(3).max(30).required(),
-		passwd: Joi.string().pattern(new RegExp("^[@a-zA-Z0-9]{3,30}$")).required(),
+		passwd: Joi.string().min(8).max(30).required(),
 		telefone: Joi.string().min(3).max(15).required(),
 		numero: Joi.string().min(9).max(9).required(),
 		email: Joi.string().email().required(),

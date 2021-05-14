@@ -6,7 +6,7 @@ const PageTableContext = createContext({});
 const PageTableProvider = ({ children }) => {
   const [page, setPage] = useState(0);
   const [rows, setRows] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
 
   /**
    * Muda para uma nova página

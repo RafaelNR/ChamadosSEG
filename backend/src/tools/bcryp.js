@@ -1,5 +1,4 @@
 "use strict";
-
 const bcrypt = require("bcryptjs");
 
 const Crypt = (password) => {
@@ -8,8 +7,8 @@ const Crypt = (password) => {
   return hash;
 };
 
-const Compare = (Digitada, Atual) => {
-  if (!bcrypt.compareSync(Digitada, Atual)) {
+const Compare = (nova, atual) => {
+  if (!bcrypt.compareSync(nova, atual)) {
     return false;
   } else {
     return true;

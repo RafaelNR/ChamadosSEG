@@ -43,10 +43,9 @@ App.use(Access.Purchase);
 App.use(Routes);
 
 // Ignore favicon
-App.use((req, res, next) => {
-	if (res.url !== "/favicon.ico") {
-		next();
-	}
+App.use("/favicon.ico", (req, res, next) => {
+	Express.static(path.join(__dirname, "..","static","favicon.ico"));
+	next();
 });
 
 // Erro genérico

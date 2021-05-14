@@ -14,8 +14,8 @@ const InsertSchema = (data) => {
       .required("Email é obrigatório"),
     passwd: yup
       .string()
-      .min(3, "No mínimo 3 caracteres")
-      .max(15, "No máximo 15 caracteres")
+      .min(8, "No mínimo 8 caracteres")
+      .max(30, "No máximo 30 caracteres")
       .required("Senha é obrigatório"),
     user: yup
       .string()
@@ -66,7 +66,10 @@ const UpdateSchema = (data) => {
       .min(0)
       .max(99)
       .required("Perfil é obrigatório."),
-    clients: yup.array().required("Pelo menos um cliente é obrigatório."),
+    clients: data.actived
+      ? yup.array().required('Pelo menos um clientes é requerido.')
+      : yup.array(),
+    actived: yup.number().min(0).max(1).required()
   });
 
   const Val = new Validate(schema, data);
@@ -92,13 +95,28 @@ const LoginSchema = (data) => {
     passwd: yup
       .string()
       .nullable()
-      .min(3, 'No mínimo 3 caracteres')
-      .max(15, 'No máximo 15 caracteres')
-      .required('Senha é obrigatório')
+      .min(8, 'No mínimo 8 caracteres')
+      .max(30, 'No máximo 30 caracteres')
+      .required('Senha é obrigatório'),
+    permanecer: yup.bool(),
   });
 
   const Val = new Validate(schema, data);
   return Val.exec();
 }
 
-export { InsertSchema, UpdateSchema, DisabledSchema, LoginSchema };
+
+const ChangePasswd = (data) => {
+
+  const schema = yup.string()
+    .nullable()
+    .min(8, 'No mínimo 8 Caracteres')
+    .max(30, 'No máximo 30 caracteres')
+    .required('é obrigatório')
+
+  const Val = new Validate(schema, data);
+  return Val.exec();
+
+}
+
+export { InsertSchema, UpdateSchema, DisabledSchema, LoginSchema, ChangePasswd};

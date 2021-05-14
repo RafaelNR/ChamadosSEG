@@ -50,7 +50,7 @@ async function insert(req, res) {
 	try {
 		if (!req.body) throw "Informações não encontradas!";
 
-		const Dados = tools.handilingInsert(req.body);
+		const Dados = tools.handleInsert(req.body);
 		const userID = await Model.insert(Dados);
 
 		// Remove o passwd
@@ -64,13 +64,31 @@ async function insert(req, res) {
 	return res.status(Result.status).json(Result.res);
 }
 
+async function updatePerfil(req, res) {
+	try {
+		if (!req.body) throw "Informações não encontradas!";
+		if (req.body.id !== parseInt(req.userId)) throw "Sem permissão.";
+
+		await tools.checkIfExist(req.body.id);
+		const newUser = tools.handleUpdatePerfil(req.body);
+		await Model.updatePerfil(newUser);
+		Result.ok(200, await Model.findOne(newUser.id));
+	} catch (error) {
+		console.log(error.error)
+		Result.fail(400, error);
+	}
+	Result.registerLog(req.userId, "perfil", "update");
+	return res.status(Result.status).json(Result.res);
+}
+
+
 async function update(req, res) {
 	try {
 		if (!req.body || !req.params.id) throw "Informações não encontradas!";
 		if (req.body.id !== parseInt(req.params.id)) throw "Valor são inválidos.";
 
 		await tools.checkIfExist(req.body.id);
-		const Dados = tools.handilingUpdate(req.body);
+		const Dados = tools.handleUpdate(req.body);
 		await Model.update(Dados);
 		
 		Result.ok(200, await Model.findOne(Dados.userDados.id));
@@ -117,7 +135,7 @@ async function actived(req, res) {
 }
 
 const tools = {
-	handilingInsert(Dados) {
+	handleInsert(Dados) {
 		// Sem Clients vinculado
 		if (!Dados.clients) {
 			let userDados = Validate.insertUser(Dados);
@@ -136,16 +154,24 @@ const tools = {
 		newDados.userDados.passwd = Crypt(newDados.userDados.passwd);
 		return newDados;
 	},
+	handleUpdatePerfil(Dados) {
+		let newUser = Validate.updateUser(Dados);
+		// se a senha dor alterada.
+		if (newUser.passwd !== "******") newUser.passwd = Crypt(newUser.passwd);
+		else delete newUser.passwd;
 
-	handilingUpdate(Dados) {
+		return newUser;
+	},
+	handleUpdate(Dados) {
 		// Sem Clients vinculado
-		if (!Dados.clients) {
+		if (!Dados.clients || Dados.clients.length === 0) {
+			Dados.clients && delete Dados.clients;
+
 			let userDados = Validate.updateUser(Dados);
 			// se a senha dor alterada.
-			if(userDados.passwd !== "******")
+			if (userDados.passwd !== "******")
 				userDados.passwd = Crypt(userDados.passwd);
-			else
-				delete userDados.passwd
+			else delete userDados.passwd;
 
 			return { userDados };
 		}
@@ -159,10 +185,9 @@ const tools = {
 		};
 
 		// Se a senha for alterada
-		if(newDados.userDados.passwd !== "******")
+		if (newDados.userDados.passwd !== "******")
 			newDados.userDados.passwd = Crypt(newDados.userDados.passwd);
-		else
-			delete newDados.userDados.passwd
+		else delete newDados.userDados.passwd;
 
 		return newDados;
 	},
@@ -178,6 +203,7 @@ module.exports = {
 	findMyClientes,
 	insert,
 	update,
+	updatePerfil,
 	deletar,
 	actived,
 	/** Usado somente para teste. */

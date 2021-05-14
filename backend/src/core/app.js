@@ -1,21 +1,20 @@
 "use strict";
-const express = require("express");
-const App = express();
+const Express = require("express");
+const App = Express();
 
 const Rotas = require("../routes/index");
 const Middlewares = require("../middlewares/index");
 const FilesStatics = require("../middlewares/files");
 
 Middlewares(App);
-FilesStatics(App, express);
+FilesStatics(App, Express);
 App.use(Rotas);
 
 
 // Ignore favicon
-App.use((req, res, next) => {
-	if (res.url !== "/favicon.ico") {
-		next();
-	}
+App.use("/favicon.ico", (req, res, next) => {
+	Express.static(path.join(__dirname, "..", "..", "public", "favicon.ico"));
+	next();
 });
 
 App.use((error, req, res, next) => {

@@ -20,7 +20,7 @@
 
   <div class="container-xl">
 
-    <div class="title">Relatório de Serviço Técnico ffgdfgd</div>
+    <div class="title">Relatório de Serviço Técnico</div>
 
     <%- include('../components/Cliente', {
       nome_fantasia: Atividade.cliente.nome_fantasia,
@@ -34,7 +34,7 @@
     <%- include('../components/Atividade', {
       data: Atividade.new_date,
       ticket: Atividade.ticket,
-      tecnico: Atividade['técnico'],
+      tecnico: Atividade.tecnico,
       created_at: Atividade.new_created_at,
       updated_at: Atividade.new_updated_at,
     }) %>

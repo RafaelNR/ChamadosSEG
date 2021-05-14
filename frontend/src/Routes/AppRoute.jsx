@@ -3,6 +3,7 @@ import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { makeStyles, Container } from "@material-ui/core";
 import Main from "../Template/Main";
 
+<<<<<<< HEAD
 //Pages
 import Home from "../Pages/Home/";
 import Atividades from "../Pages/Atividades/";
@@ -19,6 +20,23 @@ import Logs from "../Pages/Logs/";
 import Relatorios from '../Pages/Relatorios/';
 import RAtividades from '../Pages/Relatorios/Atividades';
 import RMyAtividades from '../Pages/Relatorios/Atividades/my';
+=======
+//Views
+import Home from "../Views/Home/";
+import Atividades from "../Views/Atividades/";
+import AtividadesCreate from "../Views/Atividades/Create/";
+import AtividadesEdit from "../Views/Atividades/Edit/";
+import AtividadesView from "../Views/Atividades/View/";
+import Clientes from "../Views/Clientes/";
+import Categorias from "../Views/Categorias/";
+import Usuarios from "../Views/Usuarios";
+import Modelos from "../Views/Modelos";
+import Perfil from "../Views/Perfil/";
+import Logs from "../Views/Logs/";
+import Relatorios from '../Views/Relatorios/';
+import RAtividades from '../Views/Relatorios/Atividades';
+import RMyAtividades from '../Views/Relatorios/Atividades/my';
+>>>>>>> be2e80bfa532e0b6c3fc71040b4bada62fdbfb22
 
 import useAuth from '../Context/AuthContext';
 import useUser from '../Hooks/useUser';

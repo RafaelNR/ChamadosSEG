@@ -1,16 +1,16 @@
 import React from "react";
 import clsx from "clsx";
-import MenuIcon from "@material-ui/icons/Menu";
-import NotificationsIcon from "@material-ui/icons/Notifications";
+import { Link } from 'react-router-dom'
+import { MenuRounded, AddOutlined } from "@material-ui/icons/";
 import {
   makeStyles,
   AppBar,
   Toolbar,
   IconButton,
-  Badge,
+  Tooltip
 } from "@material-ui/core";
-import ButtonLogout from "../Components/LogOut";
 import MenuUser from './MenuUser'
+import { SearchAtividade } from '../Components/Search/ticket';
 
 //* CONTEXT
 import useMenu from "../Context/MenuContext";
@@ -19,41 +19,48 @@ import SwitchDarkMode from "../Components/Buttons/DarkMode.Switch";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
+    display: 'flex'
   },
   grow: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["width", "margin"], {
+    transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
+      duration: theme.transitions.duration.leavingScreen
+    })
   },
 
   appBarShift: {
     marginLeft: 240,
     width: `calc(100% - ${240}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
+    transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+      duration: theme.transitions.duration.enteringScreen
+    })
   },
   buttons: {
-    display: "none",
-    [theme.breakpoints.up("md")]: {
-      display: "flex",
-    },
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex'
+    }
   },
   toolbar: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
     padding: theme.spacing(0, 100),
     // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
+    ...theme.mixins.toolbar
   },
+  atividadebutton: {
+    paddingLeft: 30,
+    display: 'flex'
+  },
+  icon: {
+    color: '#fff'
+  }
 }));
 
 export default () => {
@@ -65,7 +72,7 @@ export default () => {
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
+          [classes.appBarShift]: open
         })}
       >
         <Toolbar>
@@ -75,11 +82,22 @@ export default () => {
             onClick={() => handleDrawerOpen()}
             edge="start"
             className={clsx(classes.menuButton, {
-              [classes.hide]: open,
+              [classes.hide]: open
             })}
           >
-            <MenuIcon />
+            <MenuRounded />
           </IconButton>
+
+          <div className={classes.atividadebutton}>
+            <SearchAtividade />
+            <Link to="/atividades/create">
+              <Tooltip title="Nova Atividade">
+                <IconButton>
+                  <AddOutlined className={classes.icon}/>
+                </IconButton>
+              </Tooltip>
+            </Link>
+          </div>
 
           <div className={classes.grow} />
           <div className={classes.buttons}>

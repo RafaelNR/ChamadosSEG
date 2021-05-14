@@ -2,7 +2,6 @@ import React, {
   createContext,
   useState,
   useContext,
-  useEffect,
   useCallback,
 } from "react";
 import PropTypes from "prop-types";
@@ -24,16 +23,16 @@ const UploadProvider = ({ children }) => {
   const { setUserImage } = useUsuarios();
   const { setNewImagem } = useUser();
   const [file, setFile] = useState({});
-  const [files, setFiles] = useState([]);
+  //const [files, setFiles] = useState([]);
   const [errors, setErrors] = React.useState(null);
   const [process, setProcess] = React.useState(null);
 
   const uploadImageUser = useCallback((uploadedFile) => {
-    
+    setLoading(true);
+
     if (uploadedFile.file) {
       Service.uploadImageUser(uploadedFile)
         .then((response) => {
-
           if (response.data.success) {
             setUserImage(response.data.data);
 
@@ -41,78 +40,77 @@ const UploadProvider = ({ children }) => {
               type: 'success',
               message: `A imagem "${uploadedFile.name}" já foi enviada para o servidor!`
             });
-            
           }
-        
-          throw `Houve um problema para fazer upload da imagem "${uploadedFile.name}" no servidor`;
-        
+
+          throw new Error(
+            `Houve um problema para fazer upload da imagem "${uploadedFile.name}" no servidor`
+          );
         })
         .catch((error) => {
-
+          setErrors(error);
           handleSnackBar({
             type: 'error',
-            message: error 
-              ? error
-              : `Houve um problema para fazer upload da imagem "${uploadedFile.name}" no servidor;`
-            });
-          
+            message:
+              error && error.message
+                ? error.message
+                : `Houve um problema para fazer upload da imagem "${uploadedFile.name}" no servidor;`
+          });
         })
-        
+        .finally(setLoading(false));
     }
+    // eslint-disable-next-line
   },[])
 
   const uploadImagePerfil = useCallback((uploadedFile) => {
-    
+    setLoading(true);
+
     if (uploadedFile.file) {
       Service.uploadImageUser(uploadedFile)
         .then((response) => {
-
           if (response.data.success) {
-            setNewImagem(response.data.data.filename)
+            setNewImagem(response.data.data.filename);
             handleSnackBar({
               type: 'success',
               message: `A imagem "${uploadedFile.name}" já foi enviada para o servidor!`
             });
 
             return response.data.data;
-            
           }
-        
-          throw `Houve um problema para fazer upload da imagem "${uploadedFile.name}" no servidor`;
-        
+
+          throw new Error(
+            `Houve um problema para fazer upload da imagem "${uploadedFile.name}" no servidor`
+          );
         })
         .catch((error) => {
-
           handleSnackBar({
             type: 'error',
-            message: error 
-              ? error
-              : `Houve um problema para fazer upload da imagem "${uploadedFile.name}" no servidor;`
-            });
-          
+            message:
+              error && error.message
+                ? error.message
+                : `Houve um problema para fazer upload da imagem "${uploadedFile.name}" no servidor;`
+          });
         })
-        
+        .finally(setLoading(false));
     }
+    // eslint-disable-next-line
   },[])
 
   const factorUpload = useCallback((type, newFile) => {
-
     switch (type.toLowerCase()) {
       case 'imageUser'.toLowerCase():
-        uploadImageUser(newFile)
+        uploadImageUser(newFile);
         break;
       case 'imagePerfil'.toLowerCase():
-        uploadImagePerfil(newFile)
+        uploadImagePerfil(newFile);
         break;
-    
+
       default:
         break;
     }
-  
+    // eslint-disable-next-line
   },[])
     
   const handleFile = useCallback((type,{File,id}) => {
-
     if (File) {
       const reader = new FileReader();
 
@@ -122,7 +120,7 @@ const UploadProvider = ({ children }) => {
       reader.onprogress = () => setProcess('Process');
 
       reader.onload = () => {
-        setProcess('finalizado');
+        setProcess('Finalizado');
 
         const newFile = {
           id: id ? id : null,
@@ -133,9 +131,9 @@ const UploadProvider = ({ children }) => {
           process: 0,
           uploaded: false,
           error: false,
-          url: ""
-        }
-        setFile(newFile)
+          url: ''
+        };
+        setFile(newFile);
         factorUpload(type, newFile);
         // console.log('file setado: ',reader.result);
       };
@@ -147,7 +145,7 @@ const UploadProvider = ({ children }) => {
         message: `Erro em carregar a imagem, verifique o tamanho da imagem.`
       });
     }
-
+    // eslint-disable-next-line
   },[])
 
   return (
@@ -155,6 +153,7 @@ const UploadProvider = ({ children }) => {
       value={{
         file,
         errors,
+        process,
         handleFile,
       }}
     >

@@ -54,25 +54,20 @@ const analistaMenu = [
     path: '/categorias'
   },
   {
-    nome: 'Usuários',
-    icon: <GroupSharp />,
-    path: '/usuarios'
-  },
-];
-
-const adminMenu = [
-  {
     nome: 'Clientes',
     icon: <BusinessSharp />,
     path: '/clientes'
   },
   {
-    nome: 'Modelos',
-    icon: <MessageSharp />,
-    path: '/modelos'
-  },
+    nome: 'Usuários',
+    icon: <GroupSharp />,
+    path: '/usuarios'
+  }
+];
+
+const adminMenu = [
   {
-    nome: 'Log de Usuários',
+    nome: 'Logs',
     icon: <ReportSharp />,
     path: '/logs'
   }
@@ -139,7 +134,7 @@ const Headers = [
     path: '/usuarios'
   },
   {
-    nome: 'Log dos Usuários',
+    nome: 'Logs',
     icon: <ReportSharp />,
     path: '/logs'
   }

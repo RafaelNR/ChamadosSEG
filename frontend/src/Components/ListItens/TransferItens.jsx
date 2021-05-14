@@ -47,11 +47,13 @@ export default function TransferList({ disponiveis, selecionados, setValue }) {
     if (disponiveis && disponiveis.length > 0) {
       const Uniques = uniquesValues(disponiveis);
 
-      //& Trata o seeds das subcategorias disponiveis e selecionadas.
       if (selecionados && selecionados.length > 0) {
-        const { newBigArray, newArray } = comparaArrays(Uniques, selecionados);
-        setLeft(newBigArray);
-        setRight(newArray);
+        const {
+          newBigArray: newDisponiveis,
+          newArray: newSelecionados
+        } = comparaArrays(Uniques, selecionados);
+        setLeft(newDisponiveis);
+        setRight(newSelecionados);
       } else {
         setLeft(Uniques);
         setRight([]);
@@ -59,7 +61,7 @@ export default function TransferList({ disponiveis, selecionados, setValue }) {
 
       setLoading(false);
     }
-  }, [disponiveis, selecionados]);
+  }, []);
 
   // Passa item de disponivel para selecionados
   const clickDisponivel = useCallback(

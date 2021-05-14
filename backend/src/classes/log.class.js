@@ -1,6 +1,5 @@
 const Validation = require("../tools/validation/schemas");
-const Model = require("../models/log");
-
+const Model = require("../models/logs");
 
 class Log {
 

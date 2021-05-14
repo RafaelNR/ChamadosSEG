@@ -21,7 +21,7 @@ class View {
         return `${this.path}atividades-mensal.ejs`;
 
       case 'Redefinição de Senha':
-        if (!this.Dados || !this.Dados.token) throw new Error("Dados não informados.");
+        if (!this.Dados || !this.Dados.hash) throw new Error("Dados não informados.");
         return `${this.path}redefinir-senha.ejs`;
 
       default:

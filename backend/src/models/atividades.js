@@ -1,5 +1,36 @@
 const knex = require("../database/index");
 
+
+const getQueryType = (query,period) => {
+	let newQuery = query;
+
+	switch (period) {
+		case "open":
+			return newQuery
+				.andWhereRaw("date > DATE_FORMAT(now() - INTERVAL 10 DAY , '%Y-%m-%d')")
+				.andWhereRaw("MONTH(NOW()) = MONTH(date)");
+
+		case "close":
+			return newQuery.andWhereRaw(
+				"date < DATE_FORMAT(now() - INTERVAL 10 DAY , '%Y-%m-%d')"
+			);
+
+		case "last":
+			return newQuery
+				.andWhereRaw("date = DATE_FORMAT(now() - INTERVAL 9 DAY , '%Y-%m-%d')")
+				.andWhereRaw("MONTH(NOW()) = MONTH(date)");
+
+		case "half":
+			return newQuery
+				.andWhereRaw("date = DATE_FORMAT(now() - INTERVAL 5 DAY , '%Y-%m-%d')")
+				.andWhereRaw("MONTH(NOW()) = MONTH(date)");
+		
+		default:
+			return newQuery;
+	}
+
+}
+
 const findOneByData = async (Params) => {
 	let Dados = "";
 	let query = knex
@@ -8,7 +39,8 @@ const findOneByData = async (Params) => {
 			"atividades.ticket",
 			"atividades.date",
 			"clientes.nome_fantasia as cliente",
-			"users.nome as técnico",
+			"users.nome as tecnico",
+			"users.id as tecnico_id",
 			"atividades.created_at",
 			"atividades.updated_at"
 		)
@@ -70,22 +102,25 @@ const findOneByData = async (Params) => {
 module.exports = {
 	findOneByData,
 
-	index: async () => {
-		return await knex
+	index: async (period = null) => {
+		let query = knex
 			.select(
 				"atividades.id",
 				"atividades.ticket",
 				"atividades.date",
 				"clientes.nome_fantasia as cliente",
-				"users.nome as técnico",
+				"users.nome as tecnico",
+				"users.id as tecnico_id",
 				"atividades.created_at",
 				"atividades.updated_at"
 			)
 			.from("atividades")
 			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
-			.join("users", "users.id", "=", "atividades.user_id")
-			.orderBy("atividades.date", "desc")
-			.limit(100);
+			.join("users", "users.id", "=", "atividades.user_id");
+
+		query = getQueryType(query,period);
+
+		return await query.orderBy("atividades.date", "desc").limit(100);
 	},
 
 	filter: ({ data_inicial, data_final, cliente, tecnico }) => {
@@ -95,13 +130,14 @@ module.exports = {
 				"atividades.ticket",
 				"atividades.date",
 				"clientes.nome_fantasia as cliente",
-				"users.nome as técnico",
+				"users.nome as tecnico",
+				"users.id as tecnico_id",
 				"atividades.created_at",
 				"atividades.updated_at"
 			)
 			.from("atividades")
 			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
-			.join("users", "users.id", "=", "atividades.user_id")
+			.join("users", "users.id", "=", "atividades.user_id");
 
 			if (
 				data_inicial &&
@@ -142,7 +178,8 @@ module.exports = {
 				"atividades.ticket",
 				"atividades.date",
 				"clientes.nome_fantasia as cliente",
-				"users.nome as técnico",
+				"users.nome as tecnico",
+				"users.id as tecnico_id",
 				"atividades.created_at",
 				"atividades.updated_at"
 			)
@@ -150,26 +187,7 @@ module.exports = {
 			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
 			.join("users", "users.id", "=", "atividades.user_id");
 
-		if (type === "open") {
-			query
-				.andWhereRaw("date > DATE_FORMAT(now() - INTERVAL 10 DAY , '%Y-%m-%d')")
-				.andWhereRaw("MONTH(NOW()) = MONTH(date)");
-		} else if (type === "close") {
-			query.andWhereRaw(
-				"date < DATE_FORMAT(now() - INTERVAL 10 DAY , '%Y-%m-%d')"
-			);
-		} else if (type === "last") {
-			query
-				.andWhereRaw("date = DATE_FORMAT(now() - INTERVAL 9 DAY , '%Y-%m-%d')")
-				.andWhereRaw("MONTH(NOW()) = MONTH(date)");
-		} else if (type === "half") {
-			query
-				.andWhereRaw(
-					// "date between DATE_FORMAT(now() - INTERVAL 5 DAY , '%Y-%m-%d') and DATE_FORMAT(now(), '%Y-%m-%d')"
-					"date = DATE_FORMAT(now() - INTERVAL 5 DAY , '%Y-%m-%d')"
-				)
-				.andWhereRaw("MONTH(NOW()) = MONTH(date)");
-		}
+		query = getQueryType(query,type);
 
 		return await query.orderBy("atividades.date", "desc").limit(100);
 	},
@@ -181,7 +199,8 @@ module.exports = {
 				"a.ticket",
 				"a.date",
 				"c.nome_fantasia as cliente",
-				"u.nome as técnico",
+				"u.nome as tecnico",
+				"u.id as tecnico_id",
 				"a.created_at",
 				"a.updated_at"
 			)
@@ -194,38 +213,20 @@ module.exports = {
 					.where("chu.user_id", "=", user_id);
 			});
 
-		if (type === "open") {
-			query
-				.andWhereRaw("date > DATE_FORMAT(now() - INTERVAL 10 DAY , '%Y-%m-%d')")
-				.andWhereRaw("MONTH(NOW()) = MONTH(date)");
-		} else if (type === "close") {
-			query.andWhereRaw(
-				"date < DATE_FORMAT(now() - INTERVAL 10 DAY , '%Y-%m-%d')"
-			);
-		} else if (type === "last") {
-			query
-				.andWhereRaw("date = DATE_FORMAT(now() - INTERVAL 9 DAY , '%Y-%m-%d')")
-				.andWhereRaw("MONTH(NOW()) = MONTH(date)");
-		} else if (type === "half") {
-			query
-				.andWhereRaw(
-					// "date between DATE_FORMAT(now() - INTERVAL 5 DAY , '%Y-%m-%d') and DATE_FORMAT(now(), '%Y-%m-%d')"
-					"date = DATE_FORMAT(now() - INTERVAL 5 DAY , '%Y-%m-%d')"
-				)
-				.andWhereRaw("MONTH(NOW()) = MONTH(date)");
-		}
+		query = getQueryType(query, type);
 
 		return await query.orderBy("a.date", "desc").limit(100);
 	},
 
-	findByUser_id: async (user_id, type) => {
+	findByUser_id: async (user_id, type=null) => {
 		let query = knex
 			.select(
 				"atividades.id",
 				"atividades.ticket",
 				"atividades.date",
 				"clientes.nome_fantasia as cliente",
-				"users.nome as técnico",
+				"users.nome as tecnico",
+				"users.id as tecnico_id",
 				"atividades.created_at",
 				"atividades.updated_at"
 			)
@@ -234,26 +235,8 @@ module.exports = {
 			.join("users", "users.id", "=", "atividades.user_id")
 			.where("users.id", "=", user_id);
 
-		if (type === "open") {
-			query
-				.andWhereRaw("date > DATE_FORMAT(now() - INTERVAL 10 DAY , '%Y-%m-%d')")
-				.andWhereRaw("MONTH(NOW()) = MONTH(date)");
-		} else if (type === "close") {
-			query.andWhereRaw(
-				"date < DATE_FORMAT(now() - INTERVAL 10 DAY , '%Y-%m-%d')"
-			);
-		} else if (type === "last") {
-			query
-				.andWhereRaw("date = DATE_FORMAT(now() - INTERVAL 9 DAY , '%Y-%m-%d')")
-				.andWhereRaw("MONTH(NOW()) = MONTH(date)");
-		} else if (type === "half") {
-			query
-				.andWhereRaw(
-					// "date between DATE_FORMAT(now() - INTERVAL 5 DAY , '%Y-%m-%d') and DATE_FORMAT(now(), '%Y-%m-%d')"
-					"date = DATE_FORMAT(now() - INTERVAL 5 DAY , '%Y-%m-%d')"
-				)
-				.andWhereRaw("MONTH(NOW()) = MONTH(date)");
-		}
+		query = getQueryType(query, type);
+
 		return await query
 			.orderBy("atividades.id", "desc")
 			.orderBy("atividades.date", "desc")
@@ -267,7 +250,8 @@ module.exports = {
 				"atividades.ticket",
 				"atividades.date",
 				"clientes.nome_fantasia as cliente",
-				"users.nome as técnico",
+				"users.nome as tecnico",
+				"users.id as tecnico_id",
 				"atividades.created_at",
 				"atividades.updated_at"
 			)
@@ -276,26 +260,7 @@ module.exports = {
 			.join("users", "users.id", "=", "atividades.user_id")
 			.where("clientes.id", "=", client_id);
 
-		if (type === "open") {
-			query
-				.andWhereRaw("date > DATE_FORMAT(now() - INTERVAL 10 DAY , '%Y-%m-%d')")
-				.andWhereRaw("MONTH(NOW()) = MONTH(date)");
-		} else if (type === "close") {
-			query.andWhereRaw(
-				"date < DATE_FORMAT(now() - INTERVAL 10 DAY , '%Y-%m-%d')"
-			);
-		} else if (type === "last") {
-			query
-				.andWhereRaw("date = DATE_FORMAT(now() - INTERVAL 9 DAY , '%Y-%m-%d')")
-				.andWhereRaw("MONTH(NOW()) = MONTH(date)");
-		} else if (type === "half") {
-			query
-				.andWhereRaw(
-					// "date between DATE_FORMAT(now() - INTERVAL 5 DAY , '%Y-%m-%d') and DATE_FORMAT(now(), '%Y-%m-%d')"
-					"date = DATE_FORMAT(now() - INTERVAL 5 DAY , '%Y-%m-%d')"
-				)
-				.andWhereRaw("MONTH(NOW()) = MONTH(date)");
-		}
+		query = getQueryType(query, type);
 
 		return await query.orderBy("atividades.date", "desc").limit(100);
 	},
@@ -307,7 +272,8 @@ module.exports = {
 				"atividades.ticket",
 				"atividades.date",
 				"clientes.nome_fantasia as cliente",
-				"users.nome as técnico",
+				"users.nome as tecnico",
+				"users.id as tecnico_id",
 				"atividades.created_at",
 				"atividades.updated_at"
 			)
@@ -349,7 +315,8 @@ module.exports = {
 				"atividades.ticket",
 				"atividades.date",
 				"clientes.id as cliente_id",
-				"users.nome as técnico",
+				"users.nome as tecnico",
+				"users.id as tecnico_id",
 				"atividades.created_at",
 				"atividades.updated_at"
 			)
@@ -396,7 +363,8 @@ module.exports = {
 				"atividades.ticket",
 				"atividades.date",
 				"clientes.nome_fantasia as cliente",
-				"users.nome as técnico",
+				"users.nome as tecnico",
+				"users.id as tecnico_id",
 				"atividades.created_at",
 				"atividades.updated_at"
 			)
@@ -423,7 +391,8 @@ module.exports = {
 				"atividades.ticket",
 				"atividades.date",
 				"clientes.nome_fantasia as cliente",
-				"users.nome as técnico",
+				"users.nome as tecnico",
+				"users.id as tecnico_id",
 				"atividades.created_at",
 				"atividades.updated_at"
 			)

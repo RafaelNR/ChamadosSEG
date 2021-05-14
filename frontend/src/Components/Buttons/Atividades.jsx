@@ -91,11 +91,17 @@ const ViewTicket = React.memo(({ ticket, variant }) => {
 const PdfTicket = React.memo(({ ticket, handleClick, loading }) => {
   const classes = useStyles();
   return (
-    <Tooltip title="Pdf">
+    <Tooltip title="Gerar PDF">
       <Button
         onClick={() => handleClick(ticket)}
         className={clsx(classes.root, classes.pdf)}
-        startIcon={loading ? <CircularProgress className={classes.loading} /> : <PictureAsPdfSharp style={{ fontSize: 15 }} />}
+        startIcon={
+          loading ? (
+            <CircularProgress className={classes.loading} />
+          ) : (
+            <PictureAsPdfSharp style={{ fontSize: 15 }} />
+          )
+        }
         disabled={loading}
       />
     </Tooltip>

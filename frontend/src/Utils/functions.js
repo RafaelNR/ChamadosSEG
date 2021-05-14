@@ -36,21 +36,26 @@ export function uniquesValues(Values) {
   return newArray;
 }
 
+export function uniquesObjects(arrayObjects) {
+  return arrayObjects.filter((elem, index, self) => index === self.indexOf(elem));
+}
+
 /**
  * * Compara dois array e retorno um array novo com valores diferentes entre eles.
- * @param {Array} Array
- * @param {Array} Array
+ * * Deve receber somente o item a ser comparado, id, nome....
+ * @param {Array} BigArray
+ * @param {Array} littleArray
  */
 
-export function comparaArrays(BigArray, Array) {
-  if (BigArray.length === 0 || Array.length === 0) return [];
+export function comparaArrays(BigArray, littleArray) {
+  if (BigArray.length === 0 || littleArray.length === 0) return [];
 
   let newArray = [];
   let newBigArray = [];
 
   BigArray.map((value) => {
     let duplicated =
-      Array.findIndex((redItem) => {
+      littleArray.findIndex((redItem) => {
         return value.id === redItem;
       }) > -1;
 
@@ -63,7 +68,7 @@ export function comparaArrays(BigArray, Array) {
 
   return {
     newBigArray,
-    newArray,
+    newArray
   };
 }
 
@@ -84,9 +89,6 @@ export function initialsName(FullName) {
 
   return FullName.substr(0, 2).toUpperCase();
 
-
-
-
 }
 
 export function handleHeaderName(Path, Headers) {
@@ -96,6 +98,7 @@ export function handleHeaderName(Path, Headers) {
 
     if (acc.length === 0) {
       if (paths[index] && paths[index] !== "") {
+        // eslint-disable-next-line
         return array.filter(({ nome, path }) => {
           if (path.includes(paths[index])) {
             return { nome, path };
@@ -105,11 +108,12 @@ export function handleHeaderName(Path, Headers) {
         return []
       }
     } else {
+      // eslint-disable-next-line
       return acc.filter(({ nome, path }) => {
         if (Path.includes(path)) {
           return { nome, path };
         }
-      })
+      });
     }
 
   },[])

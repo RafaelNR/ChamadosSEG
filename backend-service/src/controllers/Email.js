@@ -1,66 +1,81 @@
-const Email = require('../classes/email')
+const Email = require("../classes/email");
+const Model = require("../models/Emails");
 
+const EnviarEmail = async (configs,Dados) => {
+	const email = new Email(configs.textFrom);
+	email.type = configs.type;
+	email.subject = configs.subject;
+	email.to = Dados.email;
+	email.dados = Dados;
 
-const Enviar = async (req,res,next) => {
+	return await email.send();
+};
 
+const RecuperarSenha = async (req, res, next) => {
+	try {
+		if (!req.query.hash)
+			throw "Hash não foi enviada. Por favor tente mais tarde.";
 
-  try {
+		const Dados = await Model.findOneByHash(req.query.hash);
 
-    const email = new Email();
-
-    if (req.method === 'GET') {
-			email.to = "rafael.rodrigues@seg.eti.br";
-			email.subject = "Relatório";
-			email.filename = "Relatório de Atividade - CISDESTE";
-			email.file = "41.20210209.pdf";
-			email.type = "Redefinição de Senha";
-			email.dados = {
-				token: "fkshfkjdshjfkhdsjkfhsdjkfs",
-			};
-		} else {
-      if (!req.body) throw new Error('Valores inválidos.')
-        
-      const { to, subject, filename, file, type, dados } = req.body;
-      email.to = to
-      email.subject = subject
-      email.filename = filename
-      email.file = file
-      email.type = type
-      email.dados = dados
-    }
-
-    const resp = await email.send()
-
-    console.log(resp)
-
-    if (resp) {
-      res.send("Email enviado.");
-    } else {
-      next("Erro em enviar email.");
-    }
+    if (!Dados) throw new Error("Hash não encontrada.");
     
-  } catch (error) {
-    console.log(error)
-    next( error.message ? error.message : "Erro em enviar email.");
-  }
+    const configs = {
+			textFrom: "Redefinir senha",
+			subject: "Recuperação de senha - OS Técnicos",
+			type: "Redefinição de Senha",
+		};
 
-}
+		const resp = await EnviarEmail(configs, Dados);
 
+		if (resp.sucesso) {
+			await Model.emailSendAt(Dados.id);
+			return res.send({
+				success: true,
+				message: "Email envido com sucesso.",
+			});
+		} else {
+			next("Erro em enviar email.");
+		}
+	} catch (error) {
+		console.log(error);
+		next(error);
+	}
+};
+
+
+const ReenviaAtividades = async (req, res, next) => {
+	try {
+		const DadosEmail = req.body;
+
+		console.log(DadosEmail);
+
+		const email = new Email("SEG - Atividades Técnicos");
+
+		email.to = DadosEmail.to;
+		email.subject = DadosEmail.subject;
+		email.filename = DadosEmail.filename;
+		email.file = DadosEmail.file;
+		email.type = DadosEmail.type;
+		email.dados = DadosEmail.dados;
+		email.bcc = process.env.EMAIL_BBC;
+
+		const resp = await email.resend(DadosEmail.id);
+
+		console.log(resp)
+
+		return res.json({
+			success: true,
+			message: "Email enviado com sucesso.",
+		});
+
+	} catch (error) {
+		console.log(error);
+		next(error);
+	}
+};
 
 module.exports = {
-  Enviar
-}
-
-// email.type = "Redefinição de Senha";
-// email.dados = {
-// 	token: "fkshfkjdshjfkhdsjkfhsdjkfs",
-// };
-
-// email.type = "Relatório Mensal de Atividades";
-// email.dados = {
-//   data_ano: 'Fevereiro/2021',
-//   tecnicos: [
-//     { nome: 'Jose Maria Silva' },
-//     { nome: 'Fulano de tal '}
-//   ]
-// }
+	RecuperarSenha,
+	ReenviaAtividades,
+};

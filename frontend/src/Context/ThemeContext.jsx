@@ -30,7 +30,6 @@ const MythemeProvider = ({ children }) => {
       MuiCssBaseline: {
         '@global': {
           '#root': {
-            flex: 1,
             display: 'flex',
             flexDirection: 'column',
             height: '100vh'
@@ -68,6 +67,7 @@ const MythemeProvider = ({ children }) => {
         icon: 'white'
       },
       button: {
+        common: darkMode ? '#000' : '#ffffff',
         downloadpdf: '#0B4672',
         viewpdf: '#3949ab',
         new: darkMode ? 'rgba(223, 223, 223, 0.15)' : '#0d47a1',
@@ -107,7 +107,7 @@ const MythemeProvider = ({ children }) => {
       <ThemeContext.Provider
         value={{
           darkMode,
-          setdarkMode
+          setdarkMode,
         }}
       >
         {children}

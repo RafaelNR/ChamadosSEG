@@ -30,8 +30,40 @@ const findOne = async (ID) => {
 	return { ...user, clients: await ClientsHasUser.findClients(ID) };
 };
 
+const findOneByEmail = async (email) => {
+	return await knex
+		.select(
+			"id",
+			"nome",
+			"user",
+			"email",
+			"telefone",
+			"actived",
+			"last_acess",
+			"imagem",
+			"role_id",
+			"created_at",
+			"updated_at"
+		)
+		.from("users")
+		.where("email", "=", email)
+		.limit(1)
+		.then((user) => user[0]);
+};
+
+
 module.exports = {
 	findOne,
+	findOneByEmail,
+
+	findTecnicosByCliente: (cliente_id) => {
+  return knex
+		.select("users.id", "users.nome")
+		.from("users")
+		.join("cliente_has_user", "cliente_has_user.user_id", "=", "users.id")
+		.where("users.role_id", "=", 3)
+		.where("cliente_has_user.cliente_id", "=", cliente_id);
+	},
 
 	/**
 	 * Retorna dados de todos os usuários.
@@ -78,6 +110,12 @@ module.exports = {
 			});
 	},
 
+	updatePerfil: (Dados) => {
+		return knex("users")
+			.where({ id: Dados.id })
+			.update(Dados)
+	},
+
 	/**
 	 * Faz o update dos dados do novo usuário
 	 * retornando os dados atualizado desse usuário,
@@ -91,23 +129,21 @@ module.exports = {
 			.where({ id: userDados.id })
 			.update(userDados)
 			.then(async (Dados) => {
-				if (!clientsUser) return Dados;
 
-				// Remove clients antigos;
-				await ClientsHasUser.delete(userDados.id)
-					.then(async () => {
-						// Insere novos;
-						await clientsUser.map(async (client) => {
-							await ClientsHasUser.insert({
-								cliente_id: client,
-								user_id: userDados.id,
-							});
+				if (!clientsUser && !userDados.actived) {
+					await ClientsHasUser.delete(userDados.id);
+				} else {
+					await ClientsHasUser.delete(userDados.id);
+					await clientsUser.map(async (client) => {
+						await ClientsHasUser.insert({
+							cliente_id: client,
+							user_id: userDados.id,
 						});
-					})
-					.catch(() => {
-						throw { error: "Erro em inserir ou deletar clients" };
 					});
+				}
+
 				return Dados;
+				
 			})
 			.catch((error) => {
 				throw error;
@@ -130,6 +166,10 @@ module.exports = {
 	 */
 	actived: async (id) => {
 		return await knex("users").where({ id }).update({ actived: 1 });
+	},
+
+	updatePasswd: async (id,passwd) => {
+		return await knex("users").where({ id }).update({ passwd });
 	},
 
 	/**

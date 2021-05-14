@@ -1,10 +1,9 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core'
+import React from 'react';
+import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    flexDirection: 'row'
+    marginTop: 'auto'
   },
   text: {
     display: 'flex',
@@ -25,17 +24,15 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-
-
 export default React.memo(() => {
   const classes = useStyles();
+
   return (
-    <div className={classes.root}>
+    <footer className={classes.root}>
       <div className={classes.text}>
         <span> Versão: {process.env.REACT_APP_VERSION} </span>
         <span> Suporte/Bugs: {process.env.REACT_APP_DEV}</span>
       </div>
-    </div>
+    </footer>
   );
-
-})
+});

@@ -7,56 +7,89 @@ import React, {
 import PropTypes from "prop-types";
 import Service from '../Service/log.service'
 
-
 import useSnackBar from "./SnackBarContext";
 import useLoading from "./LoadingContext";
 
 const LogContext = createContext({});
 
+const tabs = [
+  {
+    id: 0,
+    service: Service.email
+  },
+  {
+    id: 1,
+    service: Service.pdf
+  },
+  {
+    id: 2,
+    service: Service.acesso
+  }
+];
+
 const LogProvider = ({ children }) => {
   const { handleSnackBar } = useSnackBar();
   const { setLoading } = useLoading();
-  const [logs, setLogs] = useState();
+  const [logs, setLogs] = useState([]);
+  const [currentTab, setCurrentTab] = React.useState(0);
+  const [loadSendMail, setLoadSendMail] = React.useState(false);
+  const [currLog,setCurrLog] = React.useState({});
 
   useEffect(() => {
     let render = true;
     setLoading(true);
-
+    setLogs([]);
 
     (async () => {
-
       try {
-
-        const Dados = await Service.index();
+        const Dados = await tabs[currentTab].service();
         const { success, data } = Dados;
-        if (!success) throw { message: data.message };
-        if (success && render) setLogs(data);
-        return setLoading(false);
+        if (success && render) return setLogs(data);
+        throw new Error(data.message);
       } catch (error) {
-
         console.log(error);
-        setLoading(false);
         handleSnackBar({
           type: 'error',
           message: error.message
             ? error.message
             : 'Erro em carregar log, por favor tente mais tarde.'
         });
+      } finally {
+        setLoading(false);
       }
-
     })();
 
     return function cleanup() {
-      console.log("unmounted Log");
       render = false;
-      return Service.Cancel;
     };
-  }, [setLogs, handleSnackBar, setLoading]);
+    // eslint-disable-next-line
+  }, [currentTab]);
+
+
+  const handleChange = React.useCallback(
+    (event, newValue) => {
+      setCurrentTab(newValue);
+      setLoading(true);
+
+      return () => {
+        setLoading(false);
+        return;
+      };
+    },
+    [setLoading]
+  );
 
   return (
     <LogContext.Provider
       value={{
-        logs
+        logs,
+        setLogs,
+        loadSendMail,
+        setLoadSendMail,
+        currentTab,
+        handleChange,
+        currLog,
+        setCurrLog,
       }}
     >
       {children}

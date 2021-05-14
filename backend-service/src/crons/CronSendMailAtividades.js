@@ -2,7 +2,7 @@ const Cron = require('cron').CronJob
 const moment = require('moment');
 const Email = require('../classes/email')
 const PDF = require('../classes/pdf');
-const { getClientes } = require('../models/Clientes')
+const { getClientesComAtividade } = require("../models/Clientes");
 const { getTecnicosByCliente } = require('../models/Tecnicos');
 
 // Aumentado o limite de event de 10, padrão, para 20;
@@ -11,22 +11,27 @@ require("events").EventEmitter.prototype._maxListeners = 20;
 class CronSendMailAtividades {
 	constructor() {
 		this.config = {
-			cronTime: '0 0 1 1 * *',
-			//cronTime: "0 40 16 3 * *",
+			cronTime: '0 0 6 1 * *',
+			//cronTime: "0 */30 * * * *",
 			start: true,
 			onTick: () => {
 				this.onTick();
 			},
-			onComplete: null,
+			onComplete: this.onComplete,
 			timeZone: "America/Sao_Paulo",
 			runOnInit: false,
 		};
-		this.currMes = moment(moment().subtract(1, "month")).format("M");
-		this.currAno = moment().year();
-		this.nameMes = moment(this.currMes).format("MMMM");
+		this.currMes = moment(moment().locale("pt-br").subtract(1, "month"))
+			.locale("pt-br")
+			.format("M");
+		this.currAno = moment().locale("pt-br").year();
+		this.nameMes = moment(this.currMes).locale("pt-br").format("MMMM");
 	}
 
 	start() {
+		console.log("->> CRON - SendMailAtividades - Mês:", this.currMes);
+		console.log("->> CRON - SendMailAtividades - Nome:", this.nameMes);
+		console.log("->> CRON - SendMailAtividades - Ano:", this.currAno);
 		this.Job = new Cron({ ...this.config });
 		if (this.Job.running) {
 			console.log(
@@ -42,15 +47,16 @@ class CronSendMailAtividades {
 	}
 
 	async onTick() {
-		const d = new Date();
-		console.log("Init First:", d);
-
+		this.onComplete();
+		
 		try {
-			const Clientes = await getClientes();
+			console.log("Iniciado o envio das atividades:", moment().locale('pt-br').format('DD/MM/YYY HH:mm:ss'));
+			const Clientes = await getClientesComAtividade(this.currMes);
 
 			Clientes.map(async (Cliente) => {
 
 				const Tecnicos = await getTecnicosByCliente(Cliente.id);
+
 				const filename = await this.createdPdf(
 					this.currMes,
 					this.currAno,
@@ -58,28 +64,18 @@ class CronSendMailAtividades {
 				);
 
 				if (!filename.message) {
-					this.sendEmail(
-						Cliente.email,
-						Cliente.nome_fantasia,
-						filename,
-						{
-							data_ano: `${this.nameMes}/${this.currAno}`,
-							tecnicos: Tecnicos,
-						}
-					);
+					this.sendEmail(Cliente.email, Cliente.nome_fantasia, filename, {
+						data_ano: `${this.nameMes}/${this.currAno}`,
+						tecnicos: Tecnicos,
+					});
 					console.log("Email Enviado!");
 				}
 
-
-			});
+			})
 		} catch (error) {
-			console.log('ERROR: ',error);
+			console.log("ERROR: ", error);
 		}
-	}
-
-	onComplete() {
-		console.log("JOB Complete.");
-		this.Job.stop();
+		
 	}
 
 	sendEmail(clienteEmail, clienteName, filename, dados) {
@@ -91,6 +87,7 @@ class CronSendMailAtividades {
 		email.file = filename;
 		email.type = "Relatório Mensal de Atividades";
 		email.dados = dados;
+		email.bcc = process.env.EMAIL_BBC;
 
 		email
 			.send()
@@ -100,34 +97,39 @@ class CronSendMailAtividades {
 			.catch((error) => {
 				console.log(error);
 			})
-			.finally(() => {
-				console.log(
-					"->> CRON - NextDates:",
-					this.Job.nextDates().format("DD/MM/YY HH:mm:ss")
-				);
-			});
 	}
 
 	async createdPdf(mes, ano, clienteID) {
-    const query = { mes: mes, ano:ano, cliente: clienteID };
-    const FileName = this.getFileName(query);
-    const Url = `${process.env.URL_SERVICE}/atividades?ano=${ano}&mes=${mes}&cliente=${clienteID}`;
+		const query = { mes: mes, ano: ano, cliente: clienteID };
+		const FileName = this.getFileName(query);
+		const view = `${process.env.URL_SERVICE}/atividades?ano=${ano}&mes=${mes}&cliente=${clienteID}`;
 
-    const pdf = new PDF(Url, FileName, query);
+		const pdf = new PDF(view, FileName, query, null, "Atividade Mensal");
 
-    const Dados = await pdf.create();
+		const Dados = await pdf.create();
 
-    if (Dados.success) {
-			console.log(`PDF criado: ${FileName}`)
+		if (Dados.success) {
+			console.log(`PDF criado: ${FileName}`);
 			return FileName;
-    }
+		}
 
-    throw Dados;
+		throw Dados;
 	}
 
 	getFileName(query) {
 		const values = Object.values(query);
 		return values.join("-");
+	}
+
+	onComplete() {
+		const nextMes = moment().locale("pt-br").month()+1;
+		console.log("->> CRON - SendMailAtividades - Proximo Mês:", nextMes);
+		console.log("->> CRON - SendMailAtividades - Proximo Ano: ", this.currAno);		
+		console.log(
+			"->> CRON - SendMailAtividades - Proxima data de execução:",
+			this.Job.nextDates().format("DD/MM/YY HH:mm:ss")
+		);
+			
 	}
 }
 
