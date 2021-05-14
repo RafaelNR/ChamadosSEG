@@ -16,7 +16,7 @@ import EnhancedTableToolbar from "../../Components/Tables/ToolBar";
 import TablePagination from "../../Components/Tables/TablePagination";
 import sortObject from "../../Utils/sortObject";
 import CircularProcess from "../../Components/Loading";
-import { OpenPDF,ResendEmail } from '../../Components/Buttons/LogsEmails'
+import { OpenPDF, ConfirmResendEmail } from '../../Components/Buttons/LogsEmails'
 
 //* CONTEXT
 import useLogs from "../../Context/Log.Context";
@@ -26,7 +26,6 @@ import useSearch from "../../Context/SearchContext";
 
 //* UTILS
 import { handleDateTimeFull, converterFileInData } from '../../Utils/dates';
-
 
 // Header Table
 const headCells = [
@@ -139,7 +138,6 @@ const RowUpdateCreated = ({createdAt,updatedAt}) => {
   );
 }
 
-
 export default function () {
   const classes = useStyles();
   const { logs } = useLogs();
@@ -187,12 +185,15 @@ export default function () {
                       scope="row"
                       padding="default"
                     >
-                      <RowUpdateCreated updatedAt={row.updated_at} createdAt={row.created_at} />
+                      <RowUpdateCreated
+                        updatedAt={row.updated_at}
+                        createdAt={row.created_at}
+                      />
                     </TableCell>
                     <TableCell align="left" className={classes.tablerow}>
                       <span>{row.subject}</span>
                       <span className={classes.mes_ano}>
-                        {row.file ? converterFileInData(row.file) : ''}
+                        {converterFileInData(row.file)}
                       </span>
                     </TableCell>
                     <TableCell align="left" className={classes.tablerow}>
@@ -208,7 +209,7 @@ export default function () {
                     <TableCell align="left" className={classes.tablerow}>
                       {row.file && (
                         <>
-                          <ResendEmail id={row.id} />
+                          <ConfirmResendEmail id={row.id} />
                           <OpenPDF file={row.file} />
                         </>
                       )}

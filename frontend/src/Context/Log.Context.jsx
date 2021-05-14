@@ -33,6 +33,7 @@ const LogProvider = ({ children }) => {
   const [logs, setLogs] = useState([]);
   const [currentTab, setCurrentTab] = React.useState(0);
   const [loadSendMail, setLoadSendMail] = React.useState(false);
+  const [currLog,setCurrLog] = React.useState({});
 
   useEffect(() => {
     let render = true;
@@ -64,6 +65,7 @@ const LogProvider = ({ children }) => {
     // eslint-disable-next-line
   }, [currentTab]);
 
+
   const handleChange = React.useCallback(
     (event, newValue) => {
       setCurrentTab(newValue);
@@ -86,6 +88,8 @@ const LogProvider = ({ children }) => {
         setLoadSendMail,
         currentTab,
         handleChange,
+        currLog,
+        setCurrLog,
       }}
     >
       {children}

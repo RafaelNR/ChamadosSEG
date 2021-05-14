@@ -1,16 +1,15 @@
 import React from "react";
 import clsx from "clsx";
-import { NavLink } from "react-router-dom";
 import {
   makeStyles,
   Tooltip,
   Button,
   CircularProgress} from '@material-ui/core/';
 import { SendOutlined, PictureAsPdfSharp } from "@material-ui/icons/";
-import Progress from "./Progress";
-
+ 
 //* CONTEXT
 import useSnackBar from '../../Context/SnackBarContext';
+import useDialog from "../../Context/DialogContext";
 import useLogs from '../../Context/Log.Context';
 
 //* SERVICE
@@ -54,8 +53,23 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.button.hover.pdf
     }
   },
+  confirm: {
+    backgroundColor: theme.palette.primary.light,
+    padding: '8px 15px',
+    marginRight: '8px',
+    '&:hover': {
+      transition: '',
+      color: 'white',
+      backgroundColor: theme.palette.primary.dark
+    }
+  },
+  icon: {
+    fontSize: 15,
+    marginRight: 8
+  },
   loading: {
-    fontSize: 12,
+    fontSize: 15,
+    marginRight: 8,
     width: '20px !important',
     height: '20px !important'
   }
@@ -103,6 +117,27 @@ export const OpenPDF = React.memo(({ file }) => {
   );
 });
 
+
+export const ConfirmResendEmail = React.memo(({ id }) => {
+  const classes = useStyles();
+  const { setCurrLog } = useLogs();
+  const { openDialog, loadSendMail } = useDialog();
+
+  return (
+    <Tooltip title="Reenviar Email">
+      <Button
+        onClick={() => {
+          openDialog();
+          setCurrLog({ id: id });
+        }}
+        className={clsx(classes.root, classes.send)}
+        startIcon={<SendOutlined style={{ fontSize: 15 }} />}
+      />
+    </Tooltip>
+  );
+});
+
+
 export const ResendEmail = React.memo(({ id }) => {
   const classes = useStyles();
   const { handleSnackBar } = useSnackBar();
@@ -130,22 +165,20 @@ export const ResendEmail = React.memo(({ id }) => {
   }
 
   return (
-    <>
-      {
-        loadSendMail
-        ? <CircularProgress className={classes.loading} />
-        : (
-          <Tooltip title="Reenviar Email">
-            <Button
-              onClick={handleResend}
-              className={clsx(classes.root, classes.send)}
-              startIcon={<SendOutlined style={{ fontSize: 15 }} />}
-            />
-          </Tooltip>
+    <Button
+      onClick={!loadSendMail && handleResend}
+      className={clsx(classes.root, classes.confirm)}
+      disabled={loadSendMail}
+      startIcon={
+        loadSendMail ? (
+          <CircularProgress className={classes.loading} />
+        ) : (
+          <SendOutlined className={classes.icon} />
         )
-        }
-    </>
-
+      }
+    >
+      Reenviar
+    </Button>
   );
 
 });

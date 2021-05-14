@@ -13,7 +13,7 @@ import useLogs from '../../Context/Log.Context';
 const LogsAcesso = React.lazy(() => import('./LogsAcessos.Table'));
 const LogsEmail = React.lazy(() => import('./LogsEmails.Table'));
 const LogsPDF = React.lazy(() => import('./LogsPdfs.Table'));
-const Dialog = React.lazy(() => import('../../Components/Dialog'));
+const LogsDialog = React.lazy(() => import('./Logs.Dialog'));
 
 const tabs = [
   {
@@ -27,7 +27,7 @@ const tabs = [
     id: 1,
     render: LogsPDF,
     options: {
-      title: "PDF's"
+      title: "PDFs"
     }
   },
   {
@@ -79,7 +79,7 @@ export default function () {
         >
           <Paper
             Render={tabs[currentTab].render}
-            RenderDialog={Dialog}
+            RenderDialog={LogsDialog}
             options={tabs[currentTab].options}
           />
         </TabPanel>
