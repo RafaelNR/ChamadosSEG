@@ -119,7 +119,7 @@ const tools = {
 
 	async validateHash(hash,ipRemote) {
 
-		const Dados = await Model.findOneByHash(hash);
+		const Dados = await Model.findOneByHash(hash)
 
 		if (!Dados) throw new Error('Hash não encontrada.');
 		if (Dados.used_at) throw new Error('Hash já foi usada.');

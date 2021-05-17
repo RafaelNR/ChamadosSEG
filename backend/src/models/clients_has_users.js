@@ -41,13 +41,13 @@ module.exports = {
 	 * @param {number} clientID
 	 * @return {Object}
 	 */
-	countClientByUser: async (userID, clientID) => {
-		return await knex
+	countClientByUser: (userID, clienteID) => {
+		return knex
 			.count("id as id")
 			.from("cliente_has_user")
 			.join("clientes", "id", "=", "cliente_id")
 			.where("cliente_has_user.user_id", "=", userID)
-			.andWhere("cliente_has_user.cliente_id", "=", clientID)
+			.andWhere("cliente_has_user.cliente_id", "=", clienteID)
 			.then((e) => e[0].id);
 	},
 

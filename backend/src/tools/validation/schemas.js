@@ -204,29 +204,37 @@ module.exports = {
 		);
 	},
 
-	InsertTask: (Dados) => {
+	InsertChamado: (Dados) => {
 		return validate(
 			Dados,
 			Joi.object({
-				cliente_id: type.number.id,
-				owner_user_id: type.number.id,
-				open_by_user_id: type.number.id,
-				status: type.string.status,
+				tecnico_requerente: type.number.defaultRequired,
+				cliente_atribuido: type.number.defaultRequired,
+				tecnico_atribuido: type.number.default,
+				status: type.number.status,
+				prioridade: type.number.prioridade,
+				titulo: type.string.default,
+				descricao: type.string.default,
+				user_id: type.number.defaultRequired,
 				created_at: type.date.created_at(),
 				updated_at: type.date.updated_at(),
 			})
 		);
 	},
 
-	UpdateTask: (Dados) => {
+	UpdateChamado: (Dados) => {
 		return validate(
 			Dados,
 			Joi.object({
 				id: type.number.id,
-				cliente_id: type.number.id,
-				owner_user_id: type.number.id,
-				open_by_user_id: type.number.id,
-				status: type.string.status,
+				tecnico_requerente: type.number.default,
+				tecnico_atribuido: type.number.default,
+				cliente_atribuido: type.number.defaultRequired,
+				status: type.number.status,
+				prioridade: type.number.prioridade,
+				titulo: type.string.default,
+				descricao: type.string.default,
+				user_id: type.number.defaultRequired,
 				updated_at: type.date.updated_at(),
 			})
 		);

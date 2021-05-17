@@ -1,9 +1,8 @@
 const knex = require("../database/index");
 const TABLE = "recover_passwd";
 
-const findOneByEmail = (email) => {
-	console.log(email)
-  return knex
+const findOneByEmail = async (email) => {
+  return await knex
     .select("id","email","hash","ip_remote","sent_at","used_at","created_at","updated_at")
     .from(TABLE)
 		.where("email", "=", email)
@@ -12,8 +11,8 @@ const findOneByEmail = (email) => {
     .then(e => e[0]);
 }
 
-const findOneByHash = (hash) => {
-	return knex
+const findOneByHash = async (hash) => {
+	return await knex
 		.select(
 			"id",
 			"email",

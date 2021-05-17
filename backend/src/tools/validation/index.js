@@ -8,7 +8,11 @@ const type = {
 		ano: Joi.number().integer().positive().min(2000).max(2030).required(),
 		mes: Joi.number().integer().positive().min(1).max(12).required(),
 		dia: Joi.number().integer().positive().min(1).max(31).required(),
-		actived: Joi.number().integer().default(1),
+		actived: Joi.number().integer().positive().default(1),
+		prioridade: Joi.number().integer().positive().min(0).max(10).required(),
+		status: Joi.number().integer().positive().min(0).max(10).default(0),
+		default: Joi.number().integer().positive().min(0).max(9999),
+		defaultRequired: Joi.number().integer().positive().min(0).max(9999),
 	},
 	string: {
 		nome: Joi.string().min(3).max(254).required(),

@@ -3,24 +3,6 @@ import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { makeStyles, Container } from "@material-ui/core";
 import Main from "../Template/Main";
 
-<<<<<<< HEAD
-//Pages
-import Home from "../Pages/Home/";
-import Atividades from "../Pages/Atividades/";
-import AtividadesCreate from "../Pages/Atividades/Create/";
-import AtividadesEdit from "../Pages/Atividades/Edit/";
-import AtividadesView from "../Pages/Atividades/View/";
-import Clientes from "../Pages/Clientes/";
-import Categorias from "../Pages/Categorias/";
-import Chamados from "../Pages/Chamados/";
-import Usuarios from "../Pages/Usuarios/";
-import Modelos from "../Pages/Modelos";
-import Perfil from "../Pages/Perfil/";
-import Logs from "../Pages/Logs/";
-import Relatorios from '../Pages/Relatorios/';
-import RAtividades from '../Pages/Relatorios/Atividades';
-import RMyAtividades from '../Pages/Relatorios/Atividades/my';
-=======
 //Views
 import Home from "../Views/Home/";
 import Atividades from "../Views/Atividades/";
@@ -36,7 +18,6 @@ import Logs from "../Views/Logs/";
 import Relatorios from '../Views/Relatorios/';
 import RAtividades from '../Views/Relatorios/Atividades';
 import RMyAtividades from '../Views/Relatorios/Atividades/my';
->>>>>>> be2e80bfa532e0b6c3fc71040b4bada62fdbfb22
 
 import useAuth from '../Context/AuthContext';
 import useUser from '../Hooks/useUser';
@@ -71,7 +52,7 @@ function Routes() {
 					<Route path="/atividades/edit/:ticket" component={AtividadesEdit} />
 					<Route path="/atividades/view/:ticket" component={AtividadesView} />
 
-					<Route path="/chamados" component={Chamados} />
+					{/* <Route path="/chamados" component={Chamados} /> */}
 
 					<TecnicoRoute path="/relatorios/atividades/my" exact component={RMyAtividades} role_id={roleID} redirect="/relatorios/atividades" />
 

@@ -172,9 +172,6 @@ module.exports = {
 		return await knex("users").where({ id }).update({ passwd });
 	},
 
-	/**
-	 * Verifica se existe o user ID do usuário.
-	 */
 	countID: async (ID) => {
 		return await knex
 						.count("id as id")
@@ -183,12 +180,12 @@ module.exports = {
 						.then((e) => e[0].id);
 	},
 
-	getRole: async (ID) => {
-		return await knex
-						.count("role_id")
-						.from("users")
-						.where("id", "=", ID)
-						.then((e) => e[0].id);
+	getRole: (ID) => {
+		return knex
+					.select("role_id")
+					.from("users")
+					.where("id", "=", ID)
+					.then((e) => e[0].role_id);
 	},
 
 	updateImage: async (Dados) => {

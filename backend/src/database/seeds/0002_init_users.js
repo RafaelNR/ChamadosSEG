@@ -16,14 +16,14 @@ exports.seed = (knex) => {
 					updated_at: knex.fn.now(),
 				},
 				{
-					nome: "Fred Guedes",
-					user: "fredguedes",
+					nome: "Técnico Teste",
+					user: "tecnico",
 					passwd:
 						"$2a$10$Aj5JrHyP99jSwaZkA7Mk7eVFQWQ7mLcgct7HWKlBwBiH3E2y13lSG",
 					email: "fred@seg.eti.br",
 					telefone: "(32) 00000-0001",
 					actived: 1,
-					role_id: 1,
+					role_id: 2,
 					created_at: knex.fn.now(),
 					updated_at: knex.fn.now(),
 				},
