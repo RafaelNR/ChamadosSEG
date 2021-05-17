@@ -92,8 +92,6 @@ export default () => {
     let render = true;
     const hash = getQuery('hash');
 
-    console.log(hash);
-
     if (hash) {
       (async () => {
         try {

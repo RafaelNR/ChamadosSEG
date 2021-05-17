@@ -117,7 +117,8 @@ const tools = {
 
   },
 
-	async validateHash(hash,ipRemote) {
+	async validateHash(hash, ipRemote) {
+		
 
 		const Dados = await Model.findOneByHash(hash);
 
