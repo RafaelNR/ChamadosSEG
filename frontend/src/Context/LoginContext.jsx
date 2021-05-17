@@ -67,9 +67,7 @@ const LoginProvider = ({ children }) => {
     (e) => {
       e.preventDefault();
       handleLogin(login);
-    },
-    [login]
-  );
+  },[login]);
 
   const handleChangeSlide = useCallback(() => {
     setErrors([])
@@ -77,7 +75,6 @@ const LoginProvider = ({ children }) => {
     setSuccess(false);
     setRecuperar((prev) => !prev)
   },[])
-
 
   const handleChangeLogin = useCallback((e) => {
     const name = e.target.name;
@@ -99,9 +96,7 @@ const LoginProvider = ({ children }) => {
           return errors;
         });
       }
-    },
-    [login]
-  );
+  },[login]);
 
   return (
     <LoginContext.Provider

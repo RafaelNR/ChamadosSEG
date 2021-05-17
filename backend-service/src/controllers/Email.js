@@ -1,5 +1,6 @@
 const Email = require("../classes/email");
 const Model = require("../models/Emails");
+const { findOneByHash, emailSendAt } = require("../models/RecuperarSenha");
 
 const EnviarEmail = async (configs,Dados) => {
 	const email = new Email(configs.textFrom);
@@ -16,7 +17,7 @@ const RecuperarSenha = async (req, res, next) => {
 		if (!req.query.hash)
 			throw "Hash não foi enviada. Por favor tente mais tarde.";
 
-		const Dados = await Model.findOneByHash(req.query.hash);
+		const Dados = await findOneByHash(req.query.hash);
 
     if (!Dados) throw new Error("Hash não encontrada.");
     
@@ -29,7 +30,7 @@ const RecuperarSenha = async (req, res, next) => {
 		const resp = await EnviarEmail(configs, Dados);
 
 		if (resp.sucesso) {
-			await Model.emailSendAt(Dados.id);
+			await emailSendAt(Dados.id);
 			return res.send({
 				success: true,
 				message: "Email envido com sucesso.",
