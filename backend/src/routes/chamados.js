@@ -13,8 +13,9 @@ Router.get("/", Controller.index)
 	// .get("/:id", Controller.findOne)
 	.post("/", Controller.insert)
 	.put("/:id", Controller.update);
-	// .put("/:id/status", Controller.changeStatus) // Altera o status
-	// .put("/:id/owner", Controller.changeOwner); // Altera o proprietário
+	// .put("/status/:id/", Controller.changeStatus) // Altera o status
+	// .put("/prioridade/:id/", Controller.changePrioridade); // Altera o proprietário
+	// .put('/atribuir/:id',Controller.changeAtribuido)
 
 // Acompanhamento
 // Router.get("/acm/:task_id", ControllerAcm.indexByTask)

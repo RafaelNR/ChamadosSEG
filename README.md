@@ -13,6 +13,9 @@
 - [ ] fazer loading na tela de perfil, por conta da demora em receber o user;
 - [ ] Mudar Pasta store para fields;
 - [ ] Relatorio quando mudar de tipo de info zerar erros;
+- [ ] Delete de cateforia e de subcategoria.
+- [ ] Desabilitar cliente em ver de excluir.
+- [ ] Atividades da dashboard, está limitada a 100, mover para sem limite.
 - [X] Log de envio de email;
       > Pode reinviar emails, somente com pdf criado;
 - [X] Corrigido erro na senha do login, quando atualizada a página e pressiona a primeira tela.

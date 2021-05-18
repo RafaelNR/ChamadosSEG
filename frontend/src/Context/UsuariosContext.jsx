@@ -97,7 +97,7 @@ const UsuariosProvider = ({ children }) => {
         );
         handleSnackBar({
           type: "success",
-          message: "Usuario Inserido!",
+          message: "Usuário Inserido!",
         });
         return true;
       } catch (error) {
@@ -124,18 +124,18 @@ const UsuariosProvider = ({ children }) => {
         );
         handleSnackBar({
           type: "success",
-          message: "Informações do usuario alteradas!",
+          message: "Informações do usuário alteradas!",
         });
         return true;
       } catch (error) {
-        console.log(error.errors.clients);
+        console.log(error);
         if (error && error.errors) setErrors(error.errors);
         handleSnackBar({
-          type: 'error',
+          type: "error",
           message:
-            (error && error.message) || error.errors.clients
-              ? error.message || error.errors.clients
-              : 'Erro em alterar o usuario.'
+            error && error.message
+              ? error.message
+              : "Erro em alterar o usuario.",
         });
       }
     },

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -24,10 +24,16 @@ const useStyles = makeStyles(() => ({
 
 export default ({ user }) => {
   const classes = useStyles();
-  const { handleChangeValues, values, setValues } = useForm(user);
+  const { handleChangeValues, values, setValues } = useForm();
   const { handleSnackBar } = useSnackBar();
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState([]);
+
+
+  useEffect(() => {
+    if (user && user.nome) setValues(user);
+  },[user])
+
 
   const handleSubmit = async () => {
     setLoading(true)

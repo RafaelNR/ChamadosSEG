@@ -8,7 +8,7 @@ const type = {
 		ano: Joi.number().integer().positive().min(2000).max(2030).required(),
 		mes: Joi.number().integer().positive().min(1).max(12).required(),
 		dia: Joi.number().integer().positive().min(1).max(31).required(),
-		actived: Joi.number().integer().positive().default(1),
+		actived: Joi.number().integer().default(1),
 		prioridade: Joi.number().integer().positive().min(0).max(10).required(),
 		status: Joi.number().integer().positive().min(0).max(10).default(0),
 		default: Joi.number().integer().positive().min(0).max(9999),
@@ -33,15 +33,17 @@ const type = {
 		info_ticket: Joi.string().min(10).max(16),
 		representante: Joi.string().min(3).max(100).required(),
 		n_contrato: Joi.string().min(3).max(15).required(),
-		default: Joi.string().required(),
+		default: Joi.string(),
+		defaultRequired: Joi.string().required(),
 	},
 	date: {
-		last_access: () => moment(new Date()).locale("pt-br").format("YYYY-MM-DD"),
-		created_at: () => moment(new Date()).locale("pt-br").format("YYYY-MM-DD"),
-		updated_at: () => moment(new Date()).locale("pt-br").format("YYYY-MM-DD"),
-		dateAtividade: (Date) => moment(Date).locale("pt-br").format("YYYY-MM-DD"),
+		last_access: () => moment().locale("pt-br").format("YYYY-MM-DD HH:mm:ss"),
+		created_at: () => Joi.date().default(moment().locale("pt-br").format("YYYY-MM-DD HH:mm:ss")),
+		updated_at: () => Joi.date().default(moment().locale("pt-br").format("YYYY-MM-DD HH:mm:ss")),
+		dateAtividade: (Date) =>
+			moment(Date).locale("pt-br").format("YYYY-MM-DD"),
 		DiaMesAno: (Date) => checkDateIsExist(Date),
-		default: Joi.date().format("YYYY-MM-DD"),
+		default: Joi.date().format("YYYY-MM-DD HH:mm:ss"),
 	},
 	array: {
 		clients: Joi.array()

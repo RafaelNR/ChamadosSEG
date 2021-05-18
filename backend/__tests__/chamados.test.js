@@ -3,6 +3,104 @@ const request = require("supertest")(App);
 
 const { Token, TokenTecnico } = require("./auth.test");
 
+describe("Testes Chamado, UPDATE", () => {
+	it("Deve atualizar a informação de um atividade, ADMIN.", async () => {
+		return await request
+			.put("/chamados/1")
+			.set("access_token", Token())
+			.send({
+				tecnico_requerente: 1,
+				tecnico_atribuido: 12,
+				cliente_atribuido: 1,
+				prioridade: 3,
+				status: 1,
+				titulo: "Teste 01",
+				descricao: "Teste 01 Descrição alterado.",
+			})
+			.then((res) => {
+				console.log(res.body)
+				expect(res.status).toBe(200); // Deve ser;
+				expect(res.body).toHaveProperty("success", true);
+			});
+	});
+	it("Deve atualizar a informação de um atividade, Técnico.", async () => {
+		return await request
+			.put("/chamados/2")
+			.set("access_token", TokenTecnico())
+			.send({
+				tecnico_atribuido: 12,
+				prioridade: 3,
+				status: 1,
+				titulo: "Teste 01",
+				descricao: "Teste 01 Descrição alterado tecnico.",
+			})
+			.then((res) => {
+				console.log(res.body);
+				expect(res.status).toBe(200); // Deve ser;
+				expect(res.body).toHaveProperty("success", true);
+			});
+	});
+	it("Deve atualizar a informação de um atividade, Técnico.", async () => {
+		return await request
+			.put("/chamados/8")
+			.set("access_token", TokenTecnico())
+			.send({
+				prioridade: 3,
+				status: 1,
+				titulo: "Teste 01",
+				descricao: "Teste 02 Descrição alterado tecnico.",
+			})
+			.then((res) => {
+				console.log(res.body);
+				expect(res.status).toBe(200); // Deve ser;
+				expect(res.body).toHaveProperty("success", true);
+			});
+	});
+	it("Deve receber um erro póis está atribuindo cliente, TÉCNICO.", async () => {
+		return await request
+			.put("/chamados/2")
+			.set("access_token", TokenTecnico())
+			.send({
+				tecnico_atribuido: 1,
+				cliente_atribuido: 1,
+				prioridade: 3,
+				status: 1,
+				titulo: "Teste 01",
+				descricao: "Teste 01 Descrição alterado.",
+			})
+			.then((res) => {
+				console.log(res.body);
+				expect(res.status).toBe(400); // Deve ser;
+				expect(res.body).toHaveProperty(
+					"message",
+					"Você não pode alterar o cliente atribuído."
+				);
+			});
+	});
+	it("Deve receber um erro póis está atribuindo requerente, TÉCNICO.", async () => {
+		return await request
+			.put("/chamados/2")
+			.set("access_token", TokenTecnico())
+			.send({
+				tecnico_requerente: 20,
+				tecnico_atribuido: 1,
+				cliente_atribuido: 1,
+				prioridade: 3,
+				status: 1,
+				titulo: "Teste 01",
+				descricao: "Teste 01 Descrição alterado.",
+			})
+			.then((res) => {
+				console.log(res.body);
+				expect(res.status).toBe(400); // Deve ser;
+				expect(res.body).toHaveProperty(
+					"message",
+					"Você não pode alterar o técnico requerente."
+				);
+			});
+	});
+});
+
 describe("Testes Chamado, INSERT", () => {
 	it("Deve inserir atividade como administrador.", async () => {
 		return await request

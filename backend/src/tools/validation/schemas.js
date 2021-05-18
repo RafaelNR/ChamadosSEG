@@ -30,8 +30,6 @@ module.exports = {
 				telefone: type.string.telefone,
 				role_id: type.number.role_id,
 				actived: type.number.actived,
-				created_at: type.date.created_at(),
-				updated_at: type.date.updated_at(),
 			})
 		);
 	},
@@ -65,8 +63,6 @@ module.exports = {
 				telefone: type.string.telefone,
 				representante: type.string.representante,
 				n_contrato: type.string.n_contrato,
-				created_at: type.date.created_at(),
-				updated_at: type.date.updated_at(),
 			})
 		);
 	},
@@ -97,8 +93,6 @@ module.exports = {
 				user_id: type.number.id,
 				cliente_id: type.number.id,
 				date: type.date.dateAtividade(Dados.date),
-				created_at: type.date.created_at(),
-				updated_at: type.date.updated_at(),
 			})
 		);
 	},
@@ -123,8 +117,6 @@ module.exports = {
 				categoria_id: type.number.id,
 				atividade_id: type.number.id,
 				user_id: type.number.id,
-				created_at: type.date.created_at(),
-				updated_at: type.date.updated_at(),
 			}).options({ stripUnknown: true }) // remove as outras propriedades;
 		);
 	},
@@ -150,8 +142,7 @@ module.exports = {
 				type: type.string.categoria,
 				category: type.string.categoria,
 				error: type.string.error,
-				created_at: type.date.created_at(),
-				updated_at: type.date.updated_at(),
+
 			})
 		);
 	},
@@ -162,8 +153,6 @@ module.exports = {
 			Joi.object({
 				nome: type.string.categoria,
 				user_id: type.number.id,
-				created_at: type.date.created_at(),
-				updated_at: type.date.updated_at(),
 			})
 		);
 	},
@@ -186,8 +175,6 @@ module.exports = {
 			Joi.object({
 				nome: type.string.nome,
 				user_id: type.number.id,
-				created_at: type.date.created_at(),
-				updated_at: type.date.updated_at(),
 			})
 		);
 	},
@@ -213,11 +200,9 @@ module.exports = {
 				tecnico_atribuido: type.number.default,
 				status: type.number.status,
 				prioridade: type.number.prioridade,
-				titulo: type.string.default,
-				descricao: type.string.default,
+				titulo: type.string.defaultRequired,
+				descricao: type.string.defaultRequired,
 				user_id: type.number.defaultRequired,
-				created_at: type.date.created_at(),
-				updated_at: type.date.updated_at(),
 			})
 		);
 	},
@@ -229,12 +214,12 @@ module.exports = {
 				id: type.number.id,
 				tecnico_requerente: type.number.default,
 				tecnico_atribuido: type.number.default,
-				cliente_atribuido: type.number.defaultRequired,
+				cliente_atribuido: type.number.default,
 				status: type.number.status,
 				prioridade: type.number.prioridade,
 				titulo: type.string.default,
 				descricao: type.string.default,
-				user_id: type.number.defaultRequired,
+				user_id: type.number.default,
 				updated_at: type.date.updated_at(),
 			})
 		);
@@ -248,8 +233,6 @@ module.exports = {
 				user_id: type.number.id,
 				type: type.string.status,
 				descricao: type.string.default,
-				created_at: type.date.created_at(),
-				updated_at: type.date.updated_at(),
 			})
 		);
 	},

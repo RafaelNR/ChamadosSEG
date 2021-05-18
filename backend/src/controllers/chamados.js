@@ -138,7 +138,7 @@ const update = async (req, res) => {
 		if (!req.body && !req.params.id)
 			throw "Parametros inválidos";
 
-		const chamado = await tools.handlerUpdate({id: req.params.id, user_id: req.userId,...req.body});
+		const chamado = await tools.handlerUpdate({ id: req.params.id, user_id: req.userId, ...req.body });
 		await Model.update(chamado);
 		Result.ok(200);
 	} catch (error) {
@@ -208,9 +208,19 @@ const tools = {
 	handlerUpdate: async (Dados) => {
 		const newDados = Validate.UpdateChamado(Dados);
 		const role_id = await tools.checkPermissionUserID(newDados);
-		await tools.checkChamadoIsExist(newDados)
-		await tools.checkClienteIsExist(newDados.cliente_atribuido);
-		await tools.verifyVinculoCliente(role_id, newDados);
+
+		if (role_id === 3 && Dados.tecnico_requerente)
+			throw 'Você não pode alterar o técnico requerente.';
+		
+		if (role_id === 3 && Dados.cliente_atribuido)
+			throw "Você não pode alterar o cliente atribuído.";
+			
+		await tools.checkChamadoIsExist(newDados);
+		if (newDados.cliente_atribuido) {
+			await tools.checkClienteIsExist(newDados.cliente_atribuido);
+			await tools.verifyVinculoCliente(role_id, newDados);
+		}
+
 		await tools.verifyUser(newDados);
 
 		return newDados;
@@ -228,8 +238,8 @@ const tools = {
 				return role_id;
 			
 			if (!role_id) throw "Usuário não encontrado.";
-			
-			if (role_id === 3 && Dados.user_id !== Dados.tecnico_requerente)
+				
+			if (role_id === 3 && Dados.tecnico_requerente && Dados.user_id !== Dados.tecnico_requerente)
 				throw "Você não tem permissão para requerer atividade como outro usuário.";
 			
 			return role_id; 
@@ -278,12 +288,13 @@ const tools = {
 		
 	},
 	verifyUser: async (Dados) => {
+		
 
 		if (typeof Dados === 'object') {
 
-			if(await countID(Dados.tecnico_requerente) <= 0)
+			if(Dados.tecnico_requerente && await countID(Dados.tecnico_requerente) <= 0)
 				throw "Técnico requerente não existe.";
-			else if ((await countID(Dados.tecnico_atribuido)) <= 0)
+			else if (Dados.tecnico_atribuido && (await countID(Dados.tecnico_atribuido)) <= 0)
 				throw "Técnico atribuído não existe.";
 			
 		} else {
