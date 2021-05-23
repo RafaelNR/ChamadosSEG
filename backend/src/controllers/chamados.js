@@ -101,11 +101,9 @@ const findOne = async (req, res) => {
 		if (!req.params || !req.params.id) throw "Chamado inválidos.";
 		const ID = Validate.ID(req.params.id);
 
-		const chamado = await Model.findOne(ID);
-
-		if (!chamado) throw "Chamado não existe.";
-
-		Result.ok(200, await Model.findOne(ID));
+		const chamado = await tools.handleFindOne(req.userId,await Model.findOne(ID));
+		
+		Result.ok(200, chamado);
 	} catch (error) {
 		console.log(error);
 		Result.fail(400, error);
@@ -225,6 +223,23 @@ const tools = {
 
 		return newDados;
 	},
+	handleFindOne: async (user_id, Chamado) => {
+		
+		if (!Chamado) throw "Chamado não existe.";
+		
+		const role_id = await getRole(user_id);
+
+		if (role_id !== 3) return Chamado;
+
+		if (!await countClientByUser(user_id, Chamado.cliente_id))
+			throw 'Você não ter permissão para abrir esse chamado.'
+
+		if (user_id !== Chamado.requerente_id && user_id !== Chamado.atribuido_id)
+			throw "Você não ter permissão para abrir esse chamado.";
+		
+
+		return Chamado;
+	},
 	checkPermissionUserID: async (Dados) => {
 
 		if (typeof Dados === 'object') {
@@ -240,7 +255,7 @@ const tools = {
 			if (!role_id) throw "Usuário não encontrado.";
 				
 			if (role_id === 3 && Dados.tecnico_requerente && Dados.user_id !== Dados.tecnico_requerente)
-				throw "Você não tem permissão para requerer atividade como outro usuário.";
+				throw "Você não tem permissão para requerer chamados de outro usuário.";
 			
 			return role_id; 
 		} else {

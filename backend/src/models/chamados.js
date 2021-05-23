@@ -167,7 +167,7 @@ const findOne = async (id) => {
 		.where("chamados.id", "=", id)
 		.limit(200)
 		.orderBy("chamados.id", "asc")
-		.then((e) => e[0].id);
+		.then((e) => e[0]);
 };
 
 const insert = (Dados) => {

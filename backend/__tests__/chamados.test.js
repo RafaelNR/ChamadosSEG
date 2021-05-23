@@ -4,7 +4,7 @@ const request = require("supertest")(App);
 const { Token, TokenTecnico } = require("./auth.test");
 
 describe("Testes Chamado, UPDATE", () => {
-	it("Deve atualizar a informação de um atividade, ADMIN.", async () => {
+	it("Deve atualizar a informação de um chamado, ADMIN.", async () => {
 		return await request
 			.put("/chamados/1")
 			.set("access_token", Token())
@@ -23,7 +23,7 @@ describe("Testes Chamado, UPDATE", () => {
 				expect(res.body).toHaveProperty("success", true);
 			});
 	});
-	it("Deve atualizar a informação de um atividade, Técnico.", async () => {
+	it("Deve atualizar a informação de um chamado, Técnico.", async () => {
 		return await request
 			.put("/chamados/2")
 			.set("access_token", TokenTecnico())
@@ -40,7 +40,7 @@ describe("Testes Chamado, UPDATE", () => {
 				expect(res.body).toHaveProperty("success", true);
 			});
 	});
-	it("Deve atualizar a informação de um atividade, Técnico.", async () => {
+	it("Deve atualizar a informação de um chamado, Técnico.", async () => {
 		return await request
 			.put("/chamados/8")
 			.set("access_token", TokenTecnico())
@@ -102,7 +102,7 @@ describe("Testes Chamado, UPDATE", () => {
 });
 
 describe("Testes Chamado, INSERT", () => {
-	it("Deve inserir atividade como administrador.", async () => {
+	it("Deve inserir um chamado como administrador.", async () => {
 		return await request
 			.post("/chamados")
 			.set("access_token", Token())
@@ -119,7 +119,7 @@ describe("Testes Chamado, INSERT", () => {
 				expect(res.body).toHaveProperty("success", true);
 			});
 	});
-	it("Deve inserir atividade para outro técnico.", async () => {
+	it("Deve inserir chamado para outro técnico.", async () => {
 		return await request
 			.post("/chamados")
 			.set("access_token", Token())
@@ -136,7 +136,7 @@ describe("Testes Chamado, INSERT", () => {
 				expect(res.body).toHaveProperty("success", true);
 			});
 	});
-	it("Devo receber um erro póis estou inserindo atividade para cliente que não existe.", async () => {
+	it("Devo receber um erro póis estou inserindo chamado para cliente que não existe.", async () => {
 		return await request
 			.post("/chamados")
 			.set("access_token", Token())
@@ -199,7 +199,7 @@ describe("Testes Chamado, INSERT", () => {
 				);
 			});
 	});
-	it("Deve inserir atividade como técnico.", async () => {
+	it("Deve inserir chamado como técnico.", async () => {
 		return await request
 			.post("/chamados")
 			.set("access_token", TokenTecnico())
@@ -233,7 +233,7 @@ describe("Testes Chamado, INSERT", () => {
 				expect(res.body).toHaveProperty("success", false);
 				expect(res.body).toHaveProperty(
 					"message",
-					"Você não tem permissão para requerer atividade como outro usuário."
+					"Você não tem permissão para requerer chamados de outro usuário."
 				);
 			});
 	});
@@ -340,6 +340,61 @@ describe("Testes Chamado, acesso de ADMIN", () => {
 				expect(res.body.data[0]).toHaveProperty("prioridade");
 				expect(res.body.data[0]).toHaveProperty("created_at");
 				expect(res.body.data[0]).toHaveProperty("updated_at");
+			});
+	});
+	it("Deve receber um chamado como admin.", async () => {
+		return await request
+			.get("/chamados/1")
+			.set("access_token", Token())
+			.then((res) => {
+				expect(res.status).toBe(200); // Deve ser;
+				expect(res.body).toHaveProperty("success", true);
+				expect(res.body).toHaveProperty("data");
+				expect(res.body.data).toHaveProperty("id");
+				expect(res.body.data).toHaveProperty("requerente");
+				expect(res.body.data).toHaveProperty("requerente_id");
+				expect(res.body.data).toHaveProperty("tecnico_id"	);
+				expect(res.body.data).toHaveProperty("atribuido");
+				expect(res.body.data).toHaveProperty("cliente");
+				expect(res.body.data).toHaveProperty("cliente_id");
+				expect(res.body.data).toHaveProperty("status");
+				expect(res.body.data).toHaveProperty("prioridade");
+				expect(res.body.data).toHaveProperty("created_at");
+				expect(res.body.data).toHaveProperty("updated_at");
+			});
+	});
+	it("Deve receber um chamado como admin.", async () => {
+		return await request
+			.get("/chamados/2")
+			.set("access_token", TokenTecnico())
+			.then((res) => {
+				expect(res.status).toBe(200); // Deve ser;
+				expect(res.body).toHaveProperty("success", true);
+				expect(res.body).toHaveProperty("data");
+				expect(res.body.data).toHaveProperty("id");
+				expect(res.body.data).toHaveProperty("requerente");
+				expect(res.body.data).toHaveProperty("requerente_id");
+				expect(res.body.data).toHaveProperty("tecnico_id");
+				expect(res.body.data).toHaveProperty("atribuido");
+				expect(res.body.data).toHaveProperty("cliente");
+				expect(res.body.data).toHaveProperty("cliente_id");
+				expect(res.body.data).toHaveProperty("status");
+				expect(res.body.data).toHaveProperty("prioridade");
+				expect(res.body.data).toHaveProperty("created_at");
+				expect(res.body.data).toHaveProperty("updated_at");
+			});
+	});
+	it("Deve receber os dados do chamado cmo técnico.", async () => {
+		return await request
+			.get("/chamados/1")
+			.set("access_token", TokenTecnico())
+			.then((res) => {
+					expect(res.status).toBe(400); // Deve ser;
+					expect(res.body).toHaveProperty("success", false);
+					expect(res.body).toHaveProperty(
+						"message",
+						"Você não ter permissão para abrir esse chamado."
+					);
 			});
 	});
 	it("Deve receber todos os chamados requeridos por mim.", async () => {

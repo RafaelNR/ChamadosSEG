@@ -15,7 +15,7 @@ module.exports = {
 	Data: (Data) => validate(Data, type.string.date),
 	DiaMesAno: (Data) => type.date.DiaMesAno(Data),
 	status: (Status) => validate(Status, type.string.status),
-	Ticket: (Ticket) => validate(Ticket, type.string.ticket), 
+	Ticket: (Ticket) => validate(Ticket, type.string.ticket),
 	clientsUser: (Dados) => validate(Dados, type.array.clients),
 	subCategorias_array: (Dados) => validate(Dados, type.array.subCategorias),
 
@@ -142,7 +142,6 @@ module.exports = {
 				type: type.string.categoria,
 				category: type.string.categoria,
 				error: type.string.error,
-
 			})
 		);
 	},
@@ -225,29 +224,28 @@ module.exports = {
 		);
 	},
 
-	InsertAcmTask: (Dados) => {
+	InsertAcmChamados: (Dados) => {
 		return validate(
 			Dados,
 			Joi.object({
-				task_id: type.number.id,
+				tipo: Joi.number().min(1).max(5).required(),
+				chamado_id: type.number.id,
+				descricao: type.string.defaultRequired,
 				user_id: type.number.id,
-				type: type.string.status,
-				descricao: type.string.default,
 			})
 		);
 	},
 
-	UpdateAcmTask: (Dados) => {
+	UpdateAcmChamados: (Dados) => {
 		return validate(
 			Dados,
 			Joi.object({
 				id: type.number.id,
-				task_id: type.number.id,
+				tipo: Joi.number().min(1).max(5),
+				descricao: type.string.defaultRequired,
 				user_id: type.number.id,
-				type: type.string.status,
-				descricao: type.string.default,
 				updated_at: type.date.updated_at(),
-			})
+			}).options({ stripUnknown: true }) // remove as outras propriedades;
 		);
 	},
 
@@ -264,6 +262,7 @@ module.exports = {
 			})
 		);
 	},
+
 	UploadImage: (Dados) => {
 		return validate(
 			Dados,
@@ -276,8 +275,8 @@ module.exports = {
 				fieldname: type.string.nome,
 				filename: type.string.nome,
 				path: type.string.nome,
-				size:	type.number.id
+				size: type.number.id,
 			})
 		);
-	}
+	},
 };

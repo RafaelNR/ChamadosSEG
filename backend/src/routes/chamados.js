@@ -1,6 +1,6 @@
 const Router = require("express").Router();
 const Controller = require("../controllers/chamados");
-// const ControllerAcm = require("../controllers/acm_tasks");
+const ControllerAcm = require("../controllers/acm_chamados");
 //const Permission = require("../middlewares/permission");
 
 // Tasks
@@ -10,7 +10,7 @@ Router.get("/", Controller.index)
 	.get("/atribuido/my", Controller.atribuidosOneMe)
 	.get("/atribuido/user/:user_id", Controller.atribuidosByUserID)
 	.get("/cliente/:cliente_id", Controller.indexByCliente)
-	// .get("/:id", Controller.findOne)
+	.get("/:id", Controller.findOne)
 	.post("/", Controller.insert)
 	.put("/:id", Controller.update);
 	// .put("/status/:id/", Controller.changeStatus) // Altera o status
@@ -18,9 +18,9 @@ Router.get("/", Controller.index)
 	// .put('/atribuir/:id',Controller.changeAtribuido)
 
 // Acompanhamento
-// Router.get("/acm/:task_id", ControllerAcm.indexByTask)
-// 	.post("/acm/:task_id", ControllerAcm.insert)
-// 	.put("/acm/:id", ControllerAcm.update);
+Router.get("/acm/:chamado_id", ControllerAcm.findAcompanhamentosByChamado)
+			.post("/acm/", ControllerAcm.insert)
+			.put("/acm/:id", ControllerAcm.update);
 //.delete("/acm/:id", ControllerAcm.deletar);
 
 module.exports = Router;
