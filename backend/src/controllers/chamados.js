@@ -3,7 +3,7 @@ const Validate = require("../tools/validation/schemas");
 const Result =  require('../tools/result');
 const { countClientByUser } = require("../models/clients_has_users");
 const { getRole,countID } = require('../models/user')
-const { countID: countClienteID } = require('../models/client')
+const { countID: countClienteID } = require('../models/client');
 
 const index = async (req, res) => {
 	try {
@@ -21,7 +21,9 @@ const index = async (req, res) => {
 const requerentesOneMe = async (req, res) => {
 	try {
 		const userID = Validate.ID(req.userId);
-		Result.ok(200, await Model.requerentesByUserID(userID));
+
+		const chamados = await Model.requerentesByUserID(userID);
+		Result.ok(200, chamados);
 	} catch (error) {
 		Result.fail(400, error);
 	}
@@ -101,9 +103,10 @@ const findOne = async (req, res) => {
 		if (!req.params || !req.params.id) throw "Chamado inválidos.";
 		const ID = Validate.ID(req.params.id);
 
-		const chamado = await tools.handleFindOne(req.userId,await Model.findOne(ID));
+		const chamado = await Model.findOne(ID);
+		const Dados = await tools.handleFindOne(req.userId,chamado);
 		
-		Result.ok(200, chamado);
+		Result.ok(200, Dados);
 	} catch (error) {
 		console.log(error);
 		Result.fail(400, error);
@@ -116,7 +119,7 @@ const findOne = async (req, res) => {
 
 const insert = async (req, res) => {
 	try {
-		if (!req.body) throw "Parametros inválidos";
+		if (!req.body) throw "Parâmetros inválidos";
 
 		const chamado = await tools.handlerInsert({ ...req.body, user_id: req.userId });
 		const chamadoID = await Model.insert(chamado);
@@ -148,57 +151,13 @@ const update = async (req, res) => {
 	return res.status(Result.status).json(Result.res);
 };
 
-// async function changeStatus(req, res) {
-// 	try {
-// 		if (!req.body && !req.body.id) throw "Parâmetros inválidos";
-// 		if (!req.body && !req.body.status) throw "Parâmetros inválidos";
-
-// 		const task_id = Validate.ID(req.body.id);
-// 		const status = Validate.status(req.body.status);
-
-// 		await tools.verifyTask(req.userId, task_id).then(async () => {
-// 			await Model.update(task_id, { status });
-// 		});
-
-// 		Result.ok(200);
-// 	} catch (error) {
-// 		console.log(error);
-// 		Result.fail(400, error);
-// 	}
-
-// 	Result.registerLog(req.userId, "tasks", "changeStatus");
-// 	return res.status(Result.status).json(Result.res);
-// }
-
-// async function changeOwner(req, res) {
-// 	try {
-// 		if (!req.body && !req.body.id) throw "Parâmetros inválidos";
-// 		if (!req.body && !req.body.owner_id) throw "Parâmetros inválidos";
-
-// 		const task_id = Validate.ID(req.body.id);
-// 		const owner_user_id = Validate.ID(req.body.owner_id);
-
-// 		await tools.verifyTask(req.userId, task_id).then(async () => {
-// 			await Model.update(task_id, { owner_user_id });
-// 		});
-
-// 		Result.ok(200);
-// 	} catch (error) {
-// 		console.log(error);
-// 		Result.fail(400, error);
-// 	}
-
-// 	Result.registerLog(req.userId, "tasks", "changeOwner");
-// 	return res.status(Result.status).json(Result.res);
-// }
-
 const tools = {
 
 	handlerInsert: async (Dados) => {
 		const newDados = Validate.InsertChamado(Dados);
 		const role_id = await tools.checkPermissionUserID(newDados);
 		await tools.verifyUser(newDados)
-		await tools.checkClienteIsExist(newDados.cliente_atribuido);
+		await tools.checkClienteIsExist(newDados.cliente_id);
 		await tools.verifyVinculoCliente(role_id, newDados);
 		
 		return newDados;
@@ -207,19 +166,16 @@ const tools = {
 		const newDados = Validate.UpdateChamado(Dados);
 		const role_id = await tools.checkPermissionUserID(newDados);
 
-		if (role_id === 3 && Dados.tecnico_requerente)
-			throw 'Você não pode alterar o técnico requerente.';
-		
-		if (role_id === 3 && Dados.cliente_atribuido)
+		if (Dados.cliente_id)
 			throw "Você não pode alterar o cliente atribuído.";
-			
+		
+		await tools.verifyStatus(Dados, role_id);
 		await tools.checkChamadoIsExist(newDados);
-		if (newDados.cliente_atribuido) {
-			await tools.checkClienteIsExist(newDados.cliente_atribuido);
+		await tools.verifyUser(newDados);
+		if (newDados.cliente_id) {
+			await tools.checkClienteIsExist(newDados.cliente_id);
 			await tools.verifyVinculoCliente(role_id, newDados);
 		}
-
-		await tools.verifyUser(newDados);
 
 		return newDados;
 	},
@@ -247,15 +203,15 @@ const tools = {
 			const role_id = await getRole(Dados.user_id);
 
 			if (
-				Dados.user_id === Dados.tecnico_requerente ||
-				Dados.user_id === Dados.tecnico_atribuido
+				Dados.user_id === Dados.requerente ||
+				Dados.user_id === Dados.atribuido
 			)
 				return role_id;
 			
 			if (!role_id) throw "Usuário não encontrado.";
 				
-			if (role_id === 3 && Dados.tecnico_requerente && Dados.user_id !== Dados.tecnico_requerente)
-				throw "Você não tem permissão para requerer chamados de outro usuário.";
+			if (role_id === 3 && Dados.requerente && Dados.user_id !== Dados.requerente)
+				throw "Você não tem permissão para requerer ou alterar chamados de outro usuário.";
 			
 			return role_id; 
 		} else {
@@ -277,39 +233,36 @@ const tools = {
 	},
 	verifyVinculoCliente: async (role_id, Dados) => {
 
-		if (role_id !== 3) return true;
-		else if (
-			Dados.cliente_id &&
-			!(await countClientByUser(Dados.user_id, Dados.cliente_id))
-		)
-			throw "Usuário sem vinculo com esse cliente.";
-		else if (
-			Dados.tecnico_requerente &&
-			!(await countClientByUser(
-				Dados.tecnico_requerente,
-				Dados.cliente_atribuido
-			))
-		)
-			throw "Técnico requerente sem vinculo com esse cliente.";
-		else if (
-			Dados.tecnico_atribuido &&
-			!(await countClientByUser(
-				Dados.tecnico_atribuido,
-				Dados.cliente_atribuido
-			))
-		)
-			throw "Técnico atribuido sem vinculo com esse cliente.";	
+		if (Dados.cliente_id) {			
+			if (
+				Dados.cliente_id &&
+				!(await countClientByUser(Dados.user_id, Dados.cliente_id))
+			)
+				throw "Usuário sem vinculo com esse cliente.";
+			else if (
+				Dados.requerente &&
+				!(await countClientByUser(Dados.requerente, Dados.cliente_id))
+			)
+				throw "Técnico requerente sem vinculo com esse cliente.";
+			else if (
+				Dados.atribuido &&
+				!(await countClientByUser(Dados.atribuido, Dados.cliente_id))
+			)
+				throw "Técnico atribuido sem vinculo com esse cliente.";	
+		}
+
+		return true;
+
 
 		
 	},
 	verifyUser: async (Dados) => {
 		
-
 		if (typeof Dados === 'object') {
 
-			if(Dados.tecnico_requerente && await countID(Dados.tecnico_requerente) <= 0)
+			if(Dados.requerente && await countID(Dados.requerente) <= 0)
 				throw "Técnico requerente não existe.";
-			else if (Dados.tecnico_atribuido && (await countID(Dados.tecnico_atribuido)) <= 0)
+			else if (Dados.atribuido && (await countID(Dados.atribuido)) <= 0)
 				throw "Técnico atribuído não existe.";
 			
 		} else {
@@ -318,6 +271,36 @@ const tools = {
 
 		return true;
 	},
+	verifyStatus: async (Dados,role_id) => {
+
+		if (Dados.status) {
+
+			const Chamado = await Model.findOne(Dados.id);
+
+			const listStatus = [
+				'Aberto',
+				'Em Andamento',
+				'Pendente Aprovação',
+				'Aprovado',
+				'Finalizado',
+			];
+
+			if (!listStatus.includes(Dados.status))
+				throw 'Status do chamado não é valido.';
+
+			if (role_id !== 3) return true;
+		
+			const keyChamadoStatus = listStatus.findIndex((e) => e === Chamado.status);
+			const keyStatus = listStatus.findIndex((e) => e === Dados.status);
+
+			if (keyStatus < keyChamadoStatus)
+				throw 'Você não tem permissão para retornar o status anterior do chamado.';
+
+			if (keyChamadoStatus !== 3 && keyStatus === 4 && Dados.user_id !== Chamado.requerente_id)
+				throw 'Você não pode finalizar o chamado sem ser o requerente ou sem a aprovação dele.';
+		}
+		return true;
+	}
 
 };
 
@@ -331,6 +314,4 @@ module.exports = {
 	findOne,
 	update,
 	insert,
-	// changeStatus,
-	// changeOwner,
 };

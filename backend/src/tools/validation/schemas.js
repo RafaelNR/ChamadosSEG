@@ -194,15 +194,16 @@ module.exports = {
 		return validate(
 			Dados,
 			Joi.object({
-				tecnico_requerente: type.number.defaultRequired,
-				cliente_atribuido: type.number.defaultRequired,
-				tecnico_atribuido: type.number.default,
-				status: type.number.status,
+				requerente: type.number.defaultRequired,
+				atribuido: type.number.default,
+				cliente_id: type.number.defaultRequired,
+				categoria_id: type.number.id,
 				prioridade: type.number.prioridade,
+				sub_categoria_id: type.number.id,
 				titulo: type.string.defaultRequired,
 				descricao: type.string.defaultRequired,
 				user_id: type.number.defaultRequired,
-			})
+			}).options({ stripUnknown: true })
 		);
 	},
 
@@ -211,16 +212,18 @@ module.exports = {
 			Dados,
 			Joi.object({
 				id: type.number.id,
-				tecnico_requerente: type.number.default,
-				tecnico_atribuido: type.number.default,
-				cliente_atribuido: type.number.default,
-				status: type.number.status,
+				requerente: type.number.default,
+				atribuido: type.number.default,
+				cliente_id: type.number.default,
+				categoria_id: type.number.default,
+				sub_categoria_id: type.number.default,
+				status: type.string.default,
 				prioridade: type.number.prioridade,
 				titulo: type.string.default,
 				descricao: type.string.default,
 				user_id: type.number.default,
 				updated_at: type.date.updated_at(),
-			})
+			}).options({ stripUnknown: true })
 		);
 	},
 

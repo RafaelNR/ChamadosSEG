@@ -19,6 +19,10 @@ import Relatorios from '../Views/Relatorios/';
 import RAtividades from '../Views/Relatorios/Atividades';
 import RMyAtividades from '../Views/Relatorios/Atividades/my';
 
+
+import Chamados from "../Views/Chamados";
+
+
 import useAuth from '../Context/AuthContext';
 import useUser from '../Hooks/useUser';
 
@@ -52,7 +56,7 @@ function Routes() {
 					<Route path="/atividades/edit/:ticket" component={AtividadesEdit} />
 					<Route path="/atividades/view/:ticket" component={AtividadesView} />
 
-					{/* <Route path="/chamados" component={Chamados} /> */}
+					<Route path="/chamados" component={Chamados} />
 
 					<TecnicoRoute path="/relatorios/atividades/my" exact component={RMyAtividades} role_id={roleID} redirect="/relatorios/atividades" />
 

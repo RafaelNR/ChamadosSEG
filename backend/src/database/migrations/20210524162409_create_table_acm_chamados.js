@@ -1,14 +1,14 @@
 exports.up = function (knex) {
-	return knex.schema.createTable("acm_tasks", (table) => {
+	return knex.schema.createTable("acm_chamados", (table) => {
 		table.increments("id").unsigned().notNullable();
-		table.string("type").notNullable();
-		table.text("descricao", "mediumtext").notNullable();
+		table.string("tipo").notNullable();
 		table
-			.integer("task_id")
+			.integer("chamado_id")
 			.unsigned()
 			.notNullable()
 			.references("id")
-			.inTable("tasks");
+			.inTable("chamados");
+		table.text("descricao", "mediumtext").notNullable();
 		table
 			.integer("user_id")
 			.unsigned()
@@ -21,5 +21,5 @@ exports.up = function (knex) {
 };
 
 exports.down = function (knex) {
-	return knex.schema.dropTable("acm_tasks");
+	return knex.schema.dropTable("acm_chamados");
 };

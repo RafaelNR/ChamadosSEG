@@ -23,7 +23,7 @@ exports.seed = (knex) => {
 					email: "fred@seg.eti.br",
 					telefone: "(32) 00000-0001",
 					actived: 1,
-					role_id: 2,
+					role_id: 3,
 					created_at: knex.fn.now(),
 					updated_at: knex.fn.now(),
 				},

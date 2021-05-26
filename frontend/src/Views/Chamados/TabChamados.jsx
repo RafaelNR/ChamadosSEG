@@ -90,9 +90,9 @@ export default () => {
           onChange={handleChange}
           aria-label="simple tabs example"
         >
-          <Tab label="Chamados que criei" {...a11yProps(0)} />
-          <Tab label="Chamados pra mim" {...a11yProps(1)} />
-          <Tab label="Chamados que eu sigo" {...a11yProps(2)} />
+          <Tab label="Requeridos" {...a11yProps(0)} />
+          <Tab label="Atribuídos" {...a11yProps(1)} />
+          <Tab label="Meus Clientes" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
