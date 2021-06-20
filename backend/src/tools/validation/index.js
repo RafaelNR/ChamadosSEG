@@ -9,7 +9,7 @@ const type = {
 		mes: Joi.number().integer().positive().min(1).max(12).required(),
 		dia: Joi.number().integer().positive().min(1).max(31).required(),
 		actived: Joi.number().integer().default(1),
-		prioridade: Joi.number().integer().positive().min(0).max(1),
+		prioridade: Joi.number().integer().min(0).max(1),
 		status: Joi.number().integer().positive().min(0).max(10),
 		default: Joi.number().integer().positive().min(0).max(9999),
 		defaultRequired: Joi.number().integer().positive().min(0).max(9999),

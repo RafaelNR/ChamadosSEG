@@ -9,49 +9,52 @@ import {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    justifyContent: "center",
-    height: "200px",
-    alignItems: "center",
-    "& > * + *": {
-      marginLeft: theme.spacing(2),
-    },
+    display: 'flex',
+    justifyContent: 'center',
+    height: '200px',
+    alignItems: 'center',
+    '& > * + *': {
+      marginLeft: theme.spacing(2)
+    }
   },
   table: {
-    display: "table-row",
-    height: "250px",
+    display: 'table-row',
+    height: '250px'
   },
   table_td: {
-    position: "absolute",
-    left: "50%",
-    bottom: "calc(100vh - 70%)",
-    borderBottom: "0",
+    position: 'absolute',
+    left: '50%',
+    bottom: 'calc(100vh - 70%)',
+    borderBottom: '0'
   },
   paperloader: {
-    width: "100%",
-    height: "500px",
-    marginBottom: theme.spacing(2),
+    width: '100%',
+    height: '500px',
+    marginBottom: theme.spacing(2)
   },
   paper: {
-    width: "100%",
-    marginBottom: theme.spacing(2),
+    width: '100%',
+    marginBottom: theme.spacing(2)
   },
   loading: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100%",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%'
   },
   message: {
-    display: "flex",
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingTop: "10px",
-    color: "#3f51b5",
-    fontSize: "15px",
-    fontWeight: "bold",
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: '10px',
+    color: '#3f51b5',
+    fontSize: '15px',
+    fontWeight: 'bold'
   },
+  icon: {
+    color: theme.darkMode ? theme.palette.secondary.main : theme.palette.primary.main
+  }
 }));
 
 function LoadingTable() {
@@ -59,7 +62,7 @@ function LoadingTable() {
   return (
     <TableRow className={classes.table}>
       <TableCell className={classes.table_td}>
-        <CircularProgress />
+        <CircularProgress className={classes.icon} />
       </TableCell>
     </TableRow>
   );
@@ -69,7 +72,7 @@ function LoadingDialog() {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <CircularProgress />
+      <CircularProgress className={classes.icon} />
     </div>
   );
 }
@@ -78,7 +81,7 @@ function LoadingPaper() {
   const classes = useStyles();
   return (
     <div className={classes.loading}>
-      <CircularProgress />
+      <CircularProgress className={classes.icon} />
     </div>
   );
 }
@@ -87,7 +90,7 @@ function LoadingTab() {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <CircularProgress />
+      <CircularProgress className={classes.icon} />
     </div>
   );
 }
@@ -96,7 +99,7 @@ function LoadingMessage(props) {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <CircularProgress />
+      <CircularProgress className={classes.icon}  />
       <Typography className={classes.message}>{props.message}</Typography>
     </div>
   );

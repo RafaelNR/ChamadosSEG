@@ -1,6 +1,7 @@
 const Model = require("../models/category");
 const Validate = require("../tools/validation/schemas");
-const Result =  require('../tools/result');
+const Result = require('../tools/result');
+const CategoriasHasSubCategorias = require("../models/categorias_has_subcategorias");
 
 
 const index = async (req, res) => {
@@ -17,7 +18,7 @@ const index = async (req, res) => {
 const findOne = async (req, res) => {
 	try {
 		if (!req.params || !req.params.id)
-			throw "Parametros não encontrados ou incorretos.";
+			throw "Parâmetros não encontrados ou incorretos.";
 
 		const Dados = await tools.isExist(Validate.ID(req.params.id)).then(async (ID) => await Model.findOne(ID))
 
@@ -29,6 +30,28 @@ const findOne = async (req, res) => {
 	Result.registerLog(req.userId, "categorias", "findOne");
 	return res.status(Result.status).json(Result.res);
 };
+
+const getSubCategoriaByCategoria = async (req,res) => {
+		try {
+			if (!req.params || !req.params.id)
+				throw "Parâmetros não encontrados ou incorretos.";
+
+			const Dados = await tools
+				.isExist(Validate.ID(req.params.id))
+				.then(
+					async (ID) =>
+						await CategoriasHasSubCategorias.findSubCategoriasByCategoriaID(ID)
+				);
+
+			Result.ok(200, Dados);
+		} catch (error) {
+			Result.fail(400, error);
+		}
+
+		Result.registerLog(req.userId, "categorias", "getSubCategoria");
+		return res.status(Result.status).json(Result.res);
+};
+
 
 const insert = async (req, res) => {
 	try {
@@ -126,9 +149,10 @@ const tools = {
 };
 
 module.exports = {
-	findOne,
-	insert,
 	index,
+	findOne,
+	getSubCategoriaByCategoria,
+	insert,
 	update,
 	deletar,
 	tools,

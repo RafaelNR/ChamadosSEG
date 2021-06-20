@@ -52,6 +52,7 @@ const findOne = async (ID) => {
 		});
 };
 
+
 const insert = (Dados) => {
 	return knex
 		.insert(Dados.categoria)

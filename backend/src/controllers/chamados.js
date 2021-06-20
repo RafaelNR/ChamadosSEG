@@ -3,7 +3,7 @@ const Validate = require("../tools/validation/schemas");
 const Result =  require('../tools/result');
 const { countClientByUser } = require("../models/clients_has_users");
 const { getRole,countID } = require('../models/user')
-const { countID: countClienteID } = require('../models/client');
+const { countID: countClienteID} = require('../models/client');
 
 const index = async (req, res) => {
 	try {
@@ -141,7 +141,7 @@ const update = async (req, res) => {
 
 		const chamado = await tools.handlerUpdate({ id: req.params.id, user_id: req.userId, ...req.body });
 		await Model.update(chamado);
-		Result.ok(200);
+		Result.ok(200, await Model.findOne(chamado.id));
 	} catch (error) {
 		console.log(error);
 		Result.fail(400, error);
@@ -166,9 +166,6 @@ const tools = {
 		const newDados = Validate.UpdateChamado(Dados);
 		const role_id = await tools.checkPermissionUserID(newDados);
 
-		if (Dados.cliente_id)
-			throw "Você não pode alterar o cliente atribuído.";
-		
 		await tools.verifyStatus(Dados, role_id);
 		await tools.checkChamadoIsExist(newDados);
 		await tools.verifyUser(newDados);
@@ -188,7 +185,7 @@ const tools = {
 		if (role_id !== 3) return Chamado;
 
 		if (!await countClientByUser(user_id, Chamado.cliente_id))
-			throw 'Você não ter permissão para abrir esse chamado.'
+			throw 'Você não ter permissão para abrir chamado sem vinculo com o cliente.'
 
 		if (user_id !== Chamado.requerente_id && user_id !== Chamado.atribuido_id)
 			throw "Você não ter permissão para abrir esse chamado.";
@@ -233,7 +230,11 @@ const tools = {
 	},
 	verifyVinculoCliente: async (role_id, Dados) => {
 
-		if (Dados.cliente_id) {			
+		if (Dados.cliente_id) {
+			
+			if (getRole(Dados.requerente) !== 3 || getRole(Dados.atribuido) !== 3) return true;
+
+
 			if (
 				Dados.cliente_id &&
 				!(await countClientByUser(Dados.user_id, Dados.cliente_id))
@@ -259,8 +260,8 @@ const tools = {
 	verifyUser: async (Dados) => {
 		
 		if (typeof Dados === 'object') {
-
-			if(Dados.requerente && await countID(Dados.requerente) <= 0)
+			
+			if (Dados.requerente && (await countID(Dados.requerente)) <= 0)
 				throw "Técnico requerente não existe.";
 			else if (Dados.atribuido && (await countID(Dados.atribuido)) <= 0)
 				throw "Técnico atribuído não existe.";
@@ -277,13 +278,7 @@ const tools = {
 
 			const Chamado = await Model.findOne(Dados.id);
 
-			const listStatus = [
-				'Aberto',
-				'Em Andamento',
-				'Pendente Aprovação',
-				'Aprovado',
-				'Finalizado',
-			];
+			const listStatus = ["Aberto", "Em Andamento", "Pendente", "Finalizado"];
 
 			if (!listStatus.includes(Dados.status))
 				throw 'Status do chamado não é valido.';

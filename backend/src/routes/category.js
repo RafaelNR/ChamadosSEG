@@ -7,6 +7,7 @@ const Controller = require("../controllers/category");
 //* CATEGORIAS
 Router.get("/", Controller.index);
 Router.get("/:id", Controller.findOne);
+Router.get("/:id/subcategoria", Controller.getSubCategoriaByCategoria);
 Router.post("/", Controller.insert);
 Router.put("/:id", Controller.update);
 Router.delete("/:id", Controller.deletar);

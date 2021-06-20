@@ -19,8 +19,11 @@ import Relatorios from '../Views/Relatorios/';
 import RAtividades from '../Views/Relatorios/Atividades';
 import RMyAtividades from '../Views/Relatorios/Atividades/my';
 
-
+// Chamados
 import Chamados from "../Views/Chamados";
+import ChamadosCreate from "../Views/Chamados/Create/";
+import ChamadosEdit from "../Views/Chamados/Edit/";
+import ChamadosView from "../Views/Chamados/View/";
 
 
 import useAuth from '../Context/AuthContext';
@@ -43,38 +46,72 @@ function Routes() {
 	})
 
 	return (
-		<Main>
-			<Container maxWidth={false} className={classes.container}>
-				<Switch>
-					<Route path="/" exact component={Home} />
-					<Route path="/perfil" exact component={Perfil} />
+    <Main>
+      <Container maxWidth={false} className={classes.container}>
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/perfil" exact component={Perfil} />
 
-					<Route path="/relatorios" exact component={Relatorios} />
+          <Route path="/relatorios" exact component={Relatorios} />
 
-					<Route path="/atividades" exact component={Atividades} />
-					<Route path="/atividades/create" exact component={AtividadesCreate} />
-					<Route path="/atividades/edit/:ticket" component={AtividadesEdit} />
-					<Route path="/atividades/view/:ticket" component={AtividadesView} />
+          <Route path="/atividades" exact component={Atividades} />
+          <Route path="/atividades/create" exact component={AtividadesCreate} />
+          <Route path="/atividades/edit/:ticket" component={AtividadesEdit} />
+          <Route path="/atividades/view/:ticket" component={AtividadesView} />
 
-					<Route path="/chamados" component={Chamados} />
+          <Route path="/chamados" component={Chamados} />
+          <Route path="/chamado/create" component={ChamadosCreate} />
+          <Route path="/chamado/edit/:id" component={ChamadosEdit} />
+          <Route path="/chamado/view/:id" component={ChamadosView} />
 
-					<TecnicoRoute path="/relatorios/atividades/my" exact component={RMyAtividades} role_id={roleID} redirect="/relatorios/atividades" />
+          <TecnicoRoute
+            path="/relatorios/atividades/my"
+            exact
+            component={RMyAtividades}
+            role_id={roleID}
+            redirect="/relatorios/atividades"
+          />
 
-					<AnalistaRoute path="/categorias" exact component={Categorias} role_id={roleID} />
-					<AnalistaRoute path="/usuarios" exact component={Usuarios} role_id={roleID} />
-					<AnalistaRoute path="/logs" exact component={Logs} role_id={roleID} />
-					<AnalistaRoute path="/relatorios/atividades" exact component={RAtividades} role_id={roleID} />
+          <AnalistaRoute
+            path="/categorias"
+            exact
+            component={Categorias}
+            role_id={roleID}
+          />
+          <AnalistaRoute
+            path="/usuarios"
+            exact
+            component={Usuarios}
+            role_id={roleID}
+          />
+          <AnalistaRoute path="/logs" exact component={Logs} role_id={roleID} />
+          <AnalistaRoute
+            path="/relatorios/atividades"
+            exact
+            component={RAtividades}
+            role_id={roleID}
+          />
 
-					<AdminRoute path="/clientes" exact component={Clientes} role_id={roleID} />
-					<AdminRoute path="/modelos" exact component={Modelos} role_id={roleID} />
+          <AdminRoute
+            path="/clientes"
+            exact
+            component={Clientes}
+            role_id={roleID}
+          />
+          <AdminRoute
+            path="/modelos"
+            exact
+            component={Modelos}
+            role_id={roleID}
+          />
 
-					<Route path="*">
-						<Redirect to="/" />
-					</Route>
-				</Switch>
-			</Container>
-		</Main>
-	);
+          <Route path="*">
+            <Redirect to="/" />
+          </Route>
+        </Switch>
+      </Container>
+    </Main>
+  );
 }
 
 

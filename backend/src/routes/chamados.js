@@ -5,10 +5,10 @@ const ControllerAcm = require("../controllers/acm_chamados");
 
 // Tasks
 Router.get("/", Controller.index)
-	.get("/requerente/my", Controller.requerentesOneMe)
-	.get("/requerente/user/:user_id", Controller.requerentesByUserID)
-	.get("/atribuido/my", Controller.atribuidosOneMe)
-	.get("/atribuido/user/:user_id", Controller.atribuidosByUserID)
+	.get("/requerentes/my", Controller.requerentesOneMe)
+	.get("/requerentes/user/:user_id", Controller.requerentesByUserID)
+	.get("/atribuidos/my", Controller.atribuidosOneMe)
+	.get("/atribuidos/user/:user_id", Controller.atribuidosByUserID)
 	.get("/cliente/:cliente_id", Controller.indexByCliente)
 	.get("/:id", Controller.findOne)
 	.post("/", Controller.insert)
@@ -19,6 +19,7 @@ Router.get("/", Controller.index)
 
 // Acompanhamento
 Router.get("/acm/:chamado_id", ControllerAcm.findAcompanhamentosByChamado)
+			.get("/acm/count/type", ControllerAcm.CountTypeAcompanhamentos)
 			.post("/acm/", ControllerAcm.insert)
 			.put("/acm/:id", ControllerAcm.update);
 //.delete("/acm/:id", ControllerAcm.deletar);

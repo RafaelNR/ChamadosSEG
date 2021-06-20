@@ -3,7 +3,7 @@ import { Paper } from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
 
 //* COMPONENTES
-import TabChamados from './TabChamados';
+import ChamadosTab from './Chamados.Tab';
 
 //* PROVIDER
 import { ChamadosProvider } from '../../Context/ChamadosContext';
@@ -22,7 +22,7 @@ export default () => {
     <LoadingProvider>
       <ChamadosProvider>
         <Paper className={classes.root}>
-          <TabChamados />
+          <ChamadosTab />
         </Paper>
       </ChamadosProvider>
     </LoadingProvider>

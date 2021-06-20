@@ -1,21 +1,25 @@
-import React from 'react'
-import { makeStyles, Chip, Avatar, Grid, Button } from '@material-ui/core/';
-import AttachFileIcon from '@material-ui/icons/AttachFile';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import InfoIcon from '@material-ui/icons/Info';
-import FlagIcon from '@material-ui/icons/Flag';
-import { ArrowIconTooltips } from '../../Components/ToolTip/index'
+import React, { useCallback } from 'react';
+import { Link } from 'react-router-dom';
+import { makeStyles, Grid, Typography, Badge } from '@material-ui/core/';
+import { FlagSharp, AttachFileSharp, CommentSharp } from '@material-ui/icons';
+import { ArrowIconTooltips } from '../../Components/ToolTip/index';
+import { TimeChamadoBox } from '../../Components/ToolTip/TimeChamado';
+import ChipStatus from '../Chip/status';
+import ChipUser from '../Chip/user';
+
+//* HOOK
+import useUser from '../../Hooks/useUser';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.boxhome
-  },
   cell: {
-    position: 'relative',
-    border: '1px solid #c4d3da',
-    background: theme.palette.background.boxhome,
-    marginTop: 10
+    marginTop: 10,
+    background: theme.darkMode ? '#777' : '#ddd',
+    transition: '0.3s',
+    borderRadius: 5,
+    '&:hover': {
+      background: theme.darkMode ? '#666' : '#ccc',
+      transition: '0.3s'
+    }
   },
   body: {
     padding: 16,
@@ -34,40 +38,39 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'wrap',
     flexGrow: 1
   },
-  title: {
-    width: 'calc(100% - 250px)',
+  titulo: {
     fontSize: 17,
     fontWeight: 600,
-    color: '#273444',
-    cursor: 'pointer',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    '& .rapper': {
-      display: 'flex',
-      width: '100%',
-      '& span': {
-        fontSize: 13,
-        color: '#54677b',
-        fontWeight: 600,
-        lineHeight: 3
-      }
+    color: theme.palette.text.title
+  },
+  rapper: {
+    display: 'flex',
+    width: '100%',
+    alignItems: 'center',
+    height: 25,
+    '& > span': {
+      fontSize: 13,
+      color: theme.palette.primary.main,
+      fontWeight: 600,
+      lineHeight: 3
     }
   },
   flags: {
     display: 'flex',
     flexDirection: 'column',
     '& .icons': {
-      height: 30,
+      height: 35,
       display: 'flex',
       justifyContent: 'flex-end',
-      '& .icon': {
-        float: 'left',
-        width: 24,
-        height: 28,
-        marginLeft: 8,
-        textAlign: 'center',
-        color: '#d5e0ed',
-        fontSize: 16
+      alignItems: 'center',
+      '& svg': {
+        fontSize: 20,
+        width: 40
+      },
+      '& .MuiBadge-anchorOriginTopRightRectangle': {
+        right: 10,
+        color: 'white',
+        fontWeight: 100
       }
     },
     '& .atribuido': {
@@ -76,65 +79,141 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: 'flex-end',
       marginTop: 10
     }
-  }
+  },
+  prioridade: (props) => ({
+    color: theme.darkMode
+      ? props.prioridade
+        ? '#c23616'
+        : '#aaaaaa'
+      : props.prioridade
+      ? '#c0392b'
+      : '#999999'
+  }),
+  anexo: (props) => ({
+    color: theme.darkMode
+      ? props.anexo
+        ? '#6D214F'
+        : '#aaaaaa'
+      : props.anexo
+      ? '#6D214F'
+      : '#999999'
+  }),
+  acompanhamentos: (props) => ({
+    color: theme.darkMode
+      ? props.acompanhamentos
+        ? theme.palette.primary.main
+        : '#aaaaaa'
+      : props.acompanhamentos
+      ? theme.palette.primary.main
+      : '#999999'
+  })
 }));
 
-export default ({ Chamados }) => {
-  const classes = useStyles();
+export default ({ chamado }) => {
+  const classes = useStyles({
+    acompanhamentos: chamado.acompanhamentos,
+    prioridade: chamado.prioridade,
+    anexo: chamado.anexo,
+  });
+  const { userDados } = useUser();
+
+  const {
+    id,
+    requerente,
+    atribuido,
+    atribuido_id,
+    cliente,
+    status,
+    prioridade,
+    anexo,
+    acompanhamentos,
+    categoria,
+    sub_categoria,
+    titulo,
+    created_at,
+    updated_at
+  } = chamado;
+
+  const handleLink = useCallback(() => {
+    if (userDados.role_id !== 3) {
+      return `/chamado/edit/${chamado.id}`;
+    } else if (
+      chamado.status === 'Finalizado' ||
+      chamado.requerente_id !== userDados.id
+    ) {
+      return `/chamado/view/${chamado.id}`;
+    } else {
+      return `/chamado/edit/${chamado.id}`;
+    }
+  }, [userDados]);
+
   return (
-    Chamados.map(chamado => {
-      return (
-        <div key={chamado.id} className={classes.cell}>
-          <div className={classes.body}>
-            <Grid container className={classes.header}>
-              <Grid item xs={9} className={classes.title}>
-                <span>
-                  # {chamado.ticket} - {chamado.title}
-                </span>
-                <div className="rapper">
-                  <span>
-                    {chamado.cliente} / {chamado.categoria} / {chamado.subCategoria}
-                  </span>
-                </div>
-              </Grid>
-              <Grid item xs={3} className={classes.flags}>
-                <div className="icons">
-                  <ArrowIconTooltips title={chamado.prioridade ? 'Retirar urgência' : 'Adicionar urgência' }>
-                    <Button
-                      endIcon={
-                        <FlagIcon
-                          className="icon"
-                          style={{
-                            color: chamado.prioridade ? 'red' : '#d5e0ed'
-                          }}
-                        />
-                      }
-                    />
-                  </ArrowIconTooltips>
-                  <ArrowIconTooltips title="Não possui anexos">
-                    <AttachFileIcon className="icon" />
-                  </ArrowIconTooltips>
-                  <ArrowIconTooltips title="Não possui interação">
-                    <InfoIcon className="icon" />
-                  </ArrowIconTooltips>
-                  <ArrowIconTooltips title="Não possui pedido de aprovação">
-                    <CheckCircleIcon className="icon" />
-                  </ArrowIconTooltips>
-                </div>
-                <div className="atribuido">
-                  <Chip
-                    label={chamado.atribuido}
-                    variant="outlined"
-                    color="primary"
-                    avatar={<Avatar src="/static/images/avatar/1.jpg" />}
+    <>
+      {userDados && (
+        <Link to={handleLink}>
+          <div className={classes.cell}>
+            <div className={classes.body}>
+              <Grid container className={classes.header}>
+                <Grid item xs={8}>
+                  <TimeChamadoBox
+                    created_at={created_at}
+                    updated_at={updated_at}
                   />
-                </div>
+                  <Typography className={classes.titulo}>
+                    C-{id} # {titulo}
+                  </Typography>
+                  <Typography className={classes.rapper}>
+                    <Typography component="span">
+                      {cliente} - {categoria} - {sub_categoria}
+                    </Typography>
+                  </Typography>
+                </Grid>
+                <Grid item xs={4} className={classes.flags}>
+                  <div className="icons">
+                    <ArrowIconTooltips
+                      title={
+                        acompanhamentos >= 1
+                          ? 'Com acompanhamentos'
+                          : 'Sem acompanhamentos'
+                      }
+                    >
+                      {acompanhamentos ? (
+                        <Badge
+                          badgeContent={parseInt(acompanhamentos)}
+                          color="primary"
+                        >
+                          <CommentSharp className={classes.acompanhamentos} />
+                        </Badge>
+                      ) : (
+                        <CommentSharp className={classes.acompanhamentos} />
+                      )}
+                    </ArrowIconTooltips>
+                    <ArrowIconTooltips
+                      title={anexo ? 'Com anexo' : 'Sem anexo'}
+                    >
+                      <AttachFileSharp className={classes.anexo} />
+                    </ArrowIconTooltips>
+                    <ArrowIconTooltips
+                      title={prioridade ? 'Com prioridade' : 'Sem prioridade'}
+                    >
+                      <FlagSharp className={classes.prioridade} />
+                    </ArrowIconTooltips>
+                    <ChipStatus status={status} />
+                  </div>
+                  <div className="atribuido">
+                    <ChipUser
+                      nome={atribuido}
+                      id={atribuido_id}
+                      tooltip
+                      label="Atribuído"
+                    />
+                  </div>
+                </Grid>
               </Grid>
-            </Grid>
-            <div className="chamados-content"></div>
+            </div>
           </div>
-        </div>
-      );
-    })
+        </Link>
+      )}
+    </>
   );
-}
+};

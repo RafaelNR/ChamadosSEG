@@ -1,5 +1,5 @@
 const Model = require("../models/acm_chamados");
-const { countID: isExitChamado, findOne } = require("../models/chamados");
+const { countID: isExitChamado, findOne, update: ChamadoUpdate } = require("../models/chamados");
 const { getRole } = require("../models/user");
 const { countClientByUser } = require("../models/clients_has_users");
 const Validate = require("../tools/validation/schemas");
@@ -15,14 +15,24 @@ const findAcompanhamentosByChamado = async (req, res) => {
 		
 		await tools.verifyPermissionAccess(req.userId, chamado_id);
 
-		console.log(Model.findOne(chamado_id))
-	
-		Result.ok(200);
+		const acm = await Model.findOneByChamadoID(chamado_id);
+		Result.ok(200, acm);
 	} catch (error) {
 		Result.fail(400, error);
 	}
 
 	Result.registerLog(req.userId, "acm_chamados", "findOneAcmsChamado");
+	return res.status(Result.status).json(Result.res);
+};
+
+const CountTypeAcompanhamentos = async (req, res) => {
+	try {
+		const acms = await Model.CountTypeAcompanhamentos();
+		Result.ok(200,acms[0]);
+	} catch (error) {
+		Result.fail(400, error);
+	}
+
 	return res.status(Result.status).json(Result.res);
 };
 
@@ -35,8 +45,15 @@ const insert = async (req,res) => {
 			user_id: req.userId,
 		});
 
-		await Model.insert(Dados);
-		Result.ok(200);
+		const acm = await Model.findOne(await Model.insert(Dados));
+
+		// Muda status chamado;
+		const Chamado = await findOne(acm.chamado_id);
+		if (Chamado.atribuido_id === req.userId && Chamado.status === 'Aberto') {
+			await ChamadoUpdate({ id: acm.chamado_id, status: "Em Andamento" });
+		}
+
+		Result.ok(200, acm);
 	} catch (error) {
 		Result.fail(400, error);
 	}
@@ -54,6 +71,8 @@ const update = async (req,res) => {
 			id: req.params.id,
 			user_id: req.userId
 		})
+
+		await Model.update(Dados);
 	
 		Result.ok(200, Dados);
 	} catch (error) {
@@ -113,6 +132,7 @@ const tools = {
 
 module.exports = {
 	findAcompanhamentosByChamado,
+	CountTypeAcompanhamentos,
 	update,
 	insert,
 };

@@ -51,7 +51,7 @@ export const getUser = async (ID) => {
 
 export const getMyClientes = async (ID) => {
   try {
-    const Url = `/usuarios/clientes/${ID}`;
+    const Url = `/usuarios/clientes/my/${ID}`;
     const Dados = await Service.exec("get", Url);
 
     if (!Dados.data.success) {
@@ -66,6 +66,30 @@ export const getMyClientes = async (ID) => {
 
   } catch (error) {
     console.log(error)
+    throw error;
+  }
+};
+
+export const getClientesByUser = async (user_id) => {
+  try {
+    const Url = `/usuarios/clientes/${user_id}`;
+    const Dados = await Service.exec('get', Url);
+    if (!Dados.data.success) {
+      // eslint-disable-next-line
+      throw {
+        success: false,
+        message: Dados.data.message
+          ? Dados.data.message
+          : 'Error em buscas os clientes do usuário.'
+      };
+    }
+
+    return {
+      success: true,
+      data: Dados.data.data
+    };
+  } catch (error) {
+    console.log(error);
     throw error;
   }
 };
@@ -91,6 +115,25 @@ export const getPerfil = async () => {
     throw error;
   }
 }
+
+export const getUsersAtribuiveis = async (requerente_id) => {
+  try {
+    const Url = `/usuarios/atribuiveis/chamado/${requerente_id}`;
+    const Dados = await Service.exec('get', Url);
+
+    if (!Dados.data.success) {
+      throw new Error(Dados.data.message || 'Error carregar chamado.');
+    }
+
+    return {
+      success: true,
+      data: Dados.data.data
+    };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
 
 export const updatePerfil = async (data) => {
   try {

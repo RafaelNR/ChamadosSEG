@@ -1,5 +1,6 @@
 import moment from "moment";
 import 'moment/locale/pt-br';
+import { UrlWithStringQuery } from "url";
 
 function TodayDate() {
   return moment(new Date()).format("YYYY-MM-DD");
@@ -42,11 +43,20 @@ function dateMaxOpenAtividade(date: string, Days: number): string {
   return moment(date).subtract(Days,'days').format("YYYY-MM-DD");
 }
 
-
+/**
+ * 
+ * @param date data da atividade
+ * @returns retorna se a data já fechou.
+ */
 function getStatusAtividade(date: string): boolean{
   return moment().diff(date, 'days') <= 9 ? true : false
 }
 
+/**
+ * 
+ * @param date data da atividade
+ * @returns retorna uma cor baseado na data da atividade
+ */
 function getColorAtividade(date: string): object{
   
   const currDate = moment().format('YYYY-MM-DD')
@@ -92,6 +102,11 @@ function getColorAtividade(date: string): object{
   }
 }
 
+/**
+ * 
+ * @param date data atividade
+ * @returns retorna o tempo que falta para atividade fechar;
+ */
 function dateEndOfAtividade(date: string): string{
 
   if (getStatusAtividade(date)) {
@@ -103,6 +118,11 @@ function dateEndOfAtividade(date: string): string{
 
 }
 
+/**
+ * 
+ * @param file Nome do arquivo
+ * @returns returona das datas baseado no nome do arquivo 03-2021, Março 2021
+ */
 function converterFileInData(file: string): string {
   if (file) {
     const [mes, ano, cliente_id] = file.split('-');
@@ -111,6 +131,15 @@ function converterFileInData(file: string): string {
     return `${nameMes}/${currAno}`;
   }
   return file;
+}
+
+/**
+ * 
+ * @param date data do created_at
+ * @returns retorna o tempo desde o inicio do chamado;
+ */
+function dateStartOfChamado(date: string): string{
+  return moment(date).startOf('minutes').fromNow();
 }
 
 export {
@@ -123,5 +152,6 @@ export {
   getColorAtividade,
   getStatusAtividade,
   dateEndOfAtividade,
-  converterFileInData
+  dateStartOfChamado,
+  converterFileInData,
 };

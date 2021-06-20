@@ -23,3 +23,12 @@
 - [X] transferList subcategoria dando problema.
 - [x] Quando editar usuário desabilitado ele habilita;
 - [x] Usuário desabilitado pode ficar sem cliente;
+
+
+
+/* URGENTE DEPOIS DO CHAMADOS */
+* não executar a this.currMes e this.nameMes e this.ano no construtuor e sim quando a função onTick é chamado
+* verifica o reiniciado do cron, sempre que é executando naõ está voltando automaticamente;
+* Adicionado informação sem nada, exemplo dia 24/05 Patrick
+* Botão de editar continua ativo após virada do mês.
+

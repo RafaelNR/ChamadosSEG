@@ -19,12 +19,12 @@ const defaultMenu = [
     path: '/'
   },
   {
-    nome: 'Atividades',
+    nome: 'Minhas Atividades',
     icon: <AssignmentSharp />,
     path: '/atividades'
   },
   {
-    nome: 'Chamados',
+    nome: 'Meus Chamados',
     icon: <SpeakerNotesSharp />,
     path: '/chamados'
   },
@@ -96,12 +96,24 @@ const Headers = [
     path: '/chamados'
   },
   {
-    nome: 'Atividades',
-    path: '/atividades'
+    nome: 'Editar Chamado',
+    path: '/chamado/edit/'
+  },
+  {
+    nome: 'Criar Chamado',
+    path: '/chamado/create'
+  },
+  {
+    nome: 'Visualizar Chamado',
+    path: '/chamado/view/'
   },
   {
     nome: 'Perfil',
     path: '/perfil'
+  },
+  {
+    nome: 'Atividades',
+    path: '/atividades'
   },
   {
     nome: 'Criar Atividade',

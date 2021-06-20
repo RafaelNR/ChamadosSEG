@@ -139,4 +139,17 @@ export const FileIsExist = async (Imagem) => {
     return false;
   }
 
-}     
+}
+
+
+export const getRoleName = (id) => {
+
+  const roles = [
+    '','Administrador',
+    'Analista',
+    'Técnico'
+  ]
+
+  return roles[id];
+
+}

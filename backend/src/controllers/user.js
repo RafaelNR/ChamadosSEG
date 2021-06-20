@@ -33,11 +33,42 @@ async function findOne(req, res) {
 
 async function findMyClientes(req	,res ){
 	try {
-		if (!req.userId) throw "Paramentos não encontrados!";
 
 		await tools.checkIfExist(req.userId);
 
 		Result.ok(200,await findClients(req.userId));
+	} catch (error) {
+		Result.fail(400, error);
+	}
+
+	Result.registerLog(req.userId, "user", "findMyClientes");
+	return res.status(Result.status).json(Result.res);
+}
+
+async function findClientesByUser(req, res) {
+	try {
+		if (!req.params || !req.params.id) throw "Paramento não encontrado!";
+
+		await tools.checkIfExist(req.params.id);
+
+		Result.ok(200, await findClients(req.params.id));
+	} catch (error) {
+		Result.fail(400, error);
+	}
+
+	Result.registerLog(req.userId, "user", "findMyClientes");
+	return res.status(Result.status).json(Result.res);
+}
+
+async function getUsersAtribuiveis(req, res) {
+	try {
+		if (!req.params || !req.params.requerente_id) throw "Paramento não encontrado!";
+
+		await tools.checkIfExist(req.params.requerente_id);
+
+		const Dados = await Model.findUserAtribuiveisParaChamado(req.params.requerente_id);
+
+		Result.ok(200, Dados);
 	} catch (error) {
 		Result.fail(400, error);
 	}
@@ -201,6 +232,8 @@ module.exports = {
 	index,
 	findOne,
 	findMyClientes,
+	findClientesByUser,
+	getUsersAtribuiveis,
 	insert,
 	update,
 	updatePerfil,

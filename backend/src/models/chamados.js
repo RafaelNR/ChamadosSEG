@@ -14,6 +14,8 @@ const commonQuery = () => {
 			"categorias.nome as categoria",
 			"sub_categorias.id as sub_categoria_id",
 			"sub_categorias.nome as sub_categoria",
+			"chamados.titulo",
+			"chamados.descricao",
 			"chamados.status",
 			"chamados.prioridade",
 			"chamados.created_at",
@@ -33,35 +35,36 @@ const commonQuery = () => {
 }
 
 const index = () => {
-	return commonQuery().limit(200).orderBy("chamados.id", "asc");
+	return commonQuery().limit(50).orderBy("chamados.id", "desc");
 };
 
 const requerentesByUserID = (user_id) => {
-	return commonQuery()	
-		.where("chamados.requerente", '=', user_id)
-		.limit(200)
-		.orderBy("chamados.id", "asc")
+	return commonQuery()
+		.where("chamados.requerente", "=", user_id)
+		.andWhere("chamados.status", "<>", 'Finalizado')
+		.limit(50)
+		.orderBy("chamados.id", "desc");
 };
 
 const atribuidosByUserID = (user_id) => {
 	return commonQuery()
 		.where("chamados.atribuido", "=", user_id)
-		.limit(200)
-		.orderBy("chamados.id", "asc");
+		.andWhere("chamados.status", "<>", "Finalizado")
+		.limit(50)
+		.orderBy("chamados.id", "desc");
 };
 
 const indexMyCliente = (cliente_id) => {
 	return commonQuery()
 		.where("chamados.atribuido", "=", cliente_id)
-		.limit(200)
-		.orderBy("chamados.id", "asc");
+		.limit(50)
+		.orderBy("chamados.id", "desc");
 };
 
 const findOne = (id) => {
 	return commonQuery()
 		.where("chamados.id", "=", id)
-		.limit(200)
-		.orderBy("chamados.id", "asc")
+		.limit(1)
 		.then((e) => e[0]);
 };
 

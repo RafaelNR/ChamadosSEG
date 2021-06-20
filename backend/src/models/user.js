@@ -62,7 +62,27 @@ module.exports = {
 		.from("users")
 		.join("cliente_has_user", "cliente_has_user.user_id", "=", "users.id")
 		.where("users.role_id", "=", 3)
-		.where("cliente_has_user.cliente_id", "=", cliente_id);
+		.andWhere("cliente_has_user.cliente_id", "=", cliente_id)
+		.andWhere('actived','=',1)
+	},
+
+	findUserAtribuiveisParaChamado: async (user_id) => {
+		return knex
+			.select("users.id", "users.nome")
+			.from("users")
+			.join("cliente_has_user", "cliente_has_user.user_id", "=", "users.id")
+			.where("users.role_id", "!=", 3)
+			.orWhere("users.role_id", "=", 3)
+			.andWhere("actived", "=", 1)
+			.andWhere(
+				"cliente_id",
+				"=",
+				await knex
+					.select("cliente_id")
+					.from("cliente_has_user")
+					.where("user_id", "=", user_id)
+					.then((e) => e[0].cliente_id)
+			);
 	},
 
 	/**
@@ -85,6 +105,7 @@ module.exports = {
 				"updated_at"
 			)
 			.from("users")
+			.andWhere('actived','=',1)
 			.orderBy("nome");
 	},
 

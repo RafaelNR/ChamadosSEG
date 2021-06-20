@@ -23,9 +23,11 @@ const ThemeContext = createContext({})
 
 const MythemeProvider = ({ children }) => {
   const [darkMode, setdarkMode] = useState(false);
+  const [primary, setPrimary ] = useState('#0B4672');
 
   const theme = createMuiTheme({
     darkMode: darkMode,
+    primary: primary,
     overrides: {
       MuiCssBaseline: {
         '@global': {
@@ -37,6 +39,15 @@ const MythemeProvider = ({ children }) => {
           '@font-face': [roboto],
           a: {
             textDecoration: 'none'
+          },
+          '.MuiSelect-select.Mui-disabled': {
+            color: darkMode ? '#f9f9f9' : '#404040'
+          },
+          '.MuiFormLabel-root': {
+            color: darkMode ? '#f9f9f9' : '#404040'
+          },
+          '.MuiFormLabel-root.Mui-focused': {
+            color: darkMode ? '#f9f9f9 !important' : primary
           }
         }
       }
@@ -45,7 +56,7 @@ const MythemeProvider = ({ children }) => {
       type: darkMode ? 'dark' : 'light',
       primary: {
         light: '#1161A6',
-        main: '#0B4672',
+        main: primary,
         dark: '#020B13'
       },
       secondary: {
@@ -54,21 +65,25 @@ const MythemeProvider = ({ children }) => {
         dark: '#020B13'
       },
       background: {
-        default: darkMode ? '#303030' : '#f0f0f0',
-        boxhome: darkMode ? '#666' : '#ddd',
-        dialog: '#0B4672'
+        default: darkMode ? '#303030' : '#ddd',
+        acm: darkMode ? '#606060' : primary,
+        acmMy: '#056162',
+        acmOther: '#262d31',
+        acmEdit: primary,
+        acmNew: primary,
+        dialog: primary
       },
       text: {
-        title: darkMode ? 'white' : '#0B4672',
+        title: darkMode ? 'white' : primary,
         info: darkMode ? 'rgba(255, 255, 255, 0.5)' : '#676767',
         atividade: darkMode ? 'rgba(255, 255, 255, 0.5)' : '#676767',
-        subtitle: darkMode ? 'white' : '#0B4672',
-        common: darkMode ? '#898989' : 'black',
+        subtitle: darkMode ? 'white' : primary,
+        common: darkMode ? '#ddd' : '#404040',
         icon: 'white'
       },
       button: {
         common: darkMode ? '#000' : '#ffffff',
-        downloadpdf: '#0B4672',
+        downloadpdf: primary,
         viewpdf: '#3949ab',
         new: darkMode ? 'rgba(223, 223, 223, 0.15)' : '#0d47a1',
         edit: darkMode ? '#757575' : green[800],
@@ -77,7 +92,7 @@ const MythemeProvider = ({ children }) => {
         active: darkMode ? blue[700] : blue[800],
         pdf: darkMode ? 'rgba(255, 255, 255, 0.08)' : blue[800],
         view: darkMode ? '#757575' : blue[600],
-        accordion: darkMode ? 'white ' : '#0B4672',
+        accordion: darkMode ? 'white ' : primary,
         success: darkMode ? green[700] : green[800],
         hover: {
           new: darkMode ? 'rgba(223, 223, 223, 0.30)' : '#093170',
@@ -90,7 +105,8 @@ const MythemeProvider = ({ children }) => {
         }
       },
       border: {
-        infos: darkMode ? '#898989' : 'white'
+        infos: darkMode ? '#898989' : 'white',
+        common: darkMode ? '#303030' : '#ddd'
       }
     },
     size: {
