@@ -1,3 +1,5 @@
+import { v1 as uuidv1 } from 'uuid';
+
 /**
  * * Recebe dados de um novo objeto um array de objetos, procura dentro Array de objetos se
  * * encontra objeto com id parecido com objeto, substitui ele;
@@ -74,7 +76,7 @@ export function comparaArrays(BigArray, littleArray) {
 
 /**
  * * Recebe uma string e retorna as inicial.
- * @param {strinf} FullName
+ * @param {string} FullName
  */
 export function initialsName(FullName) {
   const arrayName = FullName.split(" ");
@@ -122,7 +124,6 @@ export function handleHeaderName(Path, Headers) {
 
 }
 
-
 export const FileIsExist = async (Imagem) => {
 
   try {
@@ -141,7 +142,39 @@ export const FileIsExist = async (Imagem) => {
 
 }
 
+/**
+ * Define o novo file name do arquivo
+ * @param {String} Filename 
+ * @param {String} type
+ * @param {String} prefixo 
+ */
+export const NewFileName = (FileName, type, prefixo) => {
 
+  const uuid = uuidv1();
+  let extension = '';
+
+  switch (type) {
+    case 'application/pdf':
+      extension = '.pdf'
+      break;
+    case 'image/png':
+      extension = '.png';
+      break;
+    case 'image/jpeg':
+      extension = '.jpeg';
+      break;
+    case 'image/webp':
+      extension = '.webp'
+      break;
+    
+    default:
+      return;
+  }
+
+  return prefixo+uuid+extension
+  
+}
+ 
 export const getRoleName = (id) => {
 
   const roles = [

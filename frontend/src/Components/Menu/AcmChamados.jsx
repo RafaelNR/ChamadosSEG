@@ -14,11 +14,13 @@ import {
   MessageRounded,
   Save,
   Close,
-  MoreVert
+  Remove,
+  MoreVert,
 } from '@material-ui/icons';
 
 //** CONTEXT
 import useAcompanhamentos from '../../Context/AcmChamadoContext';
+import useUpload from '../../Context/UploadContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,9 +95,15 @@ export default () => {
   );
 };
 
-export const MenuAcmActions = ({ tipo }) => {
+export const MenuAcmActions = ({ tipoMenu, id=null }) => {
   const classes = useStyles();
-  const { setTipo, InsertAcompanhamento, UpdateAcompanhamento, setCurrID } = useAcompanhamentos();
+  const {
+    setTipo,
+    InsertAcompanhamento,
+    UpdateAcompanhamento,
+    DeleteAcompanhamento,
+    setCurrID
+  } = useAcompanhamentos();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = useCallback((event) => {
@@ -103,10 +111,6 @@ export const MenuAcmActions = ({ tipo }) => {
   }, []);
 
   const handleClose = useCallback((e) => {
-    setAnchorEl(null);
-  }, []);
-
-  const handleFechar = useCallback((e) => {
     setTipo(0);
     setAnchorEl(null);
     setCurrID(null);
@@ -122,6 +126,11 @@ export const MenuAcmActions = ({ tipo }) => {
     setAnchorEl(null);
   };
 
+  const handleDelete = () => {
+    DeleteAcompanhamento(id);
+    setAnchorEl(null);
+  };
+
   return (
     <div className={classes.root}>
       <Tooltip title="Ações">
@@ -134,28 +143,168 @@ export const MenuAcmActions = ({ tipo }) => {
           <MoreVert fontSize="small" />
         </IconButton>
       </Tooltip>
-      <Menu
-        id="acm-actions"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        elevation={1}
-        getContentAnchorEl={null}
-      >
-        <MenuItem onClick={tipo === 'new' ? handleInsert : handleEdit}>
-          <ListItemIcon>
-            <Save fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Salvar" />
-        </MenuItem>
-        <MenuItem onClick={handleFechar}>
-          <ListItemIcon>
-            <Close fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Fechar" />
-        </MenuItem>
-      </Menu>
+      {tipoMenu === 'deletar' ? (
+        <Menu
+          id="acm-actions"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+          elevation={1}
+          getContentAnchorEl={null}
+        >
+          <MenuItem onClick={handleDelete}>
+            <ListItemIcon>
+              <Remove fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Deletar" />
+          </MenuItem>
+        </Menu>
+      ) : tipoMenu === 'edit' ? (
+        <Menu
+          id="acm-actions"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+          elevation={1}
+          getContentAnchorEl={null}
+        >
+          <MenuItem onClick={handleEdit}>
+            <ListItemIcon>
+              <Save fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Salvar" />
+          </MenuItem>
+          <MenuItem onClick={handleDelete}>
+            <ListItemIcon>
+              <Remove fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Deletar" />
+          </MenuItem>
+          <MenuItem onClick={handleClose}>
+            <ListItemIcon>
+              <Close fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Fechar" />
+          </MenuItem>
+        </Menu>
+      ) : (
+        <Menu
+          id="acm-actions"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+          elevation={1}
+          getContentAnchorEl={null}
+        >
+          <MenuItem onClick={handleInsert}>
+            <ListItemIcon>
+              <Save fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Salvar" />
+          </MenuItem>
+          <MenuItem onClick={handleClose}>
+            <ListItemIcon>
+              <Close fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Fechar" />
+          </MenuItem>
+        </Menu>
+      )}
     </div>
   );
-}
+};
+
+export const MenuAcmActionsUpload = () => {
+  const classes = useStyles();
+  const { file, setFile, uploadFileChamado } = useUpload();
+  const {
+    setTipo,
+    setCurrID,
+    setAcompanhamentos
+  } = useAcompanhamentos();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = useCallback((event) => {/*  */
+    setAnchorEl(event.currentTarget);
+  }, []);
+
+  const handleClose = useCallback((e) => {
+    setTipo(0);
+    setAnchorEl(null);
+    setCurrID(null);
+  }, []);
+
+  const handleRemoverFile = useCallback((e) => {
+    setFile({});
+    setAnchorEl(null);
+    setTipo(0);
+  }, []);
+
+  const handleInsertFile = () => {
+    uploadFileChamado().then(resp => {
+      setAcompanhamentos(acms => [resp,...acms])
+    })
+    setTipo(0);
+    setAnchorEl(null);
+    setCurrID(null);
+  } 
+
+  return (
+    <div className={classes.root}>
+      <Tooltip title="Ações">
+        <IconButton
+          aria-controls="actions"
+          aria-haspopup="true"
+          className={classes.button}
+          onClick={handleClick}
+        >
+          <MoreVert fontSize="small" />
+        </IconButton>
+      </Tooltip>
+      {file && file.name ? (
+        <Menu
+          id="acm-actions"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+          elevation={1}
+          getContentAnchorEl={null}
+        >
+          <MenuItem onClick={handleInsertFile}>
+            <ListItemIcon>
+              <Save fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Salvar" />
+          </MenuItem>
+          <MenuItem onClick={handleRemoverFile}>
+            <ListItemIcon>
+              <Remove fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Remover" />
+          </MenuItem>
+        </Menu>
+      ) : (
+        <Menu
+          id="acm-actions"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+          elevation={1}
+          getContentAnchorEl={null}
+        >
+          <MenuItem onClick={handleRemoverFile}>
+            <ListItemIcon>
+              <Remove fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Remover" />
+          </MenuItem>
+        </Menu>
+      )}
+    </div>
+  );
+};

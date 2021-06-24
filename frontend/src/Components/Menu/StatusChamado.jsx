@@ -91,6 +91,10 @@ export default ({ status, disabled=false }) => {
         if (newStatus) {
           const Dados = await changeStatus(chamado.id, newStatus);
           if (Dados.success) {
+            handleSnackBar({
+              type: 'success',
+              message: 'Status alterado.'
+            });
             setChamado({
               ...chamado,
               status: newStatus

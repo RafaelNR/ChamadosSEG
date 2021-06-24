@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import { makeStyles, Grid } from '@material-ui/core/';
-import { User, NewDescricaoInput } from '../../../Components/Box/AcmChamado';
-import { MenuAcmActions } from '../../../Components/Menu/AcmChamados';
+import { User, NewUploadInput } from '../../../Components/Box/AcmChamado';
+import { MenuAcmActionsUpload } from '../../../Components/Menu/AcmChamados';
 import Fade from '../../../Components/Transition/Fade';
 
-//* PROVIDER
+//* CONTEXT
 import useChamados from '../../../Context/ChamadosContext';
 import useAcompanhamento from '../../../Context/AcmChamadoContext';
+
+//* PROVIDER
+import { UploadProvider } from '../../../Context/UploadContext';
 
 //* HOOKS
 import useUser from '../../../Hooks/useUser';
@@ -25,36 +28,6 @@ const useStyles = makeStyles((theme) => ({
       borderBottom: '0px solid'
     }
   },
-  // left: {
-  //   '&::after': {
-  //     left: '16.5%',
-  //     width: 0,
-  //     height: 0,
-  //     top: '17.5%',
-  //     content: '""',
-  //     zIndex: 9,
-  //     position: 'absolute',
-  //     transform: 'rotate(0)',
-  //     border: '25px solid',
-  //     borderColor:
-  //       theme.palette.background.acm + ' transparent transparent transparent'
-  //   }
-  // },
-  // right: {
-  //   '&::after': {
-  //     right: '15.3%',
-  //     width: 0,
-  //     height: 0,
-  //     top: '17.5%',
-  //     content: '""',
-  //     zIndex: 9,
-  //     position: 'absolute',
-  //     transform: 'rotate(0)',
-  //     border: '25px solid',
-  //     borderColor:
-  //       theme.palette.background.acm + ' transparent transparent transparent'
-  //   }
-  // },
   user: {
     height: '100%',
     display: 'flex',
@@ -67,7 +40,7 @@ export default () => {
   const classes = useStyles();
   const { userDados } = useUser();
   const { chamado } = useChamados();
-  const { tipo, setAcompanhamento,currID } = useAcompanhamento();
+  const { tipo, setAcompanhamento } = useAcompanhamento();
 
   useEffect(() => {
     setAcompanhamento((acm) => {
@@ -87,9 +60,11 @@ export default () => {
         )}
       >
         <Grid item xs={10}>
-          <NewDescricaoInput>
-            <MenuAcmActions tipo="new" />
-          </NewDescricaoInput>
+          <UploadProvider>
+            <NewUploadInput>
+              <MenuAcmActionsUpload />
+            </NewUploadInput>
+          </UploadProvider>
         </Grid>
         <Grid item xs={2} className={classes.user}>
           <User

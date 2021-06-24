@@ -23,7 +23,6 @@ const UploadProvider = ({ children }) => {
   const { setUserImage } = useUsuarios();
   const { setNewImagem } = useUser();
   const [file, setFile] = useState({});
-  //const [files, setFiles] = useState([]);
   const [errors, setErrors] = React.useState(null);
   const [process, setProcess] = React.useState(null);
 
@@ -93,7 +92,34 @@ const UploadProvider = ({ children }) => {
         .finally(setLoading(false));
     }
     // eslint-disable-next-line
-  },[])
+  }, [])
+  
+  const uploadFileChamado = useCallback(async () => {
+    try {
+      const response = await Service.uploadFileChamado(file);
+      if (response.data.success) {
+        handleSnackBar({
+          type: 'success',
+          message: 'Acompanhamento adicionado.'
+        });
+        return response.data.data;
+      }
+
+      throw new Error(
+        `Houve um problema para fazer upload do arquivo "${file.newName}" para o servidor`
+      );
+      
+    } catch (error) {
+      handleSnackBar({
+        type: 'error',
+        message:
+          error && error.message
+            ? error.message
+            : `Houve um problema para fazer upload do arquivo  "${file.newName}" para o servidor;`
+      });
+    }
+    // eslint-disable-next-line
+  },[file])
 
   const factorUpload = useCallback((type, newFile) => {
     switch (type.toLowerCase()) {
@@ -135,14 +161,13 @@ const UploadProvider = ({ children }) => {
         };
         setFile(newFile);
         factorUpload(type, newFile);
-        // console.log('file setado: ',reader.result);
       };
 
       reader.readAsArrayBuffer(File);
     } else {
       handleSnackBar({
         type: 'error',
-        message: `Erro em carregar a imagem, verifique o tamanho da imagem.`
+        message: `Erro em fazer o upload. Verifique o tamanho ou tipos aceitos.`
       });
     }
     // eslint-disable-next-line
@@ -152,9 +177,12 @@ const UploadProvider = ({ children }) => {
     <UploadContext.Provider
       value={{
         file,
+        setFile,
         errors,
         process,
+        setProcess,
         handleFile,
+        uploadFileChamado
       }}
     >
       {children}

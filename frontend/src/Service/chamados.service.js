@@ -200,6 +200,25 @@ export const UpdateAcm = async (Acm) => {
   }
 };
 
+export const DeleteAcm = async (ID) => {
+  try {
+    const Url = `/chamados/acm/${ID}`;
+    const Dados = await Service.exec('delete', Url);
+
+    if (!Dados.data.success)
+      throw new Error(
+        Dados.data.message || 'Error em deletar acompanhamento.'
+      );
+
+    return {
+      success: true,
+      data: Dados.data.data
+    };
+  } catch (error) {
+    throw error.data ? error.data : error;
+  }
+};
+
 export const getCountTypeAcompanhamentos = async () => {
   try {
     const Url = `/chamados/acm/count/type`;

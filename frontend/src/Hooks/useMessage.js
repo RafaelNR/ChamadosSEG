@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import useAuth from './useAuth';
 
 const useMessage = () => {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(null);
   const { Logout } = useAuth();
   const history = useHistory();
 

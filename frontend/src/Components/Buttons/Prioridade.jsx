@@ -3,12 +3,8 @@ import { makeStyles, Button, CircularProgress } from '@material-ui/core/';
 import { FlagSharp, TrainRounded } from '@material-ui/icons';
 import { ArrowIconTooltips } from '../../Components/ToolTip/index';
 
-//* SERVICE
-import { changePrioridade } from '../../Service/chamados.service';
-
 //** CONTEXT
 import useChamados from '../../Context/ChamadosContext';
-import useSnackBar from '../../Context/SnackBarContext';
 
 const useStyles = makeStyles((theme) => ({
   prioridade: {
@@ -35,47 +31,31 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default ({ type='chamados' }) => {
-  const { chamado, setChamado, chamados,setChamados } = useChamados();
+  const {
+    chamado,
+    changePrioridadeChamado,
+    changePrioridadeChamados,
+  } = useChamados();
+  const [loading, setLoading] = React.useState(false);
   const classes = useStyles({
     prioridade: chamado.prioridade
   });
-  const { handleSnackBar } = useSnackBar();
-  const [loading, setLoading] = React.useState(false);
 
   const handleChangePrioridade = useCallback(async () => {
-    try {
-      setLoading(true);
+    setLoading(true);
 
-      const newPrioridade = !chamado.prioridade ? 1 : 0;
-      const Dados = await changePrioridade(chamado.id, newPrioridade);
-      if (Dados.success) {
-        if (type === 'chamados') {
-          const newChamados = chamados.map((c) => {
-            if (c.id === chamado.id) {
-              return {
-                ...chamado,
-                prioridade: newPrioridade
-              };
-            }
-            return chamado;
-          });
-          return setChamados(newChamados);
-        } else {
-          return setChamado({
-            ...chamado,
-            prioridade: newPrioridade
-          });
-        }
-      }
-    } catch (error) {
-      handleSnackBar({
-        type: 'error',
-        message: 'Erro em alterar a prioridade.'
+    if (type === 'chamado') {
+      changePrioridadeChamado().then(() => {
+        setLoading(false);
       });
-    } finally {
-      setLoading(false);
+    } else {
+      changePrioridadeChamados().then(() => {
+        setLoading(false);
+      });
     }
-  },[chamado])
+
+
+  },[chamado,type])
 
   return (
     <ArrowIconTooltips

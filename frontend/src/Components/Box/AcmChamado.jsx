@@ -11,6 +11,8 @@ import {
 } from '@material-ui/core/';
 import { MenuAcmActions } from '../../Components/Menu/AcmChamados';
 import { TimeAcompanhamento } from '../ToolTip/TimeChamado';
+import { Upload } from '../../Components/Box/Upload';
+import { Acompanhamento } from './File';
 
 import { getRoleName } from '../../Utils/functions';
 
@@ -56,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-start'
   },
   descricao: {
+    width: '98%',
     height: 150,
     display: 'flex',
     color: 'white',
@@ -102,10 +105,10 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.background.acmOther,
     marginRight: 20
   },
-  edit: position => ({
+  edit: (position) => ({
     background: theme.palette.background.acmEdit,
-    margin: position === 'left' ? '0 20px 0 0' : '0 0 0 20px',
-  }),
+    margin: position === 'left' ? '0 20px 0 0' : '0 0 0 20px'
+  })
 }));
 
 export const User = ({ nome, role_id, imagem }) => {
@@ -134,6 +137,7 @@ export const EditDescricaoText = ({ acm, position }) => {
     const id = e.currentTarget.dataset.id;
     setCurrID(id);
   };
+
   return (
     <Grid item xs={10}>
       <div
@@ -147,7 +151,17 @@ export const EditDescricaoText = ({ acm, position }) => {
           updated_at={acm.updated_at}
         />
       </div>
-      {acm.id === parseInt(currID) ? (
+      {acm.tipo === '2' ? (
+        <div
+          className={clsx(
+            classes.descricao,
+            currID === acm.id ? classes.edit(position) : classes.my
+          )}
+        >
+          <Acompanhamento acm={acm} />
+          <MenuAcmActions tipoMenu="deletar" id={acm.id} />
+        </div>
+      ) : acm.id === parseInt(currID) ? (
         <>
           {loading ? (
             <div
@@ -163,7 +177,7 @@ export const EditDescricaoText = ({ acm, position }) => {
             </div>
           ) : (
             <NewDescricaoInput currID={currID}>
-              <MenuAcmActions tipo="edit" />
+              <MenuAcmActions tipoMenu="edit" />
             </NewDescricaoInput>
           )}
         </>
@@ -187,7 +201,7 @@ export const EditDescricaoText = ({ acm, position }) => {
   );
 };
 
-export const NewDescricaoInput = ({ children, currID }) => {
+export const NewDescricaoInput = ({ children }) => {
   const classes = useStyles();
   const {
     acompanhamento,
@@ -195,7 +209,8 @@ export const NewDescricaoInput = ({ children, currID }) => {
     acompanhamentos,
     errors,
     handleChange,
-    loading
+    loading,
+    currID
   } = useAcompanhamento();
 
   useEffect(() => {
@@ -208,9 +223,7 @@ export const NewDescricaoInput = ({ children, currID }) => {
   }, [currID]);
 
   return (
-    <div
-      className={clsx(classes.descricao, classes.edit)}
-    >
+    <div className={clsx(classes.descricao, classes.edit)}>
       {loading ? (
         <div className={classes.loading}>
           <CircularProgress color="secondary" />
@@ -233,8 +246,47 @@ export const NewDescricaoInput = ({ children, currID }) => {
               error={errors['descricao'] ? true : false}
               helperText={errors['descricao']}
               required
+              autoFocus
             />
           </FormControl>
+          {children}
+        </>
+      )}
+    </div>
+  );
+};
+
+export const NewUploadInput = ({ children }) => {
+  const classes = useStyles();
+  const {
+    acompanhamento,
+    setAcompanhamento,
+    acompanhamentos,
+    loading,
+    currID
+  } = useAcompanhamento();
+
+  useEffect(() => {
+    if (currID) {
+      const acm = acompanhamentos.filter(
+        (acm) => acm.id === parseInt(currID) && acm
+      );
+      setAcompanhamento(acm[0]);
+    }
+  }, [currID]);
+
+  return (
+    <div className={clsx(classes.descricao, classes.edit)}>
+      {loading && !acompanhamento.chamado_id ? (
+        <div className={classes.loading}>
+          <CircularProgress color="secondary" />
+        </div>
+      ) : (
+        <>
+          <Upload
+            accept=".pdf,.jpg,.jpeg,.png,.webp"
+            id={acompanhamento.chamado_id}
+          />
           {children}
         </>
       )}
@@ -265,7 +317,11 @@ export const ViewDescricaoText = ({ acm, position, user_id }) => {
         )}
         data-id={acm.id}
       >
-        <pre>{acm.descricao}</pre>
+        {acm.tipo === '2' ? (
+          <Acompanhamento acm={acm} />
+        ) : (
+          <pre>{acm.descricao}</pre>
+        )}
       </div>
     </Grid>
   );

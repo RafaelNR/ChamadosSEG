@@ -3,9 +3,9 @@ import { useHistory } from 'react-router-dom';
 import { makeStyles, Grid, Typography,Paper } from '@material-ui/core/';
 import InsertCommentIcon from '@material-ui/icons/InsertComment';
 import MenuNewAcm from '../../../Components/Menu/AcmChamados'
-import Loading from '../../../Components/Loading/';
 import Edit from './Edit';
 import New from './New';
+import NewUpload from './NewUpload';
 import View from './View';
 
 //* PROVIDER
@@ -154,7 +154,7 @@ export default () => {
                 {chamado.status !== 'Finalizado' && <MenuNewAcm />}
               </Grid>
             </div>
-            {tipo > 0 && <New />}
+            {(tipo === 1 && <New />) || (tipo === 2 && <NewUpload />)}
             {acompanhamentos.length >= 1
               ? acompanhamentos.map((acm) => {
                   if (

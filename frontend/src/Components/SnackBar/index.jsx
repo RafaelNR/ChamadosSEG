@@ -22,19 +22,23 @@ export default React.memo(() => {
   const SnackBar = useSnackBar();
 
   return (
-    <div className={classes.root}>
-      <Snackbar
-        open={SnackBar.openSnackBar}
-        autoHideDuration={SnackBar.severity === "error" ? (60000 * 5) : 6000}
-        onClose={SnackBar.clickSnackBar}
-      >
-        <Alert
-          onClose={SnackBar.clickSnackBar}
-          severity={SnackBar.severity ? SnackBar.severity : "success"}
-        >
-          {SnackBar.message}
-        </Alert>
-      </Snackbar>
-    </div>
+    <>
+      {SnackBar.severity && SnackBar.message && (
+        <div className={classes.root}>
+          <Snackbar
+            open={SnackBar.openSnackBar}
+            autoHideDuration={SnackBar.severity === 'error' ? 60000 * 5 : 6000}
+            onClose={SnackBar.clickSnackBar}
+          >
+            <Alert
+              onClose={SnackBar.clickSnackBar}
+              severity={SnackBar.severity ? SnackBar.severity : 'success'}
+            >
+              {SnackBar.message}
+            </Alert>
+          </Snackbar>
+        </div>
+      )}
+    </>
   );
 });

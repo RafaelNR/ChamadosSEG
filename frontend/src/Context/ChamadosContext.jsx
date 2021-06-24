@@ -24,7 +24,8 @@ const ChamadosProvider = ({ children }) => {
   const [errors, setErrors] = useState([]);
 
   useEffect(() => {
-    setCurrTab(parseInt(localStorage.getItem('currTabChamado')));
+    const tab = parseInt(localStorage.getItem('currTabChamado'));
+    setCurrTab(tab || 0);
   },[])
 
   const changeCurrTab = useCallback(async (e,newValue) => {
@@ -32,31 +33,62 @@ const ChamadosProvider = ({ children }) => {
     localStorage.setItem('currTabChamado', newValue);
   },[])
 
-  const changePrioridadeChamados = useCallback(async (id, prioridade) => {
-    const newPrioridade = !prioridade ? 1 : 0;
-    const Dados = await Service.changePrioridade(id, newPrioridade);
-    if (Dados.success) {
-      const newChamados = chamados.map((chamado) => {
-        if (chamado.id === id) {
-          return {
-            ...chamado,
-            prioridade: newPrioridade
+  const changePrioridadeChamados = useCallback(async () => {
+    try {
+      const newPrioridade = !chamado.prioridade ? 1 : 0;
+      const Dados = await Service.changePrioridade(chamado.id, newPrioridade);
+      if (Dados.success) {
+        const newChamados = chamados.map((c) => {
+          if (chamado.id === c.id) {
+            return {
+              ...c,
+              prioridade: newPrioridade
+            }
           }
-        }
-        return chamado
+          return c
+        });
+        handleSnackBar({
+          type: 'success',
+          message: 'Prioridade alterada.'
+        });
+        return setChamados(newChamados);
+      }
+    } catch (error) {
+      console.log(error)
+      handleSnackBar({
+        type: 'error',
+        message:
+          error && error.message
+            ? error.message
+            : `Erro em alterar a prioridade.`
       });
-      setChamados(newChamados);
     }
-  }, [])
+  }, [chamado,chamados])
 
-  const changePrioridadeChamado = useCallback(async (id, prioridade) => {
-    const newPrioridade = !prioridade ? 1 : 0;
-    const Dados = await Service.changePrioridade(id, newPrioridade);
-    setChamado({
-      ...chamado,
-      prioridade: newPrioridade
-    });
-  }, []);
+  const changePrioridadeChamado = useCallback(async () => {
+
+    try {
+      const newPrioridade = !chamado.prioridade ? 1 : 0;
+      const Dados = await Service.changePrioridade(chamado.id, newPrioridade);
+      if (Dados.success) {
+        handleSnackBar({
+          type: 'success',
+          message: 'Prioridade alterada.'
+        });
+        return setChamados({
+          ...chamado,
+          prioridade: newPrioridade
+        });
+      }
+    } catch (error) {
+      console.log(error)
+      handleSnackBar({
+        type: 'error',
+        message: 'Erro em alterar a prioridade.'
+      });
+    }
+
+  }, [chamado]);
 
   const handleSubmit = useCallback(async () => {
     chamado.id ? await handleUpdate(chamado) : await handleInsert(chamado);

@@ -24,6 +24,7 @@
     "react-scripts": "3.4.3",
     "swr": "^0.3.6",
     "typescript": "^4.0.3",
+    "uuid": "^8.3.2",
     "vanilla-masker": "^1.2.0",
     "yup": "^0.29.3"
   },

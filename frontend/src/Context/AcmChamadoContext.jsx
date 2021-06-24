@@ -6,7 +6,6 @@ import * as Service from '../Service/chamados.service';
 
 //** CONTEXT
 import useSnackBar from './SnackBarContext';
-import useLoading from './LoadingContext';
 
 //** VALIDATION
 import {
@@ -41,8 +40,6 @@ const AcompanhamentosChamadoProvider = ({ children }) => {
       setLoading(true);
       const acm = await InsertAcompanhamentoSchema(acompanhamento);
 
-      console.log(acm)
-
       if (acm.error) {
         console.log(acm.errors)
         throw new Error('Erro em inserir acompanhamento. '+acm.errors.descricao);
@@ -50,6 +47,10 @@ const AcompanhamentosChamadoProvider = ({ children }) => {
 
       const { success, data } = await Service.InsertAcm(acm);
       if (success) {
+        handleSnackBar({
+          type: 'success',
+          message: 'Acompanhamento adicionado.'
+        });
         return setAcompanhamentos([
           data,
           ...acompanhamentos
@@ -74,7 +75,6 @@ const AcompanhamentosChamadoProvider = ({ children }) => {
   const UpdateAcompanhamento = useCallback(async () => {
     try {
       setLoading(true);
-      console.log(acompanhamento);
       const acm = await UpdateAcompanhamentoSchema(acompanhamento);
       const { success, data } = await Service.UpdateAcm(acm);
       if (success) {
@@ -86,6 +86,10 @@ const AcompanhamentosChamadoProvider = ({ children }) => {
             };
           }
           return acm;
+        });
+        handleSnackBar({
+          type: 'success',
+          message: 'Acompanhamento editado.'
         });
         return setAcompanhamentos(newAcms);
       }
@@ -104,7 +108,41 @@ const AcompanhamentosChamadoProvider = ({ children }) => {
       setCurrID(null);
       setTipo(0);
     }
-  }, [acompanhamento]);
+  }, [acompanhamento, acompanhamentos]);
+
+  const DeleteAcompanhamento = useCallback(
+    async (id = null) => {
+      try {
+        setLoading(true);
+        const { success, data } = await Service.DeleteAcm(id ? id : currID);
+        if (success) {
+          const newAcms = acompanhamentos.filter(
+            (acm) => parseInt(acm.id) !== parseInt(id ? id : currID)
+          );
+          handleSnackBar({
+            type: 'success',
+            message: 'Acompanhamento deletado.'
+          });
+          return setAcompanhamentos(newAcms);
+        }
+        throw new Error(data.message);
+      } catch (error) {
+        console.log(error);
+        handleSnackBar({
+          type: 'error',
+          message:
+            error && error.message
+              ? error.message
+              : 'Erro em atualizar acompanhamento.'
+        });
+      } finally {
+        setLoading(false);
+        setCurrID(null);
+        setTipo(0);
+      }
+    },
+    [currID, acompanhamentos]
+  );
 
   return (
     <AcompanhamentosChamadoContext.Provider
@@ -120,6 +158,7 @@ const AcompanhamentosChamadoProvider = ({ children }) => {
         handleChange,
         InsertAcompanhamento,
         UpdateAcompanhamento,
+        DeleteAcompanhamento,
         loading,
         setLoading,
         currID,
