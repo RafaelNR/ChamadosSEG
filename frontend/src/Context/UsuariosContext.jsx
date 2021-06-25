@@ -48,7 +48,7 @@ const UsuariosProvider = ({ children }) => {
 
     return function cleanup() {
       render = false;
-      Crud.default.cancel('AuthContext unmonted');
+      Crud.default.cancel('UsuarioContext unmonted');
     };
     //eslint-disable-next-line
   }, []);

@@ -37,10 +37,7 @@ const CategoriasProvider = ({ children }) => {
           console.log(error);
           handleSnackBar({
             type: 'error',
-            message:
-              error && error.message
-                ? error.message
-                : 'Erro em carregar categorias, Por favor tente mais tarde.'
+            message: error && error.message ? error.message : 'Erro em carregar categorias, Por favor tente mais tarde.'
           });
         } finally {
           setLoading(false);
@@ -49,7 +46,6 @@ const CategoriasProvider = ({ children }) => {
 
       return function cleanup() {
         render = false;
-        Crud.default.cancel('CategoriaContext unmounted');
       };
     },
     // eslint-disable-next-line
@@ -68,8 +64,8 @@ const CategoriasProvider = ({ children }) => {
       } catch (error) {
         console.log(error);
         handleSnackBar({
-          type: "error",
-          message: "Erro em buscar categoria.",
+          type: 'error',
+          message: (error && error.message) || 'Erro em buscar categoria.'
         });
       } finally {
         setApiLoading(false);
@@ -96,11 +92,8 @@ const CategoriasProvider = ({ children }) => {
         console.log(error);
         if (error && error.errors) setErrors(error.errors);
         handleSnackBar({
-          type: "error",
-          message:
-            error && error.message
-              ? error.message
-              : "Erro em inserir a categoria.",
+          type: 'error',
+          message: (error && error.message) || 'Erro em inserir a categoria.'
         });
       }
     },
@@ -124,11 +117,8 @@ const CategoriasProvider = ({ children }) => {
         console.log(error);
         if (error && error.errors) setErrors(error.errors);
         handleSnackBar({
-          type: "error",
-          message:
-            error && error.message
-              ? error.message
-              : "Erro em alterar a categoria.",
+          type: 'error',
+          message: (error && error.message) || 'Erro em alterar a categoria.'
         });
       }
     },
@@ -146,8 +136,8 @@ const CategoriasProvider = ({ children }) => {
       } catch (error) {
         console.log(error);
         handleSnackBar({
-          type: "error",
-          message: `Erro em deletar categoria.`,
+          type: 'error',
+          message: error && error.message || `Erro em deletar categoria.`
         });
       }
     },

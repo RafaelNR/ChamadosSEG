@@ -4,7 +4,7 @@ import {ChangePasswd} from '../Schemas/UserSchema'
 
 export async function getHash(hash) {
   try {
-    const Resp = await Service.exec('get', `recuperar-senha?hash=${hash}`);
+    const Resp = await Service.exec('get', `recuperar-senha?hash=${hash}`, null, true);
 
     if (Resp.data.success) {
       return Resp.data.data;
@@ -31,7 +31,8 @@ export const changePasswd = async (Dados) => {
         {
           ...Dados,
           passwd
-        }
+        },
+        true
       );
 
     if (Resp.data.success) {

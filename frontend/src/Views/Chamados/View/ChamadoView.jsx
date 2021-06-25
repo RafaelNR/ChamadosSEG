@@ -112,7 +112,7 @@ export default () => {
         console.log(error);
         handleSnackBar({
           type: 'error',
-          message: error.message || 'Erro em carrega chamado.'
+          message: error && error.message || 'Erro em carrega chamado.'
         });
         return history.replace('/chamados');
       } finally {

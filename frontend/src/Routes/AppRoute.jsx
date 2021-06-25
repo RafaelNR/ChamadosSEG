@@ -26,7 +26,10 @@ import ChamadosEdit from "../Views/Chamados/Edit/";
 import ChamadosView from "../Views/Chamados/View/";
 
 
+//* CONTEXT
 import useAuth from '../Context/AuthContext';
+
+//* HOOKS
 import useUser from '../Hooks/useUser';
 
 const useStyles = makeStyles(() => ({
@@ -38,11 +41,11 @@ const useStyles = makeStyles(() => ({
 
 function Routes() {
 	const classes = useStyles();
-	const { handleAuth } = useAuth();
-	const { roleID } = useUser();
+  const { roleID } = useUser();
+  const { handleAuth } = useAuth();
 
-	React.useEffect(() => {
-		handleAuth();
+  React.useEffect(() => {
+    handleAuth();
 	})
 
 	return (

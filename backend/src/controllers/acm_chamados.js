@@ -64,8 +64,8 @@ const insert = async (req,res) => {
 
 const update = async (req,res) => {
 	try {
-    if (!req.body || !req.params.id) throw "Dados não encontrados.";
-
+		if (!req.body || !req.params.id) throw "Dados não encontrados.";
+		
 		const Dados = await tools.handleUpdate({
 			...req.body,
 			id: req.params.id,
@@ -82,6 +82,22 @@ const update = async (req,res) => {
 	Result.registerLog(req.userId, "acm_chamados", "insert");
 	return res.status(Result.status).json(Result.res);
 }
+
+const deletar = async (req, res) => {
+	try {
+		if (!req.params.id) throw "Dados não encontrados.";
+		const ID = await tools.handleDelete(req.params.id, req.userId);
+
+		await Model.deletar(ID);
+
+		Result.ok(200);
+	} catch (error) {
+		Result.fail(400, error);
+	}
+
+	Result.registerLog(req.userId, "acm_chamados", "insert");
+	return res.status(Result.status).json(Result.res);
+};
 
 const tools = {
 	handleInsert: async (Dados) => {
@@ -101,6 +117,19 @@ const tools = {
 
 		throw 'Você não ter permissão editar esse acompanhamento.';
 
+	},
+	handleDelete: async (ID, user_id) => {
+
+		const Dados = await Model.findOne(ID);
+
+		if (!Dados) throw "Acompanhamento não existe."
+
+		if(Dados.user_id !== user_id &&
+			tools.getPermissionUserID(user_id) === 3)
+			throw "Sem Permissão para deletar acompanhamento.";
+
+		await tools.checkChamadoIsExist(Dados.chamado_id);
+		return Dados.id;
 	},
 	checkChamadoIsExist: async (chamado_id) => {
 		const chamado = await isExitChamado(chamado_id);
@@ -135,4 +164,5 @@ module.exports = {
 	CountTypeAcompanhamentos,
 	update,
 	insert,
+	deletar,
 };

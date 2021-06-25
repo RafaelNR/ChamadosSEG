@@ -1,7 +1,14 @@
 # TODO NOW
 
-# TODO
+- [X] Chamados implementando.
+- [X] Dropdown e upload de documentos;
+- [ ] Modelo de chamado.
+- [ ] Notificação abertura do chamado por email;
+- [ ] Notificação novo acompanhamento por emial;
+- [ ] Criar log completo edição e acesso ao chamado;
 
+# TODO
+- [ ] Redefinição de senha travando quando digita a nova senha verificar;
 - [ ] No log de email, ter um dialog que pergunta se deseja mesmo reenviar o email.
 - [ ] Log de PDF gerados;
       > Pode fazer download do pdf;
@@ -13,7 +20,7 @@
 - [ ] fazer loading na tela de perfil, por conta da demora em receber o user;
 - [ ] Mudar Pasta store para fields;
 - [ ] Relatorio quando mudar de tipo de info zerar erros;
-- [ ] Delete de cateforia e de subcategoria.
+- [ ] Delete de categoria e de subcategoria.
 - [ ] Desabilitar cliente em ver de excluir.
 - [ ] Atividades da dashboard, está limitada a 100, mover para sem limite.
 - [ ] Poder remover acompanhamento de atividade;

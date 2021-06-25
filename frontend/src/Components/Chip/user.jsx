@@ -39,7 +39,7 @@ export default ({ nome, id, tooltip, label }) => {
         console.log(error);
         handleSnackBar({
           type: 'error',
-          message: 'Erro em carregar imagem do usuário.'
+          message: error && error.message || 'Erro em carregar imagem do usuário.'
         });
       }
       

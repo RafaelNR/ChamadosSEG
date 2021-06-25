@@ -54,10 +54,15 @@ const update = (Dados) => {
 	return knex("acm_chamados").where({ id: Dados.id }).update(Dados);
 };
 
+const deletar = (ID) => {
+	return knex("acm_chamados").del().where('id','=',ID)
+};
+
 module.exports = {
 	findOne,
 	findOneByChamadoID,
 	CountTypeAcompanhamentos,
 	insert,
 	update,
+	deletar,
 };

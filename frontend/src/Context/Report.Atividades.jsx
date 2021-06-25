@@ -12,6 +12,9 @@ import * as Crud from '../Api/Crud';
 import { getClientes } from '../Service/clientes.service';
 import { getUsers } from '../Service/user.service';
 
+//** CONTEXT
+import useSnackBar from './SnackBarContext';
+
 //* STORE
 import { Anos, Meses } from '../Store/Datas';
 
@@ -27,6 +30,7 @@ const ReportAtividadesProvider = ({ children }) => {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState(null);
   const [download, setDownload] = useState(null);
+  const { handleSnackBar } = useSnackBar();
 
   useEffect(() => {
     let render = true;
@@ -56,13 +60,18 @@ const ReportAtividadesProvider = ({ children }) => {
         
       } catch (error) {
         console.log(error)
+        handleSnackBar({
+          type: 'error',
+          message:
+            error && error.message ||
+            'Erro em carregar relatórios'
+        });
       }
 
     })();
 
     return function cleanup() {
       render = false;
-      Crud.default.cancel('ReportContext unmonted');
     };
     
   }, [type.info]);

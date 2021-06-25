@@ -87,6 +87,12 @@ export default () => {
         }
       } catch (error) {
         console.log(error);
+        console.log(error);
+        handleSnackBar({
+          type: 'error',
+          message:
+            error && error.message ? error.message : 'Erro em carregar filtros.'
+        });
       }
     })();
 

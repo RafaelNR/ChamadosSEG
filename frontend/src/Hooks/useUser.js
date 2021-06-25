@@ -23,7 +23,6 @@ const useUser = () => {
 
   const setNewImagem = useCallback((imagem) => {
     const User = getData('user');
-    console.log(User, imagem);
     setData('user', {
       ...User,
       imagem

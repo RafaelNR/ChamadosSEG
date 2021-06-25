@@ -29,6 +29,7 @@ const SubCategoriasProvider = ({ children }) => {
     (async () => {
       try {
         const Dados = await Crud.get('subcategorias');
+        console.log(Dados)
         const { success, data } = Dados.data;
         if (success && render) return setSubCategorias(data);
         throw new Error(data.message);
@@ -36,9 +37,10 @@ const SubCategoriasProvider = ({ children }) => {
         console.log(error);
         handleSnackBar({
           type: 'error',
-          message: error.message
-            ? error.message
-            : 'Erro em carregar sub-categorias, Por favor tente mais tarde.'
+          message:
+            error && error.message
+              ? error.message
+              : 'Erro em carregar sub-categorias, Por favor tente mais tarde.'
         });
       } finally {
         setLoading(false);
@@ -47,7 +49,6 @@ const SubCategoriasProvider = ({ children }) => {
 
     return function cleanup() {
       render = false;
-      Crud.default.cancel('SubCategoriaContext unmonted');
     };
     // eslint-disable-next-line
   },[]);

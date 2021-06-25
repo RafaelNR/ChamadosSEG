@@ -22,6 +22,7 @@ import { getClientes } from '../../Service/clientes.service'
 
 // HOOK
 import useLocalStore from '../../Hooks/useLocalStore'
+import useSnackBar from '../../Context/SnackBarContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Select = React.memo(({ changeCliente , clienteCurr}) => {
   const [clientes, setClientes] = React.useState([]);
+  const { handleSnackBar } = useSnackBar();
   const { getData } = useLocalStore();
 
   React.useEffect(() => {
@@ -64,14 +66,20 @@ const Select = React.memo(({ changeCliente , clienteCurr}) => {
           }
         }
       } catch (error) {
-        console.log(error);
+          console.log(error);
+          handleSnackBar({
+            type: 'error',
+            message:
+              error && error.message
+                ? error.message
+                : 'Erro em carregar clientes.'
+          });
       }
 
     })();
 
     return function cleanup() {
       render = false;
-      Service.default.cancel('MyAtividades unmonted');
     };
     // eslint-disable-next-line
   }, []);

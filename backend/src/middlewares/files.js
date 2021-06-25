@@ -1,7 +1,8 @@
 const path = require("path");
 
 const pahtImages = path.join(__dirname, "..", "..", "public", "uploads", "images");
-const pathFiles = path.join(__dirname, "..", "..", "public", "uploads", "files");
+const pathChamados = path.join(__dirname, "..", "..", "public", "uploads", "chamados");
+// const pathFiles = path.join(__dirname, "..", "..", "public", "uploads", "files");
 
 
 module.exports = (App, Express) => {
@@ -13,5 +14,11 @@ module.exports = (App, Express) => {
 				extensions: ["png", "jpg", "webp", "jpeg"],
 			}
 		)
+	);
+	App.use(
+		"/files/chamados",
+		Express.static(pathChamados, {
+			extensions: ["png", "jpg", "webp", "jpeg", "pdf"],
+		})
 	);
 };

@@ -1,4 +1,4 @@
-import { type } from "os";
+
 import { useState, useEffect, useCallback } from "react";
 import useMasker from "./useMasker";
 

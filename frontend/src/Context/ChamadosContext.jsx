@@ -57,10 +57,7 @@ const ChamadosProvider = ({ children }) => {
       console.log(error)
       handleSnackBar({
         type: 'error',
-        message:
-          error && error.message
-            ? error.message
-            : `Erro em alterar a prioridade.`
+        message: (error && error.message) || `Erro em alterar a prioridade.`
       });
     }
   }, [chamado,chamados])
@@ -84,7 +81,7 @@ const ChamadosProvider = ({ children }) => {
       console.log(error)
       handleSnackBar({
         type: 'error',
-        message: 'Erro em alterar a prioridade.'
+        message: (error && error.message) || 'Erro em alterar a prioridade.'
       });
     }
 
@@ -123,10 +120,7 @@ const ChamadosProvider = ({ children }) => {
       if (error && error.errors) setErrors(error.errors);
       handleSnackBar({
         type: 'error',
-        message:
-          error && error.message
-            ? error.message
-            : 'Erro em inserir o chamado.'
+        message: (error && error.message) || 'Erro em inserir o chamado.'
       });
     } finally {
       setLoading(false);
@@ -157,10 +151,7 @@ const ChamadosProvider = ({ children }) => {
       if (error && error.errors) setErrors(error.errors);
       handleSnackBar({
         type: 'error',
-        message:
-          error && error.message
-            ? error.message
-            : 'Erro em atualizar chamado.'
+        message: (error && error.message) || 'Erro em atualizar chamado.'
       });
     } finally {
       setLoading(false);

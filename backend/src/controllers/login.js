@@ -49,8 +49,8 @@ module.exports = async (req, res) => {
 			process.env.SECRET,
 			{
 				//expiresIn: process.env.NODE_ENV === 'dev' ? 3600 : 10800,
-				//expiresIn: permanecer ? 300 : 30,
-				expiresIn: permanecer ? 3600*24*30 : 3600*8,
+				expiresIn: permanecer ? 30 : 30,
+				//expiresIn: permanecer ? 3600*24*30 : 3600*8,
 			}
 		);
 

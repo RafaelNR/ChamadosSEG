@@ -21,7 +21,7 @@ Router.get("/", Controller.index)
 Router.get("/acm/:chamado_id", ControllerAcm.findAcompanhamentosByChamado)
 			.get("/acm/count/type", ControllerAcm.CountTypeAcompanhamentos)
 			.post("/acm/", ControllerAcm.insert)
-			.put("/acm/:id", ControllerAcm.update);
-//.delete("/acm/:id", ControllerAcm.deletar);
+			.put("/acm/:id", ControllerAcm.update)
+			.delete("/acm/:id", ControllerAcm.deletar);
 
 module.exports = Router;

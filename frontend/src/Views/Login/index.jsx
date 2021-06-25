@@ -11,8 +11,9 @@ import Login from './Login'
 
 //* CONTEXT
 import useLogin from '../../Context/LoginContext';
-import useAuth from '../../Context/AuthContext';
 import { LoadingProvider } from '../../Context/LoadingContext';
+
+import useAuth from '../../Context/AuthContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {

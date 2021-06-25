@@ -11,7 +11,7 @@ require("events").EventEmitter.prototype._maxListeners = 20;
 class CronSendMailAtividades {
 	constructor() {
 		this.config = {
-			cronTime: '0 0 6 1 * *',
+			cronTime: "0 0 6 1 * *",
 			//cronTime: "0 */30 * * * *",
 			start: true,
 			onTick: () => {
@@ -46,15 +46,32 @@ class CronSendMailAtividades {
 		}
 	}
 
+	initDados() {
+		this.currMes = moment(moment().locale("pt-br").subtract(1, "month"))
+			.locale("pt-br")
+			.format("M");
+		this.currAno = moment().locale("pt-br").year();
+		this.nameMes = moment(this.currMes).locale("pt-br").format("MMMM");
+		console.log("->> CRON - SendMailAtividades - Mês: ", this.currMes);
+		console.log("->> CRON - SendMailAtividades - Ano: ", this.currAno);
+		console.log("->> CRON - SendMailAtividades - Proximo Mês:", this.nameMe);
+		console.log(
+			"->> CRON - SendMailAtividades - Proxima data de execução:",
+			this.Job.nextDates().format("DD/MM/YY HH:mm:ss")
+		);
+	}
+
 	async onTick() {
-		this.onComplete();
-		
+		this.initDados();
+
 		try {
-			console.log("Iniciado o envio das atividades:", moment().locale('pt-br').format('DD/MM/YYY HH:mm:ss'));
+			console.log(
+				"Iniciado o envio das atividades:",
+				moment().locale("pt-br").format("DD/MM/YYY HH:mm:ss")
+			);
 			const Clientes = await getClientesComAtividade(this.currMes);
 
 			Clientes.map(async (Cliente) => {
-
 				const Tecnicos = await getTecnicosByCliente(Cliente.id);
 
 				const filename = await this.createdPdf(
@@ -70,12 +87,10 @@ class CronSendMailAtividades {
 					});
 					console.log("Email Enviado!");
 				}
-
 			})
 		} catch (error) {
 			console.log("ERROR: ", error);
 		}
-		
 	}
 
 	sendEmail(clienteEmail, clienteName, filename, dados) {
@@ -96,7 +111,7 @@ class CronSendMailAtividades {
 			})
 			.catch((error) => {
 				console.log(error);
-			})
+			});
 	}
 
 	async createdPdf(mes, ano, clienteID) {
@@ -122,14 +137,13 @@ class CronSendMailAtividades {
 	}
 
 	onComplete() {
-		const nextMes = moment().locale("pt-br").month()+1;
+		const nextMes = moment().locale("pt-br").month() + 1;
 		console.log("->> CRON - SendMailAtividades - Proximo Mês:", nextMes);
-		console.log("->> CRON - SendMailAtividades - Proximo Ano: ", this.currAno);		
+		console.log("->> CRON - SendMailAtividades - Proximo Ano: ", this.currAno);
 		console.log(
 			"->> CRON - SendMailAtividades - Proxima data de execução:",
 			this.Job.nextDates().format("DD/MM/YY HH:mm:ss")
 		);
-			
 	}
 }
 

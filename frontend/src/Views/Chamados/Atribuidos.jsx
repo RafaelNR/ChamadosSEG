@@ -54,7 +54,7 @@ export default () => {
         console.log(error);
         handleSnackBar({
           type: 'error',
-          message: 'Erro em carregar chamados.'
+          message: (error && error.message) || 'Erro em carregar chamados.'
         });
       } finally {
         setLoading(false);

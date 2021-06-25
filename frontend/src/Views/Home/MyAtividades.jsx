@@ -16,6 +16,7 @@ import BoxHome from '../../Components/Box/Home'
 //* SERVICE
 import * as Dashboard from '../../Service/dashboard.service'
 import * as Service from '../../Api/Service'
+import useSnackBar from '../../Context/SnackBarContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
   
 export default () => {
   const classes = useStyles();
+  const { handleSnackBar } = useSnackBar();
   const [open, setOpen] = React.useState(null);
   const [half, setHalf] = React.useState(null);
   const [last, setLast] = React.useState(null);
@@ -52,9 +54,16 @@ export default () => {
           setClose(Dados.data.close);
         }
 
-        setLoading(false);
       } catch (error) {
         console.log(error);
+        handleSnackBar({
+          type: 'error',
+          message:
+            error && error.message
+              ? error.message
+              : 'Erro em carregar atividade.'
+        });
+      } finally {
         setLoading(false);
       }
 
@@ -63,7 +72,6 @@ export default () => {
 
     return function cleanup() {
       render = false;
-      Service.default.cancel('MyAtividades unmonted');
     };
 
   }, []);

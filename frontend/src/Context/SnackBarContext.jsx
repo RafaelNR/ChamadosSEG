@@ -1,13 +1,12 @@
 import React, { createContext, useState, useContext, useCallback } from "react";
 import PropTypes from "prop-types";
-import useMessage from '../Hooks/useMessage'
 
 const SnackBarContext = createContext({});
 
 const SnackBarProvider = ({ children }) => {
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [severity, setSeverity] = useState("success");
-  const { message, setMessage, handleMessage } = useMessage();
+  const [message, setMessage] = useState(null);
 
   const clickSnackBar = useCallback(() => {
     setOpenSnackBar(!openSnackBar);
@@ -16,7 +15,7 @@ const SnackBarProvider = ({ children }) => {
 
   const handleSnackBar = useCallback(
     ({ type, message }) => {
-      handleMessage(type, message);
+      setMessage(message);
       setSeverity(type);
       setOpenSnackBar(true);
     },

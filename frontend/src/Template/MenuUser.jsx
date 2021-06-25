@@ -7,10 +7,13 @@ import {
   Box,
   Typography,Fade } from '@material-ui/core/';
 import Gravatar from '../Components/Box/Gravatar';
-import useUser from "../Hooks/useUser";
 
-// Context
+
+//* CONTEXT
 import useAuth from "../Context/AuthContext";
+
+//* HOOKS
+import useUser from '../Hooks/useUser';
 
 const useStyles = makeStyles((theme) => ({
   root: {

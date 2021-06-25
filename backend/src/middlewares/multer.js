@@ -2,7 +2,7 @@ const multer = require('multer');
 const path = require("path");
 const fs = require("fs");
 
-const storage = multer.diskStorage({
+const storageImage = multer.diskStorage({
 	destination: (req, file, cb) => {
 		const caminho = "public/uploads/images/";
 		fs.mkdirSync(caminho, { recursive: true });
@@ -15,9 +15,21 @@ const storage = multer.diskStorage({
 	},
 });
 
-const fileFilter = (req, file, cb) => {
-	console.log(file)
-	const isAccepted = ["image/png", "image/jpg", "image/jpeg"].find(
+const storageChamado = multer.diskStorage({
+	destination: (req, file, cb) => {
+		const caminho = "public/uploads/chamados/";
+		fs.mkdirSync(caminho, { recursive: true });
+		cb(null, caminho);
+	},
+	filename: (req, file, cb) => {
+		const ext = path.extname(file.originalname);
+		const name = path.basename(file.originalname, ext);
+		cb(null, name + ext);
+	},
+});
+
+const fileFilterImage = (req, file, cb) => {
+	const isAccepted = ["image/png", "image/jpg", "image/jpeg", ''].find(
 		(formatoAceito) => formatoAceito == file.mimetype
 	);
 
@@ -28,6 +40,31 @@ const fileFilter = (req, file, cb) => {
 	}
 };
 
-const upload = multer({ storage, fileFilter });
+const fileFilterChamado = (req, file, cb) => {
+	const isAccepted = ["image/png", "image/jpg", "image/jpeg", "image/webq",'application/pdf'].find(
+		(formatoAceito) => formatoAceito == file.mimetype
+	);
 
-module.exports = upload
+	if (isAccepted) {
+		cb(null, true);
+	} else {
+		cb(null, false);
+	}
+};
+
+const uploadImage = multer({
+	storage: storageImage,
+	fileFilter: fileFilterImage,
+	limits: { fileSize: "30000000" },
+});
+
+const uploadChamado = multer({
+	storage: storageChamado,
+	fileFilter: fileFilterChamado,
+	limits: { fileSize: "10000000" },
+});
+
+module.exports = {
+	uploadImage,
+	uploadChamado
+};

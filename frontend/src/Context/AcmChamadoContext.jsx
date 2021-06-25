@@ -62,9 +62,8 @@ const AcompanhamentosChamadoProvider = ({ children }) => {
       handleSnackBar({
         type: 'error',
         message:
-          error && error.message
-            ? error.message
-            : 'Erro em inserir acompanhamento no chamado.'
+          error && error.message ||
+          'Erro em inserir acompanhamento no chamado.'
       });
     } finally {
       setLoading(false);
@@ -98,10 +97,7 @@ const AcompanhamentosChamadoProvider = ({ children }) => {
       console.log(error);
       handleSnackBar({
         type: 'error',
-        message:
-          error && error.message
-            ? error.message
-            : 'Erro em atualizar acompanhamento.'
+        message: error && error.message || 'Erro em atualizar acompanhamento.'
       });
     } finally {
       setLoading(false);
@@ -130,10 +126,7 @@ const AcompanhamentosChamadoProvider = ({ children }) => {
         console.log(error);
         handleSnackBar({
           type: 'error',
-          message:
-            error && error.message
-              ? error.message
-              : 'Erro em atualizar acompanhamento.'
+          message: error && error.message || 'Erro em atualizar acompanhamento.'
         });
       } finally {
         setLoading(false);

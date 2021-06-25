@@ -69,7 +69,9 @@ const AtividadesProvider = ({ children }) => {
           console.log(error);
           return handleSnackBar({
             type: 'error',
-            message: 'Erro em carregar atividades. Por favor tente mais tarde.'
+            message:
+              error && error.message ? error.message :
+              'Erro em carregar atividades. Por favor tente mais tarde.'
           });
         } finally {
           setLoading(false);
@@ -100,7 +102,7 @@ const AtividadesProvider = ({ children }) => {
       .catch((error) => {
         return handleSnackBar({
           type: 'error',
-          message: error && error.message ? error.message : 'Erro em gerar PDF'
+          message: (error && error.message) || 'Erro em gerar PDF'
         });
       })
       .finally(() => {
