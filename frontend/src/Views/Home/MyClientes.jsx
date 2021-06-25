@@ -15,7 +15,6 @@ import BoxHome from '../../Components/Box/Home'
 import { SelectCommon } from '../../Components/FormControl/Selects';
 
 //* SERVICE
-import * as Service from '../../Api/Service';
 import * as Dashboard from '../../Service/dashboard.service'
 import { getMyClientes } from '../../Service/user.service'
 import { getClientes } from '../../Service/clientes.service'
@@ -133,7 +132,6 @@ export default () => {
 
     return function cleanup() {
       render = false;
-      Service.default.cancel('MyAtividades unmonted');
     };
     // eslint-disable-next-line
   }, []);

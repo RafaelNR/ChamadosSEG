@@ -1,41 +1,25 @@
-import { useState, useEffect, useCallback } from 'react';
+import ErrorMessages from '../Store/ErrorMessage'
 
-const Response = () => {
+export const handleResponse = async (res) => {
+  const response = await res
+  const { data, status, statusText } = response;
 
-  const handleResponse = (response) => {
-
-    const { data, status, statusText } = response
-
-    if (statusText === 'Unauthorized') {
-      return handleErrorMessage(data.message);
-    }
-    
-    return data;
-
+  if (statusText === 'Unauthorized') {
+    handleErrorMessage(data.message);
   }
 
-  const handleLogout = (Message) => {
-    localStorage.setItem('ErrorMessage', Message)
-  }
-
-  const handleErrorMessage = (Message) => {
-    switch (Message) {
-      case 'Network Error':
-      case 'Autenticação expirou.':
-      case 'Error: Autenticação expirou.':
-      case 'Autenticação expirou ou não é mais valida.':
-      case 'Sem Autenticação ou Autorização.':
-      case Message.code && Message.code === 'ECONNREFUSED':
-        return handleLogout(Message);
-
-      default:
-        return handleLogout('Erro de autenticação.');
-    }
-  }
-
-  return {
-    handleResponse
-  };
+  return response;
 };
 
-export default useResponse;
+const registerErrorMessage = (Message) => {
+  localStorage.setItem('ErrorMessage', JSON.stringify(Message));
+};
+
+const handleErrorMessage = (Message) => {
+  if (ErrorMessages.includes(Message)) {
+    return registerErrorMessage(Message);
+  } else {
+    return registerErrorMessage('Erro de autenticação.');
+  }
+};
+

@@ -83,7 +83,7 @@ export default () => {
       });
 
     return function cleanup() {
-      return Service.cancel('EditAtividade umont');
+      return;
     };
   }, [history, ticket, handleSnackBar]);
 

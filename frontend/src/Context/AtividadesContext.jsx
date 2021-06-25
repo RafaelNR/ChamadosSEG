@@ -52,7 +52,7 @@ const AtividadesProvider = ({ children }) => {
         ? `atividades/myuser?period=${period}`
         : `atividades/myclientes?period=${period}`;
   //eslint-disable-next-line
-  }, [roleID]);
+  }, []);
 
   useEffect(() => {
     let render = true;
@@ -82,14 +82,11 @@ const AtividadesProvider = ({ children }) => {
 
     return function cleanup() {
       render = false;
-      Crud.default.cancel('AtividadeContext unmounted');
     };
     //eslint-disable-next-line
   }, [roleID]);
 
-
   const downloadPDF = useCallback((ticket) => {
-    console.log(ticket);
     setLoadingPDF(true);
     AtividadePDF(ticket)
       .then((Dados) => {

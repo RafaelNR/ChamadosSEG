@@ -15,7 +15,7 @@ const LoginContext = createContext({});
 const LoginProvider = ({ children }) => {
   const { getData, setData, removeData } = useLocalStore();
   const [errors, setErrors] = useState([]);
-  const [loading, setLoading] = useState(false); // TODO Loading
+  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [recuperar, setRecuperar] = useState(false);
   const [login, setLogin] = useState({
@@ -25,42 +25,55 @@ const LoginProvider = ({ children }) => {
     permanecer: false,
   });
 
-  const handleLogin = useCallback(() => {
+  useEffect(() => {
+    removeData('ErrorMessage');
+  },[])
+
+  const handleLogin = useCallback(async() => {
     setLoading(true);
-    Login(login)
-      .then((Dados) => {
-        setErrors([]);
-        setLoading(false);
 
-        if (Dados.auth && Dados.token) {
-          setData('token', Dados.token); // Seta no local store;
-          setData('user', Dados.user); // Seta no local store;
-          login.lembrar ? setData('lembrar', Dados.user.user) : removeData('lembrar'); // Seta no localstore;
-          setSuccess(true);
-          return window.location.replace('/');
-        }
+    try {
+      setErrors([]);
+      const Dados = await Login(login);
+      if (Dados.auth && Dados.token) {
+        setData('token', Dados.token); // Seta no local store;
+        setData('user', Dados.user); // Seta no local store;
+        login.lembrar
+          ? setData('lembrar', Dados.user.user)
+          : removeData('lembrar'); // Seta no localstore;
+        setSuccess(true);
+        return window.location.replace('/');
+      }
 
-        if (Dados.auth && Dados.user) {
-          setData('user', Dados.user);
-          login.lembrar ? setData('lembrar', Dados.user.user) : removeData('lembrar'); // Seta no localstore;
-          setSuccess(true);
-          return window.location.replace('/');
-        }
+      if (Dados.auth && Dados.user) {
+        setData('user', Dados.user);
+        login.lembrar
+          ? setData('lembrar', Dados.user.user)
+          : removeData('lembrar'); // Seta no localstore;
+        setSuccess(true);
+        return window.location.replace('/');
+      }
 
-        throw new Error('Erro em logar no sistema');
-      })
-      .catch((error) => {
-        console.log(error)
-        setLoading(false);
+      throw new Error('Erro em logar no sistema');
 
-        if (error.errors) return setErrors(error.errors);
 
-        setErrors({
-          success: false,
-          message:
-            error && error.message ? error.message : 'Erro em logar no sistema.'
-        });
+    } catch (error) {
+      console.log(error);
+
+      // Erro de Validação.
+      if (error.errors) return setErrors(error.errors);
+
+      // Erro requisição.
+      setErrors({
+        success: false,
+        message:
+          error && error.message
+            ? error.message
+            : 'Erro em logar no sistema.'
       });
+    } finally {
+      setLoading(false);
+    }
   }, [login]);
 
   const handleSubmitLogin = useCallback(

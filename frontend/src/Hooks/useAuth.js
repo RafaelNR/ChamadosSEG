@@ -2,6 +2,9 @@ import { useCallback } from 'react';
 import useLocalStore from './useLocalStore';
 import { useHistory } from 'react-router-dom';
 
+
+//* USANDO PARA AUTENTICAR AÇÕES DENTRO DA MESMA PÁGINA 
+//* Exemplo: Mudança de TAB, Editar;
 const useAuth = () => {
   const { removeData } = useLocalStore();
   const history = useHistory();
@@ -10,7 +13,7 @@ const useAuth = () => {
     removeData('token');
     removeData('user');
     history.replace('/login');
-  }, [removeData,history]);
+  }, [history]);
 
   return {
     Logout

@@ -1,9 +1,15 @@
 import React, { createContext, useState, useContext, useCallback } from "react";
 import PropTypes from "prop-types";
+import ErrorMessages from '../Store/ErrorMessage'
+
+import useAuth from '../Hooks/useAuth';
+import useLocalStore from '../Hooks/useLocalStore';
 
 const SnackBarContext = createContext({});
 
 const SnackBarProvider = ({ children }) => {
+  const { Logout } = useAuth();
+  const { getData,setData } = useLocalStore();
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [severity, setSeverity] = useState("success");
   const [message, setMessage] = useState(null);
@@ -15,12 +21,29 @@ const SnackBarProvider = ({ children }) => {
 
   const handleSnackBar = useCallback(
     ({ type, message }) => {
-      setMessage(message);
+      if (type === 'error') setMessage(handleError(message));
+      if (message.message)setMessage(message.message);
+      else setMessage(message);
+
       setSeverity(type);
       setOpenSnackBar(true);
     },
     []
   );
+
+  const handleError = useCallback(
+    (msg) => {
+      const ErrorMessage = getData('ErrorMessage');
+      if (ErrorMessages.includes(ErrorMessage)) {
+        setData('ErrorMessage', ErrorMessage);
+        return Logout();
+      }
+      return msg;
+    },
+    // eslint-disable-next-line
+    []
+  );
+
 
   return (
     <SnackBarContext.Provider

@@ -15,9 +15,7 @@ export async function Login({user, passwd, permanecer}) {
 
     if (Dados.error) throw Dados;
     
-    const Resp = await Service.exec("post", '/login', Dados, true);
-
-    console.log('>>', Resp.data);
+    const Resp = await Service.exec("post", '/login', Dados);
 
     if (Resp.data.success) {
       return Resp.data.data;
@@ -35,7 +33,7 @@ export async function Login({user, passwd, permanecer}) {
 export async function Recuperar(email) {
 
   try {
-    const Resp = await Service.exec('post', `recuperar-senha?email=${email},`, null, true);
+    const Resp = await Service.exec('post', `recuperar-senha?email=${email},`, null);
     
     if (Resp.data.success) {
       return Resp.data.data;

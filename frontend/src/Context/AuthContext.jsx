@@ -6,7 +6,6 @@ import React, {
   useCallback,
 } from "react";
 import PropTypes from "prop-types";
-import { Auth, removeToken }  from "../Service/auth.service";
 
 import useLocalStore from "../Hooks/useLocalStore";
 
@@ -16,73 +15,31 @@ const AuthProvider = ({ children }) => {
   const { getData, removeData } = useLocalStore();
   const [token, setToken] = useState(getData("token"));
   const [user, setUser] = useState(getData("user"));
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState([])
 
   const handleLogout = useCallback(() => {
-    setUser(null);
-    setToken(null);
+    setToken(null)
+    setUser(null)
     removeData('token');
     removeData('user');
-    removeToken();
   }, []);
 
-  useEffect(() => {
-    let render = true;
-
-    (async () => {
-      if (!token || token === 'undefined') {
-        process.env.REACT_APP_NODE === 'dev' &&
-        console.log('token não encontrado');
-        return handleLogout();
-      }
-
-      if (!user || user === 'undefined' || !user.nome) {
-        process.env.REACT_APP_NODE === 'dev' &&
-        console.log('user não encontrado');
-        return handleLogout();
-      }
-
-      if (render) {
-        const resp = await Auth();
-        if (!resp.data.auth) return handleLogout();
-      }
-    })();
-
-    return function cleanup() {
-      render = false;
-    };
-  }, [token, user,handleLogout]);
-
+  // AUTENTICA AÇÕES COM MUDANÇA DE PÁGINA;
   const handleAuth = useCallback(() => {
-    const storageToken = getData('token');
-    const storageUser = getData('user');
+    const isToken = Boolean(getData('token'));
+    const isUser = Boolean(getData('user'));
+    const ErrorMsg = getData('ErrorMessage');
 
-    if (!storageToken || storageToken === 'undefined') {
+    if (!isToken || !isUser || ErrorMsg) {
       setErrors({
         success: false,
         message:
-          'Erro, token de autenticação não encontrado, você foi deslogado!!'
+          ErrorMsg ||
+          'Autenticação não encontrado, você foi deslogado!'
       });
       return handleLogout();
     }
 
-    if (!storageUser || storageUser === 'undefined' || !storageUser.nome) {
-      setErrors({
-        success: false,
-        message: 'Erro, usuário não encontrado, você foi deslogado!'
-      });
-      return handleLogout();
-    }
-
-    Auth().then((resp) => {
-      if (!resp.data.auth) {
-        setErrors({
-          success: false,
-          message: 'Autenticação expirou, você foi deslogado!'
-        });
-        return handleLogout();
-      }
-    });
   // eslint-disable-next-line
   },[])
 

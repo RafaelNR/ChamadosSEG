@@ -2,6 +2,7 @@ import { useCallback } from "react";
 
 export default () => {
   const getData = useCallback((item) => {
+
     return JSON.parse(localStorage.getItem(item));
   }, []);
 

@@ -4,7 +4,6 @@ import {
 } from '@material-ui/core';
 
 import Gravatar from '../../Service/gravatar.service';
-import * as Api from '../../Api/Crud'
 
 import { FileIsExist } from '../../Utils/functions'
 
@@ -44,7 +43,6 @@ const MyGravatar = ({ preview=null, imagem=null, email, children,...rest}) => {
 
     return function cleanup() {
       render = false;
-      Api.default.cancel('Gravatar unmounted');
     };
 
   },[preview,imagem,email])

@@ -47,7 +47,6 @@ const ClientesProvider = ({ children }) => {
 
     return function cleanup() {
       render = false;
-      Crud.default.cancel('ClienteContext unmounted');
     };
     // eslint-disable-next-line
   }, []);
