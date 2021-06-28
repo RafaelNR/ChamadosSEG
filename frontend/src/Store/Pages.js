@@ -9,7 +9,9 @@ import {
   GroupSharp,
   ReportSharp,
   MessageSharp,
-  SpeakerNotesSharp
+  SpeakerNotesSharp,
+  Chat,
+  ModeComment
 } from '@material-ui/icons';
 
 const defaultMenu = [
@@ -25,7 +27,7 @@ const defaultMenu = [
   },
   {
     nome: 'Meus Chamados',
-    icon: <SpeakerNotesSharp />,
+    icon: <Chat />,
     path: '/chamados'
   },
   {
@@ -67,15 +69,15 @@ const analistaMenu = [
 
 const adminMenu = [
   {
+    nome: 'Modelos',
+    icon: <ModeComment />,
+    path: '/modelos'
+  },
+  {
     nome: 'Logs',
     icon: <ReportSharp />,
     path: '/logs'
   }
-  // {
-  // 	nome: "Configurações",
-  // 	icon: <SettingsSharp />,
-  // 	path: "/configuracoes",
-  // },
 ];
 
 const Headers = [
@@ -149,6 +151,11 @@ const Headers = [
     nome: 'Logs',
     icon: <ReportSharp />,
     path: '/logs'
+  },
+  {
+    nome: 'Modelos',
+    icon: <ModeComment />,
+    path: '/modelos'
   }
 ];
 

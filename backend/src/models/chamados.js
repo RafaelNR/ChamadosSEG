@@ -5,8 +5,10 @@ const commonQuery = () => {
 		.select(
 			"chamados.id",
 			"user.nome as requerente",
+			"user.imagem as requerente_imagem",
 			"chamados.requerente as requerente_id",
 			"tecnico.nome as atribuido",
+			"tecnico.imagem as atribuido_imagem",
 			"chamados.atribuido as atribuido_id",
 			"cliente.nome_fantasia as cliente",
 			"chamados.cliente_id as cliente_id",

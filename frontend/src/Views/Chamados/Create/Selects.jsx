@@ -12,7 +12,7 @@ import {
   getUsers,
   getPerfil,
   getUsersAtribuiveis,
-  getClientesByUser
+  getClientesByUser,
 } from '../../../Service/user.service';
 
 import {
@@ -20,12 +20,11 @@ import {
   getSubCategoriasByCategoria
 } from '../../../Service/categorias.service';
 
-//* PROVIDER
+//* CONTEXT
 import useChamados from '../../../Context/ChamadosContext';
 
 //* HOOKS
 import useUser from '../../../Hooks/useUser';
-import { FormatListBulletedRounded } from '@material-ui/icons';
 
 const useStyles = makeStyles({
   formControl: {
@@ -143,12 +142,6 @@ export const SelectAtribuiveis = ({ handleChange, ...rest }) => {
               : await getUsersAtribuiveis(chamado.requerente);
 
           if (render && success) {
-            setChamado((chamado) => {
-              return {
-                ...chamado,
-                atribuido: data[0].id
-              };
-            });
             return setValues(data);
           }
         } catch (error) {
@@ -170,7 +163,7 @@ export const SelectAtribuiveis = ({ handleChange, ...rest }) => {
     >
       <InputLabel id="atribuido">Atribuir para</InputLabel>
       <Select
-        label="atribuido"
+        label="Atribuir para"
         onChange={handleChange}
         id="atribuido"
         name="atribuido"
@@ -194,18 +187,19 @@ export const SelectAtribuiveis = ({ handleChange, ...rest }) => {
 
 export const SelectClientes = ({ handleChange, ...rest }) => {
   const classes = useStyles();
+  const { userDados } = useUser();
   const { errors, chamado, setChamado } = useChamados();
   const [values, setValues] = useState([]);
 
   useEffect(() => {
     let render = true;
-
-    if (chamado.requerente) {
+    if (chamado.requerente && chamado.atribuido) {
       (async () => {
         try {
-          const { success, data } = await getClientesByUser(
-            chamado.requerente
-          );
+          const { success, data } =
+            userDados.role_id !== 3
+              ? await getClientesByUser(chamado.atribuido)
+              : await getClientesByUser(chamado.requerente);
 
           if (render && success) {
             setChamado((chamado) => {
@@ -225,7 +219,7 @@ export const SelectClientes = ({ handleChange, ...rest }) => {
     return () => {
       return false;
     };
-  }, [chamado.requerente]);
+  }, [chamado.requerente, chamado.atribuido]);
 
   return (
     <FormControl

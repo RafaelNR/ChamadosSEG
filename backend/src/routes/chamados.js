@@ -1,7 +1,8 @@
 const Router = require("express").Router();
 const Controller = require("../controllers/chamados");
 const ControllerAcm = require("../controllers/acm_chamados");
-//const Permission = require("../middlewares/permission");
+const ControllerModelos = require("../controllers/modelos_chamado");
+// const Permission = require("../middlewares/permission");
 
 // Tasks
 Router.get("/", Controller.index)
@@ -23,5 +24,11 @@ Router.get("/acm/:chamado_id", ControllerAcm.findAcompanhamentosByChamado)
 			.post("/acm/", ControllerAcm.insert)
 			.put("/acm/:id", ControllerAcm.update)
 			.delete("/acm/:id", ControllerAcm.deletar);
+			
+Router.get("/modelos/index", ControllerModelos.index)
+			// .post("/modelos", Permission.admin, ControllerModelos.index)
+			// .put("/modelos", Permission.admin, ControllerModelos.index)
+			// .delete("/modelos", Permission.admin, ControllerModelos.index);
+			
 
 module.exports = Router;

@@ -5,7 +5,7 @@ import { FlagSharp, AttachFileSharp, CommentSharp } from '@material-ui/icons';
 import { ArrowIconTooltips } from '../../Components/ToolTip/index';
 import { TimeChamadoBox } from '../../Components/ToolTip/TimeChamado';
 import ChipStatus from '../Chip/status';
-import ChipUser from '../Chip/user';
+import { ChipUser } from '../Chip/user';
 
 //* HOOK
 import useUser from '../../Hooks/useUser';
@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 100
       }
     },
-    '& .atribuido': {
+    '& .user': {
       fontSize: 12,
       display: 'flex',
       justifyContent: 'flex-end',
@@ -109,7 +109,7 @@ const useStyles = makeStyles((theme) => ({
   })
 }));
 
-export default ({ chamado }) => {
+export default ({ chamado, tab }) => {
   const classes = useStyles({
     acompanhamentos: chamado.acompanhamentos,
     prioridade: chamado.prioridade,
@@ -119,9 +119,12 @@ export default ({ chamado }) => {
 
   const {
     id,
+    requerente_id,
     requerente,
-    atribuido,
+    requerente_imagem,
     atribuido_id,
+    atribuido,
+    atribuido_imagem,
     cliente,
     status,
     prioridade,
@@ -200,13 +203,19 @@ export default ({ chamado }) => {
                     </ArrowIconTooltips>
                     <ChipStatus status={status} />
                   </div>
-                  <div className="atribuido">
-                    <ChipUser
-                      nome={atribuido}
-                      id={atribuido_id}
+                  <div className="user">
+                    <ChipUser nome={requerente} img={requerente_imagem} tooltip label="Requerente" style={{marginRight: 5}}/>
+                    <ChipUser nome={atribuido} img={atribuido_imagem} tooltip label="Atribuído" />
+                    {/* <ChipUser
+                      nome={tab === 'Atribuído' ? requerente : atribuido}
+                      img={
+                        tab === 'Atribuído'
+                          ? requerente_imagem
+                          : atribuido_imagem
+                      }
                       tooltip
-                      label="Atribuído"
-                    />
+                      label={tab === 'Atribuído' ? 'Requerente' : 'Atribuído'}
+                    /> */}
                   </div>
                 </Grid>
               </Grid>

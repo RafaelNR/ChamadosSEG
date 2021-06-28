@@ -49,6 +49,7 @@ export default () => {
       try {
         setLoading(true);
         const Dados = await getChamados();
+        console.log(Dados)
         if (render) setChamados(Dados);
       } catch (error) {
         console.log(error);
@@ -71,7 +72,7 @@ export default () => {
       { loading ? <Loading /> : 
         
           chamados.map((chamado) => {
-            return <BoxChamado key={chamado.id} chamado={chamado} />
+            return <BoxChamado key={chamado.id} chamado={chamado} tab="Atribuído" />
           })
         
       }

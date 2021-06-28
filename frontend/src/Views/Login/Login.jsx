@@ -122,6 +122,10 @@ export default () => {
     document.title = `Login - OS Técnicos`;
   }, []);
 
+  useEffect(() => {
+    localStorage.removeItem('ErrorMessage');
+  });
+
   return (
     <>
       <form className={classes.form} onSubmit={handleSubmitLogin} noValidate>

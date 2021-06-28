@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles, Chip, Avatar } from '@material-ui/core/';
 import { ArrowIconTooltips } from '../../Components/ToolTip/index';
 import * as Service from '../../Service/user.service'
@@ -16,6 +16,40 @@ const useStyles = makeStyles((theme) => ({
     }
   }
 }));
+
+export const ChipUser = ({ nome, img, tooltip, label, style }) => {
+  const classes = useStyles();
+  const [imagem, setImagem] = useState('/static/logo.png');
+
+  useEffect(() => {
+    setImagem(img ? process.env.REACT_APP_ENDPOINT_IMAGES_USER + img : imagem )
+  },[])
+
+
+  if (tooltip && label) {
+    return (
+      <ArrowIconTooltips title={label}>
+        <Chip
+          className={classes.chip}
+          variant="outlined"
+          avatar={<Avatar alt={nome} src={imagem} />}
+          label={nome}
+          style={style}
+        />
+      </ArrowIconTooltips>
+    );
+  } else {
+    return (
+      <Chip
+        className={classes.chip}
+        variant="outlined"
+        avatar={<Avatar alt={nome} src={imagem} />}
+        label={nome}
+      />
+    );
+  }
+    
+}
 
 export default ({ nome, id, tooltip, label }) => {
   const classes = useStyles();

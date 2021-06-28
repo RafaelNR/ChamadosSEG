@@ -15,7 +15,7 @@ import {
   SelectClientsChamado,
   SelectCategorias,
   SelectSubCategorias
-} from '../../../Components/FormControl/Selects';
+} from './Selects';
 import { PaperHeader, MyPaper } from '../../../Components/Paper/Chamados';
 import Prioridade from '../../../Components/Buttons/Prioridade';
 import MenuStatus from '../../../Components/Menu/StatusChamado';
@@ -285,37 +285,24 @@ export default () => {
             <MyPaper>
               <Grid item xs={4} className={classes.input_selects}>
                 <SelectRequerente
-                  currUser={userDados}
                   varian="outlined"
-                  value={chamado.requerente_id}
                   handleChange={handleChange}
-                  errorText={errors['requerente']}
                   fullWidth
                   required
                 />
               </Grid>
               <Grid item xs={4} className={classes.input_selects}>
                 <SelectAtribuidos
-                  requerente={chamado.requerente_id}
-                  currUser={userDados}
                   varian="outlined"
-                  value={chamado.atribuido_id}
                   handleChange={handleChange}
-                  setChamado={setChamado}
-                  errorText={errors['atribuido']}
                   fullWidth
                   required
                 />
               </Grid>
               <Grid item xs={4} className={classes.input_selects}>
                 <SelectClientsChamado
-                  requerente={chamado.requerente_id}
-                  currUser={userDados}
                   varian="outlined"
-                  value={chamado.cliente_id}
                   handleChange={handleChange}
-                  setChamado={setChamado}
-                  errorText={errors['cliente_id']}
                   fullWidth
                   required
                 />
@@ -324,24 +311,16 @@ export default () => {
             <MyPaper>
               <Grid item xs={6} className={classes.input_selects}>
                 <SelectCategorias
-                  currUser={userDados}
                   varian="outlined"
-                  value={chamado.categoria_id}
                   handleChange={handleChange}
-                  errorText={errors['categoria']}
                   fullWidth
                   required
                 />
               </Grid>
               <Grid item xs={6} className={classes.input_selects}>
                 <SelectSubCategorias
-                  categoria={chamado.categoria_id}
-                  currUser={userDados}
                   varian="outlined"
-                  value={chamado.sub_categoria_id}
                   handleChange={handleChange}
-                  setChamado={setChamado}
-                  errorText={errors['sub_categoria']}
                   fullWidth
                   required
                 />

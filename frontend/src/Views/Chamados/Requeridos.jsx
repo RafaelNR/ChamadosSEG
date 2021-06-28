@@ -74,7 +74,9 @@ export default () => {
         <Loading />
       ) : (
           chamados.map((chamado) => {
-            return <BoxChamado key={chamado.id} chamado={chamado} />;
+            return (
+              <BoxChamado key={chamado.id} chamado={chamado} tab="Requerente" />
+            );
         })
       )}
     </>

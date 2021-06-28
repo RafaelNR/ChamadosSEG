@@ -10,7 +10,7 @@ const admin = async (req, res, next) => {
 	} else {
 		return res.status(403).json({
 			message: false,
-			error: "Você não ter permissão",
+			error: "Você não ter permissão de acesso.",
 		});
 	}
 };
@@ -23,7 +23,7 @@ const analista = async (req, res, next) => {
 	} else {
 		return res.status(403).json({
 			message: false,
-			error: "Você não ter permissão",
+			error: "Você não ter permissão de acesso.",
 		});
 	}
 };
@@ -36,7 +36,7 @@ const tecnico = async (req, res, next) => {
 	} else {
 		return res.status(403).json({
 			success: false,
-			message: "Você não ter permissão",
+			message: "Você não ter permissão de acesso.",
 		});
 	}
 };

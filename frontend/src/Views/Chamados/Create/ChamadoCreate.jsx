@@ -20,6 +20,7 @@ import Prioridade from '../../../Components/Buttons/Prioridade';
 import MenuStatus from '../../../Components/Menu/StatusChamado';
 import { Save } from '../../../Components/Buttons/Chamados';
 import Loading from '../../../Components/Loading/';
+import Modelos from './Modelos'
 
 //* PROVIDER
 import useChamados from '../../../Context/ChamadosContext';
@@ -148,9 +149,7 @@ export default () => {
       <form autoComplete="off">
         <Grid container>
           <Grid item xs={3} className={classes.header}>
-            <PaperHeader style={{ flexDirection: 'row' }}>
-              Modelo
-            </PaperHeader>
+              <Modelos />
           </Grid>
           <Grid item xs={9} className={classes.header}>
             <PaperHeader style={{ flexDirection: 'row' }}>

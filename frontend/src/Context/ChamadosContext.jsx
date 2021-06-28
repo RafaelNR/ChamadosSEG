@@ -72,7 +72,7 @@ const ChamadosProvider = ({ children }) => {
           type: 'success',
           message: 'Prioridade alterada.'
         });
-        return setChamados({
+        return setChamado({
           ...chamado,
           prioridade: newPrioridade
         });

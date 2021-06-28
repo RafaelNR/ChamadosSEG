@@ -25,10 +25,6 @@ const LoginProvider = ({ children }) => {
     permanecer: false,
   });
 
-  useEffect(() => {
-    removeData('ErrorMessage');
-  },[])
-
   const handleLogin = useCallback(async() => {
     setLoading(true);
 

@@ -1,7 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 import { Link } from 'react-router-dom'
-import { MenuRounded, AddOutlined } from "@material-ui/icons/";
+import { MenuRounded } from "@material-ui/icons/";
 import {
   makeStyles,
   AppBar,
@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import MenuUser from './MenuUser'
 import { SearchAtividade } from '../Components/Search/ticket';
+import MenuCreate from '../Components/Menu/AppBarCreate';
 
 //* CONTEXT
 import useMenu from "../Context/MenuContext";
@@ -90,13 +91,7 @@ export default () => {
 
           <div className={classes.atividadebutton}>
             <SearchAtividade />
-            <Link to="/atividades/create">
-              <Tooltip title="Nova Atividade">
-                <IconButton>
-                  <AddOutlined className={classes.icon}/>
-                </IconButton>
-              </Tooltip>
-            </Link>
+            <MenuCreate />
           </div>
 
           <div className={classes.grow} />
