@@ -3,7 +3,12 @@ import LoginRoute from "./LoginRoute";
 import AppRoute from "./AppRoute";
 import useAuth from "../Context/AuthContext";
 
+//* HOOKS
+import useUser from '../Hooks/useUser';
+
 export default function Routes() {
   const { logado } = useAuth();
-  return logado ? <AppRoute /> : <LoginRoute />;
+  const { roleID } = useUser();
+  
+  return logado ? <AppRoute roleID={roleID} /> : <LoginRoute />;
 }

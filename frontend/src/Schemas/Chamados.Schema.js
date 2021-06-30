@@ -27,7 +27,7 @@ const UpdateSchema = (data) => {
   }
 
   const schema = yup.object().shape({
-    id: yup.string().required('Descrição é requerido'),
+    id: yup.number().required('ID é requerido'),
     requerente: yup.number().required('Usuário requerente é requerido.'),
     atribuido: yup.number().required('Usuário atribuído é requerido.'),
     cliente_id: yup.number().required('Cliente é requerido.'),

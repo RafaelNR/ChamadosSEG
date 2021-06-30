@@ -282,4 +282,32 @@ module.exports = {
 			})
 		);
 	},
+
+	InsertModelosChamado: (Dados) => {
+		return validate(
+			Dados,
+			Joi.object({
+				categoria_id: type.number.default,
+				sub_categoria_id: type.number.default,
+				titulo: type.string.default,
+				descricao: type.string.default,
+				user_id: type.number.default,
+			}).options({ stripUnknown: true }) // remove as outras propriedades;
+		);
+	},
+
+	UpdateModelosChamado: (Dados) => {
+		return validate(
+			Dados,
+			Joi.object({
+				id: type.number.id,
+				categoria_id: type.number.default,
+				sub_categoria_id: type.number.default,
+				titulo: type.string.default,
+				descricao: type.string.default,
+				user_id: type.number.default,
+				updated_at: type.date.updated_at(),
+			}).options({ stripUnknown: true }) // remove as outras propriedades;
+		);
+	},
 };

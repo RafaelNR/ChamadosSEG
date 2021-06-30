@@ -41,9 +41,6 @@ export default () => {
     (async () => {
       try {
         const { success, data } = await getModelos();
-
-        console.log(data)
-
         if (success && render) {
           setModelos(data)
         }

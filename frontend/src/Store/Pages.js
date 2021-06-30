@@ -8,8 +8,6 @@ import {
   CategorySharp,
   GroupSharp,
   ReportSharp,
-  MessageSharp,
-  SpeakerNotesSharp,
   Chat,
   ModeComment
 } from '@material-ui/icons';
@@ -69,7 +67,7 @@ const analistaMenu = [
 
 const adminMenu = [
   {
-    nome: 'Modelos',
+    nome: 'Modelos Chamados',
     icon: <ModeComment />,
     path: '/modelos'
   },
@@ -86,7 +84,7 @@ const Headers = [
     path: '/'
   },
   {
-    nome: 'Modelos',
+    nome: 'Modelos Chamados',
     path: '/modelos'
   },
   {
@@ -139,24 +137,16 @@ const Headers = [
   },
   {
     nome: 'Categorias',
-    icon: <CategorySharp />,
     path: '/categorias'
   },
   {
     nome: 'Usuários',
-    icon: <GroupSharp />,
     path: '/usuarios'
   },
   {
     nome: 'Logs',
-    icon: <ReportSharp />,
     path: '/logs'
   },
-  {
-    nome: 'Modelos',
-    icon: <ModeComment />,
-    path: '/modelos'
-  }
 ];
 
 export { adminMenu, analistaMenu, defaultMenu , Headers };

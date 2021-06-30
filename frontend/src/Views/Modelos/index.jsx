@@ -1,10 +1,20 @@
-import React from "react";
-import Typography from "@material-ui/core/Typography";
+import React from 'react';
+
+//* COMPONENTES
+import Paper from '../../Components/Paper/Paper';
+import Table from './Modelos.Table';
+import Dialog from './Modelos.Dialog';
+
+//* CONTEXT
+import { ModelosChamadoProvider } from '../../Context/ModelosChamadoContext';
+import { LoadingProvider } from '../../Context/LoadingContext';
 
 export default () => {
   return (
-    <>
-      <Typography>Tarefas</Typography>
-    </>
+    <LoadingProvider>
+      <ModelosChamadoProvider>
+        <Paper Render={Table} RenderDialog={Dialog} />
+      </ModelosChamadoProvider>
+    </LoadingProvider>
   );
 };

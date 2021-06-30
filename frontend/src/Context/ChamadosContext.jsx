@@ -95,14 +95,8 @@ const ChamadosProvider = ({ children }) => {
     try {
       setLoading(true);
 
-      console.log(chamado)
-
       const newChamado = await InsertSchema(chamado);
-
-      console.log(newChamado)
-
       if (newChamado.error) throw newChamado;
-
       const Dados = await Service.Insert(newChamado);
       const { success, data } = Dados;
       if (success) {
