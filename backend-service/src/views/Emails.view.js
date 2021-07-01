@@ -12,22 +12,26 @@ class View {
     });
   }
 
-
   getTemplate() {
     switch (this.type) {
-      
-      case 'Relatório Mensal de Atividades':
-        if (!this.Dados || !this.Dados.tecnicos) throw new Error('Dados não informados.');
-        return `${this.path}atividades-mensal.ejs`;
+			case "Relatório Mensal de Atividades":
+				if (!this.Dados || !this.Dados.tecnicos)
+					throw new Error("Dados não informados.");
+				return `${this.path}atividades-mensal.ejs`;
 
-      case 'Redefinição de Senha':
-        if (!this.Dados || !this.Dados.hash) throw new Error("Dados não informados.");
-        return `${this.path}redefinir-senha.ejs`;
+			case "Redefinição de Senha":
+				if (!this.Dados || !this.Dados.hash)
+					throw new Error("Dados não informados.");
+				return `${this.path}redefinir-senha.ejs`;
 
-      default:
-        throw new Error('Template de email invalido.');
-        
-    }
+			case "Chamado Criado":
+				if (!this.Dados || !this.Dados.id)
+					throw new Error("Dados não informados.");
+				return `${this.path}chamado-create.ejs`;
+
+			default:
+				throw new Error("Template de email invalido.");
+		}
 
 
   }

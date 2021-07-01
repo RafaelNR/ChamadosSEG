@@ -128,7 +128,7 @@ export default function () {
 
   return (
     <React.Fragment>
-      <EnhancedTableToolbar title="Acessos Usuários" data={false} />
+      <EnhancedTableToolbar title="PDF's Gerados" data={false} />
       <TableContainer>
         <Table
           className={classes.table}

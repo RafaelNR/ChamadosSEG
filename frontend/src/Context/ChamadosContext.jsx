@@ -100,13 +100,12 @@ const ChamadosProvider = ({ children }) => {
       const Dados = await Service.Insert(newChamado);
       const { success, data } = Dados;
       if (success) {
-        setChamado(data);
         setErrors([])
         handleSnackBar({
           type: 'success',
           message: 'Chamado Inserido.'
         });
-        return history.replace(`/chamado/edit/${data[0]}`);
+        return history.replace(`/chamado/edit/${data.id}`);
       }
       throw new Error(data.message);
     } catch (error) {

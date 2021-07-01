@@ -7,7 +7,7 @@ const fs = require("fs");
 module.exports = class Email {
 	constructor(textFrom) {
 		this.message = {
-			from: `${textFrom} < ${process.env.EMAIL_USER} >`, // REMETENTE
+			from: `${textFrom} < ${process.env.EMAIL_USER} >`, // NOME REMETENTE
 		};
 		this.dados = null;
 		this.email = nodemailer.createTransport({

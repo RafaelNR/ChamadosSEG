@@ -12,7 +12,7 @@ const SearchProvider = ({ children }) => {
    * Manipula o search da pesquisa, ativando o useEffect
    */
   const handleChangeSearch = useCallback((event) => {
-    setSearch(event.target.value);
+    setSearch(event.target.value || ' ');
   }, []);
 
   const handleSearch = useCallback(

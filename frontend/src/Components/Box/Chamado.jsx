@@ -113,7 +113,7 @@ export default ({ chamado, tab }) => {
   const classes = useStyles({
     acompanhamentos: chamado.acompanhamentos,
     prioridade: chamado.prioridade,
-    anexo: chamado.anexo,
+    anexo: parseInt(chamado.anexo),
   });
   const { userDados } = useUser();
 
@@ -192,7 +192,7 @@ export default ({ chamado, tab }) => {
                       )}
                     </ArrowIconTooltips>
                     <ArrowIconTooltips
-                      title={anexo ? 'Com anexo' : 'Sem anexo'}
+                      title={parseInt(anexo) ? 'Com anexo' : 'Sem anexo'}
                     >
                       <AttachFileSharp className={classes.anexo} />
                     </ArrowIconTooltips>

@@ -106,7 +106,7 @@ export default function () {
       setOrderBy('titulo');
       return setRows(search && search.length > 3 ? searchResults : modelos);
     }
-  }, [modelos]);
+  }, [modelos, searchResults]);
 
   useEffect(() => {
     if (modelos) {

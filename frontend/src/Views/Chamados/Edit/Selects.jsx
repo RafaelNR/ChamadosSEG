@@ -93,9 +93,9 @@ export const SelectRequerente = ({
           className={classes.formControl}
           error={errors['requerente'] ? true : false}
         >
-          <InputLabel id="requerente">Técnico Requerente</InputLabel>
+          <InputLabel id="requerente">Requerente</InputLabel>
           <Select
-            label="Técnico Requerente"
+            label="Requerente"
             onChange={handleChange}
             id="requerente"
             name="requerente_id"
@@ -178,9 +178,9 @@ export const SelectAtribuidos = ({
           className={classes.formControl}
           error={errors['atribuido'] ? true : false}
         >
-          <InputLabel id="atribuido">Técnico Atribuído</InputLabel>
+          <InputLabel id="atribuido">Atribuído Para</InputLabel>
           <Select
-            label="Técnico Atribuído"
+            label="Atribuído Para"
             onChange={handleChange}
             id="atribuido"
             name="atribuido_id"
