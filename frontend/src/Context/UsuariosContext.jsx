@@ -92,7 +92,7 @@ const UsuariosProvider = ({ children }) => {
         const resp = await Crud.insert("usuarios", data);
         if (!resp.data.success) throw resp.data;
         setUsuarios((usuarios) =>
-          usuarios.concat({ ...usuario, id: resp.data.data.id })
+          usuarios.concat({ ...usuario, id: resp.data.data.id, actived: 1  })
         );
         handleSnackBar({
           type: "success",

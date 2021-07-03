@@ -70,11 +70,10 @@ const itensSelect = [
 ];
 
 const FormInsert = React.memo(({ changeForm, handleChange }) => {
-  const { usuario, errors, setErrors, setUsuario } = useUsuarios();
+  const { usuario, errors, setErrors } = useUsuarios();
   const { setLoading } = useDialog();
 
   React.useEffect(() => {
-    setUsuario({});
     setErrors([]);
     setLoading(false);
     // eslint-disable-next-line
@@ -137,23 +136,32 @@ const FormInsert = React.memo(({ changeForm, handleChange }) => {
 const FormUpdate = React.memo(
   ({ handleSubmit, changeForm, handleChange }) => {
     const classes = useStyles();
-    const { usuario, errors, apiLoading } = useUsuarios();
-    const { loading, setLoading } = useDialog();
+    const {
+      usuario,
+      setUsuario,
+      getUsuario,
+      errors,
+      apiLoading
+    } = useUsuarios();
 
     React.useEffect(() => {
       if (usuario && usuario.id && !apiLoading) {
-        setLoading(false);
+        const currUser = getUsuario(usuario.id);
+        setUsuario({
+          ...currUser,
+          passwd: '******',
+        });
       }
       // eslint-disable-next-line
-    }, [apiLoading, usuario]);
+    }, []);
 
     return (
       <form
         noValidate
         onSubmit={handleSubmit}
-        className={loading ? classes.dialogLoader : null}
+        className={apiLoading ? classes.dialogLoader : null}
       >
-        {loading ? (
+        {apiLoading ? (
           <CircularProgress />
         ) : (
           <>
@@ -230,7 +238,11 @@ const FormUpdate = React.memo(
 
 const FormActivedDisabled = React.memo(({ handleSubmit }) => {
   const { type, closeDialog } = useDialog();
-  const { usuario } = useUsuarios();
+  const { usuario,setUsuario, usuarios} = useUsuarios();
+
+  React.useEffect(() => {
+    setUsuario(usuarios.filter(user => user.id === usuario.id)[0]);
+  }, [usuarios]);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -361,6 +373,7 @@ const FactorForm = (props) => {
       setCurrForm(props.currForm);
       setForms([props.currForm, 'clientes', 'imagem']);
     } else {
+      setUsuario({});
       setCurrForm('insert');
       setForms([props.currForm, 'clientes']);
     }

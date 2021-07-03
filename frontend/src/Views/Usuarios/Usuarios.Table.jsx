@@ -12,13 +12,11 @@ import {
 import EnhancedTableHead from "../../Components/Tables/TableHead";
 import EnhancedTableToolbar from "../../Components/Tables/ToolBar";
 import TablePagination from "../../Components/Tables/TablePagination";
-import Actions from "../../Components/Tables/Actions";
+import Actions from "../../Components/Tables/NewActions";
 import sortObject from "../../Utils/sortObject";
 import CircularProcess from "../../Components/Loading";
 import Gravatar from '../../Components/Box/Gravatar';
 
-//* FUNCTIONS
-import { initialsName } from "../../Utils/functions";
 
 //* CONTEXT
 import useUsuarios from "../../Context/UsuariosContext";
@@ -99,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function () {
   const classes = useStyles();
-  const { usuarios, getUsuario } = useUsuarios();
+  const { usuarios, setUsuario } = useUsuarios();
   const { search, searchResults, handleSearch } = useSearch();
   const { order, orderBy, setOrderBy } = useOrderTable();
   const { page, rows, setRows, rowsPerPage, emptyRows } = usePageTable();
@@ -146,8 +144,13 @@ export default function () {
                         className={classes.tablerow}
                         scope="row"
                         padding="default"
-                      > 
-                        <Gravatar imagem={row.imagem}alt={row.nome} className={classes.image} email={row.email} />
+                      >
+                        <Gravatar
+                          imagem={row.imagem}
+                          alt={row.nome}
+                          className={classes.image}
+                          email={row.email}
+                        />
                       </TableCell>
                       <TableCell
                         component="th"
@@ -166,9 +169,11 @@ export default function () {
                       <TableCell align="center" className={classes.tablerow}>
                         <Actions
                           id={row.id}
-                          getID={getUsuario}
-                          disabled={row.actived}
-                          buttons={["edit", "disable"]}
+                          setCurrent={setUsuario}
+                          buttons={[
+                            'edit',
+                            parseInt(row.actived) ? 'disabled' : 'actived'
+                          ]}
                         />
                       </TableCell>
                     </TableRow>

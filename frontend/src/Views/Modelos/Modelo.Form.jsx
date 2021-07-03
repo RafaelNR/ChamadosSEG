@@ -17,7 +17,6 @@ import DialogActions from '../../Components/Dialog/Action';
 //* CONTEXT
 import useModelos from '../../Context/ModelosChamadoContext';
 import useDialog from '../../Context/DialogContext';
-import { ContactSupportOutlined } from '@material-ui/icons';
 
 const useStyles = makeStyles(() => ({
   dialogLoader: {
