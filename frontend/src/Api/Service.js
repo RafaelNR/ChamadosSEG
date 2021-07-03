@@ -60,4 +60,5 @@ const exec = async (method, url, data = null) => {
 
 export default {
   exec,
+  Api
 }

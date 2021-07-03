@@ -160,6 +160,43 @@ const update = async (req, res) => {
 	return res.status(Result.status).json(Result.res);
 };
 
+const countChamados = async (req, res) => {
+	try {
+		const tipo = req.params.tipo;
+		let Dados = "";
+
+		switch (tipo) {
+			case "chamados":
+				Dados = await Model.countMyChamados(req.userId);
+				break;
+			case "requerente":
+				Dados = await Model.countMyRequerente(req.userId);
+				break;
+			case "atribuido":
+				Dados = await Model.countMyAtribuido(req.userId);
+				break;
+			case "requerente&atribuido":
+				Dados = {
+					...await Model.countMyRequerente(req.userId),
+					...await Model.countMyAtribuido(req.userId)
+				}
+				break;
+
+			default:
+				Dados = await Model.countMyChamados(req.userId);
+				break;
+		}
+
+		Result.ok(200, Dados);
+	} catch (error) {
+		console.log(error);
+		Result.fail(400, error);
+	}
+
+	Result.registerLog(req.userId, "chamados", "update");
+	return res.status(Result.status).json(Result.res);
+};
+
 const tools = {
 	handlerInsert: async (Dados) => {
 		const newDados = Validate.InsertChamado(Dados);
@@ -311,4 +348,5 @@ module.exports = {
 	findOne,
 	update,
 	insert,
+	countChamados,
 };

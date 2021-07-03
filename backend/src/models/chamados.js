@@ -94,6 +94,32 @@ const getStatusChamado = (ID) => {
 		.then((e) => e[0].status);
 }
 
+const countMyChamados = (user_id) => {
+	return knex
+		.count('id as chamados')
+		.from('chamados')
+		.where('requerente', '=', user_id)
+		.orWhere('atribuido', '=', user_id)
+		.andWhere('status', '<>', 'Finalizado')
+};
+
+const countMyRequerente = (user_id) => {
+	return knex
+		.count("id as requerente")
+		.from("chamados")
+		.where("requerente", "=", user_id)
+		.andWhere("status", "<>", "Finalizado")
+		.then(e => e[0]);
+}
+const countMyAtribuido = (user_id) => {
+	return knex
+		.count("id as atribuido")
+		.from("chamados")
+		.orWhere("atribuido", "=", user_id)
+		.andWhere("status", "<>", "Finalizado")
+		.then((e) => e[0]);
+}
+
 module.exports = {
 	index,
 	requerentesByUserID,
@@ -103,5 +129,8 @@ module.exports = {
 	insert,
 	update,
 	countID,
+	countMyChamados,
+	countMyRequerente,
+	countMyAtribuido,
 	getStatusChamado,
 };

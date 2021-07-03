@@ -11,6 +11,7 @@ Router.get("/", Controller.index)
 	.get("/atribuidos/my", Controller.atribuidosOneMe)
 	.get("/atribuidos/user/:user_id", Controller.atribuidosByUserID)
 	.get("/cliente/:cliente_id", Controller.indexByCliente)
+	.get("/count/:tipo", Controller.countChamados)
 	.get("/:id", Controller.findOne)
 	.post("/", Controller.insert)
 	.put("/:id", Controller.update);

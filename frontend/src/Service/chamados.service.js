@@ -86,7 +86,22 @@ export const getAcmChamado = async (chamado_id) => {
   }
 };
 
+export const countRequerenteAtribuidos = async () => {
+    try {
+      const Url = `/chamados/count/requerente&atribuido`;
+      const Dados = await Service.exec('get', Url);
 
+      if (!Dados.data.success)
+        throw new Error(Dados.data.message || 'Error em buscar quantidade de chamados.');
+
+      return {
+        success: true,
+        data: Dados.data.data
+      };
+    } catch (error) {
+      throw error.data ? error.data : error;
+    }
+}
 
 export const changePrioridade = async (id, newPrioridade) => {
   try {

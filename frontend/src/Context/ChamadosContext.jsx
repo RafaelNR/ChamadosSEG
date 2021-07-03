@@ -22,7 +22,28 @@ const ChamadosProvider = ({ children }) => {
   const [chamado, setChamado] = useState({});
   const [currTab, setCurrTab] = useState(null);
   const [errors, setErrors] = useState([]);
+  const [countChamados, setCountChamados] = useState([]);
 
+  useEffect(() => {
+    let render = true;
+    (async () => {
+      try {
+        const {success, data} = await Service.countRequerenteAtribuidos();
+
+        if (render && success) {
+          setCountChamados(data);
+        }
+
+      } catch (error) {
+        console.log(error)
+      }
+    })()
+
+    return function cleanup(){
+      render = false;
+    }
+  },[])
+  
   useEffect(() => {
     const tab = parseInt(localStorage.getItem('currTabChamado'));
     setCurrTab(tab || 0);
@@ -43,9 +64,9 @@ const ChamadosProvider = ({ children }) => {
             return {
               ...c,
               prioridade: newPrioridade
-            }
+            };
           }
-          return c
+          return c;
         });
         handleSnackBar({
           type: 'success',
@@ -54,16 +75,16 @@ const ChamadosProvider = ({ children }) => {
         return setChamados(newChamados);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       handleSnackBar({
         type: 'error',
         message: (error && error.message) || `Erro em alterar a prioridade.`
       });
     }
+    // react-hooks/exhaustive-deps
   }, [chamado,chamados])
 
   const changePrioridadeChamado = useCallback(async () => {
-
     try {
       const newPrioridade = !chamado.prioridade ? 1 : 0;
       const Dados = await Service.changePrioridade(chamado.id, newPrioridade);
@@ -78,17 +99,18 @@ const ChamadosProvider = ({ children }) => {
         });
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       handleSnackBar({
         type: 'error',
         message: (error && error.message) || 'Erro em alterar a prioridade.'
       });
     }
-
+    // react-hooks/exhaustive-deps
   }, [chamado]);
 
   const handleSubmit = useCallback(async () => {
     chamado.id ? await handleUpdate(chamado) : await handleInsert(chamado);
+    // react-hooks/exhaustive-deps
   }, [chamado]);
 
   const handleInsert = useCallback(async () => {
@@ -100,7 +122,7 @@ const ChamadosProvider = ({ children }) => {
       const Dados = await Service.Insert(newChamado);
       const { success, data } = Dados;
       if (success) {
-        setErrors([])
+        setErrors([]);
         handleSnackBar({
           type: 'success',
           message: 'Chamado Inserido.'
@@ -118,6 +140,7 @@ const ChamadosProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
+    // react-hooks/exhaustive-deps
   }, [chamado]);
   
   const handleUpdate = useCallback(async () => {
@@ -149,6 +172,7 @@ const ChamadosProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
+    // react-hooks/exhaustive-deps
   }, [chamado]);
   
   return (
@@ -159,6 +183,7 @@ const ChamadosProvider = ({ children }) => {
         chamado,
         setChamado,
         chamados,
+        countChamados,
         errors,
         setErrors,
         setChamados,

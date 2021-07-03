@@ -13,12 +13,14 @@ const useUser = () => {
 
   useEffect(() => {
     const Dados = getData('user');
-    setUserDados(Dados);
-    setNome(Dados.nome);
-    setUser(Dados.user);
-    setRoleID(Dados.role_id);
-    setEmail(Dados.email);
-    setImagem(Dados.imagem);
+    if (Dados) {
+      setUserDados(Dados);
+      setNome(Dados.nome);
+      setUser(Dados.user);
+      setRoleID(Dados.role_id);
+      setEmail(Dados.email);
+      setImagem(Dados.imagem); 
+    }
     // eslint-disable-next-line
   }, []);
 

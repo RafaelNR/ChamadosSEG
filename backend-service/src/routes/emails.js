@@ -7,7 +7,6 @@ Router.post("/resend-atividades", Email.ReenviaAtividades);
 
 // CHAMADOS 
 Router.get("/chamado/create/:id", Email.ChamadoCreate)
-//       .get("/acm/create", Email.AcmCreate)
 
 
 // Router.get("/email", (req, res, next) => {

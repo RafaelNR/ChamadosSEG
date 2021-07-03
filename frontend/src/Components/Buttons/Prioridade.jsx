@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   })
 }));
 
-export default ({ type='chamados' }) => {
+export default ({ type='chamados', status }) => {
   const {
     chamado,
     changePrioridadeChamado,
@@ -53,8 +53,7 @@ export default ({ type='chamados' }) => {
         setLoading(false);
       });
     }
-
-
+    
   },[chamado,type])
 
   return (
@@ -63,8 +62,14 @@ export default ({ type='chamados' }) => {
     >
       <Button
         className={classes.prioridade}
-        endIcon={ loading ? <CircularProgress size={20} /> : <FlagSharp className={classes.prioridade_icon} />}
-        onClick={handleChangePrioridade}
+        endIcon={
+          loading ? (
+            <CircularProgress size={20} />
+          ) : (
+            <FlagSharp className={classes.prioridade_icon} />
+          )
+        }
+        onClick={status !== 'Finalizado' ? handleChangePrioridade : undefined}
       />
     </ArrowIconTooltips>
   );

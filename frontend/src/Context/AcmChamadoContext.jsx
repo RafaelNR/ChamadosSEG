@@ -41,10 +41,8 @@ const AcompanhamentosChamadoProvider = ({ children }) => {
       const acm = await InsertAcompanhamentoSchema(acompanhamento);
 
       if (acm.error) {
-        console.log(acm.errors)
         throw new Error('Erro em inserir acompanhamento. '+acm.errors.descricao);
       }
-
       const { success, data } = await Service.InsertAcm(acm);
       if (success) {
         handleSnackBar({

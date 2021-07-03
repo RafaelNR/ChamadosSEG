@@ -97,6 +97,9 @@ const UploadProvider = ({ children }) => {
   const uploadFileChamado = useCallback(async () => {
     try {
       const response = await Service.uploadFileChamado(file);
+
+      console.log(response)
+
       if (response.data.success) {
         handleSnackBar({
           type: 'success',
@@ -110,6 +113,7 @@ const UploadProvider = ({ children }) => {
       );
       
     } catch (error) {
+      console.log(error);
       handleSnackBar({
         type: 'error',
         message:

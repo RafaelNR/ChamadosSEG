@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/';
 import BoxChamado from '../../Components/Box/Chamado';
 import Loading from '../../Components/Loading';
 
@@ -12,6 +13,13 @@ import {
 import useChamados from '../../Context/ChamadosContext';
 import useSnackBar from '../../Context/SnackBarContext';
 import useLoading from '../../Context/LoadingContext';
+
+const useStyles = makeStyles((theme) => ({
+  text: {
+    fontSize: 16,
+    textAlign: 'center'
+  }
+}));
 
 
 const getChamados = async () => {
@@ -39,6 +47,7 @@ const getChamados = async () => {
 };
 
 export default () => {
+  const classes = useStyles();
   const { chamados, setChamados } = useChamados();
   const { handleSnackBar } = useSnackBar();
   const { loading, setLoading } = useLoading();
@@ -71,9 +80,9 @@ export default () => {
     <>
       { loading ? <Loading /> : 
         
-          chamados.map((chamado) => {
+          chamados.length >= 1 ? chamados.map((chamado) => {
             return <BoxChamado key={chamado.id} chamado={chamado} tab="Atribuído" />
-          })
+          })  : (<div className={classes.text}> Sem chamados Atribuído a você </div>) 
         
       }
     </>

@@ -16,17 +16,17 @@ const useStyles = makeStyles((theme) => ({
     color: 'white'
   },
   link: {
-    color: 'rgba(0, 0, 0, 0.54)',
+    color: theme.darkMode ? 'white' : 'rgba(0, 0, 0, 0.54)',
     display: 'inline-flex',
     minWidth: 56,
     flexShrink: 0
   },
   icon: {
-    color: 'rgba(0, 0, 0, 0.54)',
+    color: theme.darkMode ? 'white' : 'rgba(0, 0, 0, 0.54)',
     display: 'inline-flex',
     minWidth: 40,
     flexShrink: 0,
-    alignItems: 'center',
+    alignItems: 'center'
   }
 }));
 

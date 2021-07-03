@@ -1,7 +1,7 @@
 const Email = require("../classes/email");
 // const Model = require("../models/Emails");
 const { findOneByHash, emailSendAt } = require("../models/RecuperarSenha");
-const ModelChamados = require("../models/Chamados")
+const ModelChamados = require("../models/Chamados");
 
 const EnviarEmail = async (configs, Dados) => {
 	const email = new Email(configs.textFrom);
@@ -91,7 +91,6 @@ const ChamadoCreate = async (req, res, next) => {
 		const resp = await email.send();
 
 		if (resp.sucesso) {
-			await emailSendAt(Chamado.id);
 			return res.send({
 				success: true,
 				message: "Email envido com sucesso.",
@@ -105,8 +104,9 @@ const ChamadoCreate = async (req, res, next) => {
 	}
 };
 
+
 module.exports = {
 	RecuperarSenha,
 	ReenviaAtividades,
-	ChamadoCreate,
+	ChamadoCreate
 };

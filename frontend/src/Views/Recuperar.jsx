@@ -5,7 +5,6 @@ import {
   makeStyles,
   Grid,
   Paper,
-  TextField,
   Typography
 } from '@material-ui/core/';
 import { ProgressSubmit } from '../Components/Buttons/Progress';
@@ -116,6 +115,7 @@ export default () => {
     return function cleanup() {
       render = false;
     };
+    // react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = async (e) => {

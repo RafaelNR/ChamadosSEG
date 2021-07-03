@@ -7,7 +7,8 @@ import {
   Tabs,
   Tab,
   Box,
-  IconButton
+  IconButton,
+  Badge
 } from '@material-ui/core';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import Requeridos from './Requeridos'
@@ -33,6 +34,12 @@ const useStyles = makeStyles((theme) => ({
       padding: 0,
       margin: 0,
       height: 24
+    }
+  },
+  badge: {
+    '& .MuiBadge-badge': {
+      top: 10,
+      left: -15
     }
   }
 }));
@@ -70,40 +77,69 @@ function a11yProps(index) {
   };
 }
 
+function BadgeTitulo(props) {
+  const classes = useStyles();
+  return (
+    <Badge
+      badgeContent={props.count}
+      color="secondary"
+      className={classes.badge}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'left'
+      }}
+    >
+      {props.titulo}
+    </Badge>
+  );
+}
+
 export default () => {
   const classes = useStyles();
-  const { currTab, changeCurrTab } = useChamados();
+  const { countChamados, currTab, changeCurrTab } = useChamados();
 
   return (
-  <>
-    { currTab !== null && (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Tabs
-          value={currTab}
-          onChange={changeCurrTab}
-          aria-label="tab chamados"
-        >
-          <Tab label="Requeridos" {...a11yProps(0)} />
-          <Tab label="Atribuídos" {...a11yProps(1)} />
-          <Tab label="Meus Clientes" {...a11yProps(2)} />
-        </Tabs>
-        <IconButton aria-label="add" className={classes.button}>
-          <Link to="/chamado/create">
-            <AddCommentIcon />
-          </Link>
-        </IconButton>
-      </AppBar>
-      <TabPanel value={currTab} index={0}>
-        <Requeridos />
-      </TabPanel>
-      <TabPanel value={currTab} index={1}>
-        <Atribuidos />
-      </TabPanel>
-      <TabPanel value={currTab} index={2}>
+    <>
+      {currTab !== null && (
+        <div className={classes.root}>
+          <AppBar position="static">
+            <Tabs
+              value={currTab}
+              onChange={changeCurrTab}
+              aria-label="tab chamados"
+            >
+              <Tab
+                label={
+                  <BadgeTitulo
+                    titulo="Requeridos"
+                    count={countChamados.requerente}
+                  />
+                }
+                {...a11yProps(0)}
+              />
+              <Tab
+                label={
+                  <BadgeTitulo titulo="Atribuídos" count={countChamados.atribuido} />
+                }
+                {...a11yProps(1)}
+              />
+            </Tabs>
+            <IconButton aria-label="add" className={classes.button}>
+              <Link to="/chamado/create">
+                <AddCommentIcon />
+              </Link>
+            </IconButton>
+          </AppBar>
+          <TabPanel value={currTab} index={0}>
+            <Requeridos />
+          </TabPanel>
+          <TabPanel value={currTab} index={1}>
+            <Atribuidos />
+          </TabPanel>
+          {/* <TabPanel value={currTab} index={2}>
         Chamados que eu sigo
-      </TabPanel>
-      </div>
+      </TabPanel> */}
+        </div>
       )}
     </>
   );

@@ -243,10 +243,9 @@ export const MenuAcmActionsUpload = () => {
     setTipo(0);
   }, []);
 
-  const handleInsertFile = () => {
-    uploadFileChamado().then(resp => {
-      setAcompanhamentos(acms => [resp,...acms])
-    })
+  const handleInsertFile = async () => {
+    const resp = await uploadFileChamado();
+    setAcompanhamentos(acms => [resp,...acms])
     setTipo(0);
     setAnchorEl(null);
     setCurrID(null);

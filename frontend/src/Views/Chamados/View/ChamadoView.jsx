@@ -142,7 +142,7 @@ export default () => {
           <Grid item xs={3} className={classes.header}>
             <PaperHeader>
               <div className={classes.prioridade_status}>
-                <Prioridade type="chamado" />
+                <Prioridade type="chamado" status={chamado.status} />
                 <MenuStatus status={chamado.status} />
               </div>
             </PaperHeader>
