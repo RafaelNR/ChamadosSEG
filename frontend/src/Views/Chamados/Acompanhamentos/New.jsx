@@ -67,7 +67,7 @@ export default () => {
   const classes = useStyles();
   const { userDados } = useUser();
   const { chamado } = useChamados();
-  const { tipo, setAcompanhamento,currID } = useAcompanhamento();
+  const { tipo, setAcompanhamento } = useAcompanhamento();
 
   useEffect(() => {
     setAcompanhamento((acm) => {
@@ -76,6 +76,7 @@ export default () => {
         chamado_id: chamado.id
       };
     });
+    // eslint-disable-next-line
   },[])
 
   return (

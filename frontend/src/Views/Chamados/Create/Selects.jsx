@@ -59,7 +59,6 @@ export const SelectRequerentes = ({ handleChange, ...rest }) => {
     let render = true;
 
     if (userDados.id) {
-      
       (async () => {
         try {
           const { success, data } =
@@ -84,12 +83,12 @@ export const SelectRequerentes = ({ handleChange, ...rest }) => {
           console.log(error);
         }
       })();
-
     }
-      
-      return () => {
+
+    return () => {
       return false;
     };
+    // eslint-disable-next-line
   }, [userDados]);
 
   return (
@@ -125,7 +124,7 @@ export const SelectRequerentes = ({ handleChange, ...rest }) => {
 export const SelectAtribuiveis = ({ handleChange, ...rest }) => {
   const classes = useStyles();
   const { userDados } = useUser();
-  const { errors, chamado, setChamado } = useChamados();
+  const { errors, chamado } = useChamados();
   const [values, setValues] = useState([]);
 
   useEffect(() => {
@@ -153,6 +152,7 @@ export const SelectAtribuiveis = ({ handleChange, ...rest }) => {
     return () => {
       return false;
     };
+    // eslint-disable-next-line
   }, [chamado.requerente]);
 
   return (

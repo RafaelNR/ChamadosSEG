@@ -77,6 +77,7 @@ const FormInsert = React.memo(({ changeForm, handleChange }) => {
     setUsuario({});
     setErrors([]);
     setLoading(false);
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -143,6 +144,7 @@ const FormUpdate = React.memo(
       if (usuario && usuario.id && !apiLoading) {
         setLoading(false);
       }
+      // eslint-disable-next-line
     }, [apiLoading, usuario]);
 
     return (
@@ -253,19 +255,17 @@ const FormClients = React.memo(
     const [clientes, setClientes] = useState([]);
 
     React.useEffect(() => {
-      getClientes()
-        .then(resp => {
-          setClientes(
-            resp.data.map((cliente) => {
-              return {
-                id: cliente.id,
-                nome: cliente.nome_fantasia
-              };
-            })
-          );
-
-        })
-      
+      getClientes().then((resp) => {
+        setClientes(
+          resp.data.map((cliente) => {
+            return {
+              id: cliente.id,
+              nome: cliente.nome_fantasia
+            };
+          })
+        );
+      });
+      // eslint-disable-next-line
     },[])
 
     const handleClients = React.useCallback((action, ID) => {
@@ -276,14 +276,13 @@ const FormClients = React.memo(
         : (currClients = currClients.filter((c) => c !== ID));
 
       // Adiciona o Valor
-      setUsuario(props => {
-
+      setUsuario((props) => {
         return {
           ...props,
           clients: currClients
-        }
-
+        };
       });
+      // eslint-disable-next-line
     }, []);
 
 
@@ -365,6 +364,7 @@ const FactorForm = (props) => {
       setCurrForm('insert');
       setForms([props.currForm, 'clientes']);
     }
+    // eslint-disable-next-line
   }, [type]);
 
   const handleSubmit = React.useCallback(
@@ -372,7 +372,7 @@ const FactorForm = (props) => {
       event.preventDefault();
       setLoading(true);
       setErrors(false);
-      handleActions(type,usuario).then((resp) => {
+      handleActions(type, usuario).then((resp) => {
         if (resp) {
           setOpen(false);
         } else {
@@ -380,33 +380,34 @@ const FactorForm = (props) => {
         }
       });
     },
-    [type,usuario]
+    // eslint-disable-next-line
+    [type, usuario]
   );
 
   const handleChange = React.useCallback(
     (event) => {
       const name = event.target.name;
       const value = Masker(event.target.value, name);
-      setUsuario(props => {
-
+      setUsuario((props) => {
         return {
           ...props,
-          [name]: value,
-        }
-
+          [name]: value
+        };
       });
     },
-    [],
+    // eslint-disable-next-line
+    []
   );
 
   const changeForm = React.useCallback((type=null) => {
     if (type === 'next') {
-      const index = forms.indexOf(currForm)
-      setCurrForm(forms[index+1])
+      const index = forms.indexOf(currForm);
+      setCurrForm(forms[index + 1]);
     } else {
       const index = forms.indexOf(currForm);
-      setCurrForm(forms[index-1]);
+      setCurrForm(forms[index - 1]);
     }
+    // eslint-disable-next-line
   },[currForm])
 
   switch (currForm) {

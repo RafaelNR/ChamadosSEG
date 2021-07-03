@@ -32,6 +32,7 @@ export default ({ user }) => {
 
   useEffect(() => {
     if (user && user.nome) setValues(user);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[user])
 
 
@@ -74,7 +75,7 @@ export default ({ user }) => {
           title="Meus Dados"
         />
         <Divider />
-        { values && values.nome ? 
+        { loading && values && values.nome ? 
           (
             <>
               <CardContent>

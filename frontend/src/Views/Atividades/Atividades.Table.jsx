@@ -31,7 +31,6 @@ import {
   getStatusAtividade,
   getColorAtividade
 } from '../../Utils/dates';
-import AtividadesInfo from "../../Components/Accordion/Accordion";
 
 const headCells = [
   {

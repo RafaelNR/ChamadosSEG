@@ -42,7 +42,7 @@ export default () => {
       try {
         const { success, data } = await getModelos();
         if (success && render) {
-          setModelos(data)
+          setModelos(data);
         }
       } catch (error) {
         console.log(error);
@@ -52,15 +52,16 @@ export default () => {
     return () => {
       return false;
     };
+    // eslint-disable-next-line
   }, []);
 
   const handleChange = useCallback((e) => {
     const id = e.target.value;
-    const Modelo = modelos.filter(modelo => modelo.id === id)[0];
+    const Modelo = modelos.filter((modelo) => modelo.id === id)[0];
 
     if (Modelo) {
       setValue(id);
-      setChamado(chamado => {
+      setChamado((chamado) => {
         return {
           ...chamado,
           titulo: Modelo.titulo,
@@ -68,10 +69,10 @@ export default () => {
           categoria_id: Modelo.categoria_id,
           sub_categoria_id: Modelo.sub_categoria_id
         };
-      });      
+      });
     }
 
-    
+    // eslint-disable-next-line
   }, [modelos]);
 
   return (

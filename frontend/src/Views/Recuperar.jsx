@@ -115,7 +115,7 @@ export default () => {
     return function cleanup() {
       render = false;
     };
-    // react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   const handleSubmit = async (e) => {

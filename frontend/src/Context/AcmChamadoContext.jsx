@@ -41,7 +41,9 @@ const AcompanhamentosChamadoProvider = ({ children }) => {
       const acm = await InsertAcompanhamentoSchema(acompanhamento);
 
       if (acm.error) {
-        throw new Error('Erro em inserir acompanhamento. '+acm.errors.descricao);
+        throw new Error(
+          'Erro em inserir acompanhamento. ' + acm.errors.descricao
+        );
       }
       const { success, data } = await Service.InsertAcm(acm);
       if (success) {
@@ -49,10 +51,7 @@ const AcompanhamentosChamadoProvider = ({ children }) => {
           type: 'success',
           message: 'Acompanhamento adicionado.'
         });
-        return setAcompanhamentos([
-          data,
-          ...acompanhamentos
-        ])
+        return setAcompanhamentos([data, ...acompanhamentos]);
       }
       throw new Error(data.message);
     } catch (error) {
@@ -60,13 +59,15 @@ const AcompanhamentosChamadoProvider = ({ children }) => {
       handleSnackBar({
         type: 'error',
         message:
-          error && error.message ||
-          'Erro em inserir acompanhamento no chamado.'
+          error && error.message
+            ? error.message
+            : 'Erro em inserir acompanhamento no chamado.'
       });
     } finally {
       setLoading(false);
       setTipo(0);
     }
+    // eslint-disable-next-line
   }, [acompanhamento]);
 
   const UpdateAcompanhamento = useCallback(async () => {
@@ -95,13 +96,17 @@ const AcompanhamentosChamadoProvider = ({ children }) => {
       console.log(error);
       handleSnackBar({
         type: 'error',
-        message: error && error.message || 'Erro em atualizar acompanhamento.'
+        message:
+          error && error.message
+            ? error.message
+            : 'Erro em atualizar acompanhamento.'
       });
     } finally {
       setLoading(false);
       setCurrID(null);
       setTipo(0);
     }
+    // eslint-disable-next-line
   }, [acompanhamento, acompanhamentos]);
 
   const DeleteAcompanhamento = useCallback(
@@ -124,7 +129,10 @@ const AcompanhamentosChamadoProvider = ({ children }) => {
         console.log(error);
         handleSnackBar({
           type: 'error',
-          message: error && error.message || 'Erro em atualizar acompanhamento.'
+          message:
+            error && error.message
+              ? error.message
+              : 'Erro em atualizar acompanhamento.'
         });
       } finally {
         setLoading(false);
@@ -132,6 +140,7 @@ const AcompanhamentosChamadoProvider = ({ children }) => {
         setTipo(0);
       }
     },
+    // eslint-disable-next-line
     [currID, acompanhamentos]
   );
 

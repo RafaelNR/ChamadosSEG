@@ -92,6 +92,7 @@ export default function () {
   useEffect(() => {
     setOrderBy('nome');
     setRows(search && search.length > 3 ? searchResults : subcategorias);
+    // eslint-disable-next-line
   }, [subcategorias, searchResults]);
 
   useEffect(() => {

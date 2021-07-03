@@ -22,12 +22,13 @@ const SnackBarProvider = ({ children }) => {
   const handleSnackBar = useCallback(
     ({ type, message }) => {
       if (type === 'error') setMessage(handleError(message));
-      if (message.message)setMessage(message.message);
+      if (message.message) setMessage(message.message);
       else setMessage(message);
 
       setSeverity(type);
       setOpenSnackBar(true);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 

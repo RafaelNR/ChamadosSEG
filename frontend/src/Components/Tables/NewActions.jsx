@@ -2,8 +2,6 @@ import React from 'react';
 import { makeStyles, ButtonGroup, Button } from '@material-ui/core';
 import {
   EditSharp,
-  VisibilityOffSharp,
-  VisibilitySharp,
   DeleteForeverSharp
 } from '@material-ui/icons';
 

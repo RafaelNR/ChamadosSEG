@@ -74,7 +74,8 @@ export default () => {
     })();
     return () => {
       return false;
-    }
+    };
+    // eslint-disable-next-line
   }, []);
 
   return (

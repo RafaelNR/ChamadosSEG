@@ -93,6 +93,7 @@ export default function () {
   useEffect(() => {
     setOrderBy('nome_fantasia');
     setRows(search && search.length > 3 ? searchResults : clientes);
+    // eslint-disable-next-line
   }, [clientes, searchResults]);
 
   /**

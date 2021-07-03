@@ -2,7 +2,7 @@ import ErrorMessages from '../Store/ErrorMessage'
 
 export const handleResponse = async (res) => {
   const response = await res
-  const { data, status, statusText } = response;
+  const { data, statusText } = response;
 
   if (statusText === 'Unauthorized') {
     handleErrorMessage(data.message);

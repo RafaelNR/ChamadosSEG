@@ -58,7 +58,7 @@ export default () => {
       try {
         setLoading(true);
         const Dados = await getChamados();
-        console.log(Dados)
+        console.log(Dados);
         if (render) setChamados(Dados);
       } catch (error) {
         console.log(error);
@@ -74,6 +74,7 @@ export default () => {
     return () => {
       return false;
     };
+    // eslint-disable-next-line
   }, []);
 
   return (

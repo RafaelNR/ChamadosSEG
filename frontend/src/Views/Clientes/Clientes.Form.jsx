@@ -35,6 +35,7 @@ const FormInsert = ({ handleChange, handleSubmit, values }) => {
     setCliente({});
     setErrors({});
     setLoading(false);
+    // eslint-disable-next-line
   }, [setCliente,setErrors,setLoading]);
 
   return (

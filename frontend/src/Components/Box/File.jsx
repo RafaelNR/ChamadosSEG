@@ -34,6 +34,7 @@ export const Acompanhamento = ({ acm }) => {
     if (acm) {
       setFile(JSON.parse(acm.descricao));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -1,7 +1,6 @@
 import React, {
   createContext,
   useState,
-  useEffect,
   useContext,
   useCallback,
 } from "react";
@@ -51,8 +50,6 @@ const LoginProvider = ({ children }) => {
       }
 
       throw new Error('Erro em logar no sistema');
-
-
     } catch (error) {
       console.log(error);
 
@@ -63,20 +60,20 @@ const LoginProvider = ({ children }) => {
       setErrors({
         success: false,
         message:
-          error && error.message
-            ? error.message
-            : 'Erro em logar no sistema.'
+          error && error.message ? error.message : 'Erro em logar no sistema.'
       });
     } finally {
       setLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [login]);
 
   const handleSubmitLogin = useCallback(
     (e) => {
       e.preventDefault();
       handleLogin(login);
-  },[login]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[login]);
 
   const handleChangeSlide = useCallback(() => {
     setErrors([])
@@ -105,7 +102,8 @@ const LoginProvider = ({ children }) => {
           return errors;
         });
       }
-  },[login]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[login]);
 
   return (
     <LoginContext.Provider

@@ -55,6 +55,7 @@ export default () => {
   const handleNovo = useCallback((tipo) => {
     setTipo(tipo);
     handleClose();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -114,6 +115,7 @@ export const MenuAcmActions = ({ tipoMenu, id=null }) => {
     setTipo(0);
     setAnchorEl(null);
     setCurrID(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleInsert = () => {
@@ -235,12 +237,14 @@ export const MenuAcmActionsUpload = () => {
     setTipo(0);
     setAnchorEl(null);
     setCurrID(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleRemoverFile = useCallback((e) => {
     setFile({});
     setAnchorEl(null);
     setTipo(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleInsertFile = async () => {

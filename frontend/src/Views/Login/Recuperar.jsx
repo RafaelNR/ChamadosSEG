@@ -39,26 +39,27 @@ export default () => {
   const handleChange = useCallback((e) => {
     setEmail(e.target.value);
     setErrors({});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
-    
+
     setLoading(true);
 
     Recuperar(email)
-      .then(resp => {
+      .then((resp) => {
         setSuccess(true);
         setLoading(false);
         setErrors([]);
       })
-      .catch(error => {
-        console.log('Error: ', error)
+      .catch((error) => {
+        console.log('Error: ', error);
         setSuccess(false);
         setLoading(false);
         setErrors(error);
-      })
-    
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[email])
 
   return (

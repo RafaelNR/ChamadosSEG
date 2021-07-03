@@ -1,13 +1,11 @@
 import React from "react";
 import clsx from "clsx";
-import { Link } from 'react-router-dom'
 import { MenuRounded } from "@material-ui/icons/";
 import {
   makeStyles,
   AppBar,
   Toolbar,
   IconButton,
-  Tooltip
 } from "@material-ui/core";
 import MenuUser from './MenuUser'
 import { SearchAtividade } from '../Components/Search/ticket';

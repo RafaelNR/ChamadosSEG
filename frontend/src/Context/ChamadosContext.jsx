@@ -81,7 +81,7 @@ const ChamadosProvider = ({ children }) => {
         message: (error && error.message) || `Erro em alterar a prioridade.`
       });
     }
-    // react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [chamado,chamados])
 
   const changePrioridadeChamado = useCallback(async () => {
@@ -105,12 +105,12 @@ const ChamadosProvider = ({ children }) => {
         message: (error && error.message) || 'Erro em alterar a prioridade.'
       });
     }
-    // react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [chamado]);
 
   const handleSubmit = useCallback(async () => {
     chamado.id ? await handleUpdate(chamado) : await handleInsert(chamado);
-    // react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [chamado]);
 
   const handleInsert = useCallback(async () => {
@@ -140,7 +140,7 @@ const ChamadosProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-    // react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [chamado]);
   
   const handleUpdate = useCallback(async () => {
@@ -172,7 +172,7 @@ const ChamadosProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-    // react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [chamado]);
   
   return (

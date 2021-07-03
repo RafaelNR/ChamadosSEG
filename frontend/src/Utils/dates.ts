@@ -1,6 +1,5 @@
 import moment from "moment";
 import 'moment/locale/pt-br';
-import { UrlWithStringQuery } from "url";
 
 function TodayDate() {
   return moment(new Date()).format("YYYY-MM-DD");
@@ -49,6 +48,7 @@ function dateMaxOpenAtividade(date: string, Days: number): string {
  * @returns retorna se a data já fechou.
  */
 function getStatusAtividade(date: string): boolean{
+  if (moment(date).isBefore(moment().format('YYYY-MM-DD'), 'month')) return false;
   return moment().diff(date, 'days') <= 9 ? true : false
 }
 

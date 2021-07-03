@@ -61,6 +61,7 @@ export default function TransferList({ disponiveis, selecionados, setValue }) {
 
       setLoading(false);
     }
+    // eslint-disable-next-line
   }, []);
 
   // Passa item de disponivel para selecionados

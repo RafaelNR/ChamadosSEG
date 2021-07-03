@@ -1,8 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Fade from '@material-ui/core/Fade';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const useStyles = makeStyles((theme) => ({
   root: {

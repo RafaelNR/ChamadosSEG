@@ -22,7 +22,8 @@ export const ChipUser = ({ nome, img, tooltip, label, style }) => {
   const [imagem, setImagem] = useState('/static/logo.png');
 
   useEffect(() => {
-    setImagem(img ? process.env.REACT_APP_ENDPOINT_IMAGES_USER + img : imagem )
+    setImagem(img ? process.env.REACT_APP_ENDPOINT_IMAGES_USER + img : imagem);
+    // eslint-disable-next-line
   },[])
 
 
@@ -57,28 +58,26 @@ export default ({ nome, id, tooltip, label }) => {
   const [imagem, setImagem] = useState('/static/logo.png');
 
   useEffect(() => {
-
     (async () => {
-
       try {
         const { success, data } = await Service.getUser(id);
         if (success) {
           data &&
             data.imagem &&
-            setImagem(
-              process.env.REACT_APP_ENDPOINT_IMAGES_USER + data.imagem
-            );
-        }  
+            setImagem(process.env.REACT_APP_ENDPOINT_IMAGES_USER + data.imagem);
+        }
       } catch (error) {
         console.log(error);
         handleSnackBar({
           type: 'error',
-          message: error && error.message || 'Erro em carregar imagem do usuário.'
+          message:
+            error && error.message
+              ? error.message
+              : 'Erro em carregar imagem do usuário.'
         });
       }
-      
-    })()
-
+    })();
+    // eslint-disable-next-line
   }, [])
   
   if (tooltip && label) {

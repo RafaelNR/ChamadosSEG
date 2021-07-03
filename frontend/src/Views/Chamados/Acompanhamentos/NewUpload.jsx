@@ -49,7 +49,8 @@ export default () => {
         chamado_id: chamado.id
       };
     });
-  },[])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[chamado.id,tipo])
 
   return (
     <Fade>

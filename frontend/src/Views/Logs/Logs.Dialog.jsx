@@ -32,8 +32,9 @@ const Dialog = () => {
   useEffect(() => {
     if (currLog && currLog.id) {
       const Dado = logs.filter((log) => log.id === currLog.id && log);
-      setCurrLog(Dado[0])
+      setCurrLog(Dado[0]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currLog]);
 
   return open && currLog.id ? (

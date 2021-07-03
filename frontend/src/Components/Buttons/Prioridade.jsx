@@ -53,7 +53,7 @@ export default ({ type='chamados', status }) => {
         setLoading(false);
       });
     }
-    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[chamado,type])
 
   return (

@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export const SearchAtividade = ({}) => {
+export const SearchAtividade = () => {
   const [open, setOpen] = useState(false);
   const { history } = useHistory();
   let location = useLocation();
@@ -82,7 +82,8 @@ export const SearchAtividade = ({}) => {
   const classes = useStyles(open);
 
   useEffect(() => {
-    if(open) setOpen(!open);
+    if (open) setOpen(!open);
+    // eslint-disable-next-line
   },[location])
 
   const handleChange = useCallback((e) => {

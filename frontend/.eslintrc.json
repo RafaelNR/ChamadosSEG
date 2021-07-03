@@ -40,6 +40,6 @@
         "no-console": "off",
         "no-param-reassign": "off",
         "no-plusplus": "off",
-        "no-throw-literal": "off"
+        "no-throw-literal": "off",
     }
 }

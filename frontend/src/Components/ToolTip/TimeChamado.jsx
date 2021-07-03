@@ -38,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const TimeAcompanhamento = ({ created_at, updated_at }) => {
-  const classes = useStyles();
   return (
     <Tooltip
       title={

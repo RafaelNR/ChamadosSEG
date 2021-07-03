@@ -41,18 +41,15 @@ export default () => {
     setLoading(true);
 
     (async () => {
-
       try {
-
         const Dados = await Dashboard.MyUserAtividades();
 
         if (Dados.success && render) {
           setOpen(Dados.data.open);
-          setHalf(Dados.data.half)
+          setHalf(Dados.data.half);
           setLast(Dados.data.last);
           setClose(Dados.data.close);
         }
-
       } catch (error) {
         console.log(error);
         handleSnackBar({
@@ -65,14 +62,12 @@ export default () => {
       } finally {
         setLoading(false);
       }
-
     })();
-
 
     return function cleanup() {
       render = false;
     };
-
+    // eslint-disable-next-line
   }, []);
 
   // function handleLink(event){
