@@ -122,10 +122,8 @@ export default () => {
     e.preventDefault();
     setLoading(true);
     try {
+
       const resp = await changePasswd(values);
-
-      console.log(resp);
-
       if (resp.error || !resp.success) {
         throw new Error(resp.message);
       }

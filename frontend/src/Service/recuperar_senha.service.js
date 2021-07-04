@@ -32,7 +32,6 @@ export const changePasswd = async (Dados) => {
           ...Dados,
           passwd
         },
-        true
       );
 
     if (Resp.data.success) {

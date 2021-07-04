@@ -33,7 +33,7 @@ export async function Login({user, passwd, permanecer}) {
 export async function Recuperar(email) {
 
   try {
-    const Resp = await Service.exec('post', `recuperar-senha?email=${email},`, null);
+    const Resp = await Service.exec('post', `recuperar-senha?email=${email}`, null);
     
     if (Resp.data.success) {
       return Resp.data.data;

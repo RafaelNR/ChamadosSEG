@@ -69,7 +69,7 @@ const access = async (req, res) => {
 const changePasswd = async (req, res) => {
 	try {
 		const Dados = req.body;
-	
+
 		const user = await tools.checkEmailUser(Dados.email)
 		await tools.validateHash(Dados.hash, Dados.ip_remote);
 		const newPasswd = Crypt(Dados.passwd);
@@ -94,8 +94,8 @@ const changePasswd = async (req, res) => {
 const tools = {
 
   async checkEmailUser(email) {
-    const user = await User.findOneByEmail(email);
-    
+		const user = await User.findOneByEmail(email);
+		
     if (!user) throw "Email não foi encontrado.";
 
 		return user;

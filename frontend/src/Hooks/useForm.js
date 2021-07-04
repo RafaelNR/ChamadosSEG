@@ -19,8 +19,6 @@ const useForm = (initValue) => {
     (event) => {
       const name = event.target.name;
       const value = Masker(event.target.value, name);
-      console.log(name, value);
-
       setValues((props) => {
         return {
           ...props,
