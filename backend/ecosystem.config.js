@@ -6,7 +6,7 @@ module.exports = {
 			name: "OSBackend",
 			script: "./index.js",
 			watch: true,
-
+			ignore_watch: ["./node_modules", "./public", "./__tests__",'./coverage'],
 			env_dev: {
 				APP_NAME: process.env.APP_NAME,
 				NODE_ENV: process.env.NODE_ENV,
