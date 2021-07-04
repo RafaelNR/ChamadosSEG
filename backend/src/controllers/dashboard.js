@@ -7,10 +7,10 @@ const CountAtividades = async (req, res) => {
 		const UserID = req.userId
 
 		const Dados = {
-			open: (await Atividades.findByUser_id(UserID, "open")).length,
-			half: (await Atividades.findByUser_id(UserID, "half")).length,
-			last: (await Atividades.findByUser_id(UserID, "last")).length,
-			close: (await Atividades.findByUser_id(UserID, "close")).length,
+			open: await Atividades.countAtividadesByUserID(UserID, "open"),
+			half: await Atividades.countAtividadesByUserID(UserID, "half"),
+			last: await Atividades.countAtividadesByUserID(UserID, "last"),
+			close: await Atividades.countAtividadesByUserID(UserID, "close"),
 		};
 
 		Result.ok(200, Dados);
@@ -27,12 +27,11 @@ const CountAtividadesMyClientes = async (req,res) => {
 		const UserID = req.userId;
 
 		const Dados = {
-			open: (await Atividades.findAllByClientes(UserID, "open")).length,
-			half: (await Atividades.findAllByClientes(UserID, "half")).length,
-			last: (await Atividades.findAllByClientes(UserID, "last")).length,
-			close: (await Atividades.findAllByClientes(UserID, "close")).length,
+			open: await Atividades.countAtividadesMyClientes(UserID, "open"),
+			half: await Atividades.countAtividadesMyClientes(UserID, "half"),
+			last: await Atividades.countAtividadesMyClientes(UserID, "last"),
+			close: await Atividades.countAtividadesMyClientes(UserID, "close"),
 		};
-
 
 		Result.ok(200, Dados);
 	} catch (error) {
@@ -49,10 +48,10 @@ const CountAtividadesCliente = async (req, res) => {
 
 
 		const Dados = {
-			open: (await Atividades.findByClient_id(ClienteID, "open")).length,
-			half: (await Atividades.findByClient_id(ClienteID, "half")).length,
-			last: (await Atividades.findByClient_id(ClienteID, "last")).length,
-			close: (await Atividades.findByClient_id(ClienteID, "close")).length,
+			open: await Atividades.countAtividadesByClienteID(ClienteID, "open"),
+			half: await Atividades.countAtividadesByClienteID(ClienteID, "half"),
+			last: await Atividades.countAtividadesByClienteID(ClienteID, "last"),
+			close: await Atividades.countAtividadesByClienteID(ClienteID, "close"),
 		};
 
 		Result.ok(200, Dados);
@@ -68,10 +67,10 @@ const CountAtividadesAll = async (req, res) => {
 		try {
 
 			const Dados = {
-				open: (await Atividades.findAll("open")).length,
-				half: (await Atividades.findAll("half")).length,
-				last: (await Atividades.findAll("last")).length,
-				close: (await Atividades.findAll("close")).length,
+				open: await Atividades.countAtividades("open"),
+				half: await Atividades.countAtividades("half"),
+				last: await Atividades.countAtividades("last"),
+				close: await Atividades.countAtividades("close"),
 			};
 
 			Result.ok(200, Dados);

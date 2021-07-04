@@ -75,7 +75,7 @@ export default ({ user }) => {
           title="Meus Dados"
         />
         <Divider />
-        { loading && values && values.nome ? 
+        { !loading && values && values.nome ? 
           (
             <>
               <CardContent>

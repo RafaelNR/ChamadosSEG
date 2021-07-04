@@ -118,7 +118,7 @@ module.exports = {
 			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
 			.join("users", "users.id", "=", "atividades.user_id");
 
-		query = getQueryType(query,period);
+		query = getQueryType(query, period);
 
 		return await query.orderBy("atividades.date", "desc").limit(100);
 	},
@@ -139,36 +139,32 @@ module.exports = {
 			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
 			.join("users", "users.id", "=", "atividades.user_id");
 
-			if (
-				data_inicial &&
-				data_final &&
-				cliente &&
-				tecnico
-			) {
-				query
-					.whereBetween("atividades.date", [data_inicial, data_final])
-					.andWhere("users.id", "=", tecnico)
-					.andWhere("clientes.id", "=", cliente);
-			} else if (data_inicial && data_final && cliente) {
-				query
-					.whereBetween("date", [data_inicial, data_final])
-					.andWhere("cliente.id", "=", cliente);
-			} else if (data_inicial && data_final && tecnico) {
-				query
-					.whereBetween("date", [data_inicial, data_final])
-					.andWhere("users.id", "=", tecnico)
-			} else if (data_inicial && data_final) {
-				query.whereBetween("atividades.date", [data_inicial, data_final])
+		if (data_inicial && data_final && cliente && tecnico) {
+			query
+				.whereBetween("atividades.date", [data_inicial, data_final])
+				.andWhere("users.id", "=", tecnico)
+				.andWhere("clientes.id", "=", cliente);
+		} else if (data_inicial && data_final && cliente) {
+			query
+				.whereBetween("date", [data_inicial, data_final])
+				.andWhere("cliente.id", "=", cliente);
+		} else if (data_inicial && data_final && tecnico) {
+			query
+				.whereBetween("date", [data_inicial, data_final])
+				.andWhere("users.id", "=", tecnico);
+		} else if (data_inicial && data_final) {
+			query.whereBetween("atividades.date", [data_inicial, data_final]);
+		} else if (tecnico && cliente) {
+			query
+				.where("clientes.id", "=", cliente)
+				.andWhere("users.id", "=", tecnico);
+		} else if (cliente) {
+			query.where("clientes.id", "=", cliente);
+		} else if (tecnico) {
+			query.where("users.id", "=", tecnico);
+		}
 
-			} else if(tecnico && cliente) {
-				query.where("clientes.id", "=", cliente).andWhere('users.id','=',tecnico)
-			} else if (cliente) {
-				query.where("clientes.id", "=", cliente);
-			} else if (tecnico) {
-				query.where("users.id", "=", tecnico);
-			}
-
-			return query.orderBy("atividades.date", "desc")
+		return query.orderBy("atividades.date", "desc");
 	},
 
 	findAll: async (type = null) => {
@@ -187,7 +183,7 @@ module.exports = {
 			.join("clientes", "clientes.id", "=", "atividades.cliente_id")
 			.join("users", "users.id", "=", "atividades.user_id");
 
-		query = getQueryType(query,type);
+		query = getQueryType(query, type);
 
 		return await query.orderBy("atividades.date", "desc").limit(100);
 	},
@@ -218,7 +214,7 @@ module.exports = {
 		return await query.orderBy("a.date", "desc").limit(100);
 	},
 
-	findByUser_id: async (user_id, type=null) => {
+	findByUser_id: async (user_id, type = null) => {
 		let query = knex
 			.select(
 				"atividades.id",
@@ -463,6 +459,65 @@ module.exports = {
 			.where("ticket", "=", ticket)
 			.limit(1)
 			.then((e) => e[0].ticket);
+	},
+
+	/**
+	 * Faz o count das atividades de um usuário
+	 */
+	countAtividadesByUserID: (userID, type = null) => {
+		let query = knex
+			.count("id as id")
+			.from("atividades")
+			.where("user_id", "=", userID);
+
+		if (type) query = getQueryType(query, type);
+
+		return query.then((e) => e[0].id);
+	},
+
+	/**
+	 * Faz o count das atividades de um usuário
+	 */
+	countAtividadesByClienteID: (clienteID, type = null) => {
+		let query = knex
+			.count("id as id")
+			.from("atividades")
+			.where("cliente_id", "=", clienteID);
+
+		if (type) query = getQueryType(query, type);
+
+		return query.then((e) => e[0].id);
+	},
+
+	/**
+	 * Faz o count da atividades de um usuário
+	 * de todos os meus cientes
+	 */
+	countAtividadesMyClientes: (user_id, type = null) => {
+		let query = knex
+			.count("id as id")
+			.from("atividades as a")
+			.leftJoin("users as u", "u.id", "=", "a.user_id")
+			.leftJoin("clientes as c", "c.id", "=", "a.cliente_id")
+			.whereIn("a.cliente_id", function () {
+				this.select("cliente_id")
+					.from("cliente_has_user as chu")
+					.where("chu.user_id", "=", user_id);
+			});
+
+		if (type) query = getQueryType(query, type);
+
+		return query.then((e) => e[0].id);
+	},
+
+	countAtividades: (type=null) => {
+		let query = knex
+			.count("id as id")
+			.from("atividades")
+
+		if (type) query = getQueryType(query, type);
+
+		return query.then((e) => e[0].id);
 	},
 
 	insert: (Dados) => {
