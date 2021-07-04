@@ -11,13 +11,12 @@ require("events").EventEmitter.prototype._maxListeners = 20;
 class CronSendMailAtividades {
 	constructor() {
 		this.config = {
-			cronTime: "0 0 6 1 * *",
-			//cronTime: "0 */30 * * * *",
+			cronTime: "0 30 8 1 * *",
+			//cronTime: "0 */10 * * * *",
 			start: true,
 			onTick: () => {
 				this.onTick();
 			},
-			onComplete: this.onComplete,
 			timeZone: "America/Sao_Paulo",
 			runOnInit: false,
 		};
@@ -29,9 +28,6 @@ class CronSendMailAtividades {
 	}
 
 	start() {
-		console.log("->> CRON - SendMailAtividades - Mês:", this.currMes);
-		console.log("->> CRON - SendMailAtividades - Nome:", this.nameMes);
-		console.log("->> CRON - SendMailAtividades - Ano:", this.currAno);
 		this.Job = new Cron({ ...this.config });
 		if (this.Job.running) {
 			console.log(
@@ -52,9 +48,11 @@ class CronSendMailAtividades {
 			.format("M");
 		this.currAno = moment().locale("pt-br").year();
 		this.nameMes = moment(this.currMes).locale("pt-br").format("MMMM");
+		this.nextMes = moment().locale("pt-br").format("M");
 		console.log("->> CRON - SendMailAtividades - Mês: ", this.currMes);
 		console.log("->> CRON - SendMailAtividades - Ano: ", this.currAno);
-		console.log("->> CRON - SendMailAtividades - Proximo Mês:", this.nameMe);
+		console.log("->> CRON - SendMailAtividades - Nome Mês: ", this.nameMes);
+		console.log("->> CRON - SendMailAtividades - Proximo Mês:", this.nextMes);
 		console.log(
 			"->> CRON - SendMailAtividades - Proxima data de execução:",
 			this.Job.nextDates().format("DD/MM/YY HH:mm:ss")
@@ -71,23 +69,29 @@ class CronSendMailAtividades {
 			);
 			const Clientes = await getClientesComAtividade(this.currMes);
 
-			Clientes.map(async (Cliente) => {
-				const Tecnicos = await getTecnicosByCliente(Cliente.id);
+			
+				Clientes.map(async (Cliente) => {
+					const Tecnicos = await getTecnicosByCliente(Cliente.id);
 
-				const filename = await this.createdPdf(
-					this.currMes,
-					this.currAno,
-					Cliente.id
-				);
+					const filename = await this.createdPdf(
+						this.currMes,
+						this.currAno,
+						Cliente.id
+					);
 
-				if (!filename.message) {
-					this.sendEmail(Cliente.email, Cliente.nome_fantasia, filename, {
-						data_ano: `${this.nameMes}/${this.currAno}`,
-						tecnicos: Tecnicos,
-					});
-					console.log("Email Enviado!");
-				}
-			})
+					if (!filename.message) {
+						this.sendEmail(Cliente.email, Cliente.nome_fantasia, filename, {
+							data_ano: `${this.nameMes}/${this.currAno}`,
+							tecnicos: Tecnicos,
+						});
+						console.log("Email Enviado!");
+					}
+				});
+		
+			setTimeout(() => {
+				this.onComplete();
+			}, 60000*5)
+
 		} catch (error) {
 			console.log("ERROR: ", error);
 		}
@@ -97,7 +101,7 @@ class CronSendMailAtividades {
 		const email = new Email("SEG - Atividades Técnicos");
 
 		email.to = clienteEmail;
-		email.subject = `Relatório Mensal de Atividade - ${clienteName}`;
+		email.subject = `Relatório Mensal de Atividade - ${this.nameMes}/${this.currAno} - ${clienteName}`;
 		email.filename = `Relatório Mensal de Atividade - ${clienteName}`;
 		email.file = filename;
 		email.type = "Relatório Mensal de Atividades";

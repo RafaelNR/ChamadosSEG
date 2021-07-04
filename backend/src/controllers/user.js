@@ -87,7 +87,7 @@ async function insert(req, res) {
 		// Remove o passwd
 		delete Dados.userDados.passwd;
 
-		Result.ok(201,{ id: userID[0] });
+		Result.ok(201,{ id: userID[0], actived: 1 });
 	} catch (error) {
 		Result.fail(400, error);
 	}

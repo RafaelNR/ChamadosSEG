@@ -11,9 +11,9 @@ class ManagerCron{
       this.jobs.map(Job => {
         Job.start();
       })
-      console.log("->> CRON - Tarefas agendadas corretamente.");
+      console.log("->> CRONManager - Tarefas agendadas corretamente.");
     } else {
-      console.log("->> CRON - Erro no agendamento das tarefas.")
+      console.log("->> CRONManager - Erro no agendamento das tarefas.");
     }
   }
 

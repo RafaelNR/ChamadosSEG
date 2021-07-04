@@ -89,8 +89,8 @@ module.exports = {
 	 * Retorna dados de todos os usuários.
 	 * @return {Object}
 	 */
-	index: async () => {
-		return await knex
+	index: () => {
+		return knex
 			.select(
 				"id",
 				"nome",
@@ -116,8 +116,8 @@ module.exports = {
 	 * @param {!Object} clientsUser
 	 * @return {number}
 	 */
-	insert: async ({ userDados, clientsUser }) => {
-		return await knex
+	insert: ({ userDados, clientsUser }) => {
+		return knex
 			.insert(userDados)
 			.into("users")
 			.then((ID) => {
