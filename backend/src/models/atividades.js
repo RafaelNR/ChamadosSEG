@@ -495,7 +495,7 @@ module.exports = {
 	 */
 	countAtividadesMyClientes: (user_id, type = null) => {
 		let query = knex
-			.count("id as id")
+			.count("a.id as id")
 			.from("atividades as a")
 			.leftJoin("users as u", "u.id", "=", "a.user_id")
 			.leftJoin("clientes as c", "c.id", "=", "a.cliente_id")
@@ -510,6 +510,9 @@ module.exports = {
 		return query.then((e) => e[0].id);
 	},
 
+	/**
+	 * Faz o count de todas as atividades criadas.
+	 */
 	countAtividades: (type=null) => {
 		let query = knex
 			.count("id as id")

@@ -2,13 +2,11 @@
 
 - [X] Chamados implementando.
 - [X] Dropdown e upload de documentos;
-- [ ] Modelo de chamado.
-- [ ] Notificação abertura do chamado por email;
-- [ ] Notificação novo acompanhamento por emial;
+- [X] Modelo de chamado.
+- [X] Notificação abertura do chamado por email;
 - [ ] Criar log completo edição e acesso ao chamado;
 
 # TODO
-- [ ] Redefinição de senha travando quando digita a nova senha verificar;
 - [ ] No log de email, ter um dialog que pergunta se deseja mesmo reenviar o email.
 - [ ] Log de PDF gerados;
       > Pode fazer download do pdf;
@@ -17,13 +15,16 @@
       > Envio deve ser feito depois do envio para os clientes, sugestão 8hs;
       > Envio deve constar erro no email e clientes sem atividade;
       > Deve anexar todos os PDF;
-- [ ] fazer loading na tela de perfil, por conta da demora em receber o user;
 - [ ] Mudar Pasta store para fields;
 - [ ] Relatorio quando mudar de tipo de info zerar erros;
-- [ ] Delete de categoria e de subcategoria.
 - [ ] Desabilitar cliente em ver de excluir.
-- [ ] Atividades da dashboard, está limitada a 100, mover para sem limite.
 - [ ] Poder remover acompanhamento de atividade;
+- [ ] Filtros de Atividades;
+- [ ] Gestão de Redes;
+- [X] Delete de categoria e de subcategoria.
+- [X] Atividades da dashboard, está limitada a 100, mover para sem limite.
+- [X] Redefinição de senha travando quando digita a nova senha verificar;
+- [X] fazer loading na tela de perfil, por conta da demora em receber o user;
 - [X] Log de envio de email;
       > Pode reinviar emails, somente com pdf criado;
 - [X] Corrigido erro na senha do login, quando atualizada a página e pressiona a primeira tela.
@@ -34,8 +35,6 @@
 
 
 /* URGENTE DEPOIS DO CHAMADOS */
-* não executar a this.currMes e this.nameMes e this.ano no construtuor e sim quando a função onTick é chamado
-* verifica o reiniciado do cron, sempre que é executando naõ está voltando automaticamente;
 * Adicionado informação sem nada, exemplo dia 24/05 Patrick
-* Botão de editar continua ativo após virada do mês.
+      Tratar Espaços trim().
 
