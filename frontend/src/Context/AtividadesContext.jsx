@@ -36,23 +36,27 @@ const AtividadesProvider = ({ children }) => {
     const periods = ['close', 'last', 'half', 'open'];
     const types = ['my', 'cliente'];
 
-    // Acesso sem query de period or type
-    if (!type || !period)
-      return roleID !== 3 ? 'atividades' : 'atividades/myclientes';
+    if (roleID) {
+      
+      if (!type || !period)
+        // Acesso sem query de period or type
+        return roleID !== 3 ? 'atividades' : 'atividades/myclientes';
 
-    // Access gestor com type and period
-    if (roleID !== 3 && types.includes(type) && periods.includes(period))
-      return type === 'my'
-        ? `atividades/myuser?period=${period}`
-        : `atividades?period=${period}`;
+      // Access gestor com type and period
+      if (roleID !== 3 && types.includes(type) && periods.includes(period))
+        return type === 'my'
+          ? `atividades/myuser?period=${period}`
+          : `atividades?period=${period}`;
 
-    // Access técnico com period and type
-    if (periods.includes(period) && types.includes(type))
-      return type === 'my'
-        ? `atividades/myuser?period=${period}`
-        : `atividades/myclientes?period=${period}`;
-  //eslint-disable-next-line
-  }, []);
+      // Access técnico com period and type
+      if (periods.includes(period) && types.includes(type))
+        return type === 'my'
+          ? `atividades/myuser?period=${period}`
+          : `atividades/myclientes?period=${period}`;
+      
+    }
+    //eslint-disable-next-line
+  }, [roleID]);
 
   useEffect(() => {
     let render = true;
