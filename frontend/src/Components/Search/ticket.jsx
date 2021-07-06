@@ -1,12 +1,12 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import clsx from 'clsx'
+import React, { useCallback, useEffect, useState } from 'react';
+import clsx from 'clsx';
 import { useHistory, useLocation } from 'react-router-dom';
 
-//* Components 
+//* Components
 import { SearchOutlined, SendOutlined } from '@material-ui/icons/';
 import {
   fade,
-  Grow,
+  Fade,
   makeStyles,
   CircularProgress,
   IconButton,
@@ -21,21 +21,16 @@ import useSnackBar from '../../Context/SnackBarContext';
 import { getAtividade } from '../../Service/atividade.service';
 
 //* Hooks
-import useUser from '../../Hooks/useUser'
+import useUser from '../../Hooks/useUser';
 
 //* Utils
-import Masker from '../../Utils/masker'
+import Masker from '../../Utils/masker';
 
 const useStyles = makeStyles((theme) => ({
   search: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade('#dfdfdf', 0.15),
-    transition: theme.transitions.create('width'),
     marginLeft: 0,
-    width: '100%',
     color: '#fff'
   },
   margin: {
@@ -45,29 +40,38 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: open ? fade('#dfdfdf', 0.15) : 'transparent',
     color: '#fff',
     '& button:hover': {
       backgroundColor: open ? 'transparent' : 'rgba(255, 255, 255, 0.08);'
     }
   }),
-  inputRoot: {
-    color: 'inherit'
-  },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch'
+    animation: `$animate 0.5s ease-in`,
+    backgroundColor: fade('#dfdfdf', 0.15)
+  },
+  '@keyframes animate': {
+    '0%': {
+      width: '0%'
+    },
+    '100%': {
+      width: '100%'
     }
   },
-  iconSend: {
+  send: {
     width: 50,
-    height: 25,
-    cursor: 'pointer'
+    height: 48,
+    cursor: 'pointer',
+    backgroundColor: fade('#dfdfdf', 0.15),
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '& .icon': {}
   },
   iconLoading: {
-    marginRight: 26
+    marginRight: 26,
+    backgroundColor: fade('#dfdfdf', 0.15)
   }
 }));
 
@@ -75,7 +79,7 @@ export const SearchAtividade = () => {
   const [open, setOpen] = useState(false);
   const { history } = useHistory();
   let location = useLocation();
-  const { roleID, nome} = useUser();
+  const { roleID, nome } = useUser();
   const { handleSnackBar } = useSnackBar();
   const [loading, setLoading] = useState(false);
   const [ticket, setTicket] = useState('');
@@ -84,7 +88,7 @@ export const SearchAtividade = () => {
   useEffect(() => {
     if (open) setOpen(!open);
     // eslint-disable-next-line
-  },[location])
+  }, [location]);
 
   const handleChange = useCallback((e) => {
     const value = e.target.value;
@@ -95,10 +99,9 @@ export const SearchAtividade = () => {
   const close = useCallback(() => {
     if (!loading) {
       setOpen((props) => !props);
-      setTicket('')
+      setTicket('');
     }
   }, [loading]);
-
 
   const handleSend = useCallback(() => {
     setLoading(true);
@@ -136,14 +139,14 @@ export const SearchAtividade = () => {
   return (
     <>
       <Tooltip title="Pesquisar Atividade">
-        <div className={clsx(classes.margin, open && classes.search)}>
+        <div className={clsx(open && classes.search, classes.margin)}>
           <div className={classes.searchIcon}>
             <IconButton onClick={close}>
-              <SearchOutlined className={classes.searchIcon}/>
+              <SearchOutlined />
             </IconButton>
           </div>
           {open && (
-            <Grow in={open}>
+            <Fade in={open}>
               <>
                 <InputBase
                   type="search"
@@ -151,11 +154,8 @@ export const SearchAtividade = () => {
                   placeholder="Número do ticket"
                   value={ticket}
                   onChange={handleChange}
-                  onKeyPress={(e) => e.key === 'Enter' &&  handleSend()}
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput
-                  }}
+                  className={classes.inputInput}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                   inputProps={{ 'aria-label': 'search' }}
                   disabled={loading}
                   autoFocus={open}
@@ -163,13 +163,17 @@ export const SearchAtividade = () => {
                 {loading ? (
                   <CircularProgress size={24} className={classes.iconLoading} />
                 ) : (
-                  <SendOutlined
-                    className={classes.iconSend}
-                    onClick={handleSend}
-                  />
+                  <>
+                    <div className={classes.send}>
+                      <SendOutlined
+                        className="icon"
+                        onClick={handleSend}
+                      />
+                    </div>
+                  </>
                 )}
               </>
-            </Grow>
+            </Fade>
           )}
         </div>
       </Tooltip>

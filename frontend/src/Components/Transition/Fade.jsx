@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default ({ children }) => {
-  const classes = useStyles();
+  // const classes = useStyles();
   const [checked, setChecked] = React.useState(false);
 
   React.useEffect(() => {

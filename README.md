@@ -4,6 +4,7 @@
 - [X] Dropdown e upload de documentos;
 - [X] Modelo de chamado.
 - [X] Notificação abertura do chamado por email;
+- [ ] Gerenciador de IP's das Redes;
 - [ ] Criar log completo edição e acesso ao chamado;
 
 # TODO
