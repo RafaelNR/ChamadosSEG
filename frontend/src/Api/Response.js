@@ -1,7 +1,8 @@
 import ErrorMessages from '../Store/ErrorMessage'
 
 export const handleResponse = async (res) => {
-  const response = await res
+  const response = await res;
+
   const { data, statusText } = response;
 
   if (statusText === 'Unauthorized') {
@@ -13,6 +14,7 @@ export const handleResponse = async (res) => {
 
 const registerErrorMessage = (Message) => {
   localStorage.setItem('ErrorMessage', JSON.stringify(Message));
+  window.location.href = '/logout';
 };
 
 const handleErrorMessage = (Message) => {
