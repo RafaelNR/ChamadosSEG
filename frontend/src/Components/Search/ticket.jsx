@@ -22,9 +22,7 @@ import { getAtividade } from '../../Service/atividade.service';
 
 //* Hooks
 import useUser from '../../Hooks/useUser';
-
-//* Utils
-import Masker from '../../Utils/masker';
+import useMaker from '../../Hooks/useMasker'
 
 const useStyles = makeStyles((theme) => ({
   search: {
@@ -41,7 +39,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: open ? fade('#dfdfdf', 0.15) : 'transparent',
-    color: '#fff',
+    '& > button': {
+      color: 'white',
+    },
     '& button:hover': {
       backgroundColor: open ? 'transparent' : 'rgba(255, 255, 255, 0.08);'
     }
@@ -75,14 +75,15 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export const SearchAtividade = () => {
-  const [open, setOpen] = useState(false);
+export const SearchAtividade = React.memo(() => {
+  const { Masker } = useMaker();
   const { history } = useHistory();
   let location = useLocation();
   const { roleID, nome } = useUser();
   const { handleSnackBar } = useSnackBar();
   const [loading, setLoading] = useState(false);
   const [ticket, setTicket] = useState('');
+  const [open, setOpen] = useState(false);
   const classes = useStyles(open);
 
   useEffect(() => {
@@ -179,4 +180,4 @@ export const SearchAtividade = () => {
       </Tooltip>
     </>
   );
-};
+});

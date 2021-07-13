@@ -44,7 +44,8 @@ const useStyles = makeStyles(() => ({
   formControl: {
     width: '100%',
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 10,
+    paddingRight: 10
   },
   justificativa: {
     width: '100%',

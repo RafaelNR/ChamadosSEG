@@ -34,6 +34,7 @@ const SnackBarProvider = ({ children }) => {
 
   const handleError = useCallback(
     (msg) => {
+      // Se erro na requisições da API;
       const ErrorMessage = getData('ErrorMessage');
       if (ErrorMessages.includes(ErrorMessage)) {
         setData('ErrorMessage', ErrorMessage);

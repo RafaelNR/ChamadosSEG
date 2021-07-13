@@ -6,7 +6,6 @@
 - [X] Notificação abertura do chamado por email;
 - [ ] Gerenciador de IP's das Redes;
 - [ ] Criar log completo edição e acesso ao chamado;
-- [ ] correção da barra de erro quando for object
 
 # TODO
 - [ ] No log de email, ter um dialog que pergunta se deseja mesmo reenviar o email.

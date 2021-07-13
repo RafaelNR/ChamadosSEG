@@ -1,17 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import {
   makeStyles,
   AppBar,
   Tabs,
   Tab,
   Box,
-  Badge
+  Badge,
+  Button,
 } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import Requeridos from './Requeridos'
 import Atribuidos from './Atribuidos';
 import MenuGerarPdf from './Pdf/MenuGerarPdf';
 import DialogGerarPdf from './Pdf/GerarPdf.dialog';
+
 
 import useChamados from '../../Context/ChamadosContext';
 import { DialogProvider } from '../../Context/DialogContext'
@@ -24,16 +28,13 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     position: 'absolute',
-    right: 20,
+    right: 5,
+    background: theme.palette.secondary.main,
     color: 'white',
-    height: 40,
-    width: 40,
-    marginTop: 5,
-    '& a': {
-      color: 'white',
-      padding: 0,
-      margin: 0,
-      height: 24
+    top: -50,
+    padding: '7px 20px',
+    '&:hover': {
+      background: theme.palette.secondary.main,
     }
   },
   badge: {
@@ -101,6 +102,14 @@ export default () => {
     <>
       {currTab !== null && (
         <div className={classes.root}>
+          <Link to="/chamado/create">
+            <Button
+              className={classes.button}
+              startIcon={<AddIcon size="small" />}
+            >
+              Novo
+            </Button>
+          </Link>
           <AppBar position="static">
             <Tabs
               value={currTab}
@@ -118,7 +127,10 @@ export default () => {
               />
               <Tab
                 label={
-                  <BadgeTitulo titulo="Atribuídos" count={countChamados.atribuido} />
+                  <BadgeTitulo
+                    titulo="Atribuídos"
+                    count={countChamados.atribuido}
+                  />
                 }
                 {...a11yProps(1)}
               />
