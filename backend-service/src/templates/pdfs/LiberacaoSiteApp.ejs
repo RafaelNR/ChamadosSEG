@@ -11,7 +11,7 @@
 			href="https://fonts.googleapis.com/css?family=Roboto"
 		/>
 
-		<title>SOLICITAÇÃO DE LIBERAÇÃO TOTAL DO DISPOSITIVO</title>
+		<title>SOLICITAÇÃO DE LIBERAÇÃO SITE OU APLICATIVO</title>
 	</head>
 
 	<body class="liberacao">
@@ -34,11 +34,11 @@
 					<table>
 						<tr>
 							<th>IP/MAC</th>
-							<td>192.168.3.43 / 00:0c:29:f1:e5:f0</td>
+							<td><%= ip %> / <%= mac %></td>
 						</tr>
 						<tr>
 							<th>Dispositivo/Setor/Usuário</th>
-							<td>Notebook - TI - Rafael</td>
+							<td><%= dispositivo %> - <%= setor %> - <%= usuario %></td>
 						</tr>
 					</table>
 				</div>
@@ -46,12 +46,14 @@
 				<div class="justificativa">
 					<div class="label">Lista de sites e/ou aplicativos:</div>
 					<div class="text">
+            <%= lista %>
 					</div>
 				</div>
 
 				<div class="justificativa">
 					<div class="label">Justificativa:</div>
 					<div class="text">
+            <%= justificativa %>
 					</div>
 				</div>
 

@@ -26,8 +26,6 @@ export const AtividadePDF = async (Ticket) => {
     const URL = `/pdf/atividade/${Ticket}`;
     const resp = await Service.exec('get', URL);
 
-    console.log(resp);
-
     if (!resp.data.success)
       throw resp.data.message ? resp.data.message : 'Erro em gerar PDF.'
     
@@ -37,3 +35,32 @@ export const AtividadePDF = async (Ticket) => {
   }
   
 }
+
+
+export const LiberacaoTotalPDF = async (Dados) => {
+  try {
+    const URL = `/pdf/liberacaototal/`;
+    const resp = await Service.exec('post', URL, Dados);
+
+    if (!resp.data.success)
+      throw resp.data.message ? resp.data.message : 'Erro em gerar PDF.';
+
+    return resp.data;
+  } catch (error) {
+    throw error && error.data ? error.data : error;
+  }
+}
+
+export const LiberacaoSiteAppPDF = async (Dados) => {
+  try {
+    const URL = `/pdf/liberacaositeapp/`;
+    const resp = await Service.exec('post', URL, Dados);
+
+    if (!resp.data.success)
+      throw resp.data.message ? resp.data.message : 'Erro em gerar PDF.';
+
+    return resp.data;
+  } catch (error) {
+    throw error && error.data ? error.data : error;
+  }
+};

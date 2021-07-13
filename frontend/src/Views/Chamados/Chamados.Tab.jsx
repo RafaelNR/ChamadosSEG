@@ -1,20 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import {
   makeStyles,
   AppBar,
   Tabs,
   Tab,
   Box,
-  IconButton,
   Badge
 } from '@material-ui/core';
-import AddCommentIcon from '@material-ui/icons/AddComment';
 import Requeridos from './Requeridos'
 import Atribuidos from './Atribuidos';
+import MenuGerarPdf from './Pdf/MenuGerarPdf';
+import DialogGerarPdf from './Pdf/GerarPdf.dialog';
 
 import useChamados from '../../Context/ChamadosContext';
+import { DialogProvider } from '../../Context/DialogContext'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
     }
   }
 }));
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -123,12 +122,11 @@ export default () => {
                 }
                 {...a11yProps(1)}
               />
+              <DialogProvider>
+                <MenuGerarPdf />
+                <DialogGerarPdf />
+              </DialogProvider>
             </Tabs>
-            <IconButton aria-label="add" className={classes.button}>
-              <Link to="/chamado/create">
-                <AddCommentIcon />
-              </Link>
-            </IconButton>
           </AppBar>
           <TabPanel value={currTab} index={0}>
             <Requeridos />

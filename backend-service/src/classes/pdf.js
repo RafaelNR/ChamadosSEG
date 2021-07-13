@@ -6,11 +6,11 @@ const report = require('puppeteer-report');
 module.exports = class PDF {
 
 	constructor(viewUrl, fileName, query = {}, userID = null, type) {
-		this.ViewUrl = viewUrl;
-		this.FileName = fileName;
-		this.query = query;
-		this.userID = userID;
-		this.typePDF = type;
+		this.ViewUrl = viewUrl; // EJS Template
+		this.FileName = fileName; // Nome do arquivo
+		this.query = query; // Dados enviado para o template
+		this.userID = userID; // ID do usuário
+		this.typePDF = type; // Tipo do PDF (Atividades, Liberação Total, etc)
 		this.linkRelativo = Path.join(
 			__dirname,
 			"..",

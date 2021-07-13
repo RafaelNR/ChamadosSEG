@@ -56,4 +56,54 @@ const ReportAtividadesSchema = (Dados, { data, info }) => {
 };
 
 
-export { ReportAtividadesSchema};
+const GerarLiberacaoTotalSchema = (data) => {
+  const schema = yup.object().shape({
+    ip: yup
+      .string()
+      .min(11, 'IP inválido')
+      .max(14, 'IP inválido')
+      .required('IP é requerido.'),
+    mac: yup
+      .string()
+      .length(17, 'Tamanho do MAC não é valido')
+      .required('MAC é requerido.'),
+    dispositivo: yup.string().trim().required('Dispositivo é requerido.'),
+    setor: yup.string().trim().required('Setor é requerido.'),
+    usuario: yup.string().trim().required('Usuário é requerida.'),
+    justificativa: yup.string().trim().required('Justificativa é requerido.'),
+    tempo: yup.string()
+  });
+
+  const Val = new Validate(schema, data);
+  return Val.exec();
+}
+
+const GerarLiberacaoSiteAppSchema = (data) => {
+  const schema = yup.object().shape({
+    ip: yup
+      .string()
+      .min(11, 'IP inválido')
+      .max(14, 'IP inválido')
+      .required('IP é requerido.'),
+    mac: yup
+      .string()
+      .length(17, 'Tamanho do MAC não é valido')
+      .required('MAC é requerido.'),
+    dispositivo: yup.string().trim().required('Dispositivo é requerido.'),
+    setor: yup.string().trim().required('Setor é requerido.'),
+    usuario: yup.string().trim().required('Usuário é requerida.'),
+    justificativa: yup.string().trim().required('Justificativa é requerido.'),
+    lista: yup.string().trim().required('Lista de Site ou aplicativos é requerida.'),
+    tempo: yup.string()
+  });
+
+  const Val = new Validate(schema, data);
+  return Val.exec();
+}
+
+
+export {
+  ReportAtividadesSchema,
+  GerarLiberacaoTotalSchema,
+  GerarLiberacaoSiteAppSchema
+};

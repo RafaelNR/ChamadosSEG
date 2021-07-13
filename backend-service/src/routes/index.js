@@ -4,7 +4,6 @@ const Router = require('express').Router()
 const Atividade = require('../controllers/Atividade')
 const Atividades = require('../controllers/Atividades')
 
-
 Router.use('/pdf', require('./pdfs'));
 Router.use('/send', require('./emails'));
 

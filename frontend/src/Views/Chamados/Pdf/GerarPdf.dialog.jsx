@@ -1,7 +1,9 @@
 import React from 'react';
 import { Dialog } from '@material-ui/core/';
-import DialogTitle from '../../Components/Dialog/HeadDialog';
-import useDialog from '../../Context/DialogContext';
+import DialogTitle from '../../../Components/Dialog/HeadDialog';
+import useDialog from '../../../Context/DialogContext';
+import FormControl from './GerarPdf.form'
+
 
 export default React.memo(() => {
   const { type, open, closeDialog } = useDialog();
@@ -9,25 +11,21 @@ export default React.memo(() => {
   const Factor = React.useCallback(() => {
     if (type) {
       switch (type) {
-        case 'insert':
+        case 'total':
           return (
             <React.Fragment>
-              <DialogTitle title="Inserir Modelo" />
+              <DialogTitle title="Gerar PDF - Liberação Total de Disposítivo" />
+              <FormControl />
             </React.Fragment>
           );
-        case 'update':
+        case 'siteapp':
           return (
             <React.Fragment>
-              <DialogTitle title="Editar Modelo" />
+              <DialogTitle title="Gerar PDF - Liberação de Site ou Aplicativo" />
+              <FormControl />
             </React.Fragment>
           );
 
-        case 'delete':
-          return (
-            <React.Fragment>
-              <DialogTitle title="Deletar Modelo" />
-            </React.Fragment>
-          );
         default:
           break;
       }
@@ -35,9 +33,8 @@ export default React.memo(() => {
   }, [type]);
 
   return open && type ? (
-    <Dialog onClose={closeDialog} open={open} maxWidth="md" scroll="body">
+    <Dialog open={open} maxWidth="md" scroll="body">
       {Factor()}
     </Dialog>
   ) : null;
 });
-

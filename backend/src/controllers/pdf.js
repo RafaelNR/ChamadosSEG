@@ -72,6 +72,49 @@ const Atividades = async (req,res) => {
 
 }
 
+const LiberacaoTotal = async (req, res) => {
+	try {
+		if (!req.body && !req.body.ip) new Error("Dados não encontrados.");
+
+		const resp = await axios.post(`/pdf/create/liberacaototal`, {
+			...req.body,
+			user_id: req.userId
+		})
+
+		if (resp.status === 200 && resp.data.success) {
+			Result.ok(200, resp.data);
+		} else {
+			throw resp.data.message
+				? resp.data.message
+				: "Erro em gerar o PDF.";
+		}
+
+	} catch (error) {
+		Result.fail(404, error);
+	}
+	return res.status(Result.status).json(Result.res);
+}
+
+const LiberacaoSiteApp = async (req, res) => {
+	try {
+		if (!req.body && !req.body.ip) new Error("Dados não encontrados.");
+
+		const resp = await axios.post(`/pdf/create/liberacaositeapp`, {
+			...req.body,
+			user_id: req.userId,
+		});
+
+		if (resp.status === 200 && resp.data.success) {
+			Result.ok(200, resp.data);
+		} else {
+			throw resp.data.message ? resp.data.message : "Erro em gerar o PDF.";
+		}
+	} catch (error) {
+		Result.fail(404, error);
+	}
+	return res.status(Result.status).json(Result.res);
+};
+
 const tools = {
 
 	validate: async (userID, Query) => {
@@ -128,6 +171,8 @@ const tools = {
 };
 
 module.exports = {
-  Atividade,
-  Atividades
-}
+	Atividade,
+	Atividades,
+	LiberacaoTotal,
+	LiberacaoSiteApp,
+};

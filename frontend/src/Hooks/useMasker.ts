@@ -29,6 +29,15 @@ function useMasker() {
     return handleMasks(Masks, value);
   }
 
+  function maskerIP(value: string): string {
+  const Masks = ["999.999.9.9","999.999.9.99","999.999.9.999","999.999.99.9","999.999.99.99","999.999.99.999"];
+  return handleMasks(Masks, value);
+}
+
+function maskerMAC(value: string): string {
+  return VMasker.toPattern(value, "SS:SS:SS:SS:SS:SS");
+}
+
   const inputHandler = (masks: string[], max: number, value: string):string => {
     const v = value.replace(/\D/g, "");
     const m = value.length > max ? 1 : 0;
@@ -58,7 +67,11 @@ function useMasker() {
       case 'n_contrato':
         return maskerContrato(value);
       case 'ticket':
-        return maskerTicket(value);
+        return maskerTicket(value); 
+      case "ip":
+        return maskerIP(value);
+      case "mac":
+        return maskerMAC(value);
       default:
         return value;
     }

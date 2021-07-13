@@ -67,5 +67,5 @@ export {
   InsertSchema,
   UpdateSchema,
   InsertAcompanhamentoSchema,
-  UpdateAcompanhamentoSchema
+  UpdateAcompanhamentoSchema,
 };

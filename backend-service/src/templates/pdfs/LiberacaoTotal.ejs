@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" href="/static/favicon.ico" />
+		<link rel="stylesheet" href="/static/bootstrap.css" />
+		<link rel="stylesheet" href="/static/style.css" />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css?family=Roboto"
+		/>
+
+		<title>SOLICITAÇÃO DE LIBERAÇÃO TOTAL DO DISPOSITIVO</title>
+	</head>
+
+	<body class="liberacao">
+		<div id="header">
+			<img src="/static/header.jpg" />
+		</div>
+
+		<div class="container-xl">
+			<div class="title">SOLICITAÇÃO DE LIBERAÇÃO TOTAL DE DISPOSITIVO</div>
+
+			<div class="content">
+				<p>
+					A SEG Tecnologia orienta que só seja feita a liberação total do
+					equipamento em último caso, pois, na liberação total o equipamento
+					deixa de ser monitorado pelo IPS(Sistema de Prevenção de Intrusão) e
+					IDS(Sistema de Detecção de Intrusão) do firewall, assim não
+					conseguimos analisar e nem detectar, Malwares(que são spyware, adware,
+					phishing, vírus, Cavalos de Tróia, worms, rootkits, ramsoware e
+					sequestradores de navegador) ou outros tipos de intrusões ou
+					malefícios que podem prejudicar a máquina, a rede e os dados e
+					informações armazenados do usuário, dessa forma a SEG Tecnologia não
+					consegue agir preventivamente na remoção de possíveis malefícios dos
+					dispositivos, garantindo assim um ambiente seguro para o dados e
+					acesso dos usuários.
+				</p>
+				<p>
+					Caso tenha duvida sobre quais os tipos de vírus, malwares, ransomwares
+					e outros tipos de intrusões ou malefícios, solicitar a lista ao
+					departamento de TI.
+				</p>
+
+				<div class="dados">
+					<table>
+						<tr>
+							<th>IP/MAC</th>
+							<td><%= ip %> / <%= mac %></td>
+						</tr>
+						<tr>
+							<th>Dispositivo/Setor/Usuário</th>
+							<td><%= dispositivo %> - <%= setor %> - <%= usuario %></td>
+						</tr>
+					</table>
+				</div>
+
+				<div class="justificativa">
+					<div class="label">Justificativa</div>
+					<div class="text">
+            <%= justificativa %>
+					</div>
+				</div>
+
+				<div class="tempo">
+					<table>
+						<tr>
+							<th>Tempo de Liberação</th>
+							<td>Permanente</td>
+						</tr>
+					</table>
+				</div>
+
+				<span class="autorizacao">Assinando abaixo o responsável está ciente dos riscos, citados acima:</span>
+
+				<div class="autorizacao-responsavel">
+					<div class="label">Assinatura do Responsável</div>
+				</div>
+
+				<span class="autorizacao">Assinando abaixo o responsável está ciente dos riscos, citados acima:</span>
+				
+				<div class="autorizacao-usuario">
+					<div class="label">
+						Assinatura do usuário do equipamento
+						<i>(Assinatura opcional, caso a responsável pela liberação solicite.)</i>
+					</div>
+				</div>
+
+
+				<div class="data">
+					<div class="label">Data de Liberação: _____/_____/_________</div>
+				</div>
+			</div>
+		</div>
+		<div id="footer">
+			<img src="/static/footer.jpg" />
+		</div>
+	</body>
+</html>

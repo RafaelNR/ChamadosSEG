@@ -1,7 +1,7 @@
 import VMasker from "vanilla-masker";
 
 function Masker(value: string, name: string): string {
-  console.log(name)
+  console.log(name,value)
   switch (name) {
     case "telefone":
       return maskerTel(value);
@@ -11,6 +11,10 @@ function Masker(value: string, name: string): string {
       return maskerContrato(value);
     case "ticket":
       return maskerTicket(value);
+    case "ip":
+      return maskerIP(value);
+    case "mac":
+      return maskerMAC(value);
     default:
       return value;
   }
@@ -33,6 +37,16 @@ function maskerContrato(value: string): string {
 
 function maskerTicket(value: string): string {
   const Masks = ["9.99999999","99.99999999","999.99999999","9999.99999999", "99999.99999999"];
+  return handleMasks(Masks, value);
+}
+
+function maskerIP(value: string): string {
+  const Masks = ["999.999.9.9","999.999.9.99","999.999.999.999"];
+  return handleMasks(Masks, value);
+}
+
+function maskerMAC(value: string): string {
+  const Masks = ["SS:SS:SS:SS:SS:SS"];
   return handleMasks(Masks, value);
 }
 

@@ -58,7 +58,6 @@ export default () => {
       try {
         setLoading(true);
         const Dados = await getChamados();
-        console.log(Dados);
         if (render) setChamados(Dados);
       } catch (error) {
         console.log(error);

@@ -6,7 +6,12 @@
 	"editor.formatOnSave": true,
 	"editor.tabSize": 2,
 	"jest.enableInlineErrorMessages": true,
-	"cSpell.words": ["middlewares"],
+	"cSpell.words": [
+		"libera",
+		"liberação",
+		"middlewares",
+		"o"
+	],
 	"cSpell.ignoreWords": ["clsx", "selecteds", "usuarios"],
 	"editor.fontFamily": "Fira Code",
 	"editor.fontSize": 14,
