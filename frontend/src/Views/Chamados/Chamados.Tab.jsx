@@ -106,6 +106,7 @@ export default () => {
             <Button
               className={classes.button}
               startIcon={<AddIcon size="small" />}
+              variant="contained"
             >
               Novo
             </Button>

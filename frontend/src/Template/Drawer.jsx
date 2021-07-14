@@ -82,26 +82,26 @@ const useStyles = makeStyles((theme) => ({
 const MiniDrawer = () => {
   const classes = useStyles();
   const theme = useTheme();
-  const { open, handleDrawerClose } = useMenu();
+  const { open, handleDrawer } = useMenu();
 
   return (
     <Drawer
       variant="permanent"
       className={clsx(classes.drawer, {
         [classes.drawerOpen]: open,
-        [classes.drawerClose]: !open,
+        [classes.drawerClose]: !open
       })}
       classes={{
         paper: clsx({
           [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
-        }),
+          [classes.drawerClose]: !open
+        })
       }}
     >
       <div className={classes.toolbar}>
         <HeaderMenu />
-        <IconButton onClick={handleDrawerClose}>
-          {theme.direction === "rtl" ? (
+        <IconButton onClick={handleDrawer}>
+          {!open ? (
             <ChevronRightIcon />
           ) : (
             <ChevronLeftIcon />

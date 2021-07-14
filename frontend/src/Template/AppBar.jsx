@@ -24,7 +24,8 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: theme.zIndex.drawer - 1,
+    borderBottom: `1px solid ${theme.palette.divider}`,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
@@ -45,17 +46,14 @@ const useStyles = makeStyles((theme) => ({
       display: 'flex'
     }
   },
-  toolbar: {
+  toolbar: (props) => ({
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: theme.spacing(0, 100),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar
-  },
+    paddingLeft: props.open ? 0 : theme.spacing(7) + 1
+  }),
   atividadebutton: {
     paddingLeft: 30,
-    display: 'flex'
+    display: 'flex',
+    alignItems: 'center'
   },
   icon: {
     color: '#fff'
@@ -63,8 +61,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default () => {
-  const classes = useStyles();
-  const { open, handleDrawerOpen } = useMenu();
+  const { open } = useMenu();
+  const classes = useStyles({open});
 
   return (
     <div className={classes.root}>
@@ -73,19 +71,9 @@ export default () => {
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open
         })}
+        elevation={0}
       >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={() => handleDrawerOpen()}
-            edge="start"
-            className={clsx(classes.menuButton, {
-              [classes.hide]: open
-            })}
-          >
-            <MenuRounded />
-          </IconButton>
+        <div className={classes.toolbar}>
 
           <div className={classes.atividadebutton}>
             <SearchAtividade />
@@ -97,7 +85,7 @@ export default () => {
             <SwitchDarkMode />
             <MenuUser />
           </div>
-        </Toolbar>
+        </div>
       </AppBar>
     </div>
   );

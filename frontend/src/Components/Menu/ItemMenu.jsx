@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import clsx from 'clsx';
 import PropTypes from "prop-types";
 import { NavLink, Link, useLocation } from 'react-router-dom';
 
@@ -14,16 +15,31 @@ import {
 
 
 const useStyles = makeStyles((theme) => ({
-  icon: {
-    height: 48
-  },
-  '@global': {
-    '.MuiListItemText-primary': {
+  root: {
+    height: 48,
+    padding: 0,
+    '& .MuiListItemText-primary': {
       fontSize: 12
+    },
+    '& .MuiListItemText-root': {
+      flex: 0
     }
   },
+  box: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    paddingLeft: '20px'
+  },
+  icon: {
+    display: 'flex'
+  },
   active: {
-    background: theme.darkMode ? '#606060' : '#ccc'
+    background: theme.darkMode ? '#606060' : '#f2f3f5',
+    borderLeft: '3px solid ' + theme.palette.primary.main,
+    '& span': {
+      fontWeight: 'bold'
+    }
   }
 }));
 
@@ -39,10 +55,13 @@ const MyListItem = memo(({ menu }) => {
       component={Link}
       to={menu.path}
       onClick={() => (open ? handleDrawerClose() : '')}
-      className={pathname === menu.path && classes.active}
+      className={clsx(classes.root, pathname === menu.path && classes.active)}
     >
-      <ListItemIcon aria-label={menu.nome}>{menu.icon}</ListItemIcon>
-      <ListItemText primary={menu.nome} />
+      <div className={classes.box}>
+        <ListItemIcon className={classes.icon} aria-label={menu.nome}>{menu.icon}</ListItemIcon>
+        <ListItemText primary={menu.nome} />
+      </div>
+
     </ListItem>
   );
 });
@@ -52,15 +71,18 @@ const ListItemTooltip = memo(({ menu }) => {
   const { pathname } = useLocation();
 
   return (
-    <Tooltip title={menu.nome}>
+    <Tooltip title={menu.nome} placement="right" arrow>
       <ListItem
         button
-        className={classes.icon}
         component={NavLink}
         to={menu.path}
-        className={pathname === menu.path && classes.active}
+        className={clsx(classes.root, pathname === menu.path && classes.active)}
       >
-        <ListItemIcon aria-label={menu.nome}>{menu.icon}</ListItemIcon>
+        <div className={classes.box}>
+          <ListItemIcon className={classes.icon} aria-label={menu.nome}>
+            {menu.icon}
+          </ListItemIcon>
+        </div>
       </ListItem>
     </Tooltip>
   );

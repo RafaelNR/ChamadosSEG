@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import clsx from 'clsx';
 import { makeStyles, Switch } from '@material-ui/core/';
 import WbSunnyIcon from '@material-ui/icons/WbSunny';
@@ -67,18 +67,21 @@ export default () => {
     const mode = getData('darkMode');
 
     if (typeof mode === undefined || mode === null) {
-      setData('darkMode', darkMode)
+      setData('darkMode', darkMode);
     } else {
-      setdarkMode(mode)
+      setdarkMode(mode);
     }
-    
-  }, [darkMode, getData, setData, setdarkMode])
+    // eslint-disable-next-line
+  }, [])
 
-  function changeDarkMode(event) {
-    setdarkMode(!darkMode)
-    removeData('darkMode')
-    setData('darkMode', !darkMode);
-  }
+  const changeDarkMode = useCallback(() => {
+    setdarkMode(mode => {
+      removeData('darkMode');
+      setData('darkMode', !mode);
+      return !mode;
+    });
+    // eslint-disable-next-line
+  }, [darkMode]);
 
   return (
     <div className={classes.root}>

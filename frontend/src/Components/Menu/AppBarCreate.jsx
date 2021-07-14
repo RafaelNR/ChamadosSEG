@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default () => {
+export default React.memo(() => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -89,4 +89,4 @@ export default () => {
       </Menu>
     </div>
   );
-}
+});

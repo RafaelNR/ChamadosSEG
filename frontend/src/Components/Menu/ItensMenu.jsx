@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, memo } from "react";
 import PropTypes from "prop-types";
 import { List, Divider } from "@material-ui/core/";
 import { MyListItem as ListItem, ListItemTooltip } from "./ItemMenu";
@@ -76,4 +76,4 @@ ListItemMenu.propTypes = {
 	open: PropTypes.bool.isRequired,
 };
 
-export default ListItemMenu;
+export default memo(ListItemMenu);

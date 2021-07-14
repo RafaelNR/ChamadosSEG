@@ -23,7 +23,7 @@ const ThemeContext = createContext({})
 
 const MythemeProvider = ({ children }) => {
   const [darkMode, setdarkMode] = useState(false);
-  const [primary, setPrimary ] = useState('#0B4672');
+  const primary = '#0B4672';
 
   const theme = createMuiTheme({
     darkMode: darkMode,
@@ -48,6 +48,9 @@ const MythemeProvider = ({ children }) => {
           },
           '.MuiFormLabel-root.Mui-focused': {
             color: darkMode ? '#f9f9f9 !important' : primary
+          },
+          '.MuiListItemText-primary': {
+            fontSize: 12
           }
         }
       }
