@@ -106,22 +106,11 @@ export default function () {
   const { order, orderBy, setOrderBy, setOrder } = useOrderTable();
   const { page, rows, setRows, rowsPerPage, emptyRows } = usePageTable();
 
-  function handleLogs() {
-    return logs.map((log) => {
-      if (log.dados) {
-        return {
-          ...log,
-          dados: JSON.parse(log.dados)
-        }
-      }
-    });
-  }
-
   useEffect(() => {
     if (logs && logs.length > 0 && logs[0].dados) {
       setOrderBy('id');
       setOrder('desc');
-      setRows(handleLogs());
+      setRows(logs);
     }
     // eslint-disable-next-line
   }, [logs]);

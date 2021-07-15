@@ -15,7 +15,7 @@ const InsertSchema = (data) => {
 
 const InsertInfoSchema = (data) => {
   const schema = yup.object().shape({
-    descricao: yup.string().required("Descrição é requerido"),
+    descricao: yup.string().trim().required("Descrição é requerido"),
     atividade_id: yup.number().required("Atividade é requerida."),
     ticket: yup.number().required("Atividade é ticket."),
     categoria_id: yup.number().required("Categoria é requerida."),
@@ -27,9 +27,9 @@ const InsertInfoSchema = (data) => {
 
 const UpdateInfoSchema = (data) => {
   const schema = yup.object().shape({
-    id: yup.string().required("Descrição é requerido"),
-    descricao: yup.string().required("Descrição é requerido"),
-    categoria_id: yup.number().required("Categoria é requerida."),
+    id: yup.string().required('Descrição é requerido'),
+    descricao: yup.string().trim().required('Descrição é requerido'),
+    categoria_id: yup.number().required('Categoria é requerida.')
   });
 
   const Val = new Validate(schema, data);

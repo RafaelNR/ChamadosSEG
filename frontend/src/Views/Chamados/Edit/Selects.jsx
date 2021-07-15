@@ -13,7 +13,8 @@ import {
   getUsers,
   getPerfil,
   getUsersAtribuiveis,
-  getClientesByUser
+  getClientesByUser,
+  getMyClientes
 } from '../../../Service/user.service';
 
 import {
@@ -63,7 +64,7 @@ export const SelectRequerente = ({
   useEffect(() => {
     let render = true;
 
-    if (userDados.id) {
+    if (userDados.id && userDados.role_id) {
       (async () => {
         try {
           if (userDados.role_id === 3) {
@@ -131,39 +132,41 @@ export const SelectAtribuidos = ({
 
   useEffect(() => {
     let render = true;
-    (async () => {
-      try {
-        setLoading(true);
-        const { success, data } =
-          userDados.role_id === 3
-            ? await getUsersAtribuiveis(chamado.requerente_id)
-            : await getUsers()
 
-        
-        if (render && success) {
+    if (userDados.role_id) {
+      (async () => {
+        try {
+          setLoading(true);
+          
+          const { success, data } =
+            userDados.role_id === 3
+              ? await getUsersAtribuiveis(chamado.requerente_id)
+              : await getUsers();
 
-          if (data.length === 1) {
-            setChamado(chamado => {
-              return {
-                ...chamado,
-                'atribuido_id': data[0].id
-              }
-            });
+          if (render && success) {
+            if (data.length === 1) {
+              setChamado((chamado) => {
+                return {
+                  ...chamado,
+                  atribuido_id: data[0].id
+                };
+              });
+            }
+
+            return setUsers(data);
           }
-
-          return setUsers(data);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setLoading(false);
         }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    })();
+      })();
+    }
 
     return () => {
       return false;
     };
-  }, [chamado.requerente_id]);
+  }, [userDados.role_id, chamado.requerente_id]);
 
   const handleValue = () => {
     const t = users.filter((user) => user.id === chamado.atribuido_id);
@@ -216,36 +219,39 @@ export const SelectClientsChamado = ({
 
   useEffect(() => {
     let render = true;
-    (async () => {
-      try {
-        setLoading(true);
-        const { success, data } =
-          userDados.role_id !== 3
-            ? await getClientesByUser(chamado.atribuido_id)
-            : await getClientesByUser(chamado.requerente_id);
 
-        if (render && success) {
-          if (data.length === 1) {
-            setChamado((chamado) => {
-              return {
-                ...chamado,
-                cliente_id: data[0].id
-              };
-            });
+    if (userDados.role_id) {
+      (async () => {
+        try {
+          setLoading(true);
+          const { success, data } =
+            userDados.role_id === 3
+              ? await getClientesByUser(chamado.requerente_id)
+              : await getClientesByUser(chamado.atribuido_id);
+
+          if (render && success) {
+            if (data.length === 1) {
+              setChamado((chamado) => {
+                return {
+                  ...chamado,
+                  cliente_id: data[0].id
+                };
+              });
+            }
+            return setClientes(data);
           }
-          return setClientes(data);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setLoading(false);
         }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    })();
+      })();
+    }
 
     return () => {
       return false;
     };
-  }, [chamado.requerente_id, chamado.atribuido_id]);
+  }, [userDados.role_id,chamado.requerente_id, chamado.atribuido_id]);
 
   const handleValue = () => {
     const t = clientes.filter((cliente) => cliente.id === chamado.cliente_id);

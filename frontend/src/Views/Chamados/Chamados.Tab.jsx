@@ -30,17 +30,21 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     right: 5,
     background: theme.palette.secondary.main,
+    padding: '7px 20px',
     color: 'white',
     top: -50,
-    padding: '7px 20px',
+    width: 150,
     '&:hover': {
       background: theme.palette.secondary.main,
     }
   },
   badge: {
+    width: '100%',
+    display: 'block',
+    textAlign: 'end',
     '& .MuiBadge-badge': {
       top: 10,
-      left: -15
+      left: 25
     }
   }
 }));

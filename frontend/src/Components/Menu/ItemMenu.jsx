@@ -17,7 +17,7 @@ import {
 const useStyles = makeStyles((theme) => ({
   root: {
     height: 48,
-    padding: 0,
+    paddingLeft: 20,
     '& .MuiListItemText-primary': {
       fontSize: 12
     },
@@ -25,29 +25,29 @@ const useStyles = makeStyles((theme) => ({
       flex: 0
     }
   },
-  box: {
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    paddingLeft: '20px'
-  },
-  icon: {
-    display: 'flex'
-  },
   active: {
     background: theme.darkMode ? '#606060' : '#f2f3f5',
     borderLeft: '3px solid ' + theme.palette.primary.main,
+    paddingLeft: 17,
     '& span': {
       fontWeight: 'bold'
     }
+  },
+  box: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center'
+  },
+  icon: {
+    display: 'flex'
   }
 }));
 
 
 const MyListItem = memo(({ menu }) => {
-  const classes = useStyles();
   const { open, handleDrawerClose } = useMenu();
   const { pathname } = useLocation();
+  const classes = useStyles();
 
   return (
     <ListItem

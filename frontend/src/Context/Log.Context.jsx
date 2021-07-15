@@ -43,7 +43,6 @@ const LogProvider = ({ children }) => {
     (async () => {
       try {
         const Dados = await tabs[currentTab].service();
-        console.log(Dados)
         const { success, data } = Dados;
         if (success && render) return setLogs(data);
         throw new Error(data.message);

@@ -1,6 +1,6 @@
 import React from "react";
 import clsx from "clsx";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   makeStyles,
   Tooltip,
@@ -21,11 +21,13 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   new: {
-    padding: '7.5px 0',
-    backgroundColor: theme.palette.button.new,
+    background: theme.palette.secondary.main,
+    padding: '7px 20px',
+    color: 'white',
+    width: 150,
     '&:hover': {
       transition: '',
-      backgroundColor: theme.palette.button.hover.new
+      background: theme.palette.secondary.main
     }
   },
   edit: {
@@ -77,14 +79,14 @@ const useStyles = makeStyles((theme) => ({
 const ViewTicket = React.memo(({ ticket, variant }) => {
   const classes = useStyles();
   return (
-    <NavLink to={`/atividades/view/${ticket}`}>
+    <Link to={`/atividades/view/${ticket}`}>
       <Tooltip title="Visualizar">
         <Button
           className={clsx(classes.root, classes.view)}
           startIcon={<VisibilitySharp style={{ fontSize: 15 }} />}
         />
       </Tooltip>
-    </NavLink>
+    </Link>
   );
 });
 
@@ -111,28 +113,31 @@ const PdfTicket = React.memo(({ ticket, handleClick, loading }) => {
 const CreatedTicket = React.memo(() => {
   const classes = useStyles();
   return (
-    <NavLink to="/atividades/create">
+    <Link to="/atividades/create">
       <Tooltip title="Novo">
         <Button
           className={clsx(classes.root, classes.new)}
-          startIcon={<Add />}
-        />
+          startIcon={<Add size="small" />}
+          variant="contained"
+        >
+          Nova
+        </Button>
       </Tooltip>
-    </NavLink>
+    </Link>
   );
 });
 
 const EditTicket = React.memo(({ ticket }) => {
   const classes = useStyles();
   return (
-    <NavLink to={`/atividades/edit/${ticket}`}>
+    <Link to={`/atividades/edit/${ticket}`}>
       <Tooltip title="Editar">
         <Button
           className={clsx(classes.root, classes.edit)}
           startIcon={<Edit style={{fontSize: 15}} />}
         />
       </Tooltip>
-    </NavLink>
+    </Link>
   );
 });
 

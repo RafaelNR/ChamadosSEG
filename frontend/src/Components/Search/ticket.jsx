@@ -34,16 +34,16 @@ const useStyles = makeStyles((theme) => ({
   margin: {
     marginRight: theme.spacing(2)
   },
-  searchIcon: (open) => ({
+  searchIcon: (props) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: open ? fade('#dfdfdf', 0.15) : 'transparent',
+    backgroundColor: props.open ? fade('#dfdfdf', 0.15) : 'transparent',
     '& > button': {
       color: 'white',
     },
     '& button:hover': {
-      backgroundColor: open ? 'transparent' : 'rgba(255, 255, 255, 0.08);'
+      backgroundColor: props.open ? 'transparent' : 'rgba(255, 255, 255, 0.08);'
     }
   }),
   inputInput: {
@@ -75,16 +75,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export const SearchAtividade = React.memo(() => {
+export const SearchAtividade = () => {
+  let location = useLocation();
   const { Masker } = useMaker();
   const { history } = useHistory();
-  let location = useLocation();
   const { roleID, nome } = useUser();
   const { handleSnackBar } = useSnackBar();
   const [loading, setLoading] = useState(false);
   const [ticket, setTicket] = useState('');
   const [open, setOpen] = useState(false);
-  const classes = useStyles(open);
+  const classes = useStyles({open});
 
   useEffect(() => {
     if (open) setOpen(!open);
@@ -95,6 +95,7 @@ export const SearchAtividade = React.memo(() => {
     const value = e.target.value;
     const name = e.target.name;
     setTicket(Masker(value, name));
+    // eslint-disable-next-line
   }, []);
 
   const close = useCallback(() => {
@@ -102,38 +103,40 @@ export const SearchAtividade = React.memo(() => {
       setOpen((props) => !props);
       setTicket('');
     }
+    // eslint-disable-next-line
   }, [loading]);
 
   const handleSend = useCallback(() => {
-    setLoading(true);
+    if (ticket.length >= 5) {
+      setLoading(true)
+      getAtividade(ticket)
+        .then((atividade) => {
+          if (!atividade && !atividade.ticket)
+            throw new Error('Atividade não encontrada.');
+          if (roleID === 3 && atividade.tecnico !== nome)
+            throw new Error('Essa atividade não pertence a você.');
 
-    getAtividade(ticket)
-      .then((atividade) => {
-        if (!atividade && !atividade.ticket)
-          throw new Error('Atividade não encontrada.');
-        if (roleID === 3 && atividade.tecnico !== nome)
-          throw new Error('Essa atividade não pertence a você.');
+          setOpen(false);
+          setTicket('');
 
-        setOpen(false);
-        setTicket('');
-
-        if (roleID <= 2 && atividade.tecnico !== nome) {
-          return history.push(`/atividades/view/${atividade.ticket}`);
-        } else {
-          return history.push(`/atividades/edit/${atividade.ticket}`);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        return handleSnackBar({
-          type: 'error',
-          message:
-            err && err.message ? err.message : 'Erro em pesquisar atividade.'
+          if (roleID <= 2 && atividade.tecnico !== nome) {
+            return history.push(`/atividades/view/${atividade.ticket}`);
+          } else {
+            return history.push(`/atividades/edit/${atividade.ticket}`);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          return handleSnackBar({
+            type: 'error',
+            message:
+              err && err.message ? err.message : 'Erro em pesquisar atividade.'
+          });
+        })
+        .finally(() => {
+          setLoading(false);
         });
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    }
     // eslint-disable-next-line
   }, [ticket]);
 
@@ -180,4 +183,4 @@ export const SearchAtividade = React.memo(() => {
       </Tooltip>
     </>
   );
-});
+};

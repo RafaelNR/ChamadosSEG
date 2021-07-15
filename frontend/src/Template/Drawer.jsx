@@ -10,7 +10,6 @@ import {
   IconButton,
 } from "@material-ui/core";
 import ListItensMenu from "../Components/Menu/ItensMenu";
-import HeaderMenu from '../Components/Header/Drawer';
 import ChevronRightIcon from "@material-ui/icons/ChevronRightSharp";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeftSharp";
 
@@ -59,14 +58,14 @@ const useStyles = makeStyles((theme) => ({
       width: theme.spacing(9) + 1,
     },
   },
-  toolbar: {
+  toolbar: props => ({
     display: "flex",
     alignItems: "center",
-    justifyContent: "flex-end",
-    padding: theme.spacing(0, 1),
+    justifyContent: props.open ? "flex-end" : 'center',
+    padding: props.open ? theme.spacing(0, 1) : 0,
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
-  },
+  }),
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
@@ -80,9 +79,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MiniDrawer = () => {
-  const classes = useStyles();
-  const theme = useTheme();
   const { open, handleDrawer } = useMenu();
+  const classes = useStyles({open});
 
   return (
     <Drawer
@@ -99,7 +97,6 @@ const MiniDrawer = () => {
       }}
     >
       <div className={classes.toolbar}>
-        <HeaderMenu />
         <IconButton onClick={handleDrawer}>
           {!open ? (
             <ChevronRightIcon />

@@ -140,6 +140,7 @@ export const ConfirmResendEmail = React.memo(({ id }) => {
 
 export const ResendEmail = React.memo(({ id }) => {
   const classes = useStyles();
+  const { setOpen } = useDialog();
   const { handleSnackBar } = useSnackBar();
   const { loadSendMail, setLoadSendMail } = useLogs();
 
@@ -160,6 +161,7 @@ export const ResendEmail = React.memo(({ id }) => {
       });
     } finally {
       setLoadSendMail(false)
+      setOpen(false);
     }
     
   }

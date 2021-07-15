@@ -109,7 +109,7 @@ const useStyles = makeStyles((theme) => ({
   })
 }));
 
-export default ({ chamado, tab }) => {
+const BoxChamado = ({ chamado, tab }) => {
   const classes = useStyles({
     acompanhamentos: chamado.acompanhamentos,
     prioridade: chamado.prioridade,
@@ -138,9 +138,7 @@ export default ({ chamado, tab }) => {
   } = chamado;
 
   const handleLink = useCallback(() => {
-    if (userDados.role_id !== 3) {
-      return `/chamado/edit/${chamado.id}`;
-    } else if (
+    if (
       chamado.status === 'Finalizado' ||
       chamado.requerente_id !== userDados.id
     ) {
@@ -182,7 +180,7 @@ export default ({ chamado, tab }) => {
                     >
                       {acompanhamentos ? (
                         <Badge
-                          badgeContent={parseInt(acompanhamentos)}
+                          badgeContent={acompanhamentos}
                           color="primary"
                         >
                           <CommentSharp className={classes.acompanhamentos} />
@@ -204,18 +202,19 @@ export default ({ chamado, tab }) => {
                     <ChipStatus status={status} />
                   </div>
                   <div className="user">
-                    <ChipUser nome={requerente} img={requerente_imagem} tooltip label="Requerente" style={{marginRight: 5}}/>
-                    <ChipUser nome={atribuido} img={atribuido_imagem} tooltip label="Atribuído" />
-                    {/* <ChipUser
-                      nome={tab === 'Atribuído' ? requerente : atribuido}
-                      img={
-                        tab === 'Atribuído'
-                          ? requerente_imagem
-                          : atribuido_imagem
-                      }
+                    <ChipUser
+                      nome={requerente}
+                      img={requerente_imagem}
                       tooltip
-                      label={tab === 'Atribuído' ? 'Requerente' : 'Atribuído'}
-                    /> */}
+                      label="Requerente"
+                      style={{ marginRight: 5 }}
+                    />
+                    <ChipUser
+                      nome={atribuido}
+                      img={atribuido_imagem}
+                      tooltip
+                      label="Atribuído"
+                    />
                   </div>
                 </Grid>
               </Grid>
@@ -226,3 +225,5 @@ export default ({ chamado, tab }) => {
     </>
   );
 };
+
+export default React.memo(BoxChamado);

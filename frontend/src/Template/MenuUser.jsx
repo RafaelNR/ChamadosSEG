@@ -112,7 +112,12 @@ export default () => {
 
   return (
     <div>
-      <Button className={classes.root} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+      <Button
+        className={classes.root}
+        aria-controls="simple-menu"
+        aria-haspopup="true"
+        onClick={handleClick}
+      >
         <User />
       </Button>
       <Menu
@@ -123,29 +128,23 @@ export default () => {
         TransitionComponent={Fade}
         onClose={handleClose}
         transformOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
+          vertical: 'top',
+          horizontal: 'left'
         }}
       >
         <RouterLink to="/perfil">
           <MenuItem onClick={handleClose}>
             <AccountCircleIcon className={classes.menuIcon} />
-            <Typography
-            className={classes.menuText}
-            variant="body1"
-            >
+            <Typography className={classes.menuText} variant="body1">
               Perfil
             </Typography>
           </MenuItem>
         </RouterLink>
         <MenuItem onClick={handleLogout}>
           <ExitToAppIcon className={classes.menuIcon} />
-          <Typography
-            className={classes.menuText}
-            variant="body1"
-            >
-              Logout
-            </Typography>
+          <Typography className={classes.menuText} variant="body1">
+            Logout
+          </Typography>
         </MenuItem>
       </Menu>
     </div>

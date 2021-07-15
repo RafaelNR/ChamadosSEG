@@ -30,6 +30,13 @@ import { handleDateTimeFull, converterFileInData } from '../../Utils/dates';
 // Header Table
 const headCells = [
   {
+    id: 'id',
+    numeric: false,
+    disablePadding: false,
+    label: '#',
+    sort: false
+  },
+  {
     id: 'created_at',
     numeric: false,
     disablePadding: false,
@@ -87,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center'
   },
   tablerow: {
-    padding: '10px'
+    padding: '10px 5px'
   },
   success: {
     backgroundColor: '#d8f3dc',
@@ -124,14 +131,9 @@ const RowUpdateCreated = ({createdAt,updatedAt}) => {
   const classes = useStyles();
   return (
     <span className={classes.date}>
-      {createdAt >= updatedAt ? (
-        handleDateTimeFull(createdAt)
-      ) : (
+      {updatedAt !== createdAt && (
         <Tooltip title="Email Reenviado">
-          <>
-            {handleDateTimeFull(updatedAt)}
-              <UpdateIcon className={classes.icon}/>
-          </>
+          <UpdateIcon className={classes.icon}/>
         </Tooltip>
       )}
     </span>
@@ -191,6 +193,11 @@ export default function () {
                       />
                     </TableCell>
                     <TableCell align="left" className={classes.tablerow}>
+                      {row.createdAt >= row.updatedAt
+                        ? handleDateTimeFull(row.createdAt)
+                        : handleDateTimeFull(row.updatedAt)}
+                    </TableCell>
+                    <TableCell align="left" className={classes.tablerow}>
                       <span>{row.subject}</span>
                       <span className={classes.mes_ano}>
                         {converterFileInData(row.file)}
@@ -230,6 +237,4 @@ export default function () {
     </React.Fragment>
   );
 }
-
-
 
