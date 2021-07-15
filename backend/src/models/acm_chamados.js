@@ -43,7 +43,9 @@ const findOne = (id) => {
 };
 
 const CountTypeAcompanhamentos = () => {
-	return knex.raw("select sum(tipo = 1) as acompanhamentos, sum(tipo = 2) as anexo,chamado_id from chamados left join acm_chamados ON acm_chamados.chamado_id = chamados.id where chamados.status != 'Finalizado' and tipo IS NOT NULL group by chamado_id")
+	return knex.raw(
+		"select cast(sum(tipo = 1) as int) as acompanhamentos, cast(sum(tipo = 2) as int) as anexo,chamado_id from chamados left join acm_chamados ON acm_chamados.chamado_id = chamados.id where chamados.status != 'Finalizado' and tipo IS NOT NULL group by chamado_id"
+	);
 }
 
 const insert = (Dados) => {

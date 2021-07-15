@@ -11,6 +11,7 @@ module.exports = class Email {
 		};
 		this.dados = null;
 		this.email = nodemailer.createTransport({
+			service: 'Gmail',
 			host: process.env.EMAIL_HOST,
 			port: process.env.EMAIL_PORT,
 			secure: false,
