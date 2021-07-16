@@ -1,8 +1,8 @@
 const Validate = require("../tools/validation/schemas");
 const Model = require("../models/user");
 const { Crypt } = require("../tools/bcryp");
-const Result =  require('../tools/result');
-const { findClients } = require("../models/clients_has_users");
+const Result = require('../tools/result');
+const { findUsersByCliente } = require('../models/clients_has_users')
 
 async function index(req, res) {
 	try {
@@ -31,27 +31,14 @@ async function findOne(req, res) {
 	return res.status(Result.status).json(Result.res);
 }
 
-async function findMyClientes(req	,res ){
+async function getUsuariosByCliente(req, res) {
 	try {
+		if (!req.params || !req.params.cliente_id)
+			throw "Paramento não encontrado!";
 
-		await tools.checkIfExist(req.userId);
+		const Dados = await findUsersByCliente(req.params.cliente_id);
 
-		Result.ok(200,await findClients(req.userId));
-	} catch (error) {
-		Result.fail(400, error);
-	}
-
-	Result.registerLog(req.userId, "user", "findMyClientes");
-	return res.status(Result.status).json(Result.res);
-}
-
-async function findClientesByUser(req, res) {
-	try {
-		if (!req.params || !req.params.id) throw "Paramento não encontrado!";
-
-		await tools.checkIfExist(req.params.id);
-
-		Result.ok(200, await findClients(req.params.id));
+		Result.ok(200, Dados);
 	} catch (error) {
 		Result.fail(400, error);
 	}
@@ -231,9 +218,8 @@ const tools = {
 module.exports = {
 	index,
 	findOne,
-	findMyClientes,
-	findClientesByUser,
 	getUsersAtribuiveis,
+	getUsuariosByCliente,
 	insert,
 	update,
 	updatePerfil,

@@ -13,11 +13,16 @@ const Ticket = require("../classes/ticket.class");
  */
 const index = async (req, res) => {
 	try {
+		console.log(req.query)
+		let Dados = '';
 
-		const Dados =
-			Object.keys(req.query).length > 1
-				? await Model.filter(tools.handleFilter(req.query))
-				: await Model.index(req.query.period);
+		if (req.query.period) {
+			Dados = await Model.index(req.query.period);
+		} else if (Object.keys(req.query).length >= 1) {
+			Dados = await Model.filter(tools.handleFilter(req.query));
+		} else {
+			Dados = await Model.index();
+		}
 
 		Result.ok(200, Dados);
 	} catch (error) {

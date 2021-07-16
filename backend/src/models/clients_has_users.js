@@ -28,13 +28,16 @@ module.exports = {
 	 * @param {number} clientID
 	 * @return {Object}
 	 */
-	findUsers: async (clientID) => {
+	findUsersByCliente: async (cliente_id) => {
 		return await knex
 			.select("id", "nome", "user")
 			.from("cliente_has_user")
 			.join("users", "id", "=", "user_id")
-			.where("cliente_has_user.cliente_id", "=", clientID);
+			.where("cliente_has_user.cliente_id", "=", cliente_id);
 	},
+
+
+
 
 	/**
 	 * count se o cliente esta vinculado ao usuário.

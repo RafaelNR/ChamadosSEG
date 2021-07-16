@@ -1,6 +1,6 @@
 const Model = require("../models/client");
 const { countActivityforClient } = require("../models/atividades");
-const { countLinkedToClient } = require("../models/clients_has_users");
+const { countLinkedToClient, findClients } = require("../models/clients_has_users");
 const Validate = require("../tools/validation/schemas");
 const Result =  require('../tools/result');
 
@@ -25,6 +25,33 @@ const findOne = async (req, res) => {
 		await tools.checkIfExist(id);
 
 		Result.ok(200,await Model.findOne(id));
+	} catch (error) {
+		Result.fail(400, error);
+	}
+
+	Result.registerLog(req.userId, "clients", "findOne");
+	return res.status(Result.status).json(Result.res);
+};
+
+async function findMyClientes(req, res) {
+	try {
+		Result.ok(200, await findClients(req.userId));
+	} catch (error) {
+		Result.fail(400, error);
+	}
+
+	Result.registerLog(req.userId, "clients", "findMyClientes");
+	return res.status(Result.status).json(Result.res);
+}
+
+const findClientesByUsuario = async (req, res) => {
+	try {
+		if (!req.params || !req.params.id) throw "Paramento não encontrado!";
+
+		const user_id = Validate.ID(parseInt(req.params.id));
+
+
+		Result.ok(200, await Model.findClientesByUsuario(user_id));
 	} catch (error) {
 		Result.fail(400, error);
 	}
@@ -118,7 +145,9 @@ const tools = {
 module.exports = {
 	index,
 	findOne,
+	findClientesByUsuario,
 	insert,
 	update,
 	deletar,
+	findMyClientes,
 };

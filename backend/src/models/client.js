@@ -25,13 +25,24 @@ const findOne = async (ID) => {
 		.limit(1)
 		.then(async (Client) => {
 			return Client[0]
-				? { ...Client[0], usuarios: await ClientsHasUser.findUsers(ID) }
+				? {
+						...Client[0],
+						usuarios: await ClientsHasUser.findUsersByCliente(ID),
+				}
 				: null;
 		});
 };
 
 module.exports = {
 	findOne,
+
+	findClientesByUsuario: (user_id) => {
+		return knex
+			.select("id", "nome_fantasia")
+			.from("clientes")
+			.leftJoin("cliente_has_user as cs", "cs.cliente_id", "=", "clientes.id")
+			.where("cs.user_id", "=", user_id);
+	},
 
 	/**
 	 * Retorna dados de todos os clients;
@@ -74,7 +85,12 @@ module.exports = {
 			.update(Dados)
 			.then(async () => await findOne(Dados.id))
 			.catch(async (error) => {
-				return { error: error && error.messagee ? error : "Erro em retornar os dados atualizados." };
+				return {
+					error:
+						error && error.messagee
+							? error
+							: "Erro em retornar os dados atualizados.",
+				};
 			});
 	},
 
