@@ -12,8 +12,9 @@ import {
   getUsers,
   getPerfil,
   getUsersAtribuiveis,
-  getClientesByUser,
 } from '../../../Service/user.service';
+
+import { getClientesByUsuario } from '../../../Service/clientes.service';
 
 import {
   getAllCategorias,
@@ -198,8 +199,8 @@ export const SelectClientes = ({ handleChange, ...rest }) => {
         try {
           const { success, data } =
             userDados.role_id !== 3
-              ? await getClientesByUser(chamado.atribuido)
-              : await getClientesByUser(chamado.requerente);
+              ? await getClientesByUsuario(chamado.atribuido)
+              : await getClientesByUsuario(chamado.requerente);
 
           if (render && success) {
             setChamado((chamado) => {

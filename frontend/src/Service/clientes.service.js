@@ -35,3 +35,21 @@ export const getCliente = async (ID) => {
     throw error;
   }
 };
+
+export const getClientesByUsuario = async (user_id) => {
+  try {
+    const Url = `/clientes/usuario/${user_id}`;
+    const Dados = await Service.exec('get', Url);
+
+    console.log(Dados)
+
+    if (!Dados.data.success) throw Dados.data;
+
+    return {
+      success: true,
+      data: Dados.data.data
+    };
+  } catch (error) {
+    throw error;
+  }
+};
