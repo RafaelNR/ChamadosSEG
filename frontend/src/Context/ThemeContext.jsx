@@ -40,6 +40,11 @@ const MythemeProvider = ({ children }) => {
           a: {
             textDecoration: 'none'
           },
+          '.MuiSelect-icon.Mui-disabled': {
+            color: darkMode
+              ? 'rgba(255, 255, 255, 0.1) !important'
+              : 'rgba(0, 0, 0, 0.1) !important'
+          },
           '.MuiSelect-select.Mui-disabled': {
             color: darkMode ? '#f9f9f9' : '#404040'
           },

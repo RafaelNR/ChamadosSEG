@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react';
+import clsx from 'clsx';
 import {
   makeStyles,
   Button,
@@ -7,11 +8,21 @@ import {
 import SaveIcon from '@material-ui/icons/Save';
 
 
+//* CONTEXT
 import useChamados from '../../Context/ChamadosContext'
 import useLoading from '../../Context/LoadingContext'
 
 
 const useStyles = makeStyles((theme) => ({
+  button: {
+    marginLeft: theme.spacing(1)
+  },
+  clear: {
+    color: theme.darkMode ? 'white' : '#0B4672',
+    border: theme.darkMode
+      ? '1px solid rgba(255, 255, 255, 0.23)'
+      : '1px solid rgba(11, 70, 114, 0.5)'
+  }
 }));
 
 export const Save = () => {
@@ -39,3 +50,23 @@ export const Save = () => {
     </Button>
   );
 }
+
+export const Clear = () => {
+  const classes = useStyles();
+  const { setChamado, setCurrModelo } = useChamados();
+
+  return (
+    <Button
+      variant="outlined"
+      color="primary"
+      size="large"
+      onClick={() => {
+        setChamado({});
+        setCurrModelo(null);
+      }}
+      className={clsx(classes.button, classes.clear)}
+    >
+      Limpar
+    </Button>
+  );
+};

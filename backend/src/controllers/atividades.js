@@ -185,7 +185,6 @@ const tools = {
 			...Dados,
 			ticket: await Ticket.created(),
 		});
-		console.log(newDados)
 		
 		return await tools
 			.verifyAtividade(newDados)

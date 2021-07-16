@@ -9,6 +9,7 @@ import useSnackBar from '../../Context/SnackBarContext';
 const useStyles = makeStyles((theme) => ({
   chip: {
     minWidth: 170,
+    maxWidth: 200,
     '& .MuiChip-label': {
       color: theme.palette.primary.title,
       width: '75%',

@@ -23,6 +23,7 @@ const ChamadosProvider = ({ children }) => {
   const [currTab, setCurrTab] = useState(null);
   const [errors, setErrors] = useState([]);
   const [countChamados, setCountChamados] = useState([]);
+  const [currModelo, setCurrModelo] = useState(null);
 
   useEffect(() => {
     let render = true;
@@ -187,6 +188,8 @@ const ChamadosProvider = ({ children }) => {
         errors,
         setErrors,
         setChamados,
+        currModelo,
+        setCurrModelo,
         changeCurrTab,
         changePrioridadeChamado,
         changePrioridadeChamados,

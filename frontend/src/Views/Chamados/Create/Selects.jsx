@@ -234,7 +234,11 @@ export const SelectClientes = ({ handleChange, ...rest }) => {
         id="cliente_id"
         name="cliente_id"
         value={chamado.cliente_id || ''}
-        disabled={values.length === 1 ? true : false}
+        disabled={
+          values.length === 1
+            ? true
+            : false || chamado.atribuido && chamado.requerente ? false : true
+        }
         {...rest}
       >
         {values.length >= 1 &&

@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import { ProgressSubmit } from '../../Components/Buttons/Progress';
 import InputPasswd from '../../Components/FormControl/Passwd';
+import Switch from './Switch'
 
 //* CONTEXT
 import useLogin from '../../Context/LoginContext';
@@ -56,54 +57,11 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
     backgroundColor: '#2896ff'
   },
-  permanecer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    '& .MuiFormControlLabel-root': {
-      marginRight: 0
-    }
+  lostpasswd: {
+    textAlign: 'end',
+    paddingRight: 10
   }
 }));
-
-const OptionsCheckBox = () => {
-  const classes = useStyles();
-  const { login, handleChangeLogin } = useLogin();
-
-  return (
-    <Grid container>
-      <Grid item xs={6}>
-        <Tooltip title="Seu username se auto-completa, sempre.">
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={login.lembrar || false}
-                name="lembrar"
-                color="primary"
-                onChange={handleChangeLogin}
-              />
-            }
-            label="Lembrar-me"
-          />
-        </Tooltip>
-      </Grid>
-      <Grid item xs={6} className={classes.permanecer}>
-        <Tooltip title="Seu usuário permanecerá logado.">
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={login.permanecer || false}
-                name="permanecer"
-                color="primary"
-                onChange={handleChangeLogin}
-              />
-            }
-            label="Permanecer"
-          />
-        </Tooltip>
-      </Grid>
-    </Grid>
-  );
-};
 
 export default () => {
   const classes = useStyles();
@@ -134,7 +92,7 @@ export default () => {
           variant="outlined"
           margin="normal"
           id="username"
-          label="Username"
+          label="Usuário"
           name="user"
           value={login.user || ''}
           autoComplete="username"
@@ -155,12 +113,12 @@ export default () => {
           fullWidth
           required
         />
-        <OptionsCheckBox />
+        <Switch />
         <ProgressSubmit success={success} loading={loading}>
           Entrar
         </ProgressSubmit>
       </form>
-      <Grid container>
+      <Grid container className={classes.lostpasswd}>
         <Grid item xs>
           <Typography
             onClick={handleChangeSlide}

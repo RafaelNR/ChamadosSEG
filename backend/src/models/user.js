@@ -68,7 +68,7 @@ module.exports = {
 
 	findUserAtribuiveisParaChamado: async (user_id) => {
 		return knex
-			.select("users.id", "users.nome")
+			.distinct("users.id", "users.nome")
 			.from("users")
 			.join("cliente_has_user", "cliente_has_user.user_id", "=", "users.id")
 			.where("users.role_id", "!=", 3)

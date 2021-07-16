@@ -16,17 +16,11 @@ import {
   SelectSubCategorias
 } from './Selects';
 import { PaperHeader, MyPaper } from '../../../Components/Paper/Chamados';
-import Prioridade from '../../../Components/Buttons/Prioridade';
-import MenuStatus from '../../../Components/Menu/StatusChamado';
-import { Save } from '../../../Components/Buttons/Chamados';
-import Loading from '../../../Components/Loading/';
+import { Save, Clear } from '../../../Components/Buttons/Chamados';
 import Modelos from './Modelos'
 
 //* PROVIDER
 import useChamados from '../../../Context/ChamadosContext';
-
-//* HOOKS
-import useUser from '../../../Hooks/useUser';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -45,10 +39,6 @@ const useStyles = makeStyles((theme) => ({
     '& input': {
       fontSize: '1.25rem'
     }
-  },
-  prioridade_status: {
-    display: 'flex',
-    justifyContent: 'center'
   },
   form: {
     width: '100%'
@@ -105,7 +95,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Title = ({ handleChange, value, error }) => {
-  const classes = useStyles();
   const { chamado } = useChamados();
   return (
     <FormControl
@@ -122,6 +111,7 @@ const Title = ({ handleChange, value, error }) => {
         value={chamado.titulo || ''}
         error={error ? true : false}
         helperText={error}
+        disabled={chamado.modelo ? true : false}
         required
         autoFocus
       />
@@ -149,7 +139,7 @@ export default () => {
       <form autoComplete="off">
         <Grid container>
           <Grid item xs={3} className={classes.header}>
-              <Modelos />
+            <Modelos />
           </Grid>
           <Grid item xs={9} className={classes.header}>
             <PaperHeader style={{ flexDirection: 'row' }}>
@@ -191,6 +181,7 @@ export default () => {
               <SelectCategorias
                 varian="outlined"
                 handleChange={handleChange}
+                disabled={chamado.modelo ? true : false}
                 fullWidth
                 required
               />
@@ -199,6 +190,7 @@ export default () => {
               <SelectSubCategorias
                 varian="outlined"
                 handleChange={handleChange}
+                disabled={chamado.modelo ? true : false}
                 fullWidth
                 required
               />
@@ -227,7 +219,7 @@ export default () => {
                   rows={2}
                   variant="outlined"
                   onChange={handleChange}
-                  value={chamado.descricao}
+                  value={chamado.descricao || ''}
                   error={errors['descricao'] ? true : false}
                   helperText={errors['descricao']}
                   required
@@ -235,6 +227,7 @@ export default () => {
               </FormControl>
             </Grid>
             <Grid item xs={12} md={12} className={classes.buttons}>
+              <Clear />
               <Save />
             </Grid>
           </MyPaper>

@@ -31,9 +31,8 @@ const useStyles = makeStyles({
 
 export default () => {
   const classes = useStyles();
-  const { setChamado } = useChamados();
+  const { currModelo, setCurrModelo, setChamado } = useChamados();
   const [modelos, setModelos] = useState([]);
-  const [value, setValue] = useState(null);
 
   useEffect(() => {
     let render = true;
@@ -60,14 +59,15 @@ export default () => {
     const Modelo = modelos.filter((modelo) => modelo.id === id)[0];
 
     if (Modelo) {
-      setValue(id);
+      setCurrModelo(id);
       setChamado((chamado) => {
         return {
           ...chamado,
           titulo: Modelo.titulo,
           descricao: Modelo.descricao,
           categoria_id: Modelo.categoria_id,
-          sub_categoria_id: Modelo.sub_categoria_id
+          sub_categoria_id: Modelo.sub_categoria_id,
+          modelo: true,
         };
       });
     }
@@ -84,7 +84,7 @@ export default () => {
           onChange={handleChange}
           id="modelo"
           name="modelo"
-          value={value || ''}
+          value={currModelo || ''}
         >
           {modelos.length >= 1 &&
             modelos.map((modelo) => {
