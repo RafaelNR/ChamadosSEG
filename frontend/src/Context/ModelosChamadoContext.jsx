@@ -25,6 +25,7 @@ const ModelosChamadoProvider = ({ children }) => {
   const [errors, setErrors] = useState([]);
   const [modelos, setModelos] = useState([]);
   const [modelo, setModelo] = useState({});
+  
 
   useEffect(() => {
     let render = true;
@@ -162,8 +163,8 @@ const ModelosChamadoProvider = ({ children }) => {
     (type) => {
       const fn = Actions[type];
       return fn();
-      //eslint-disable-next-line
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [modelo]
   );
 

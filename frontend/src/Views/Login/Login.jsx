@@ -3,11 +3,8 @@ import React, { useEffect } from 'react';
 import {
   TextField,
   Typography,
-  FormControlLabel,
-  Checkbox,
   Grid,
   makeStyles,
-  Tooltip,
 } from '@material-ui/core';
 import { ProgressSubmit } from '../../Components/Buttons/Progress';
 import InputPasswd from '../../Components/FormControl/Passwd';

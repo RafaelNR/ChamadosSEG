@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import clsx from 'clsx';
-import { makeStyles, Grid} from '@material-ui/core/';
+import { makeStyles, Grid } from '@material-ui/core/';
 import { User, EditDescricaoText } from '../../../Components/Box/AcmChamado';
 
 //* HOOKS
@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 export default ({ acm }) => {
   const classes = useStyles();
   const { userDados } = useUser();
-  
+
   return (
     <div
       className={clsx(

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 //* COMPONENTES
 import {
   makeStyles,
@@ -7,7 +7,6 @@ import {
   FormControl,
   TextField,
   CircularProgress,
-  Link
 } from '@material-ui/core/';
 import DialogActions from '../../../Components/Dialog/Action';
 import { ButtonGerar, ButtonLink } from './Buttons';
@@ -89,6 +88,7 @@ const FormTotal = React.memo(() => {
 
   React.useEffect(() => {
     setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = useCallback( async (event) => {
@@ -98,20 +98,20 @@ const FormTotal = React.memo(() => {
       const Dados = await GerarLiberacaoTotalSchema(values);
 
       if (Dados.error) throw Dados;
-      
+
       const resp = await LiberacaoTotalPDF(Dados);
 
       if (!resp.success) throw 'Erro em gerar o PDF.';
 
       setLink(resp.data.link);
       setErrors([]);
-      
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setErrors(error.errors || []);
     } finally {
       setLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[values])
 
   return (
@@ -196,6 +196,7 @@ const FormSiteApp = React.memo(() => {
 
   React.useEffect(() => {
     setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = useCallback(
@@ -220,6 +221,7 @@ const FormSiteApp = React.memo(() => {
         setLoading(false);
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [values]
   );
 

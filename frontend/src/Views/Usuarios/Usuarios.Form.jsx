@@ -242,7 +242,8 @@ const FormActivedDisabled = React.memo(({ handleSubmit }) => {
   const { usuario,setUsuario, usuarios} = useUsuarios();
 
   React.useEffect(() => {
-    setUsuario(usuarios.filter(user => user.id === usuario.id)[0]);
+    setUsuario(usuarios.filter((user) => user.id === usuario.id)[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usuarios]);
 
   return (

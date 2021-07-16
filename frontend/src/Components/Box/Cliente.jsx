@@ -14,7 +14,6 @@ const useStyles = makeStyles((theme) => ({
       display: 'block',
       fontSize: 12,
       '& > span': {
-        fontWeight: 'bold',
         color: theme.palette.text.common,
         fontSize: 14,
         fontWeight: 100
@@ -46,6 +45,7 @@ export const ClienteDados = ({ id, title }) => {
     return () => {
       render = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

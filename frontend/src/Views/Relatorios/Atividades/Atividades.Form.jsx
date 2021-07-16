@@ -167,12 +167,12 @@ export default () => {
         return setErrors(Dados.errors);
       }
 
-      console.log(Dados)
+      console.log(Dados);
 
       AtividadesPDF(values, type)
-        .then(resp => {
+        .then((resp) => {
           setLoading(false);
-          setDownload(resp)
+          setDownload(resp);
           handleSnackBar({
             type: 'success',
             message: 'PDF gerado com sucesso.'
@@ -190,11 +190,10 @@ export default () => {
       setLoading(false);
       handleSnackBar({
         type: 'error',
-        message: error.message
-          ? error.message
-          : 'Erro gerar PDF.'
+        message: error.message ? error.message : 'Erro gerar PDF.'
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values,type]);
 
 

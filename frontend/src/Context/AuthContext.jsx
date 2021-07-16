@@ -17,10 +17,11 @@ const AuthProvider = ({ children }) => {
   const [errors, setErrors] = useState([])
 
   const handleLogout = useCallback(() => {
-    setToken(null)
-    setUser(null)
+    setToken(null);
+    setUser(null);
     removeData('token');
     removeData('user');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // AUTENTICA AÇÕES COM MUDANÇA DE PÁGINA;
@@ -32,14 +33,11 @@ const AuthProvider = ({ children }) => {
     if (!isToken || !isUser || ErrorMsg) {
       setErrors({
         success: false,
-        message:
-          ErrorMsg ||
-          'Autenticação não encontrado, você foi deslogado!'
+        message: ErrorMsg || 'Autenticação não encontrado, você foi deslogado!'
       });
       return handleLogout();
     }
-
-  // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   return (
@@ -48,9 +46,10 @@ const AuthProvider = ({ children }) => {
         logado: Boolean(user),
         user,
         errors,
+        token,
         setErrors,
         handleLogout,
-        handleAuth,
+        handleAuth
       }}
     >
       {children}

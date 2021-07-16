@@ -73,6 +73,7 @@ export default ({ status, disabled=false }) => {
 
   React.useEffect(() => {
     setAllStatus(getStatus(status));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status])
 
   const handleClick = useCallback((event) => {
@@ -104,12 +105,14 @@ export default ({ status, disabled=false }) => {
       } catch (error) {
         handleSnackBar({
           type: 'error',
-          message: error && error.message ? error.message : 'Erro em alterar o status.'
+          message:
+            error && error.message ? error.message : 'Erro em alterar o status.'
         });
       } finally {
         setLoading(false);
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [chamado]
   );
   

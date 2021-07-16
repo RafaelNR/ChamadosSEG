@@ -106,13 +106,14 @@ export default function () {
       setOrderBy('titulo');
       return setRows(search && search.length > 3 ? searchResults : modelos);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modelos, searchResults]);
 
   useEffect(() => {
     if (modelos) {
       handleSearch(['titulo'], modelos);
     }
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
   
   return (

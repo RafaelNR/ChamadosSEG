@@ -15,9 +15,7 @@ import DialogActions from '../../Components/Dialog/Action';
 //* CONTEXT
 import useCategorias from "../../Context/CategoriasContext";
 import useSubCategorias from "../../Context/SubCategoriasContext";
-import useDialog from "../../Context/DialogContext";
-import Categorias from ".";
-import CategoriasTable from "./Categorias.Table";
+import useDialog from '../../Context/DialogContext';
 
 const useStyles = makeStyles(() => ({
   dialogLoader: {
@@ -147,13 +145,17 @@ const FormUpdate = () => {
   } = useCategorias();
   const { subcategorias } = useSubCategorias();
   const { type, loading, setLoading, setOpen } = useDialog();
-  const [subIDs, setSubIDs] = React.useState([]);
 
 
   React.useEffect(() => {
-    if (categoria && categoria.subCategorias && categoria.subCategorias.length > 0) {
+    if (
+      categoria &&
+      categoria.subCategorias &&
+      categoria.subCategorias.length > 0
+    ) {
       setLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[categoria])
 
 
@@ -166,7 +168,8 @@ const FormUpdate = () => {
         resp ? setOpen(false) : setLoading(false)
       );
     },
-    [type,categoria]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [type, categoria]
   );
 
   const handleSubCategoria = React.useCallback(
@@ -176,34 +179,35 @@ const FormUpdate = () => {
         ? []
         : categoria.subCategorias;
 
-      if (action === "add") {
+      if (action === 'add') {
         currSubCategorias.push(ID);
       } else {
         currSubCategorias = currSubCategorias.filter((c) => c !== ID);
       }
 
       // Adiciona o Valor
-      setCategoria(props => {
+      setCategoria((props) => {
         return {
           ...props,
-          subCategorias: currSubCategorias,
-        }
+          subCategorias: currSubCategorias
+        };
       });
-
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [categoria]
   );
 
   const handleChange = React.useCallback(
     (event) => {
       const key = event.target.name;
-      const value = event.target.value
+      const value = event.target.value;
       setCategoria({
         ...categoria,
-        [key]: value,
+        [key]: value
       });
     },
-    [],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
   );
 
   return (

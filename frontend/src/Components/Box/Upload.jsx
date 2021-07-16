@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import { useDropzone } from 'react-dropzone'
-import {
-  makeStyles,
-  Typography,
-} from '@material-ui/core/';
+import React from 'react';
+import { useDropzone } from 'react-dropzone';
+import { makeStyles, Typography } from '@material-ui/core/';
 import ImageIcon from '@material-ui/icons/Image';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Preview from './Preview';
 
-import useUpload  from '../../Context/UploadContext';
+import useUpload from '../../Context/UploadContext';
 import useSnackBar from '../../Context/SnackBarContext';
 
-import { NewFileName } from '../../Utils/functions'
+import { NewFileName } from '../../Utils/functions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,21 +37,25 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export const UploadImage = ({ type,id }) => {
+export const UploadImage = ({ type, id }) => {
   const classes = useStyles();
   const { handleFile } = useUpload();
 
   const onDrop = React.useCallback(
     (uploadFile) => {
-      handleFile(type,{File:uploadFile[0],id:id})
+      handleFile(type, { File: uploadFile[0], id: id });
     },
-    [handleFile,id,type]
+    [handleFile, id, type]
   );
 
-  const { getRootProps, getInputProps } = useDropzone(
-    { accept: 'image/*', multiple: false, maxSize: 3000000, maxFiles:1, onDrop },
-  );
-  
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: 'image/*',
+    multiple: false,
+    maxSize: 3000000,
+    maxFiles: 1,
+    onDrop
+  });
+
   return (
     <>
       <div className={classes.root} {...getRootProps()}>
@@ -71,8 +72,7 @@ export const UploadImage = ({ type,id }) => {
       </div>
     </>
   );
-
-}
+};
 
 export const Upload = ({ id, accept }) => {
   const classes = useStyles();
@@ -81,41 +81,42 @@ export const Upload = ({ id, accept }) => {
 
   const onDrop = React.useCallback(
     (uploadFile) => {
-      const File = uploadFile && uploadFile[0] || null
+      const File = (uploadFile && uploadFile[0]) || null;
       if (File) {
-      const reader = new FileReader();
+        const reader = new FileReader();
 
-      reader.onabort = () => console.log('Abort');
-      reader.onerror = () => console.log('error');
-      reader.onloadstart = () => setProcess('Start');
-      reader.onprogress = () => setProcess('Process');
-        
-      reader.onload = () => {
-        setProcess('Finalizado');
+        reader.onabort = () => console.log('Abort');
+        reader.onerror = () => console.log('error');
+        reader.onloadstart = () => setProcess('Start');
+        reader.onprogress = () => setProcess('Process');
 
-        const newFile = {
-          id: id ? id : null,
-          file: File,
-          name: File.name,
-          newName: NewFileName(File.name, File.type, `C-${id}@`),
-          size: File.size,
-          preview: URL.createObjectURL(File),
-          process: 0,
-          uploaded: false,
-          error: false,
-          url: ''
+        reader.onload = () => {
+          setProcess('Finalizado');
+
+          const newFile = {
+            id: id ? id : null,
+            file: File,
+            name: File.name,
+            newName: NewFileName(File.name, File.type, `C-${id}@`),
+            size: File.size,
+            preview: URL.createObjectURL(File),
+            process: 0,
+            uploaded: false,
+            error: false,
+            url: ''
+          };
+          setFile(newFile);
         };
-        setFile(newFile);
-      };
 
-      reader.readAsArrayBuffer(File);
-    } else {
-      handleSnackBar({
-        type: 'error',
-        message: `Erro em fazer o upload. Verifique o tamanho ou tipos aceitos.`
-      });
-    }
+        reader.readAsArrayBuffer(File);
+      } else {
+        handleSnackBar({
+          type: 'error',
+          message: `Erro em fazer o upload. Verifique o tamanho ou tipos aceitos.`
+        });
+      }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [id]
   );
 

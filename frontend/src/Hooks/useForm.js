@@ -9,6 +9,7 @@ const useForm = (initValue) => {
 
   useEffect(() => {
     typeof initValue === 'object' ? setValues(initValue) : setValue(initValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleChangeValue = useCallback((e) => {
@@ -37,7 +38,7 @@ const useForm = (initValue) => {
 
   return {
     value,
-    setValues,
+    setValue,
     values,
     setValues,
     handleChangeValue,

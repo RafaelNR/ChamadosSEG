@@ -8,7 +8,6 @@ import React, {
 
 
 //* SERVICE
-import * as Crud from '../Api/Crud';
 import { getClientes } from '../Service/clientes.service';
 import { getUsers } from '../Service/user.service';
 
@@ -34,15 +33,11 @@ const ReportAtividadesProvider = ({ children }) => {
 
   useEffect(() => {
     let render = true;
-    
+
     (async () => {
-
       try {
-
         const Dados =
-          type.info === 'cliente'
-            ? await getClientes()
-            : await getUsers();
+          type.info === 'cliente' ? await getClientes() : await getUsers();
 
         if (render) {
           if (type.info === 'cliente') {
@@ -57,23 +52,22 @@ const ReportAtividadesProvider = ({ children }) => {
             setTecnicos(Dados.data);
           }
         }
-        
       } catch (error) {
-        console.log(error)
+        console.log(error);
         handleSnackBar({
           type: 'error',
           message:
-            error && error.message ||
-            'Erro em carregar relatórios'
+            error && error.message
+              ? error.message
+              : 'Erro em carregar relatórios'
         });
       }
-
     })();
 
     return function cleanup() {
       render = false;
     };
-    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type.info]);
 
   const handleDataChange = useCallback(

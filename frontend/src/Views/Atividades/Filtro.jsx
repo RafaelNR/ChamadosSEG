@@ -70,7 +70,6 @@ export default () => {
     if (roleID) {
       (async () => {
         try {
-
           const c = roleID === 3 ? await getMyClientes() : await getClientes();
 
           if (!c.success) throw new Error('Em carregar técnicos ou clientes.');
@@ -102,10 +101,11 @@ export default () => {
     return () => {
       render = false;
     };
+    // eslint-disable-next-line
   }, [roleID]);
 
   React.useEffect(() => {
-    setValues(v => {
+    setValues((v) => {
       let values = { ...v };
 
       if (clientes.length === 1) {
@@ -118,6 +118,7 @@ export default () => {
 
       return values;
     });
+    // eslint-disable-next-line
   }, [clientes]);
 
 
@@ -151,7 +152,7 @@ export default () => {
     return () => {
       render = false;
     };
-    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[values.cliente])
 
   const handleChange = (event) => {
@@ -173,6 +174,7 @@ export default () => {
       }
     });
     setErrors({});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const filterAtividades = useCallback(async () => {

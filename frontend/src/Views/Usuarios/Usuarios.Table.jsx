@@ -108,13 +108,14 @@ export default function () {
       setOrderBy('nome');
       return setRows(search && search.length > 3 ? searchResults : usuarios);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usuarios, searchResults]);
 
   useEffect(() => {
     if (usuarios) {
-      handleSearch(['nome','user'], usuarios);
+      handleSearch(['nome', 'user'], usuarios);
     }
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
   
   return (

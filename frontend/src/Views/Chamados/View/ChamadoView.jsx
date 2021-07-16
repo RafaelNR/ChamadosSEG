@@ -112,7 +112,7 @@ export default () => {
         console.log(error);
         handleSnackBar({
           type: 'error',
-          message: error && error.message || 'Erro em carrega chamado.'
+          message: error && error.message ?error.message : 'Erro em carrega chamado.'
         });
         return history.replace('/chamados');
       } finally {
@@ -123,6 +123,7 @@ export default () => {
     return () => {
       return false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userDados]);
 
   return (

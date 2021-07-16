@@ -137,7 +137,7 @@ export const SelectAtribuidos = ({
       (async () => {
         try {
           setLoading(true);
-          
+
           const { success, data } =
             userDados.role_id === 3
               ? await getUsersAtribuiveis(chamado.requerente_id)
@@ -166,6 +166,7 @@ export const SelectAtribuidos = ({
     return () => {
       return false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userDados.role_id, chamado.requerente_id]);
 
   const handleValue = () => {
@@ -251,6 +252,7 @@ export const SelectClientsChamado = ({
     return () => {
       return false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userDados.role_id,chamado.requerente_id, chamado.atribuido_id]);
 
   const handleValue = () => {
@@ -319,6 +321,7 @@ export const SelectCategorias = ({
     return () => {
       return false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -385,6 +388,7 @@ export const SelectSubCategorias = ({
     return () => {
       return false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chamado.categoria_id]);
 
   return (

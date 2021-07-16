@@ -154,13 +154,14 @@ export default function () {
       setOrder('desc');
       setRows(search && search.length > 3 ? searchResults : logs);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [logs, searchResults]);
 
   useEffect(() => {
     if (logs) {
       handleSearch(['type', 'to', 'filename'], logs);
     }
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
   return (

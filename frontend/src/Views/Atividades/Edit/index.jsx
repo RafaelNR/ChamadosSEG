@@ -20,7 +20,6 @@ import { LoadingProvider } from '../../../Context/LoadingContext';
 import { getAtividade } from "../../../Service/atividade.service";
 import { getCliente } from "../../../Service/clientes.service";
 import { getUser } from '../../../Service/user.service';
-import Service from '../../../Api/Service';
 
 //*UTILS 
 import * as Data from '../../../Utils/dates'
