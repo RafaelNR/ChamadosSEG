@@ -112,41 +112,30 @@ export default () => {
   }, [roleID]);
 
   React.useEffect(() => {
-    setValues((v) => {
-      let values = { ...v };
-
-      if (clientes.length === 1) {
-        values = { ...v, cliente: clientes[0].id };
-      }
-
-      return values;
-    });
-    // eslint-disable-next-line
-  }, [clientes]);
-
-  React.useEffect(() => {
     let render = true;
 
-    (async () => {
-      try {
-        const { success, data } = await getUserByCliente(values.cliente);
+    if (values.cliente) {
+      (async () => {
+        try {
+          const { success, data } = await getUserByCliente(values.cliente);
 
-        if (render && success) {
-          return setTecnicos(data);
+          if (render && success) {
+            return setTecnicos(data);
+          }
+
+          throw new Error('Em carregar técnicos ou clientes.');
+        } catch (error) {
+          console.log(error);
+          handleSnackBar({
+            type: 'error',
+            message:
+              error && error.message
+                ? error.message
+                : 'Erro em carregar clientes.'
+          });
         }
-
-        throw new Error('Em carregar técnicos ou clientes.');
-      } catch (error) {
-        console.log(error);
-        handleSnackBar({
-          type: 'error',
-          message:
-            error && error.message
-              ? error.message
-              : 'Erro em carregar clientes.'
-        });
-      }
-    })();
+      })();
+    }
 
     return () => {
       render = false;
@@ -265,7 +254,7 @@ export default () => {
                 handleChange={handleChange}
                 errorText={errors['cliente']}
                 error={errors['cliente'] ? true : false}
-                disabled={clientes.length <= 1 ? true : false}
+                disabled={clientes.length === 0 ? true : false}
               />
             </Grid>
             <Grid item xs={3}>

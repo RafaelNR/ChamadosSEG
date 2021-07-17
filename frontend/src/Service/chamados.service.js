@@ -129,8 +129,6 @@ export const changeStatus = async (id, newStatus) => {
       status: newStatus
     });
 
-    console.log(Dados.data.message);
-
     if (!Dados.data.success) throw new Error(Dados.data.message || 'Error alterar o status.');
 
     return {

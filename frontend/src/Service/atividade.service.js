@@ -29,7 +29,6 @@ export const getAtividades = async (Dados) => {
 
 export const getAtividade = async (ticket) => {
   try {
-    console.log(ticket);
     const Url = `/atividades/ticket/${ticket}`;
     const Dados = await Service.exec("get", Url);
 

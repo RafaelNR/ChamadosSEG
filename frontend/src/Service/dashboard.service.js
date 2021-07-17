@@ -22,9 +22,7 @@ export const MyClientesAtividades = async () => {
       'get',
       '/dashboard/atividades/my_clientes'
     );
-
-    console.log(Dados)
-
+    
     if (Dados.data.success) return Dados.data;
 
     throw Dados.data;

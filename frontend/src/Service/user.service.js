@@ -144,8 +144,6 @@ export const update = async (data) => {
     const Url = `/usuarios/${data.id}`;
     const Dados = await Service.exec("put", Url, data);
 
-    console.log(Dados)
-
     if (!Dados.data.success) {
       // eslint-disable-next-line
       throw ({ success: false, message: Dados.data.message ? Dados.data.message : "Error em buscas os meus dados." });

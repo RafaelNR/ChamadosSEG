@@ -66,8 +66,6 @@ export const getClientesByUsuario = async (user_id) => {
     const Url = `/clientes/usuario/${user_id}`;
     const Dados = await Service.exec('get', Url);
 
-    console.log(Dados);
-
     if (!Dados.data.success) throw Dados.data;
 
     return {
