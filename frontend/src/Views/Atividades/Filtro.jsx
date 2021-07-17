@@ -112,10 +112,6 @@ export default () => {
         values = { ...v, cliente: clientes[0].id };
       }
 
-      // if (tecnicos.length === 1) {
-      //   values = { ...v, tecnico: tecnicos[0].id };
-      // }
-
       return values;
     });
     // eslint-disable-next-line
@@ -131,7 +127,10 @@ export default () => {
           const { success, data } = await getUserByCliente(values.cliente);
 
           if (render && success) {
-            data.length === 1 && setValues({ tecnico: data[0].id });
+            console.log(data)
+            setValues(v => {
+              return { ...v, tecnico: data[0].id };
+            });
             return setTecnicos(data);
           }
 
