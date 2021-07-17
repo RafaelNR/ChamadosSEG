@@ -13,6 +13,7 @@ const useAuth = () => {
     removeData('token');
     removeData('user');
     history.replace('/login');
+    // eslint-disable-next-line
   }, [history]);
 
   return {

@@ -104,12 +104,14 @@ export default ({ status, disabled=false }) => {
       } catch (error) {
         handleSnackBar({
           type: 'error',
-          message: error && error.message ? error.message : 'Erro em alterar o status.'
+          message:
+            error && error.message ? error.message : 'Erro em alterar o status.'
         });
       } finally {
         setLoading(false);
       }
     },
+    // eslint-disable-next-line
     [chamado]
   );
   

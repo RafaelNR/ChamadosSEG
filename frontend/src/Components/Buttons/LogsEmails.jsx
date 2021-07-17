@@ -81,7 +81,6 @@ export const OpenPDF = React.memo(({ file }) => {
   const { handleSnackBar } = useSnackBar();
   
   const handleClick = React.useCallback(async () => {
-
     try {
       const myRequest = new Request(
         `${process.env.REACT_APP_API_ENDPOINT_SERVICE}/tmp/uploads/${file}`
@@ -94,17 +93,17 @@ export const OpenPDF = React.memo(({ file }) => {
           '_blank'
         );
       }
-      
+
       throw new Error('Arquivo PDF removido ou indisponível.');
     } catch (error) {
-        handleSnackBar({
-          type: 'error',
-          message: error.message
-        });
+      handleSnackBar({
+        type: 'error',
+        message: error.message
+      });
     }
 
-
-  },[])
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Tooltip title="Abrir PDF">
@@ -121,7 +120,7 @@ export const OpenPDF = React.memo(({ file }) => {
 export const ConfirmResendEmail = React.memo(({ id }) => {
   const classes = useStyles();
   const { setCurrLog } = useLogs();
-  const { openDialog, loadSendMail } = useDialog();
+  const { openDialog } = useDialog();
 
   return (
     <Tooltip title="Reenviar Email">

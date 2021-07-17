@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import {
   makeStyles,
   Grid,
   Typography,
   TextField,
   FormControl,
-  IconButton
 } from '@material-ui/core/';
 import { Chat } from '@material-ui/icons';
 import {
@@ -131,6 +130,7 @@ export default () => {
         [name]: value
       });
     },
+    // eslint-disable-next-line
     [chamado]
   );
 

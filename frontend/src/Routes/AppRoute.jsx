@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { makeStyles, Container } from '@material-ui/core';
 import Main from '../Template/Main';

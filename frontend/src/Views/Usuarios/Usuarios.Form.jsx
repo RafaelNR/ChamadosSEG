@@ -241,9 +241,13 @@ const FormActivedDisabled = React.memo(({ handleSubmit }) => {
   const { type, closeDialog } = useDialog();
   const { usuario,setUsuario, usuarios} = useUsuarios();
 
-  React.useEffect(() => {
-    setUsuario(usuarios.filter(user => user.id === usuario.id)[0]);
-  }, [usuarios]);
+  React.useEffect(
+    () => {
+      setUsuario(usuarios.filter((user) => user.id === usuario.id)[0]);
+    },
+    // eslint-disable-next-line
+    [usuarios]
+  );
 
   return (
     <form onSubmit={handleSubmit}>

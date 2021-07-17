@@ -119,10 +119,8 @@ const BoxChamado = ({ chamado, tab }) => {
 
   const {
     id,
-    requerente_id,
     requerente,
     requerente_imagem,
-    atribuido_id,
     atribuido,
     atribuido_imagem,
     cliente,
@@ -146,6 +144,7 @@ const BoxChamado = ({ chamado, tab }) => {
     } else {
       return `/chamado/edit/${chamado.id}`;
     }
+    // eslint-disable-next-line
   }, [userDados]);
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import {
   makeStyles,
@@ -220,6 +220,7 @@ export const NewDescricaoInput = ({ children }) => {
       );
       setAcompanhamento(acm[0]);
     }
+    // eslint-disable-next-line
   }, [currID]);
 
   return (
@@ -273,6 +274,7 @@ export const NewUploadInput = ({ children }) => {
       );
       setAcompanhamento(acm[0]);
     }
+    // eslint-disable-next-line
   }, [currID]);
 
   return (

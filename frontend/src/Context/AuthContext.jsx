@@ -17,10 +17,11 @@ const AuthProvider = ({ children }) => {
   const [errors, setErrors] = useState([])
 
   const handleLogout = useCallback(() => {
-    setToken(null)
-    setUser(null)
+    setToken(null);
+    setUser(null);
     removeData('token');
     removeData('user');
+    // eslint-disable-next-line
   }, []);
 
   // AUTENTICA AÇÕES COM MUDANÇA DE PÁGINA;
@@ -48,9 +49,10 @@ const AuthProvider = ({ children }) => {
         logado: Boolean(user),
         user,
         errors,
+        token,
         setErrors,
         handleLogout,
-        handleAuth,
+        handleAuth
       }}
     >
       {children}

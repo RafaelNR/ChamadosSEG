@@ -114,16 +114,17 @@ const Title = ({ id, titulo, setChamado, error }) => {
   const [value, setValue] = useState(titulo);
 
   const keyPress = useCallback((e) => {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
       setValue(value.trim());
-      setChamado(chamado =>{
+      setChamado((chamado) => {
         return {
           ...chamado,
           titulo: value.trim()
         };
-      })
+      });
       setEdit(false);
     }
+    // eslint-disable-next-line
   },[value]);
 
   const handleClick = useCallback(() => {
@@ -135,6 +136,7 @@ const Title = ({ id, titulo, setChamado, error }) => {
       };
     });
     setEdit(false);
+    // eslint-disable-next-line
   },[value])
 
   return (
@@ -202,6 +204,7 @@ export default () => {
     if (chamado.status === 'Finalizado') {
       return history.replace(`/chamado/view/${chamado.id}`);
     }
+    // eslint-disable-next-line
   },[chamado.status])
   
   useEffect(() => {
@@ -238,6 +241,7 @@ export default () => {
     return () => {
       return false;
     };
+    // eslint-disable-next-line
   }, [userDados]);
 
   const handleChange = useCallback(
@@ -248,6 +252,7 @@ export default () => {
         [name]: value
       });
     },
+    // eslint-disable-next-line
     [chamado]
   );
 

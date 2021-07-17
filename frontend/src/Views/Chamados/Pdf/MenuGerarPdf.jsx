@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import {
   makeStyles,
   IconButton,
@@ -10,14 +10,13 @@ import {
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 
-
-import useDialog from '../../../Context/DialogContext'
+import useDialog from '../../../Context/DialogContext';
 
 const useStyles = makeStyles((theme) => ({
   button: {
     color: 'white',
     position: 'absolute',
-    right: 0,
+    right: 0
   }
 }));
 
@@ -52,13 +51,23 @@ export default () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => { openDialog('total'); handleClose(); } }>
+        <MenuItem
+          onClick={() => {
+            openDialog('total');
+            handleClose();
+          }}
+        >
           <ListItemIcon>
             <PictureAsPdfIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Gerar Liberação Total" />
         </MenuItem>
-        <MenuItem onClick={() => { openDialog('siteapp'); handleClose(); } }>
+        <MenuItem
+          onClick={() => {
+            openDialog('siteapp');
+            handleClose();
+          }}
+        >
           <ListItemIcon>
             <PictureAsPdfIcon fontSize="small" />
           </ListItemIcon>
@@ -67,4 +76,4 @@ export default () => {
       </Menu>
     </>
   );
-}
+};

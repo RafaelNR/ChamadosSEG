@@ -162,8 +162,8 @@ const ModelosChamadoProvider = ({ children }) => {
     (type) => {
       const fn = Actions[type];
       return fn();
-      //eslint-disable-next-line
     },
+    //eslint-disable-next-line
     [modelo]
   );
 

@@ -16,8 +16,7 @@ const useStyles = makeStyles((theme) => ({
       '& > span': {
         fontWeight: 'bold',
         color: theme.palette.text.common,
-        fontSize: 14,
-        fontWeight: 100
+        fontSize: 14
       }
     }
   }
@@ -46,6 +45,7 @@ export const ClienteDados = ({ id, title }) => {
     return () => {
       render = false;
     };
+    // eslint-disable-next-line
   }, []);
 
   return (

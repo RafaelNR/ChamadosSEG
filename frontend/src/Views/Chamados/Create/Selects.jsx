@@ -220,6 +220,7 @@ export const SelectClientes = ({ handleChange, ...rest }) => {
     return () => {
       return false;
     };
+    // eslint-disable-next-line
   }, [chamado.requerente, chamado.atribuido]);
 
   return (
@@ -238,7 +239,9 @@ export const SelectClientes = ({ handleChange, ...rest }) => {
         disabled={
           values.length === 1
             ? true
-            : false || chamado.atribuido && chamado.requerente ? false : true
+            : false || (chamado.atribuido && chamado.requerente)
+            ? false
+            : true
         }
         {...rest}
       >

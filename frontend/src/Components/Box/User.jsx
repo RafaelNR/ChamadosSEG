@@ -17,8 +17,7 @@ const useStyles = makeStyles((theme) => ({
       '& > span': {
         fontWeight: 'bold',
         color: theme.palette.text.common,
-        fontSize: 14,
-        fontWeight: 100
+        fontSize: 14
       }
     }
   }
@@ -30,28 +29,29 @@ export const UserDados = ({ id,title }) => {
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    let render = true;
-    
-    (async () => {
-      setLoading(true);
-      try {
-        const { success, data } = await getUser(id);
-        if (success && render) return setUser(data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
+  useEffect(
+    () => {
+      let render = true;
 
+      (async () => {
+        setLoading(true);
+        try {
+          const { success, data } = await getUser(id);
+          if (success && render) return setUser(data);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setLoading(false);
+        }
+      })();
 
-    })()
-
-    return () => {
-      render = false;
-    }
-
-  }, [])
+      return () => {
+        render = false;
+      };
+    },
+    // eslint-disable-next-line
+    []
+  );
   
   return (
     <div className={classes.box_user}>

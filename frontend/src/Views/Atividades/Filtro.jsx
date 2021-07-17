@@ -99,10 +99,11 @@ export default () => {
     return () => {
       render = false;
     };
+    // eslint-disable-next-line
   }, []);
 
   React.useEffect(() => {
-    setValues(v => {
+    setValues((v) => {
       let values = { ...v };
 
       if (clientes.length === 1) {
@@ -115,6 +116,7 @@ export default () => {
 
       return values;
     });
+    // eslint-disable-next-line
   }, [clientes, tecnicos]);
 
   const handleChange = (event) => {
@@ -137,6 +139,7 @@ export default () => {
       }
     });
     setErrors({});
+    // eslint-disable-next-line
   }, []);
 
   const filterAtividades = useCallback(async () => {

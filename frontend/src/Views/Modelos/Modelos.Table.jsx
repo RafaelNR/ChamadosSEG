@@ -106,6 +106,7 @@ export default function () {
       setOrderBy('titulo');
       return setRows(search && search.length > 3 ? searchResults : modelos);
     }
+    // eslint-disable-next-line
   }, [modelos, searchResults]);
 
   useEffect(() => {

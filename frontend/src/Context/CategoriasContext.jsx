@@ -137,16 +137,17 @@ const CategoriasProvider = ({ children }) => {
         console.log(error);
         handleSnackBar({
           type: 'error',
-          message: error && error.message || `Erro em deletar categoria.`
+          message: (error && error.message) || `Erro em deletar categoria.`
         });
       }
     },
   };
 
   const handleActions = useCallback((type, categoria) => {
-      const fn = Actions[type];
-      setApiLoading(true);
-      return fn(categoria);
+    const fn = Actions[type];
+    setApiLoading(true);
+    return fn(categoria);
+    // eslint-disable-next-line
   },[])
 
   return (

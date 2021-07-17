@@ -1,10 +1,9 @@
-import React, {useCallback, useRef } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
-import { green, orange } from '@material-ui/core/colors';	
-
+import { green, orange } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -42,8 +41,7 @@ export const ButtonGerar = React.memo(() => {
   );
 });
 
-
-export const ButtonLink = ({link}) => {
+export const ButtonLink = ({ link }) => {
   const classes = useStyles();
 
   return (
@@ -59,4 +57,4 @@ export const ButtonLink = ({link}) => {
       </Button>
     </>
   );
-}
+};

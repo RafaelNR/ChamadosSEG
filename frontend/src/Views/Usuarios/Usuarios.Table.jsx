@@ -108,6 +108,7 @@ export default function () {
       setOrderBy('nome');
       return setRows(search && search.length > 3 ? searchResults : usuarios);
     }
+    // eslint-disable-next-line
   }, [usuarios, searchResults]);
 
   useEffect(() => {

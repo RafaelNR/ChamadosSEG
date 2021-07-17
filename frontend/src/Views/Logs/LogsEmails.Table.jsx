@@ -154,6 +154,7 @@ export default function () {
       setOrder('desc');
       setRows(search && search.length > 3 ? searchResults : logs);
     }
+    // eslint-disable-next-line
   }, [logs, searchResults]);
 
   useEffect(() => {

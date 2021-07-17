@@ -1,12 +1,11 @@
-import React, { memo } from "react";
-import PropTypes from 'prop-types';
+import React, { memo } from 'react';
 import { makeStyles, Button, DialogActions } from '@material-ui/core/';
 import {
   Add,
   Save,
   Close,
   NavigateNextSharp,
-  NavigateBeforeSharp,
+  NavigateBeforeSharp
 } from '@material-ui/icons/';
 import useDialog from '../../Context/DialogContext';
 
@@ -50,9 +49,8 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: theme.palette.primary.dark
     }
-  },
+  }
 }));
-
 
 const NewButton = memo(({ name }) => {
   const classes = useStyles();
@@ -69,7 +67,7 @@ const NewButton = memo(({ name }) => {
   );
 });
 
-const SaveButton = memo(({ disabled, name="SALVAR" }) => {
+const SaveButton = memo(({ disabled, name = 'SALVAR' }) => {
   const classes = useStyles();
   return (
     <Button
@@ -83,7 +81,7 @@ const SaveButton = memo(({ disabled, name="SALVAR" }) => {
   );
 });
 
-const NavigatorButton = memo(({ clickAction, icon, }) => {
+const NavigatorButton = memo(({ clickAction, icon }) => {
   const classes = useStyles();
   return (
     <Button
@@ -102,7 +100,7 @@ const NavigatorButton = memo(({ clickAction, icon, }) => {
   );
 });
 
-const CancelButton = memo(({ clickClose, name="CANCELAR" }) => {
+const CancelButton = memo(({ clickClose, name = 'CANCELAR' }) => {
   const classes = useStyles();
   return (
     <DialogActions>
@@ -117,4 +115,4 @@ const CancelButton = memo(({ clickClose, name="CANCELAR" }) => {
   );
 });
 
-export { NewButton, SaveButton, CancelButton, NavigatorButton};
+export { NewButton, SaveButton, CancelButton, NavigatorButton };

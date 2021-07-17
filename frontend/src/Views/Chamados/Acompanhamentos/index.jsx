@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { makeStyles, Grid, Typography,Paper } from '@material-ui/core/';
+import { makeStyles, Grid, Typography, Paper } from '@material-ui/core/';
 import InsertCommentIcon from '@material-ui/icons/InsertComment';
-import MenuNewAcm from '../../../Components/Menu/AcmChamados'
+import MenuNewAcm from '../../../Components/Menu/AcmChamados';
 import Edit from './Edit';
 import New from './New';
 import NewUpload from './NewUpload';
@@ -109,22 +109,20 @@ export default () => {
   const { acompanhamentos, setAcompanhamentos, tipo } = useAcompanhamentos();
 
   useEffect(() => {
-
     (async () => {
       let render = true;
       (async () => {
         try {
           if (chamado && chamado.id) {
             const { success, data } = await getAcmChamado(chamado.id);
-            if (render && success)
-              return setAcompanhamentos(data);
+            if (render && success) return setAcompanhamentos(data);
           }
-
         } catch (error) {
           console.log(error);
           handleSnackBar({
             type: 'error',
-            message: error.message || 'Erro em carrega acompanhamentos do chamado.'
+            message:
+              error.message || 'Erro em carrega acompanhamentos do chamado.'
           });
           return history.replace('/chamados');
         }
@@ -135,8 +133,8 @@ export default () => {
       };
     })();
 
-
-  }, [chamado.id])
+    // eslint-disable-next-line
+  }, [chamado.id]);;
 
   return (
     <>

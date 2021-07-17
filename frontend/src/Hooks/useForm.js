@@ -9,10 +9,14 @@ const useForm = (initValue) => {
 
   useEffect(() => {
     typeof initValue === 'object' ? setValues(initValue) : setValue(initValue);
+    // eslint-disable-next-line
   }, []);
 
-  const handleChangeValue = useCallback((e) => {
-    setValues();
+  const handleChangeValue = useCallback((event) => {
+    const name = event.target.name;
+    const value = Masker(event.target.value, name);
+    setValues(value);
+    // eslint-disable-next-line
   }, []);
 
   const handleChangeValues = useCallback(
@@ -37,7 +41,7 @@ const useForm = (initValue) => {
 
   return {
     value,
-    setValues,
+    setValue,
     values,
     setValues,
     handleChangeValue,
