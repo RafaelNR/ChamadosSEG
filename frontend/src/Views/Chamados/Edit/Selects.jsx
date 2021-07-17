@@ -12,11 +12,7 @@ import {
 import {
   getUsers,
   getPerfil,
-<<<<<<< HEAD
-  getUsersAtribuiveis
-=======
   getUsersAtribuiveis,
->>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
 } from '../../../Service/user.service';
 
 import { getClientesByUsuario } from '../../../Service/clientes.service';
@@ -25,8 +21,6 @@ import {
   getAllCategorias,
   getSubCategoriasByCategoria
 } from '../../../Service/categorias.service';
-
-import { getClientesByUser } from '../../../Service/clientes.service';
 
 //* CONTEXT
 import useChamados from '../../../Context/ChamadosContext';
@@ -172,11 +166,7 @@ export const SelectAtribuidos = ({
     return () => {
       return false;
     };
-<<<<<<< HEAD
-    // eslint-disable-next-line
-=======
     // eslint-disable-next-line react-hooks/exhaustive-deps
->>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
   }, [userDados.role_id, chamado.requerente_id]);
 
   const handleValue = () => {
@@ -262,11 +252,7 @@ export const SelectClientsChamado = ({
     return () => {
       return false;
     };
-<<<<<<< HEAD
-    // eslint-disable-next-line
-=======
     // eslint-disable-next-line react-hooks/exhaustive-deps
->>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
   }, [userDados.role_id,chamado.requerente_id, chamado.atribuido_id]);
 
   const handleValue = () => {
@@ -402,11 +388,7 @@ export const SelectSubCategorias = ({
     return () => {
       return false;
     };
-<<<<<<< HEAD
-    // eslint-disable-next-line
-=======
     // eslint-disable-next-line react-hooks/exhaustive-deps
->>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
   }, [chamado.categoria_id]);
 
   return (

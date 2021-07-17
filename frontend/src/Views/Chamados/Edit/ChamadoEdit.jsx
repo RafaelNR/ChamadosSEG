@@ -124,11 +124,7 @@ const Title = ({ id, titulo, setChamado, error }) => {
       });
       setEdit(false);
     }
-<<<<<<< HEAD
-    // eslint-disable-next-line
-=======
     // eslint-disable-next-line react-hooks/exhaustive-deps
->>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
   },[value]);
 
   const handleClick = useCallback(() => {
@@ -140,11 +136,7 @@ const Title = ({ id, titulo, setChamado, error }) => {
       };
     });
     setEdit(false);
-<<<<<<< HEAD
-    // eslint-disable-next-line
-=======
     // eslint-disable-next-line react-hooks/exhaustive-deps
->>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
   },[value])
 
   return (
@@ -212,11 +204,7 @@ export default () => {
     if (chamado.status === 'Finalizado') {
       return history.replace(`/chamado/view/${chamado.id}`);
     }
-<<<<<<< HEAD
-    // eslint-disable-next-line
-=======
     // eslint-disable-next-line react-hooks/exhaustive-deps
->>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
   },[chamado.status])
   
   useEffect(() => {
@@ -253,11 +241,7 @@ export default () => {
     return () => {
       return false;
     };
-<<<<<<< HEAD
-    // eslint-disable-next-line
-=======
     // eslint-disable-next-line react-hooks/exhaustive-deps
->>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
   }, [userDados]);
 
   const handleChange = useCallback(
@@ -268,11 +252,7 @@ export default () => {
         [name]: value
       });
     },
-<<<<<<< HEAD
-    // eslint-disable-next-line
-=======
     // eslint-disable-next-line react-hooks/exhaustive-deps
->>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
     [chamado]
   );
 

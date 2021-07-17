@@ -88,11 +88,7 @@ const FormTotal = React.memo(() => {
 
   React.useEffect(() => {
     setLoading(false);
-<<<<<<< HEAD
-    // eslint-disable-next-line
-=======
     // eslint-disable-next-line react-hooks/exhaustive-deps
->>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
   }, []);
 
   const handleSubmit = useCallback( async (event) => {
@@ -115,11 +111,7 @@ const FormTotal = React.memo(() => {
     } finally {
       setLoading(false);
     }
-<<<<<<< HEAD
-    // eslint-disable-next-line 
-=======
-    // eslint-disable-next-line react-hooks/exhaustive-deps
->>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
+    // eslint-disable-next-line
   },[values])
 
   return (
@@ -204,11 +196,7 @@ const FormSiteApp = React.memo(() => {
 
   React.useEffect(() => {
     setLoading(false);
-<<<<<<< HEAD
-    // eslint-disable-next-line
-=======
     // eslint-disable-next-line react-hooks/exhaustive-deps
->>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
   }, []);
 
   const handleSubmit = useCallback(
@@ -233,11 +221,7 @@ const FormSiteApp = React.memo(() => {
         setLoading(false);
       }
     },
-<<<<<<< HEAD
-    // eslint-disable-next-line
-=======
     // eslint-disable-next-line react-hooks/exhaustive-deps
->>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
     [values]
   );
 

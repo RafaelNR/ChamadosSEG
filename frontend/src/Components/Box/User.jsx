@@ -48,11 +48,7 @@ export const UserDados = ({ id,title }) => {
         render = false;
       };
     },
-<<<<<<< HEAD
-    // eslint-disable-next-line
-=======
     // eslint-disable-next-line react-hooks/exhaustive-deps
->>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
     []
   );
   

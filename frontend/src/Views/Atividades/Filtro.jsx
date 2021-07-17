@@ -10,16 +10,11 @@ import useAtividades from "../../Context/AtividadesContext";
 import useSnackBar from '../../Context/SnackBarContext';
 
 //* SERVICE
-<<<<<<< HEAD
-import { getUsers, getPerfil } from '../../Service/user.service'
-import { getClientes, getMyClientes } from '../../Service/clientes.service';
-=======
 import { getMyClientes, getUserByCliente } from '../../Service/user.service';
 import {
   getClientes,
 } from '../../Service/clientes.service';
 
->>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
 import { getAtividades } from '../../Service/atividade.service';
 
 //* HOOKS
@@ -107,11 +102,7 @@ export default () => {
       render = false;
     };
     // eslint-disable-next-line
-<<<<<<< HEAD
-  }, []);
-=======
   }, [roleID]);
->>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
 
   React.useEffect(() => {
     setValues((v) => {
@@ -128,9 +119,6 @@ export default () => {
       return values;
     });
     // eslint-disable-next-line
-<<<<<<< HEAD
-  }, [clientes, tecnicos]);
-=======
   }, [clientes]);
 
 
@@ -165,8 +153,7 @@ export default () => {
       render = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[values.cliente])
->>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
+  }, [values.cliente]);
 
   const handleChange = (event) => {
     const value = event.target.value;
@@ -187,11 +174,7 @@ export default () => {
       }
     });
     setErrors({});
-<<<<<<< HEAD
-    // eslint-disable-next-line
-=======
     // eslint-disable-next-line react-hooks/exhaustive-deps
->>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
   }, []);
 
   const filterAtividades = useCallback(async () => {

@@ -119,15 +119,10 @@ const BoxChamado = ({ chamado, tab }) => {
 
   const {
     id,
-<<<<<<< HEAD
-    requerente,
-    requerente_imagem,
-=======
     // requerente_id,
     requerente,
     requerente_imagem,
     // atribuido_id,
->>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
     atribuido,
     atribuido_imagem,
     cliente,
@@ -151,11 +146,7 @@ const BoxChamado = ({ chamado, tab }) => {
     } else {
       return `/chamado/edit/${chamado.id}`;
     }
-<<<<<<< HEAD
-    // eslint-disable-next-line
-=======
     // eslint-disable-next-line react-hooks/exhaustive-deps
->>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
   }, [userDados]);
 
   return (

@@ -239,28 +239,18 @@ const FormUpdate = React.memo(
 
 const FormActivedDisabled = React.memo(({ handleSubmit }) => {
   const { type, closeDialog } = useDialog();
-  const { usuario,setUsuario, usuarios} = useUsuarios();
+  const { usuario, setUsuario, usuarios } = useUsuarios();
 
-<<<<<<< HEAD
-  React.useEffect(
-    () => {
-      setUsuario(usuarios.filter((user) => user.id === usuario.id)[0]);
-    },
-    // eslint-disable-next-line
-    [usuarios]
-  );
-=======
   React.useEffect(() => {
     setUsuario(usuarios.filter((user) => user.id === usuario.id)[0]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usuarios]);
->>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
 
   return (
     <form onSubmit={handleSubmit}>
       <DialogContent dividers>
         <h4>
-          Quer realmente {type === "disabled" ? "desabilitar" : "habilitar"} o
+          Quer realmente {type === 'disabled' ? 'desabilitar' : 'habilitar'} o
           usuário, {usuario.nome} ?
         </h4>
       </DialogContent>

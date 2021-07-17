@@ -49,8 +49,6 @@ export const getUser = async (ID) => {
   }
 };
 
-<<<<<<< HEAD
-=======
 
 export const getUserByCliente = async (cliente_id) => {
     try {
@@ -95,7 +93,6 @@ export const getMyClientes = async (ID) => {
   }
 };
 
->>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
 
 export const getPerfil = async () => {
   try {
