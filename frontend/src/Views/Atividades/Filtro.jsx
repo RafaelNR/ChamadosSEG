@@ -1,19 +1,26 @@
-import React,{useCallback} from 'react';
+import React, { useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { TextField, Button, Accordion, AccordionDetails, AccordionActions, AccordionSummary, Grid, Typography } from '@material-ui/core/';
-import { ExpandLessSharp, FilterListSharp } from '@material-ui/icons/';
-import Select from '../../Components/FormControl/Selects'
-import ProcessButton from '../../Components/Buttons/Progress'
+import {
+  TextField,
+  Button,
+  Accordion,
+  AccordionDetails,
+  AccordionActions,
+  AccordionSummary,
+  Grid,
+  Typography
+} from '@material-ui/core/';
+import { ExpandMoreSharp, FilterListSharp } from '@material-ui/icons/';
+import Select from '../../Components/FormControl/Selects';
+import ProcessButton from '../../Components/Buttons/Progress';
 
 //* CONTEXT
-import useAtividades from "../../Context/AtividadesContext";
+import useAtividades from '../../Context/AtividadesContext';
 import useSnackBar from '../../Context/SnackBarContext';
 
 //* SERVICE
-import { getMyClientes, getUserByCliente } from '../../Service/user.service';
-import {
-  getClientes,
-} from '../../Service/clientes.service';
+import { getUserByCliente } from '../../Service/user.service';
+import { getClientes, getMyClientes } from '../../Service/clientes.service';
 
 import { getAtividades } from '../../Service/atividade.service';
 
@@ -21,7 +28,7 @@ import { getAtividades } from '../../Service/atividade.service';
 import useUser from '../../Hooks/useUser';
 
 //* SHEMAS
-import { FilterAtividadesSchema} from '../../Schemas/Atividades.Schema'
+import { FilterAtividadesSchema } from '../../Schemas/Atividades.Schema';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -117,36 +124,29 @@ export default () => {
     // eslint-disable-next-line
   }, [clientes]);
 
-
   React.useEffect(() => {
     let render = true;
 
-    if (roleID) {
-      (async () => {
-        try {
-          const { success, data } = await getUserByCliente(values.cliente);
+    (async () => {
+      try {
+        const { success, data } = await getUserByCliente(values.cliente);
 
-          if (render && success) {
-            console.log(data)
-            setValues(v => {
-              return { ...v, tecnico: data[0].id };
-            });
-            return setTecnicos(data);
-          }
-
-          throw new Error('Em carregar técnicos ou clientes.');
-        } catch (error) {
-          console.log(error);
-          handleSnackBar({
-            type: 'error',
-            message:
-              error && error.message
-                ? error.message
-                : 'Erro em carregar clientes.'
-          });
+        if (render && success) {
+          return setTecnicos(data);
         }
-      })();
-    }
+
+        throw new Error('Em carregar técnicos ou clientes.');
+      } catch (error) {
+        console.log(error);
+        handleSnackBar({
+          type: 'error',
+          message:
+            error && error.message
+              ? error.message
+              : 'Erro em carregar clientes.'
+        });
+      }
+    })();
 
     return () => {
       render = false;
@@ -161,17 +161,11 @@ export default () => {
       ...values,
       [name]: value
     });
-    setErrors({})
+    setErrors({});
   };
 
   const clearValues = useCallback(() => {
-    setValues(() => {
-      if (clientes.length <= 1 || tecnicos.length <= 1) {
-        return { cliente: values.cliente, tecnico: values.tecnico };
-      } else {
-        return {};
-      }
-    });
+    setValues({});
     setErrors({});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -194,7 +188,7 @@ export default () => {
         throw new Error('Data inicial precisa estar preenchida.');
       }
 
-      const {success, data} = await getAtividades(values);
+      const { success, data } = await getAtividades(values);
 
       if (success) {
         return setAtividades(data);
@@ -204,7 +198,10 @@ export default () => {
     } catch (error) {
       return handleSnackBar({
         type: 'error',
-        message: error && error.message ? error.message : 'Erro em carregar atividades filtradas.'
+        message:
+          error && error.message
+            ? error.message
+            : 'Erro em carregar atividades filtradas.'
       });
     } finally {
       setLoading(false);
@@ -217,7 +214,7 @@ export default () => {
     <div className={classes.root}>
       <Accordion>
         <AccordionSummary
-          expandIcon={<ExpandLessSharp />}
+          expandIcon={<ExpandMoreSharp />}
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
@@ -291,11 +288,15 @@ export default () => {
           <Button variant="outlined" onClick={() => clearValues()}>
             Limpar
           </Button>
-          <ProcessButton handleSubmit={filterAtividades} loading={loading} success={success}>
+          <ProcessButton
+            handleSubmit={filterAtividades}
+            loading={loading}
+            success={success}
+          >
             Filtrar
           </ProcessButton>
         </AccordionActions>
       </Accordion>
     </div>
   );
-}
+};

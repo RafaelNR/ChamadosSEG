@@ -41,7 +41,7 @@ const FilterAtividadesSchema = (data) => {
   const schema = yup.object().shape({
     data_inicial: yup.string(),
     data_final: yup.string(),
-    cliente: yup.number(),
+    cliente: yup.number().required('Cliente é necessário.'),
     tecnico: yup.number().required('Técnico é necessário.')
   });
 
