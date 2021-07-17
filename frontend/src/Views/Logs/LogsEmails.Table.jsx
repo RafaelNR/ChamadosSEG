@@ -154,14 +154,18 @@ export default function () {
       setOrder('desc');
       setRows(search && search.length > 3 ? searchResults : logs);
     }
+<<<<<<< HEAD
     // eslint-disable-next-line
+=======
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+>>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
   }, [logs, searchResults]);
 
   useEffect(() => {
     if (logs) {
       handleSearch(['type', 'to', 'filename'], logs);
     }
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
   return (

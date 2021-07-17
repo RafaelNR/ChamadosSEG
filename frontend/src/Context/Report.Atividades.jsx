@@ -56,7 +56,14 @@ const ReportAtividadesProvider = ({ children }) => {
         console.log(error);
         handleSnackBar({
           type: 'error',
+<<<<<<< HEAD
           message: (error && error.message) || 'Erro em carregar relatórios'
+=======
+          message:
+            error && error.message
+              ? error.message
+              : 'Erro em carregar relatórios'
+>>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
         });
       }
     })();
@@ -64,7 +71,11 @@ const ReportAtividadesProvider = ({ children }) => {
     return function cleanup() {
       render = false;
     };
+<<<<<<< HEAD
     // eslint-disable-next-line
+=======
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+>>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
   }, [type.info]);
 
   const handleDataChange = useCallback(

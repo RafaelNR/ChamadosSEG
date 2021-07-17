@@ -112,7 +112,11 @@ export default () => {
         console.log(error);
         handleSnackBar({
           type: 'error',
+<<<<<<< HEAD
           message: (error && error.message) || 'Erro em carrega chamado.'
+=======
+          message: error && error.message ?error.message : 'Erro em carrega chamado.'
+>>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
         });
         return history.replace('/chamados');
       } finally {
@@ -123,7 +127,11 @@ export default () => {
     return () => {
       return false;
     };
+<<<<<<< HEAD
     // eslint-disable-next-line
+=======
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+>>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
   }, [userDados]);
 
   return (

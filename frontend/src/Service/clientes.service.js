@@ -36,6 +36,7 @@ export const getCliente = async (ID) => {
   }
 };
 
+<<<<<<< HEAD
 export const getMyClientes = async () => {
   try {
     const Url = `/clientes/my/1`;
@@ -62,10 +63,14 @@ export const getMyClientes = async () => {
 };
 
 export const getClientesByUser = async (user_id) => {
+=======
+export const getClientesByUsuario = async (user_id) => {
+>>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
   try {
     const Url = `/clientes/usuario/${user_id}`;
     const Dados = await Service.exec('get', Url);
 
+<<<<<<< HEAD
     if (!Dados.data.success) {
       // eslint-disable-next-line
       throw {
@@ -75,13 +80,24 @@ export const getClientesByUser = async (user_id) => {
           : 'Error em buscas os clientes do usuário.'
       };
     }
+=======
+    console.log(Dados)
+
+    if (!Dados.data.success) throw Dados.data;
+>>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
 
     return {
       success: true,
       data: Dados.data.data
     };
   } catch (error) {
+<<<<<<< HEAD
     console.log(error);
     throw error;
   }
 };
+=======
+    throw error;
+  }
+};
+>>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96

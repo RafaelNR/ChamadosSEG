@@ -18,7 +18,7 @@ export const getAtividades = async (Dados) => {
 
     const resp = await Service.exec('get', '/atividades?' + query);
 
-    if (resp.data.success) return resp.data.data;
+    if (resp.data.success) return resp.data;
 
     throw resp.data;
   } catch (error) {

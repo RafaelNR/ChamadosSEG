@@ -106,14 +106,18 @@ export default function () {
       setOrderBy('titulo');
       return setRows(search && search.length > 3 ? searchResults : modelos);
     }
+<<<<<<< HEAD
     // eslint-disable-next-line
+=======
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+>>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
   }, [modelos, searchResults]);
 
   useEffect(() => {
     if (modelos) {
       handleSearch(['titulo'], modelos);
     }
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
   
   return (

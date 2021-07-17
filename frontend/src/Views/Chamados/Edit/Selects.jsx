@@ -12,8 +12,14 @@ import {
 import {
   getUsers,
   getPerfil,
+<<<<<<< HEAD
   getUsersAtribuiveis
+=======
+  getUsersAtribuiveis,
+>>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
 } from '../../../Service/user.service';
+
+import { getClientesByUsuario } from '../../../Service/clientes.service';
 
 import {
   getAllCategorias,
@@ -166,7 +172,11 @@ export const SelectAtribuidos = ({
     return () => {
       return false;
     };
+<<<<<<< HEAD
     // eslint-disable-next-line
+=======
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+>>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
   }, [userDados.role_id, chamado.requerente_id]);
 
   const handleValue = () => {
@@ -227,8 +237,8 @@ export const SelectClientsChamado = ({
           setLoading(true);
           const { success, data } =
             userDados.role_id === 3
-              ? await getClientesByUser(chamado.requerente_id)
-              : await getClientesByUser(chamado.atribuido_id);
+              ? await getClientesByUsuario(chamado.requerente_id)
+              : await getClientesByUsuario(chamado.atribuido_id);
 
           if (render && success) {
             if (data.length === 1) {
@@ -252,7 +262,11 @@ export const SelectClientsChamado = ({
     return () => {
       return false;
     };
+<<<<<<< HEAD
     // eslint-disable-next-line
+=======
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+>>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
   }, [userDados.role_id,chamado.requerente_id, chamado.atribuido_id]);
 
   const handleValue = () => {
@@ -321,6 +335,7 @@ export const SelectCategorias = ({
     return () => {
       return false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -387,7 +402,11 @@ export const SelectSubCategorias = ({
     return () => {
       return false;
     };
+<<<<<<< HEAD
     // eslint-disable-next-line
+=======
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+>>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
   }, [chamado.categoria_id]);
 
   return (

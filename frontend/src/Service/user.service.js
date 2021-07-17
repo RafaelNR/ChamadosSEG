@@ -49,6 +49,53 @@ export const getUser = async (ID) => {
   }
 };
 
+<<<<<<< HEAD
+=======
+
+export const getUserByCliente = async (cliente_id) => {
+    try {
+      const Url = `/usuarios/cliente/${cliente_id}`;
+      const Dados = await Service.exec('get', Url);
+
+      if (!Dados.data.success) {
+        throw new Error(
+          Dados.data.message || 'Error em buscas usuários desse cliente.'
+        );
+      }
+
+      return {
+        success: true,
+        data: Dados.data.data
+      };
+
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+}
+
+export const getMyClientes = async (ID) => {
+  try {
+    const Url = `/usuarios/clientes/my/${ID}`;
+    const Dados = await Service.exec("get", Url);
+
+    if (!Dados.data.success) {
+      // eslint-disable-next-line
+      throw ({ success: false, message: Dados.data.message ? Dados.data.message : 'Error em buscas os clientes do meu usuário.' });
+    }
+
+    return {
+      success: true,
+      data: Dados.data.data,
+    };
+
+  } catch (error) {
+    console.log(error)
+    throw error;
+  }
+};
+
+>>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
 
 export const getPerfil = async () => {
   try {

@@ -14,6 +14,8 @@ import {
   getUsersAtribuiveis,
 } from '../../../Service/user.service';
 
+import { getClientesByUsuario } from '../../../Service/clientes.service';
+
 import {
   getAllCategorias,
   getSubCategoriasByCategoria
@@ -199,8 +201,8 @@ export const SelectClientes = ({ handleChange, ...rest }) => {
         try {
           const { success, data } =
             userDados.role_id !== 3
-              ? await getClientesByUser(chamado.atribuido)
-              : await getClientesByUser(chamado.requerente);
+              ? await getClientesByUsuario(chamado.atribuido)
+              : await getClientesByUsuario(chamado.requerente);
 
           if (render && success) {
             setChamado((chamado) => {
@@ -220,7 +222,11 @@ export const SelectClientes = ({ handleChange, ...rest }) => {
     return () => {
       return false;
     };
+<<<<<<< HEAD
     // eslint-disable-next-line
+=======
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+>>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
   }, [chamado.requerente, chamado.atribuido]);
 
   return (

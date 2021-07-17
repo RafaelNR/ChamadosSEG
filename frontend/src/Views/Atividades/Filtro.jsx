@@ -10,9 +10,20 @@ import useAtividades from "../../Context/AtividadesContext";
 import useSnackBar from '../../Context/SnackBarContext';
 
 //* SERVICE
+<<<<<<< HEAD
 import { getUsers, getPerfil } from '../../Service/user.service'
 import { getClientes, getMyClientes } from '../../Service/clientes.service';
+=======
+import { getMyClientes, getUserByCliente } from '../../Service/user.service';
+import {
+  getClientes,
+} from '../../Service/clientes.service';
+
+>>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
 import { getAtividades } from '../../Service/atividade.service';
+
+//* HOOKS
+import useUser from '../../Hooks/useUser';
 
 //* SHEMAS
 import { FilterAtividadesSchema} from '../../Schemas/Atividades.Schema'
@@ -48,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
+  const { roleID } = useUser();
   const { setAtividades } = useAtividades();
   const { handleSnackBar } = useSnackBar();
   const [clientes, setClientes] = React.useState([]);
@@ -60,47 +72,46 @@ export default () => {
   React.useEffect(() => {
     let render = true;
 
-    (async () => {
-      try {
-        const My = await getPerfil();
+    if (roleID) {
+      (async () => {
+        try {
+          const c = roleID === 3 ? await getMyClientes() : await getClientes();
 
-        if (!My || !My.success)
-          throw new Error('Erro em carregar values do filtro.');
+          if (!c.success) throw new Error('Em carregar técnicos ou clientes.');
 
-        const u = My.data.role_id === 3 ? My : await getUsers();
-        const c =
-          My.data.role_id === 3 ? await getMyClientes() : await getClientes();
-
-        if (!c.success || !u.success)
-          throw new Error('Em carregar técnicos ou clientes.');
-
-        if (render) {
-          setClientes(() => {
-            return c.data.map((cliente) => {
-              return {
-                id: cliente.id,
-                nome: cliente.nome_fantasia
-              };
+          if (render) {
+            setClientes(() => {
+              return c.data.map((cliente) => {
+                return {
+                  id: cliente.id,
+                  nome: cliente.nome_fantasia
+                };
+              });
             });
+          }
+        } catch (error) {
+          console.log(error);
+          console.log(error);
+          handleSnackBar({
+            type: 'error',
+            message:
+              error && error.message
+                ? error.message
+                : 'Erro em carregar clientes.'
           });
-          setTecnicos(u.data.length > 2 ? u.data : [u.data]);
         }
-      } catch (error) {
-        console.log(error);
-        console.log(error);
-        handleSnackBar({
-          type: 'error',
-          message:
-            error && error.message ? error.message : 'Erro em carregar filtros.'
-        });
-      }
-    })();
+      })();
+    }
 
     return () => {
       render = false;
     };
     // eslint-disable-next-line
+<<<<<<< HEAD
   }, []);
+=======
+  }, [roleID]);
+>>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
 
   React.useEffect(() => {
     setValues((v) => {
@@ -110,19 +121,56 @@ export default () => {
         values = { ...v, cliente: clientes[0].id };
       }
 
-      if (tecnicos.length === 1) {
-        values = { ...v, tecnico: tecnicos[0].id };
-      }
+      // if (tecnicos.length === 1) {
+      //   values = { ...v, tecnico: tecnicos[0].id };
+      // }
 
       return values;
     });
     // eslint-disable-next-line
+<<<<<<< HEAD
   }, [clientes, tecnicos]);
+=======
+  }, [clientes]);
+
+
+  React.useEffect(() => {
+    let render = true;
+
+    if (roleID) {
+      (async () => {
+        try {
+          const { success, data } = await getUserByCliente(values.cliente);
+
+          if (render && success) {
+            data.length === 1 && setValues({ tecnico: data[0].id });
+            return setTecnicos(data);
+          }
+
+          throw new Error('Em carregar técnicos ou clientes.');
+        } catch (error) {
+          console.log(error);
+          handleSnackBar({
+            type: 'error',
+            message:
+              error && error.message
+                ? error.message
+                : 'Erro em carregar clientes.'
+          });
+        }
+      })();
+    }
+
+    return () => {
+      render = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[values.cliente])
+>>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
 
   const handleChange = (event) => {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
+    const value = event.target.value;
+    const name = event.target.name;
     setValues({
       ...values,
       [name]: value
@@ -139,7 +187,11 @@ export default () => {
       }
     });
     setErrors({});
+<<<<<<< HEAD
     // eslint-disable-next-line
+=======
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+>>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
   }, []);
 
   const filterAtividades = useCallback(async () => {
@@ -160,13 +212,13 @@ export default () => {
         throw new Error('Data inicial precisa estar preenchida.');
       }
 
-      getAtividades(values)
-        .then((resp) => {
-          setAtividades(resp)
-        })
-        .catch((err) => {
-          throw err;
-        });
+      const {success, data} = await getAtividades(values);
+
+      if (success) {
+        return setAtividades(data);
+      }
+
+      throw new Error('Erro ao filtrar atividades.');
     } catch (error) {
       return handleSnackBar({
         type: 'error',

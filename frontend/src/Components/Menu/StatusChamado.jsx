@@ -73,6 +73,7 @@ export default ({ status, disabled=false }) => {
 
   React.useEffect(() => {
     setAllStatus(getStatus(status));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status])
 
   const handleClick = useCallback((event) => {
@@ -111,7 +112,11 @@ export default ({ status, disabled=false }) => {
         setLoading(false);
       }
     },
+<<<<<<< HEAD
     // eslint-disable-next-line
+=======
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+>>>>>>> 6e4996a7b24e709a1325b59e4330fdec35691b96
     [chamado]
   );
   
