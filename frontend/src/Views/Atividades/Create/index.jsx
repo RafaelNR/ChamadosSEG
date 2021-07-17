@@ -6,7 +6,7 @@ import AtividadeCreate from "./AtividadeCreate.Form";
 import InfoCreate from "./InfoCreate.Form";
 
 //* SERVICE
-import { getMyClientes } from '../../../Service/user.service';
+import { getMyClientes } from '../../../Service/clientes.service';
 
 //* CONTEXT
 import useSnackBar from '../../../Context/SnackBarContext';
@@ -37,6 +37,7 @@ export default () => {
     setLoading(true);
     getMyClientes()
       .then((Dados) => {
+        console.log(Dados)
         if (Dados.success) {
           setClientes(Dados.data);
         }

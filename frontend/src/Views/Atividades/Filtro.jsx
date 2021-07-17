@@ -10,8 +10,8 @@ import useAtividades from "../../Context/AtividadesContext";
 import useSnackBar from '../../Context/SnackBarContext';
 
 //* SERVICE
-import { getUsers, getMyClientes, getPerfil } from '../../Service/user.service'
-import { getClientes } from '../../Service/clientes.service'
+import { getUsers, getPerfil } from '../../Service/user.service'
+import { getClientes, getMyClientes } from '../../Service/clientes.service';
 import { getAtividades } from '../../Service/atividade.service';
 
 //* SHEMAS

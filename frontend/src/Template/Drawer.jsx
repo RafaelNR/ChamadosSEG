@@ -2,13 +2,7 @@ import React from "react";
 import clsx from "clsx";
 
 //* COMPONENTES
-import {
-  makeStyles,
-  useTheme,
-  Drawer,
-  Divider,
-  IconButton,
-} from "@material-ui/core";
+import { makeStyles, Drawer, Divider, IconButton } from '@material-ui/core';
 import ListItensMenu from "../Components/Menu/ItensMenu";
 import ChevronRightIcon from "@material-ui/icons/ChevronRightSharp";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeftSharp";

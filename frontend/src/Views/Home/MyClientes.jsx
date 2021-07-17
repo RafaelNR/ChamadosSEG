@@ -16,8 +16,7 @@ import { SelectCommon } from '../../Components/FormControl/Selects';
 
 //* SERVICE
 import * as Dashboard from '../../Service/dashboard.service'
-import { getMyClientes } from '../../Service/user.service'
-import { getClientes } from '../../Service/clientes.service'
+import { getClientes, getMyClientes } from '../../Service/clientes.service';
 
 // HOOK
 import useLocalStore from '../../Hooks/useLocalStore'

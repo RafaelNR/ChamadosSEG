@@ -31,6 +31,19 @@ async function findOne(req, res) {
 	return res.status(Result.status).json(Result.res);
 }
 
+async function findMyClientes(req, res) {
+	try {
+		await tools.checkIfExist(req.userId);
+
+		Result.ok(200, await findClients(req.userId));
+	} catch (error) {
+		Result.fail(400, error);
+	}
+
+	Result.registerLog(req.userId, "user", "findMyClientes");
+	return res.status(Result.status).json(Result.res);
+}
+
 async function getUsuariosByCliente(req, res) {
 	try {
 		if (!req.params || !req.params.cliente_id)
@@ -218,6 +231,7 @@ const tools = {
 module.exports = {
 	index,
 	findOne,
+	findMyClientes,
 	getUsersAtribuiveis,
 	getUsuariosByCliente,
 	insert,

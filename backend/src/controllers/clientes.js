@@ -46,9 +46,9 @@ async function findMyClientes(req, res) {
 
 const findClientesByUsuario = async (req, res) => {
 	try {
-		if (!req.params || !req.params.id) throw "Paramento não encontrado!";
+		if (!req.params || !req.params.user_id) throw "Paramento não encontrado!";
 
-		const user_id = Validate.ID(parseInt(req.params.id));
+		const user_id = Validate.ID(parseInt(req.params.user_id));
 
 
 		Result.ok(200, await Model.findClientesByUsuario(user_id));

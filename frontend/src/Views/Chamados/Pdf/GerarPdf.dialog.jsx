@@ -6,7 +6,7 @@ import FormControl from './GerarPdf.form'
 
 
 export default React.memo(() => {
-  const { type, open, closeDialog } = useDialog();
+  const { type, open } = useDialog();
 
   const Factor = React.useCallback(() => {
     if (type) {

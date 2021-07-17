@@ -12,15 +12,15 @@ import {
 import {
   getUsers,
   getPerfil,
-  getUsersAtribuiveis,
-  getClientesByUser,
-  getMyClientes
+  getUsersAtribuiveis
 } from '../../../Service/user.service';
 
 import {
   getAllCategorias,
   getSubCategoriasByCategoria
 } from '../../../Service/categorias.service';
+
+import { getClientesByUser } from '../../../Service/clientes.service';
 
 //* CONTEXT
 import useChamados from '../../../Context/ChamadosContext';
